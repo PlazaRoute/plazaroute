@@ -6,7 +6,7 @@ def select_layer(layerName):
 
 
 def get_feature(featureId, layer):
-    expr = QgsExpression( "\"id\"=" + str(featureId))
+    expr = QgsExpression('"id"=%d' % featureId)
     features = layer.getFeatures(QgsFeatureRequest(expr))
     if not features: 
         raise Exception("Failed to retrieve feature.")
