@@ -1,3 +1,5 @@
+from qgis.networkanalysis import *
+
 def get_layer(layerName):
     layerList = QgsMapLayerRegistry.instance().mapLayersByName(layerName)
     if not layerList:
@@ -25,11 +27,19 @@ def get_nodes(feature):
     return nodes
 
 
+def remove_layer_if_it_exists(name):
+    layers = QgsMapLayerRegistry.instance().mapLayers()
+    for memname, layer in layers.iteritems():
+        if memname.startswith(name):
+            QgsMapLayerRegistry.instance().removeMapLayer(layer.id())
+
+
 def create_line_memory_layer(name):
-        memLayer = QgsVectorLayer(
-            "linestring?crs=epsg:4326&field=MYNUM:integer&field=MYTXT:string", name, "memory")
-        QgsMapLayerRegistry.instance().addMapLayer(memLayer)
-        return memLayer
+    memLayer = QgsVectorLayer(
+        "linestring?crs=epsg:4326&field=MYNUM:integer&field=MYTXT:string", name, "memory")
+    remove_layer_if_it_exists(name)
+    QgsMapLayerRegistry.instance().addMapLayer(memLayer)
+    return memLayer
 
 
 def get_features_inside_plaza(features, plaza):
@@ -86,7 +96,7 @@ def get_shortest_path(graph_layer, points, from_point, to_point):
 
     tiedPoints = director.makeGraph(builder, points)
     graph = builder.graph()
-    
+
     from_id = graph.findVertex(from_point)
     to_id = graph.findVertex(to_point)
 
@@ -99,7 +109,7 @@ def get_shortest_path(graph_layer, points, from_point, to_point):
         curPos = graph.arc(tree[curPos]).outVertex()
 
         route_points.append(from_point)
-    
+
     return route_points
 
 
@@ -112,7 +122,7 @@ all_nodes, memLayer, edges = create_visibility_graph(plaza, point_layer)
 filtered_edges = filter(lambda e: edge_is_inside_plaza(plaza, e), edges)
 draw_features(memLayer, filtered_edges)
 
-sp_layer = create_line_memory_layer('shortest paths')
+sp_layer = create_line_memory_layer('shortest_paths')
 
 for node in all_nodes[1:]:
     route_points = get_shortest_path(memLayer, all_nodes, all_nodes[0], node)
