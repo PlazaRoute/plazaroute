@@ -1,4 +1,9 @@
+
+from qgis.core import *
+from qgis.gui import *
 from qgis.networkanalysis import *
+from PyQt4.QtCore import *
+
 
 def get_layer(layerName):
     layerList = QgsMapLayerRegistry.instance().mapLayersByName(layerName)
@@ -42,6 +47,13 @@ def create_line_memory_layer(name):
     return memLayer
 
 
+def create_point_memory_layer(name):
+        memLayer = QgsVectorLayer(
+            "point?crs=epsg:4326&field=MYNUM:integer&field=MYTXT:string", name, "memory")
+        QgsMapLayerRegistry.instance().addMapLayer(memLayer)
+        return memLayer
+
+
 def get_features_inside_plaza(features, plaza):
     plaza_geom = plaza.geometry()
     found_features = []
@@ -51,15 +63,14 @@ def get_features_inside_plaza(features, plaza):
     return found_features
 
 
-def create_visibility_graph(plaza, point_layer):
+def create_visibility_graph(plaza, point_layer, memLayer):
     enclosed_features = get_features_inside_plaza(point_layer.getFeatures(), plaza)
     plaza_nodes = get_nodes(plaza)[0][0]
     enclosed_nodes = [get_nodes(p) for p in enclosed_features]
-    all_nodes = plaza_nodes + enclosed_nodes
+    nodes = plaza_nodes + enclosed_nodes
 
-    memLayer = create_line_memory_layer('helvetiaplatz_graph')
-    edges = calc_visiblity_graph_edges(memLayer, all_nodes)
-    return all_nodes, memLayer, edges
+    edges = calc_visiblity_graph_edges(memLayer, nodes)
+    return nodes, edges
 
 
 def calc_visiblity_graph_edges(memLayer, nodes):
@@ -86,47 +97,114 @@ def edge_is_inside_plaza(plaza, edge):
     return False
 
 
-def get_shortest_path(graph_layer, points, from_point, to_point):
+def get_intersecting_features(plaza, line_layer):
+    """ returns all line features that intersect with the plaza """
+    index = QgsSpatialIndex(line_layer.getFeatures())
+    feauture_dict = {f.id(): f for f in line_layer.getFeatures()}
+    # restrict features to those that intersect with the bounding box of the plaza
+    intersect_ids = index.intersects(plaza.geometry().boundingBox())
+    intersecting_features = []
+    for i in intersect_ids:
+        line = feauture_dict[i]
+        if line.geometry().intersects(plaza.geometry()):
+            intersecting_features.append(line)
+    return intersecting_features
+
+
+def get_entry_points(plaza, intersecting_features):
+    """ returns all entry and exit points of the intersecting features with the plaza """
+    plaza_geom = plaza.geometry()
+    entry_points = []
+    for line_feature in intersecting_features:
+        intersection = line_feature.geometry().intersection(plaza_geom)
+        if intersection.type() == QGis.Point:
+            entry_points.append(intersection.asPoint())
+        else:
+            for point in intersection.asPolyline():
+                if not plaza_geom.contains(point):
+                    entry_points.append(point)
+    return entry_points
+
+
+def calc_shortest_paths(entry_points, graph_layer):
     # prepare graph
     director = QgsLineVectorLayerDirector(graph_layer, -1, '', '', '', 3)
-    properter = QgsDistanceArcProperter()
+    properter = QgsDistanceArcProperter()  # get weights through distance
     director.addProperter(properter)
     crs = graph_layer.crs()
     builder = QgsGraphBuilder(crs)
 
-    tiedPoints = director.makeGraph(builder, points)
+    director.makeGraph(builder, entry_points)
     graph = builder.graph()
 
-    from_id = graph.findVertex(from_point)
-    to_id = graph.findVertex(to_point)
-
-    (tree, cost) = QgsGraphAnalyzer.dijkstra(graph, from_id, 0)
-
-    route_points = []
-    curPos = to_id
-    while (curPos != from_id):
-        route_points.append(graph.vertex(graph.arc(tree[curPos]).inVertex()).point())
-        curPos = graph.arc(tree[curPos]).outVertex()
-
-        route_points.append(from_point)
-
-    return route_points
+    result_edges = set()
+    for start_point in entry_points:
+        edges = calc_dijkstra_shortest_tree(graph, start_point, entry_points)
+        result_edges = result_edges.union(edges)
+    return result_edges
 
 
-plaza_layer = get_layer('helvetiaplatz_plazas')
-point_layer = get_layer('helvetiaplatz_points_amenities')
+def calc_dijkstra_shortest_tree(graph, start_point, entry_points):
+    """ returns a set of edges that belong to the shortest path from
+        start_point to every other point in entry_points """
+    start_vertex = graph.findVertex(start_point)
+    tree = QgsGraphAnalyzer.shortestTree(graph, start_vertex, 0)
+    result_edges = set()
+    for entry_point in entry_points:
+        if (entry_point == start_point):
+            continue
+        end_vertex = tree.findVertex(entry_point)
+        if end_vertex == -1:
+            # not found
+            print("no path to %s found" % entry_points[3])
+        else:
+            while start_vertex != end_vertex:
+                in_edges = tree.vertex(end_vertex).inArc()
+                if len(in_edges) == 0:
+                    break
+                in_edge = tree.arc(in_edges[0])
+                in_point = tree.vertex(in_edge.inVertex()).point()
+                out_point = tree.vertex(in_edge.outVertex()).point()
+                result_edges.add((in_point, out_point))
+                end_vertex = in_edge.outVertex()
+    return result_edges
+
+
+def draw_edges(line_layer, edges):
+    """ every edge must be a tuple with two points """
+    line_features = []
+    for p1, p2 in edges:
+        line = QgsFeature(line_layer.pendingFields())
+        line.setGeometry(QgsGeometry.fromPolyline([p1, p2]))
+        line_features.append(line)
+    draw_features(line_layer, line_features)
+
+
+plaza_layer = get_layer('helvetiaplatz plazas')
+point_layer = get_layer('helvetiaplatz points')
+line_layer = get_layer('helvetiaplatz lines')
 
 plaza_features = plaza_layer.getFeatures()
 plaza = next(plaza_features)  # there's only one
-all_nodes, memLayer, edges = create_visibility_graph(plaza, point_layer)
-filtered_edges = filter(lambda e: edge_is_inside_plaza(plaza, e), edges)
-draw_features(memLayer, filtered_edges)
 
+remove_layer_if_it_exists('helvetiaplatz_graph')
+graph_layer = create_line_memory_layer('helvetiaplatz_graph')
+graph_nodes, graph_edges = create_visibility_graph(plaza, point_layer, graph_layer)
+filtered_edges = filter(lambda e: edge_is_inside_plaza(plaza, e), graph_edges)
+draw_features(graph_layer, filtered_edges)
+
+intersecting_features = get_intersecting_features(plaza, line_layer)
+# entry_line_layer = create_line_memory_layer('entry_lines')
+# draw_features(entry_line_layer, intersecting_features)
+entry_points = get_entry_points(plaza, intersecting_features)
+# remove_layer_if_it_exists('entry_points')
+# entry_point_layer = create_point_memory_layer('entry_points')
+# for p in entry_points:
+#     f = QgsFeature(entry_point_layer.pendingFields())
+#     f.setGeometry(QgsGeometry.fromPoint(p))
+#     draw_features(entry_point_layer, [f])
+
+remove_layer_if_it_exists('shortest_paths')
 sp_layer = create_line_memory_layer('shortest_paths')
-
-for node in all_nodes[1:]:
-    route_points = get_shortest_path(memLayer, all_nodes, all_nodes[0], node)
-
-    route_line = QgsFeature(memLayer.pendingFields())
-    route_line.setGeometry(QgsGeometry.fromPolyline(route_points))
-    draw_features(sp_layer, [route_line])
+result_edges = calc_shortest_paths(entry_points, graph_layer)
+draw_edges(sp_layer, result_edges)
