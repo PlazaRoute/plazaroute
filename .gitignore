@@ -8,3 +8,5 @@ cache/
 *.prj
 *.shp
 *.shx
+
+*.gpkg-*
