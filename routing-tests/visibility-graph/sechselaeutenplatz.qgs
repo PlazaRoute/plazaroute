@@ -3,27 +3,18 @@
   <title></title>
   <autotransaction active="0"/>
   <evaluateDefaultValues active="0"/>
-  <layer-tree-group expanded="1" checked="Qt::PartiallyChecked" name="">
+  <layer-tree-group expanded="1" checked="Qt::Checked" name="">
     <customproperties/>
-    <layer-tree-layer expanded="1" providerKey="memory" checked="Qt::Checked" id="entry_points20171010142924275" source="memory?geometry=Point&amp;crs=EPSG:4326&amp;field=MYNUM:integer(-1,0)&amp;field=MYTXT:string(255,0)" name="entry_points">
+    <layer-tree-layer expanded="1" providerKey="ogr" checked="Qt::Checked" id="sechselaeutenplatz_buildings20171010145409256" source="/home/robin/Documents/PlazaRoute/routing-tests/visibility-graph/data/sechselaeutenplatz/sechselaeutenplatz.gpkg|layerid=2" name="sechselaeutenplatz buildings">
       <customproperties/>
     </layer-tree-layer>
-    <layer-tree-layer expanded="1" providerKey="memory" checked="Qt::Checked" id="shortest_paths20171010144609645" source="linestring?crs=epsg:4326&amp;field=MYNUM:integer&amp;field=MYTXT:string" name="shortest_paths">
+    <layer-tree-layer expanded="1" providerKey="ogr" checked="Qt::Checked" id="sechselaeutenplatz_points20171010145409273" source="/home/robin/Documents/PlazaRoute/routing-tests/visibility-graph/data/sechselaeutenplatz/sechselaeutenplatz.gpkg" name="sechselaeutenplatz points">
       <customproperties/>
     </layer-tree-layer>
-    <layer-tree-layer expanded="1" providerKey="memory" checked="Qt::Unchecked" id="helvetiaplatz_graph20171010144609535" source="linestring?crs=epsg:4326&amp;field=MYNUM:integer&amp;field=MYTXT:string" name="helvetiaplatz_graph">
+    <layer-tree-layer expanded="1" providerKey="ogr" checked="Qt::Checked" id="sechselaeutenplatz_lines20171010145409263" source="/home/robin/Documents/PlazaRoute/routing-tests/visibility-graph/data/sechselaeutenplatz/sechselaeutenplatz.gpkg|layerid=3" name="sechselaeutenplatz lines">
       <customproperties/>
     </layer-tree-layer>
-    <layer-tree-layer expanded="1" providerKey="ogr" checked="Qt::Checked" id="helvetiaplatz_points20171010095738066" source="/home/robin/Documents/PlazaRoute/routing-tests/visibility-graph/data/helvetiaplatz/helvetiaplatz.gpkg" name="helvetiaplatz points">
-      <customproperties/>
-    </layer-tree-layer>
-    <layer-tree-layer expanded="1" providerKey="ogr" checked="Qt::Checked" id="helvetiaplatz_lines20171010095738053" source="/home/robin/Documents/PlazaRoute/routing-tests/visibility-graph/data/helvetiaplatz/helvetiaplatz.gpkg|layerid=3" name="helvetiaplatz lines">
-      <customproperties/>
-    </layer-tree-layer>
-    <layer-tree-layer expanded="1" providerKey="ogr" checked="Qt::Checked" id="helvetiaplatz_buildings20171010095738045" source="/home/robin/Documents/PlazaRoute/routing-tests/visibility-graph/data/helvetiaplatz/helvetiaplatz.gpkg|layerid=2" name="helvetiaplatz buildings">
-      <customproperties/>
-    </layer-tree-layer>
-    <layer-tree-layer expanded="1" providerKey="ogr" checked="Qt::Checked" id="helvetiaplatz_plazas20171010095738060" source="/home/robin/Documents/PlazaRoute/routing-tests/visibility-graph/data/helvetiaplatz/helvetiaplatz.gpkg|layerid=1" name="helvetiaplatz plazas">
+    <layer-tree-layer expanded="1" providerKey="ogr" checked="Qt::Checked" id="sechselaeutenplatz_plazas20171010145409267" source="/home/robin/Documents/PlazaRoute/routing-tests/visibility-graph/data/sechselaeutenplatz/sechselaeutenplatz.gpkg|layerid=1" name="sechselaeutenplatz plazas">
       <customproperties/>
     </layer-tree-layer>
   </layer-tree-group>
@@ -31,10 +22,10 @@
   <mapcanvas>
     <units>degrees</units>
     <extent>
-      <xmin>8.52706405763187369</xmin>
-      <ymin>47.37584383892813378</ymin>
-      <xmax>8.5276947138818695</xmax>
-      <ymax>47.37634258892826722</ymax>
+      <xmin>8.54344305822786687</xmin>
+      <ymin>47.36536314374345835</ymin>
+      <xmax>8.55004403542642599</xmax>
+      <ymax>47.36667564374395312</ymax>
     </extent>
     <rotation>0</rotation>
     <projections>0</projections>
@@ -57,184 +48,48 @@
   </mapcanvas>
   <layer-tree-canvas>
     <custom-order enabled="0">
-      <item>helvetiaplatz_buildings20171010095738045</item>
-      <item>helvetiaplatz_lines20171010095738053</item>
-      <item>helvetiaplatz_plazas20171010095738060</item>
-      <item>helvetiaplatz_points20171010095738066</item>
-      <item>entry_points20171010142924275</item>
-      <item>helvetiaplatz_graph20171010144609535</item>
-      <item>shortest_paths20171010144609645</item>
+      <item>sechselaeutenplatz_buildings20171010145409256</item>
+      <item>sechselaeutenplatz_lines20171010145409263</item>
+      <item>sechselaeutenplatz_plazas20171010145409267</item>
+      <item>sechselaeutenplatz_points20171010145409273</item>
     </custom-order>
   </layer-tree-canvas>
   <legend updateDrawingOrder="true">
-    <legendlayer drawingOrder="-1" open="true" checked="Qt::Checked" name="entry_points" showFeatureCount="0">
+    <legendlayer drawingOrder="-1" open="true" checked="Qt::Checked" name="sechselaeutenplatz buildings" showFeatureCount="0">
       <filegroup open="true" hidden="false">
-        <legendlayerfile isInOverview="0" layerid="entry_points20171010142924275" visible="1"/>
+        <legendlayerfile isInOverview="0" layerid="sechselaeutenplatz_buildings20171010145409256" visible="1"/>
       </filegroup>
     </legendlayer>
-    <legendlayer drawingOrder="-1" open="true" checked="Qt::Checked" name="shortest_paths" showFeatureCount="0">
+    <legendlayer drawingOrder="-1" open="true" checked="Qt::Checked" name="sechselaeutenplatz points" showFeatureCount="0">
       <filegroup open="true" hidden="false">
-        <legendlayerfile isInOverview="0" layerid="shortest_paths20171010144609645" visible="1"/>
+        <legendlayerfile isInOverview="0" layerid="sechselaeutenplatz_points20171010145409273" visible="1"/>
       </filegroup>
     </legendlayer>
-    <legendlayer drawingOrder="-1" open="true" checked="Qt::Unchecked" name="helvetiaplatz_graph" showFeatureCount="0">
+    <legendlayer drawingOrder="-1" open="true" checked="Qt::Checked" name="sechselaeutenplatz lines" showFeatureCount="0">
       <filegroup open="true" hidden="false">
-        <legendlayerfile isInOverview="0" layerid="helvetiaplatz_graph20171010144609535" visible="0"/>
+        <legendlayerfile isInOverview="0" layerid="sechselaeutenplatz_lines20171010145409263" visible="1"/>
       </filegroup>
     </legendlayer>
-    <legendlayer drawingOrder="-1" open="true" checked="Qt::Checked" name="helvetiaplatz points" showFeatureCount="0">
+    <legendlayer drawingOrder="-1" open="true" checked="Qt::Checked" name="sechselaeutenplatz plazas" showFeatureCount="0">
       <filegroup open="true" hidden="false">
-        <legendlayerfile isInOverview="0" layerid="helvetiaplatz_points20171010095738066" visible="1"/>
-      </filegroup>
-    </legendlayer>
-    <legendlayer drawingOrder="-1" open="true" checked="Qt::Checked" name="helvetiaplatz lines" showFeatureCount="0">
-      <filegroup open="true" hidden="false">
-        <legendlayerfile isInOverview="0" layerid="helvetiaplatz_lines20171010095738053" visible="1"/>
-      </filegroup>
-    </legendlayer>
-    <legendlayer drawingOrder="-1" open="true" checked="Qt::Checked" name="helvetiaplatz buildings" showFeatureCount="0">
-      <filegroup open="true" hidden="false">
-        <legendlayerfile isInOverview="0" layerid="helvetiaplatz_buildings20171010095738045" visible="1"/>
-      </filegroup>
-    </legendlayer>
-    <legendlayer drawingOrder="-1" open="true" checked="Qt::Checked" name="helvetiaplatz plazas" showFeatureCount="0">
-      <filegroup open="true" hidden="false">
-        <legendlayerfile isInOverview="0" layerid="helvetiaplatz_plazas20171010095738060" visible="1"/>
+        <legendlayerfile isInOverview="0" layerid="sechselaeutenplatz_plazas20171010145409267" visible="1"/>
       </filegroup>
     </legendlayer>
   </legend>
   <projectlayers>
-    <maplayer simplifyAlgorithm="0" minimumScale="0" maximumScale="1e+08" simplifyDrawingHints="1" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" readOnly="0" geometry="Point" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
-      <id>entry_points20171010142924275</id>
-      <datasource>memory?geometry=Point&amp;crs=EPSG:4326&amp;field=MYNUM:integer(-1,0)&amp;field=MYTXT:string(255,0)</datasource>
-      <keywordList>
-        <value></value>
-      </keywordList>
-      <layername>entry_points</layername>
-      <srs>
-        <spatialrefsys>
-          <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-          <srsid>3452</srsid>
-          <srid>4326</srid>
-          <authid>EPSG:4326</authid>
-          <description>WGS 84</description>
-          <projectionacronym>longlat</projectionacronym>
-          <ellipsoidacronym>WGS84</ellipsoidacronym>
-          <geographicflag>true</geographicflag>
-        </spatialrefsys>
-      </srs>
-      <provider encoding="System">memory</provider>
-      <vectorjoins/>
-      <layerDependencies/>
-      <expressionfields/>
-      <map-layer-style-manager current="">
-        <map-layer-style name=""/>
-      </map-layer-style-manager>
-      <edittypes>
-        <edittype widgetv2type="TextEdit" name="MYNUM">
-          <widgetv2config IsMultiline="0" fieldEditable="1" constraint="" UseHtml="0" labelOnTop="0" constraintDescription="" notNull="0"/>
-        </edittype>
-        <edittype widgetv2type="TextEdit" name="MYTXT">
-          <widgetv2config IsMultiline="0" fieldEditable="1" constraint="" UseHtml="0" labelOnTop="0" constraintDescription="" notNull="0"/>
-        </edittype>
-      </edittypes>
-      <renderer-v2 forceraster="0" symbollevels="0" type="singleSymbol" enableorderby="0">
-        <symbols>
-          <symbol alpha="1" clip_to_extent="1" type="marker" name="0">
-            <layer pass="0" class="SimpleMarker" locked="0">
-              <prop k="angle" v="0"/>
-              <prop k="color" v="110,198,46,255"/>
-              <prop k="horizontal_anchor_point" v="1"/>
-              <prop k="joinstyle" v="bevel"/>
-              <prop k="name" v="circle"/>
-              <prop k="offset" v="0,0"/>
-              <prop k="offset_map_unit_scale" v="0,0,0,0,0,0"/>
-              <prop k="offset_unit" v="MM"/>
-              <prop k="outline_color" v="0,0,0,255"/>
-              <prop k="outline_style" v="solid"/>
-              <prop k="outline_width" v="0"/>
-              <prop k="outline_width_map_unit_scale" v="0,0,0,0,0,0"/>
-              <prop k="outline_width_unit" v="MM"/>
-              <prop k="scale_method" v="diameter"/>
-              <prop k="size" v="2"/>
-              <prop k="size_map_unit_scale" v="0,0,0,0,0,0"/>
-              <prop k="size_unit" v="MM"/>
-              <prop k="vertical_anchor_point" v="1"/>
-            </layer>
-          </symbol>
-        </symbols>
-        <rotation/>
-        <sizescale scalemethod="diameter"/>
-      </renderer-v2>
-      <labeling type="simple"/>
-      <customproperties/>
-      <blendMode>0</blendMode>
-      <featureBlendMode>0</featureBlendMode>
-      <layerTransparency>0</layerTransparency>
-      <displayfield>MYNUM</displayfield>
-      <label>0</label>
-      <labelattributes>
-        <label fieldname="" text="Label"/>
-        <family fieldname="" name="Sans"/>
-        <size fieldname="" units="pt" value="12"/>
-        <bold fieldname="" on="0"/>
-        <italic fieldname="" on="0"/>
-        <underline fieldname="" on="0"/>
-        <strikeout fieldname="" on="0"/>
-        <color fieldname="" red="0" blue="0" green="0"/>
-        <x fieldname=""/>
-        <y fieldname=""/>
-        <offset x="0" y="0" units="pt" yfieldname="" xfieldname=""/>
-        <angle fieldname="" value="0" auto="0"/>
-        <alignment fieldname="" value="center"/>
-        <buffercolor fieldname="" red="255" blue="255" green="255"/>
-        <buffersize fieldname="" units="pt" value="1"/>
-        <bufferenabled fieldname="" on=""/>
-        <multilineenabled fieldname="" on=""/>
-        <selectedonly on=""/>
-      </labelattributes>
-      <annotationform>.</annotationform>
-      <aliases>
-        <alias field="MYNUM" index="0" name=""/>
-        <alias field="MYTXT" index="1" name=""/>
-      </aliases>
-      <excludeAttributesWMS/>
-      <excludeAttributesWFS/>
-      <attributeactions default="-1"/>
-      <attributetableconfig actionWidgetStyle="dropDown" sortExpression="" sortOrder="0">
-        <columns/>
-      </attributetableconfig>
-      <editform>.</editform>
-      <editforminit/>
-      <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>.</editforminitfilepath>
-      <editforminitcode><![CDATA[]]></editforminitcode>
-      <featformsuppress>0</featformsuppress>
-      <editorlayout>generatedlayout</editorlayout>
-      <widgets/>
-      <conditionalstyles>
-        <rowstyles/>
-        <fieldstyles/>
-      </conditionalstyles>
-      <defaults>
-        <default field="MYNUM" expression=""/>
-        <default field="MYTXT" expression=""/>
-      </defaults>
-      <previewExpression></previewExpression>
-    </maplayer>
     <maplayer simplifyAlgorithm="0" minimumScale="0" maximumScale="1e+08" simplifyDrawingHints="1" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" readOnly="0" geometry="Polygon" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
       <extent>
-        <xmin>8.52538000000000018</xmin>
-        <ymin>47.37510000000000332</ymin>
-        <xmax>8.52898000000000067</xmax>
-        <ymax>47.37709999999999866</ymax>
+        <xmin>8.54409000000000063</xmin>
+        <ymin>47.36370000000000147</ymin>
+        <xmax>8.5501100000000001</xmax>
+        <ymax>47.3680000000000021</ymax>
       </extent>
-      <id>helvetiaplatz_buildings20171010095738045</id>
-      <datasource>./data/helvetiaplatz/helvetiaplatz.gpkg|layerid=2</datasource>
+      <id>sechselaeutenplatz_buildings20171010145409256</id>
+      <datasource>./data/sechselaeutenplatz/sechselaeutenplatz.gpkg|layerid=2</datasource>
       <keywordList>
         <value></value>
       </keywordList>
-      <layername>helvetiaplatz buildings</layername>
+      <layername>sechselaeutenplatz buildings</layername>
       <srs>
         <spatialrefsys>
           <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
@@ -345,7 +200,7 @@
           <symbol alpha="1" clip_to_extent="1" type="fill" name="0">
             <layer pass="0" class="SimpleFill" locked="0">
               <prop k="border_width_map_unit_scale" v="0,0,0,0,0,0"/>
-              <prop k="color" v="109,173,25,255"/>
+              <prop k="color" v="109,134,21,255"/>
               <prop k="joinstyle" v="bevel"/>
               <prop k="offset" v="0,0"/>
               <prop k="offset_map_unit_scale" v="0,0,0,0,0,0"/>
@@ -470,133 +325,18 @@
       <previewExpression></previewExpression>
     </maplayer>
     <maplayer simplifyAlgorithm="0" minimumScale="0" maximumScale="1e+08" simplifyDrawingHints="1" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" readOnly="0" geometry="Line" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
-      <id>helvetiaplatz_graph20171010144609535</id>
-      <datasource>memory?geometry=LineString&amp;crs=EPSG:4326&amp;field=MYNUM:integer(-1,0)&amp;field=MYTXT:string(255,0)</datasource>
-      <keywordList>
-        <value></value>
-      </keywordList>
-      <layername>helvetiaplatz_graph</layername>
-      <srs>
-        <spatialrefsys>
-          <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-          <srsid>3452</srsid>
-          <srid>4326</srid>
-          <authid>EPSG:4326</authid>
-          <description>WGS 84</description>
-          <projectionacronym>longlat</projectionacronym>
-          <ellipsoidacronym>WGS84</ellipsoidacronym>
-          <geographicflag>true</geographicflag>
-        </spatialrefsys>
-      </srs>
-      <provider encoding="System">memory</provider>
-      <vectorjoins/>
-      <layerDependencies/>
-      <expressionfields/>
-      <map-layer-style-manager current="">
-        <map-layer-style name=""/>
-      </map-layer-style-manager>
-      <edittypes>
-        <edittype widgetv2type="TextEdit" name="MYNUM">
-          <widgetv2config IsMultiline="0" fieldEditable="1" constraint="" UseHtml="0" labelOnTop="0" constraintDescription="" notNull="0"/>
-        </edittype>
-        <edittype widgetv2type="TextEdit" name="MYTXT">
-          <widgetv2config IsMultiline="0" fieldEditable="1" constraint="" UseHtml="0" labelOnTop="0" constraintDescription="" notNull="0"/>
-        </edittype>
-      </edittypes>
-      <renderer-v2 forceraster="0" symbollevels="0" type="singleSymbol" enableorderby="0">
-        <symbols>
-          <symbol alpha="1" clip_to_extent="1" type="line" name="0">
-            <layer pass="0" class="SimpleLine" locked="0">
-              <prop k="capstyle" v="square"/>
-              <prop k="customdash" v="5;2"/>
-              <prop k="customdash_map_unit_scale" v="0,0,0,0,0,0"/>
-              <prop k="customdash_unit" v="MM"/>
-              <prop k="draw_inside_polygon" v="0"/>
-              <prop k="joinstyle" v="bevel"/>
-              <prop k="line_color" v="184,27,192,255"/>
-              <prop k="line_style" v="solid"/>
-              <prop k="line_width" v="0.26"/>
-              <prop k="line_width_unit" v="MM"/>
-              <prop k="offset" v="0"/>
-              <prop k="offset_map_unit_scale" v="0,0,0,0,0,0"/>
-              <prop k="offset_unit" v="MM"/>
-              <prop k="use_custom_dash" v="0"/>
-              <prop k="width_map_unit_scale" v="0,0,0,0,0,0"/>
-            </layer>
-          </symbol>
-        </symbols>
-        <rotation/>
-        <sizescale scalemethod="diameter"/>
-      </renderer-v2>
-      <labeling type="simple"/>
-      <customproperties/>
-      <blendMode>0</blendMode>
-      <featureBlendMode>0</featureBlendMode>
-      <layerTransparency>0</layerTransparency>
-      <displayfield>MYNUM</displayfield>
-      <label>0</label>
-      <labelattributes>
-        <label fieldname="" text="Label"/>
-        <family fieldname="" name="Sans"/>
-        <size fieldname="" units="pt" value="12"/>
-        <bold fieldname="" on="0"/>
-        <italic fieldname="" on="0"/>
-        <underline fieldname="" on="0"/>
-        <strikeout fieldname="" on="0"/>
-        <color fieldname="" red="0" blue="0" green="0"/>
-        <x fieldname=""/>
-        <y fieldname=""/>
-        <offset x="0" y="0" units="pt" yfieldname="" xfieldname=""/>
-        <angle fieldname="" value="0" auto="0"/>
-        <alignment fieldname="" value="center"/>
-        <buffercolor fieldname="" red="255" blue="255" green="255"/>
-        <buffersize fieldname="" units="pt" value="1"/>
-        <bufferenabled fieldname="" on=""/>
-        <multilineenabled fieldname="" on=""/>
-        <selectedonly on=""/>
-      </labelattributes>
-      <annotationform></annotationform>
-      <aliases>
-        <alias field="MYNUM" index="0" name=""/>
-        <alias field="MYTXT" index="1" name=""/>
-      </aliases>
-      <excludeAttributesWMS/>
-      <excludeAttributesWFS/>
-      <attributeactions default="-1"/>
-      <attributetableconfig actionWidgetStyle="dropDown" sortExpression="" sortOrder="2949223">
-        <columns/>
-      </attributetableconfig>
-      <editform></editform>
-      <editforminit/>
-      <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath></editforminitfilepath>
-      <editforminitcode><![CDATA[]]></editforminitcode>
-      <featformsuppress>0</featformsuppress>
-      <editorlayout>generatedlayout</editorlayout>
-      <widgets/>
-      <conditionalstyles>
-        <rowstyles/>
-        <fieldstyles/>
-      </conditionalstyles>
-      <defaults>
-        <default field="MYNUM" expression=""/>
-        <default field="MYTXT" expression=""/>
-      </defaults>
-      <previewExpression></previewExpression>
-    </maplayer>
-    <maplayer simplifyAlgorithm="0" minimumScale="0" maximumScale="1e+08" simplifyDrawingHints="1" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" readOnly="0" geometry="Line" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
       <extent>
-        <xmin>8.5223399999999998</xmin>
-        <ymin>47.37120000000000175</ymin>
-        <xmax>8.53195000000000014</xmax>
-        <ymax>47.37879999999999825</ymax>
+        <xmin>8.53511999999999915</xmin>
+        <ymin>47.34640000000000271</ymin>
+        <xmax>8.56508999999999965</xmax>
+        <ymax>47.37660000000000338</ymax>
       </extent>
-      <id>helvetiaplatz_lines20171010095738053</id>
-      <datasource>./data/helvetiaplatz/helvetiaplatz.gpkg|layerid=3</datasource>
+      <id>sechselaeutenplatz_lines20171010145409263</id>
+      <datasource>./data/sechselaeutenplatz/sechselaeutenplatz.gpkg|layerid=3</datasource>
       <keywordList>
         <value></value>
       </keywordList>
-      <layername>helvetiaplatz lines</layername>
+      <layername>sechselaeutenplatz lines</layername>
       <srs>
         <spatialrefsys>
           <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
@@ -667,7 +407,7 @@
               <prop k="customdash_unit" v="MM"/>
               <prop k="draw_inside_polygon" v="0"/>
               <prop k="joinstyle" v="bevel"/>
-              <prop k="line_color" v="136,222,155,255"/>
+              <prop k="line_color" v="66,153,74,255"/>
               <prop k="line_style" v="solid"/>
               <prop k="line_width" v="0.26"/>
               <prop k="line_width_unit" v="MM"/>
@@ -762,17 +502,17 @@
     </maplayer>
     <maplayer simplifyAlgorithm="0" minimumScale="0" maximumScale="1e+08" simplifyDrawingHints="1" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" readOnly="0" geometry="Polygon" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
       <extent>
-        <xmin>8.52616000000000085</xmin>
-        <ymin>47.37570000000000192</ymin>
-        <xmax>8.5274599999999996</xmax>
-        <ymax>47.37660000000000338</ymax>
+        <xmin>8.54437000000000069</xmin>
+        <ymin>47.36500000000000199</ymin>
+        <xmax>8.54906000000000077</xmax>
+        <ymax>47.3674000000000035</ymax>
       </extent>
-      <id>helvetiaplatz_plazas20171010095738060</id>
-      <datasource>./data/helvetiaplatz/helvetiaplatz.gpkg|layerid=1</datasource>
+      <id>sechselaeutenplatz_plazas20171010145409267</id>
+      <datasource>./data/sechselaeutenplatz/sechselaeutenplatz.gpkg|layerid=1</datasource>
       <keywordList>
         <value></value>
       </keywordList>
-      <layername>helvetiaplatz plazas</layername>
+      <layername>sechselaeutenplatz plazas</layername>
       <srs>
         <spatialrefsys>
           <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
@@ -883,7 +623,7 @@
           <symbol alpha="1" clip_to_extent="1" type="fill" name="0">
             <layer pass="0" class="SimpleFill" locked="0">
               <prop k="border_width_map_unit_scale" v="0,0,0,0,0,0"/>
-              <prop k="color" v="177,166,95,255"/>
+              <prop k="color" v="15,107,173,255"/>
               <prop k="joinstyle" v="bevel"/>
               <prop k="offset" v="0,0"/>
               <prop k="offset_map_unit_scale" v="0,0,0,0,0,0"/>
@@ -1009,17 +749,17 @@
     </maplayer>
     <maplayer simplifyAlgorithm="0" minimumScale="0" maximumScale="1e+08" simplifyDrawingHints="1" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" readOnly="0" geometry="Point" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
       <extent>
-        <xmin>8.52561999999999998</xmin>
-        <ymin>47.37550000000000239</ymin>
-        <xmax>8.52866999999999997</xmax>
-        <ymax>47.37680000000000291</ymax>
+        <xmin>8.54155000000000086</xmin>
+        <ymin>47.33899999999999864</ymin>
+        <xmax>8.56728000000000023</xmax>
+        <ymax>47.37899999999999778</ymax>
       </extent>
-      <id>helvetiaplatz_points20171010095738066</id>
-      <datasource>./data/helvetiaplatz/helvetiaplatz.gpkg</datasource>
+      <id>sechselaeutenplatz_points20171010145409273</id>
+      <datasource>./data/sechselaeutenplatz/sechselaeutenplatz.gpkg</datasource>
       <keywordList>
         <value></value>
       </keywordList>
-      <layername>helvetiaplatz points</layername>
+      <layername>sechselaeutenplatz points</layername>
       <srs>
         <spatialrefsys>
           <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
@@ -1115,7 +855,7 @@
           <symbol alpha="1" clip_to_extent="1" type="marker" name="0">
             <layer pass="0" class="SimpleMarker" locked="0">
               <prop k="angle" v="0"/>
-              <prop k="color" v="105,245,201,255"/>
+              <prop k="color" v="173,46,73,255"/>
               <prop k="horizontal_anchor_point" v="1"/>
               <prop k="joinstyle" v="bevel"/>
               <prop k="name" v="circle"/>
@@ -1236,162 +976,20 @@
       </defaults>
       <previewExpression></previewExpression>
     </maplayer>
-    <maplayer simplifyAlgorithm="0" minimumScale="0" maximumScale="1e+08" simplifyDrawingHints="1" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" readOnly="0" geometry="Line" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
-      <id>shortest_paths20171010144609645</id>
-      <datasource>memory?geometry=LineString&amp;crs=EPSG:4326&amp;field=MYNUM:integer(-1,0)&amp;field=MYTXT:string(255,0)</datasource>
-      <keywordList>
-        <value></value>
-      </keywordList>
-      <layername>shortest_paths</layername>
-      <srs>
-        <spatialrefsys>
-          <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-          <srsid>3452</srsid>
-          <srid>4326</srid>
-          <authid>EPSG:4326</authid>
-          <description>WGS 84</description>
-          <projectionacronym>longlat</projectionacronym>
-          <ellipsoidacronym>WGS84</ellipsoidacronym>
-          <geographicflag>true</geographicflag>
-        </spatialrefsys>
-      </srs>
-      <provider encoding="System">memory</provider>
-      <vectorjoins/>
-      <layerDependencies/>
-      <expressionfields/>
-      <map-layer-style-manager current="">
-        <map-layer-style name=""/>
-      </map-layer-style-manager>
-      <edittypes>
-        <edittype widgetv2type="TextEdit" name="MYNUM">
-          <widgetv2config IsMultiline="0" fieldEditable="1" constraint="" UseHtml="0" labelOnTop="0" constraintDescription="" notNull="0"/>
-        </edittype>
-        <edittype widgetv2type="TextEdit" name="MYTXT">
-          <widgetv2config IsMultiline="0" fieldEditable="1" constraint="" UseHtml="0" labelOnTop="0" constraintDescription="" notNull="0"/>
-        </edittype>
-      </edittypes>
-      <renderer-v2 forceraster="0" symbollevels="0" type="singleSymbol" enableorderby="0">
-        <symbols>
-          <symbol alpha="1" clip_to_extent="1" type="line" name="0">
-            <layer pass="0" class="SimpleLine" locked="0">
-              <prop k="capstyle" v="square"/>
-              <prop k="customdash" v="5;2"/>
-              <prop k="customdash_map_unit_scale" v="0,0,0,0,0,0"/>
-              <prop k="customdash_unit" v="MM"/>
-              <prop k="draw_inside_polygon" v="0"/>
-              <prop k="joinstyle" v="bevel"/>
-              <prop k="line_color" v="93,42,245,255"/>
-              <prop k="line_style" v="solid"/>
-              <prop k="line_width" v="0.26"/>
-              <prop k="line_width_unit" v="MM"/>
-              <prop k="offset" v="0"/>
-              <prop k="offset_map_unit_scale" v="0,0,0,0,0,0"/>
-              <prop k="offset_unit" v="MM"/>
-              <prop k="use_custom_dash" v="0"/>
-              <prop k="width_map_unit_scale" v="0,0,0,0,0,0"/>
-            </layer>
-          </symbol>
-        </symbols>
-        <rotation/>
-        <sizescale scalemethod="diameter"/>
-      </renderer-v2>
-      <labeling type="simple"/>
-      <customproperties/>
-      <blendMode>0</blendMode>
-      <featureBlendMode>0</featureBlendMode>
-      <layerTransparency>0</layerTransparency>
-      <displayfield>MYNUM</displayfield>
-      <label>0</label>
-      <labelattributes>
-        <label fieldname="" text="Label"/>
-        <family fieldname="" name="Sans"/>
-        <size fieldname="" units="pt" value="12"/>
-        <bold fieldname="" on="0"/>
-        <italic fieldname="" on="0"/>
-        <underline fieldname="" on="0"/>
-        <strikeout fieldname="" on="0"/>
-        <color fieldname="" red="0" blue="0" green="0"/>
-        <x fieldname=""/>
-        <y fieldname=""/>
-        <offset x="0" y="0" units="pt" yfieldname="" xfieldname=""/>
-        <angle fieldname="" value="0" auto="0"/>
-        <alignment fieldname="" value="center"/>
-        <buffercolor fieldname="" red="255" blue="255" green="255"/>
-        <buffersize fieldname="" units="pt" value="1"/>
-        <bufferenabled fieldname="" on=""/>
-        <multilineenabled fieldname="" on=""/>
-        <selectedonly on=""/>
-      </labelattributes>
-      <annotationform></annotationform>
-      <aliases>
-        <alias field="MYNUM" index="0" name=""/>
-        <alias field="MYTXT" index="1" name=""/>
-      </aliases>
-      <excludeAttributesWMS/>
-      <excludeAttributesWFS/>
-      <attributeactions default="-1"/>
-      <attributetableconfig actionWidgetStyle="dropDown" sortExpression="" sortOrder="0">
-        <columns/>
-      </attributetableconfig>
-      <editform></editform>
-      <editforminit/>
-      <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath></editforminitfilepath>
-      <editforminitcode><![CDATA[]]></editforminitcode>
-      <featformsuppress>0</featformsuppress>
-      <editorlayout>generatedlayout</editorlayout>
-      <widgets/>
-      <conditionalstyles>
-        <rowstyles/>
-        <fieldstyles/>
-      </conditionalstyles>
-      <defaults>
-        <default field="MYNUM" expression=""/>
-        <default field="MYTXT" expression=""/>
-      </defaults>
-      <previewExpression></previewExpression>
-    </maplayer>
   </projectlayers>
   <properties>
-    <Variables>
-      <variableNames type="QStringList"/>
-      <variableValues type="QStringList"/>
-    </Variables>
-    <WMSContactPerson type="QString"></WMSContactPerson>
-    <WMSOnlineResource type="QString"></WMSOnlineResource>
-    <WMSUseLayerIDs type="bool">false</WMSUseLayerIDs>
-    <WMSContactOrganization type="QString"></WMSContactOrganization>
-    <WMSKeywordList type="QStringList">
-      <value></value>
-    </WMSKeywordList>
-    <WFSUrl type="QString"></WFSUrl>
+    <Measurement>
+      <DistanceUnits type="QString"></DistanceUnits>
+      <AreaUnits type="QString"></AreaUnits>
+    </Measurement>
+    <SpatialRefSys>
+      <ProjectCRSProj4String type="QString">+proj=longlat +datum=WGS84 +no_defs</ProjectCRSProj4String>
+      <ProjectCrs type="QString">EPSG:4326</ProjectCrs>
+      <ProjectCRSID type="int">3452</ProjectCRSID>
+    </SpatialRefSys>
     <Paths>
       <Absolute type="bool">false</Absolute>
     </Paths>
-    <WMSServiceTitle type="QString"></WMSServiceTitle>
-    <WFSLayers type="QStringList"/>
-    <WMSContactMail type="QString"></WMSContactMail>
-    <PositionPrecision>
-      <DecimalPlaces type="int">2</DecimalPlaces>
-      <Automatic type="bool">true</Automatic>
-      <DegreeFormat type="QString">MU</DegreeFormat>
-    </PositionPrecision>
-    <WCSUrl type="QString"></WCSUrl>
-    <WMSContactPhone type="QString"></WMSContactPhone>
-    <WMSServiceCapabilities type="bool">false</WMSServiceCapabilities>
-    <WMSServiceAbstract type="QString"></WMSServiceAbstract>
-    <WMSContactPosition type="QString"></WMSContactPosition>
-    <WMSAddWktGeometry type="bool">false</WMSAddWktGeometry>
-    <Measure>
-      <Ellipsoid type="QString">NONE</Ellipsoid>
-    </Measure>
-    <WMSPrecision type="QString">8</WMSPrecision>
-    <WMSSegmentizeFeatureInfoGeometry type="bool">false</WMSSegmentizeFeatureInfoGeometry>
-    <WFSTLayers>
-      <Insert type="QStringList"/>
-      <Update type="QStringList"/>
-      <Delete type="QStringList"/>
-    </WFSTLayers>
     <Gui>
       <SelectionColorBluePart type="int">0</SelectionColorBluePart>
       <CanvasColorGreenPart type="int">255</CanvasColorGreenPart>
@@ -1404,16 +1002,12 @@
     <Digitizing>
       <DefaultSnapToleranceUnit type="int">2</DefaultSnapToleranceUnit>
       <LayerSnappingList type="QStringList">
-        <value>entry_points20171010142924275</value>
-        <value>helvetiaplatz_buildings20171010095738045</value>
-        <value>helvetiaplatz_lines20171010095738053</value>
-        <value>helvetiaplatz_plazas20171010095738060</value>
-        <value>helvetiaplatz_points20171010095738066</value>
-        <value>helvetiaplatz_graph20171010144609535</value>
+        <value>sechselaeutenplatz_buildings20171010145409256</value>
+        <value>sechselaeutenplatz_lines20171010145409263</value>
+        <value>sechselaeutenplatz_plazas20171010145409267</value>
+        <value>sechselaeutenplatz_points20171010145409273</value>
       </LayerSnappingList>
       <LayerSnappingEnabledList type="QStringList">
-        <value>disabled</value>
-        <value>disabled</value>
         <value>disabled</value>
         <value>disabled</value>
         <value>disabled</value>
@@ -1426,12 +1020,8 @@
         <value>2</value>
         <value>2</value>
         <value>2</value>
-        <value>2</value>
-        <value>2</value>
       </LayerSnappingToleranceUnitList>
       <LayerSnapToList type="QStringList">
-        <value>to_vertex_and_segment</value>
-        <value>to_vertex_and_segment</value>
         <value>to_vertex_and_segment</value>
         <value>to_vertex_and_segment</value>
         <value>to_vertex_and_segment</value>
@@ -1444,41 +1034,15 @@
         <value>0.000000</value>
         <value>0.000000</value>
         <value>0.000000</value>
-        <value>0.000000</value>
-        <value>0.000000</value>
       </LayerSnappingToleranceList>
     </Digitizing>
-    <Identify>
-      <disabledLayers type="QStringList"/>
-    </Identify>
-    <Macros>
-      <pythonCode type="QString"></pythonCode>
-    </Macros>
-    <WMSAccessConstraints type="QString">None</WMSAccessConstraints>
-    <WCSLayers type="QStringList"/>
+    <PositionPrecision>
+      <DecimalPlaces type="int">2</DecimalPlaces>
+      <Automatic type="bool">true</Automatic>
+    </PositionPrecision>
     <Legend>
       <filterByMap type="bool">false</filterByMap>
     </Legend>
-    <SpatialRefSys>
-      <ProjectCRSProj4String type="QString">+proj=longlat +datum=WGS84 +no_defs</ProjectCRSProj4String>
-      <ProjectCrs type="QString">EPSG:4326</ProjectCrs>
-      <ProjectCRSID type="int">3452</ProjectCRSID>
-    </SpatialRefSys>
-    <DefaultStyles>
-      <Fill type="QString"></Fill>
-      <Line type="QString"></Line>
-      <Marker type="QString"></Marker>
-      <RandomColors type="bool">true</RandomColors>
-      <AlphaInt type="int">255</AlphaInt>
-      <ColorRamp type="QString"></ColorRamp>
-    </DefaultStyles>
-    <WMSFees type="QString">conditions unknown</WMSFees>
-    <WMSImageQuality type="int">90</WMSImageQuality>
-    <Measurement>
-      <DistanceUnits type="QString">meters</DistanceUnits>
-      <AreaUnits type="QString">m2</AreaUnits>
-    </Measurement>
-    <WMSUrl type="QString"></WMSUrl>
   </properties>
   <visibility-presets/>
 </qgis>

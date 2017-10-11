@@ -13,20 +13,22 @@ def get_layer(layerName):
 
 
 def get_feature(featureId, layer):
-    expr = QgsExpression('"id"=%d' % featureId)
+    expr = QgsExpression('"fid"=%d' % featureId)
     features = layer.getFeatures(QgsFeatureRequest(expr))
     if not features:
         raise Exception("Failed to retrieve feature.")
-    return features  # should only return one feature
+    return next(features)  # should only return one feature
 
 
 def get_nodes(feature):
     geom = feature.geometry()
     if geom.type() == QGis.Polygon:
         if geom.isMultipart():
-            nodes = geom.asMultiPolygon()
+            all_nodes = geom.asMultiPolygon()[0]
+            nodes = []
+            [nodes.extend(n) for n in all_nodes]
         else:
-            nodes = [geom.asPolygon()]
+            nodes = geom.asPolygon()
     elif geom.type() == QGis.Point:
         nodes = geom.asPoint()  # return a single point
     return nodes
@@ -54,18 +56,45 @@ def create_point_memory_layer(name):
         return memLayer
 
 
+def get_plaza_inner_rings(plaza):
+    """ return geometries of the inner rings """
+    if not plaza.geometry().isMultipart():
+        return []
+    inner_rings = []
+    multipolygon = plaza.geometry().asMultiPolygon()[0]
+    # first element is outer ring, rest is inner
+    for ring_polygon in multipolygon[1:]:
+        inner_rings.append(QgsGeometry.fromPolygon([ring_polygon]))
+    return inner_rings
+
+
+def get_plaza_outer_geometry(plaza):
+    """ return the outermost ring geometry for the plaza """
+    geom = plaza.geometry()
+    if not geom.isMultipart():
+        return geom
+    plaza_polygon = geom.asMultiPolygon()[0][0]  # first is outer ring
+    return QgsGeometry.fromPolygon([plaza_polygon])
+
+
 def get_features_inside_plaza(features, plaza):
-    plaza_geom = plaza.geometry()
+    plaza_outer_geom = get_plaza_outer_geometry(plaza)
+    plaza_inner_rings = get_plaza_inner_rings(plaza)
     found_features = []
     for p in features:
-        if plaza_geom.contains(p.geometry()):
-            found_features.append(p)
+        if plaza_outer_geom.contains(p.geometry()):
+            p_in_ring = False
+            for ring in plaza_inner_rings:
+                if ring.contains(p.geometry()):
+                    p_in_ring = True
+            if not p_in_ring:
+                found_features.append(p)
     return found_features
 
 
 def create_visibility_graph(plaza, point_layer, memLayer):
     enclosed_features = get_features_inside_plaza(point_layer.getFeatures(), plaza)
-    plaza_nodes = get_nodes(plaza)[0][0]
+    plaza_nodes = get_nodes(plaza)
     enclosed_nodes = [get_nodes(p) for p in enclosed_features]
     nodes = plaza_nodes + enclosed_nodes
 
@@ -100,25 +129,30 @@ def edge_is_inside_plaza(plaza, edge):
 def get_intersecting_features(plaza, line_layer):
     """ returns all line features that intersect with the plaza """
     index = QgsSpatialIndex(line_layer.getFeatures())
+    plaza_geom = get_plaza_outer_geometry(plaza)
     feauture_dict = {f.id(): f for f in line_layer.getFeatures()}
     # restrict features to those that intersect with the bounding box of the plaza
-    intersect_ids = index.intersects(plaza.geometry().boundingBox())
+    intersect_ids = index.intersects(plaza_geom.boundingBox())
     intersecting_features = []
     for i in intersect_ids:
         line = feauture_dict[i]
-        if line.geometry().intersects(plaza.geometry()):
+        if line.geometry().intersects(plaza_geom):
             intersecting_features.append(line)
     return intersecting_features
 
 
 def get_entry_points(plaza, intersecting_features):
     """ returns all entry and exit points of the intersecting features with the plaza """
-    plaza_geom = plaza.geometry()
+    plaza_geom = get_plaza_outer_geometry(plaza)
     entry_points = []
     for line_feature in intersecting_features:
         intersection = line_feature.geometry().intersection(plaza_geom)
         if intersection.type() == QGis.Point:
-            entry_points.append(intersection.asPoint())
+            if intersection.isMultipart():  # if line intersects at multiple points
+                for point in intersection.asMultiPoint():
+                    entry_points.append(point)
+            else:
+                entry_points.append(intersection.asPoint())
         else:
             for point in intersection.asPolyline():
                 if not plaza_geom.contains(point):
