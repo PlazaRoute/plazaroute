@@ -104,11 +104,12 @@ def create_visibility_graph(plaza, point_layer, memLayer):
 
 def calc_visiblity_graph_edges(memLayer, nodes):
     edges = []
-    for start in nodes:
-        for target in nodes:
-            if (start != target):
+    indexed_nodes = {i: node for i, node in enumerate(nodes)}
+    for start_id, start_node in indexed_nodes.items():
+        for target_id, target_node in indexed_nodes.items():
+            if (start_id > target_id):
                 line = QgsFeature(memLayer.pendingFields())
-                line.setGeometry(QgsGeometry.fromPolyline([start, target]))
+                line.setGeometry(QgsGeometry.fromPolyline([start_node, target_node]))
                 edges.append(line)
     return edges
 
