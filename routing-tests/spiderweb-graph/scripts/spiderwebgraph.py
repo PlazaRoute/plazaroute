@@ -110,12 +110,12 @@ def remove_lines_outside_of_plaza(plaza, grid_layer):
     intersection_layer.dataProvider().addFeatures(features)
     QgsMapLayerRegistry.instance().addMapLayer(intersection_layer)
     
+    
 def nearest_neighbor(layer, entry_points):
     spindex = QgsSpatialIndex()
     for feature in layer.getFeatures():
         spindex.insertFeature(feature)
     
-    print entry_points
     line_features = []
     for entry_point in entry_points:
         neighborid = spindex.nearestNeighbor(QgsPoint(entry_point),1)
@@ -130,16 +130,14 @@ def nearest_neighbor(layer, entry_points):
         line.setGeometry(QgsGeometry.fromPolyline([entry_point, target]))
         line_features.append(line)
     
-    print len(line_features)
-    test_layer = create_line_memory_layer('test_layer')
-    test_layer.dataProvider().addFeatures(line_features)
-    QgsMapLayerRegistry.instance().addMapLayer(test_layer)
+    layer.dataProvider().addFeatures(line_features)
+    QgsMapLayerRegistry.instance().addMapLayer(layer)
         
 
-def draw_spiderweb_graph(layer):
+def draw_spiderweb_graph(layer, degree, spacing):
     for plaza in layer.getFeatures():
         grid_layer = create_line_memory_layer('spiderweb' + str(plaza.id()))
         boundingbox = calculate_boundingbox([plaza])
-        draw_grid(grid_layer, boundingbox, 0.00005)
-        rotate_features(grid_layer, 45)
+        draw_grid(grid_layer, boundingbox, spacing)
+        rotate_features(grid_layer, degree)
         remove_lines_outside_of_plaza(plaza, grid_layer)
