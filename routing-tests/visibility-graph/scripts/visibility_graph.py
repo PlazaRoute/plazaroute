@@ -13,8 +13,7 @@ def get_layer(layerName):
 
 
 def get_feature(featureId, layer):
-    expr = QgsExpression('"fid"=%d' % featureId)
-    features = layer.getFeatures(QgsFeatureRequest(expr))
+    features = layer.getFeatures(QgsFeatureRequest().setFilterFid(featureId))
     if not features:
         raise Exception("Failed to retrieve feature.")
     return next(features)  # should only return one feature
