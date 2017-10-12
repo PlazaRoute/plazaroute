@@ -45,8 +45,9 @@ def get_rotated_intersection_line(start, end, degree, center, base_area):
     else:
         return None
 
-def draw_grid(layer, plaza, boundingbox, degree, spacing):
+def draw_grid(layer, plaza, degree, spacing):
     plaza_geom = plaza.geometry()
+    boundingbox = calculate_boundingbox([plaza])
     center = boundingbox.center()
 
     (offset_horizontal, offset_vertical) = calculate_offsets(boundingbox)
@@ -62,9 +63,7 @@ def draw_grid(layer, plaza, boundingbox, degree, spacing):
     rows = int(ceil((ytop - ybottom) / spacing))
     columns = int(ceil((xright - xleft) / spacing))
 
-    feature_count = 0
     features = []
-
     for column in range(0, columns):
         for row in range(0, rows):
 
@@ -89,20 +88,20 @@ def draw_grid(layer, plaza, boundingbox, degree, spacing):
     layer.dataProvider().addFeatures(features)
     QgsMapLayerRegistry.instance().addMapLayer(layer)
 
-def nearest_neighbor(layer, entry_points):
+def connect_entry_points_with_spiderwebgraph(layer, entry_points):
     spindex = QgsSpatialIndex()
     for feature in layer.getFeatures():
         spindex.insertFeature(feature)
 
     line_features = []
     for entry_point in entry_points:
-        neighborid = spindex.nearestNeighbor(QgsPoint(entry_point),1)
+        neighborid = spindex.nearestNeighbor(QgsPoint(entry_point), 1)
 
-        neighbors = layer.getFeatures(QgsFeatureRequest().setFilterFid(neighborid))
+        neighbors = layer.getFeatures(QgsFeatureRequest().setFilterFid(neighborid[0]))
         neighbor = neighbors.next()
+        target = neighbor.geometry().asPolyline()[1]
 
         line = QgsFeature()
-        target = neighbor.geometry().asPolyline()[0]
         line.setGeometry(QgsGeometry.fromPolyline([entry_point, target]))
         line_features.append(line)
 
@@ -112,5 +111,4 @@ def nearest_neighbor(layer, entry_points):
 def draw_spiderweb_graph(layer, degree, spacing):
     for plaza in layer.getFeatures():
         grid_layer = create_line_memory_layer('spiderweb' + str(plaza.id()))
-        boundingbox = calculate_boundingbox([plaza])
-        draw_grid(grid_layer, plaza, boundingbox, degree, spacing)
+        draw_grid(grid_layer, plaza, degree, spacing)
