@@ -155,7 +155,12 @@ def get_entry_points(plaza, intersecting_features):
             else:
                 entry_points.append(intersection.asPoint())
         else:
-            for point in intersection.asPolyline():
+            intersection_points = None
+            if intersection.isMultipart():
+                intersection_points = [p for line in intersection.asMultiPolyline() for p in line]
+            else:
+                intersection_points = intersection.asPolyline()
+            for point in intersection_points:
                 if not plaza_geom.contains(point):
                     entry_points.append(point)
     return entry_points
