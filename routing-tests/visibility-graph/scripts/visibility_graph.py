@@ -23,9 +23,10 @@ def get_nodes(feature):
     geom = feature.geometry()
     if geom.type() == QGis.Polygon:
         if geom.isMultipart():
-            all_nodes = geom.asMultiPolygon()[0]
+            all_nodes = geom.asMultiPolygon()
             nodes = []
-            [nodes.extend(n) for n in all_nodes]
+            # unpack multipolygon
+            [nodes.extend(ring) for polygon in all_nodes for ring in polygon]
         else:
             nodes = geom.asPolygon()
     elif geom.type() == QGis.Point:
@@ -67,6 +68,32 @@ def get_plaza_inner_rings(plaza):
     return inner_rings
 
 
+def find_buildings_inside_plaza(plaza, building_layer):
+    """ finds all buildings on the plaza that have not beeen cut out"""
+    buildings = building_layer.getFeatures()
+    plaza_geom = plaza.geometry()
+    intersecting_buildings = []
+    for b in buildings:
+        if b.geometry().intersects(plaza_geom):
+            intersecting_buildings.append(b)
+    return intersecting_buildings
+
+
+def create_obstacle_geometry(plaza, intersecting_buildings):
+    """ create a geometry that contains every obstacle on the plaza """
+    geom = None
+    for building in intersecting_buildings:
+        b_geom = building.geometry()
+        i = b_geom.intersection(plaza.geometry())
+        if i.type() == QGis.Polygon:
+            polygon = i.asMultiPolygon()[0][0] if i.isMultipart() else i.asPolygon()[0]
+            if geom:  # create first geometry and add subsequent parts
+                geom.addPartGeometry(QgsGeometry.fromPolygon([polygon]))
+            else:
+                geom = QgsGeometry.fromPolygon([polygon])
+    return geom
+
+
 def get_plaza_outer_geometry(plaza):
     """ return the outermost ring geometry for the plaza """
     geom = plaza.geometry()
@@ -91,11 +118,12 @@ def get_features_inside_plaza(features, plaza):
     return found_features
 
 
-def create_visibility_graph(plaza, point_layer, memLayer):
+def create_visibility_graph(plaza, obstacle_geom, point_layer, memLayer):
     enclosed_features = get_features_inside_plaza(point_layer.getFeatures(), plaza)
     plaza_nodes = get_nodes(plaza)
+    obstacle_nodes = [p for polygon in obstacle_geom.asMultiPolyline() for p in polygon]
     enclosed_nodes = [get_nodes(p) for p in enclosed_features]
-    nodes = plaza_nodes + enclosed_nodes
+    nodes = plaza_nodes + enclosed_nodes + obstacle_nodes
 
     edges = calc_visiblity_graph_edges(memLayer, nodes)
     return nodes, edges
@@ -118,10 +146,11 @@ def draw_features(layer, features):
     QgsMapLayerRegistry.instance().addMapLayer(layer)
 
 
-def edge_is_inside_plaza(plaza, edge):
-    intersection = plaza.geometry().intersection(edge.geometry())
+def edge_is_inside_plaza(plaza, obstacle_geom, edge):
+    i_plaza = plaza.geometry().intersection(edge.geometry())
+    intersects_obstacle = obstacle_geom.intersects(edge.geometry())
     # if polyline is empty, the line isn't entirely inside the plaza
-    if intersection.asPolyline():
+    if i_plaza.asPolyline() and not intersects_obstacle:
         return True
     return False
 
