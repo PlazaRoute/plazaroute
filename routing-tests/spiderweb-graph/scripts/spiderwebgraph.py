@@ -72,18 +72,31 @@ def draw_grid(layer, plaza, degree, spacing):
             y1 = ybottom + (row * spacing)
             y2 = ybottom + ((row + 1) * spacing)
 
-            start = QgsPoint(x1, y1)
+            top_left = QgsPoint(x1, y1)
+            top_right = QgsPoint(x2, y1)
+            bottom_left = QgsPoint(x1, y2)
+            bottom_right = QgsPoint(x2, y2)
+
             # horizontal line
             if (column < columns):
-                line_feature = get_rotated_intersection_line(start, QgsPoint(x2, y1), degree, center, plaza_geom)
-                if line_feature:
-                    features.append(line_feature)
+                horizontal_line = get_rotated_intersection_line(top_left, top_right, degree, center, plaza_geom)
+                if horizontal_line:
+                    features.append(horizontal_line)
 
             # vertical line
             if (row < rows):
-                line_feature = get_rotated_intersection_line(start, QgsPoint(x1, y2), degree, center, plaza_geom)
-                if line_feature:
-                    features.append(line_feature)
+                vertical_line = get_rotated_intersection_line(top_left, bottom_left, degree, center, plaza_geom)
+                if vertical_line:
+                    features.append(vertical_line)
+
+            # diagonal line
+            if (row < rows and column < columns): # TODO correct constraint?
+                diagonal_line = get_rotated_intersection_line(top_left, bottom_right, degree, center, plaza_geom)
+                if diagonal_line:
+                    features.append(diagonal_line)
+                diagonal_line = get_rotated_intersection_line(bottom_left, top_right, degree, center, plaza_geom)
+                if diagonal_line:
+                    features.append(diagonal_line)
 
     layer.dataProvider().addFeatures(features)
     QgsMapLayerRegistry.instance().addMapLayer(layer)
