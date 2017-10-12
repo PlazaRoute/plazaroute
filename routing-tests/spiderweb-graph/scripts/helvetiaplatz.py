@@ -14,7 +14,7 @@ spiderweb_layer = get_layer('spiderweb1')
 
 connect_entry_points_with_spiderwebgraph(spiderweb_layer, entry_points)
 
-#remove_layer_if_it_exists('shortest_paths')
-#sp_layer = create_line_memory_layer('shortest_paths')
-#result_edges = calc_shortest_paths(entry_points, spiderweb_layer)
-#draw_edges(sp_layer, result_edges)
+remove_layer_if_it_exists('shortest_paths')
+sp_layer = create_line_memory_layer('shortest_paths')
+result_edges = calc_shortest_paths(entry_points, spiderweb_layer)
+draw_edges(sp_layer, result_edges)
