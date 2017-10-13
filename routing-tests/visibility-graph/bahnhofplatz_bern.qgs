@@ -3,33 +3,27 @@
   <title></title>
   <autotransaction active="0"/>
   <evaluateDefaultValues active="0"/>
-  <layer-tree-group expanded="1" checked="Qt::PartiallyChecked" name="">
+  <layer-tree-group expanded="1" checked="Qt::Checked" name="">
     <customproperties/>
-    <layer-tree-layer expanded="1" providerKey="memory" checked="Qt::Checked" id="shortest_paths20171012172621119" source="linestring?crs=epsg:4326&amp;field=MYNUM:integer&amp;field=MYTXT:string" name="shortest_paths">
+    <layer-tree-layer expanded="1" providerKey="memory" checked="Qt::Checked" id="shortest_paths20171013161942497" source="linestring?crs=epsg:4326&amp;field=MYNUM:integer&amp;field=MYTXT:string" name="shortest_paths">
       <customproperties/>
     </layer-tree-layer>
-    <layer-tree-layer expanded="1" providerKey="memory" checked="Qt::Checked" id="entry_points20171012172621110" source="point?crs=epsg:4326&amp;field=MYNUM:integer&amp;field=MYTXT:string" name="entry_points">
+    <layer-tree-layer expanded="1" providerKey="memory" checked="Qt::Checked" id="bahnhofplatz_bern_graph20171013161941640" source="linestring?crs=epsg:4326&amp;field=MYNUM:integer&amp;field=MYTXT:string" name="bahnhofplatz_bern_graph">
       <customproperties/>
     </layer-tree-layer>
-    <layer-tree-layer expanded="1" providerKey="memory" checked="Qt::Unchecked" id="entry_lines20171012172621065" source="linestring?crs=epsg:4326&amp;field=MYNUM:integer&amp;field=MYTXT:string" name="entry_lines">
+    <layer-tree-layer expanded="1" providerKey="memory" checked="Qt::Checked" id="entry_points20171013161941426" source="point?crs=epsg:4326&amp;field=MYNUM:integer&amp;field=MYTXT:string" name="entry_points">
       <customproperties/>
     </layer-tree-layer>
-    <layer-tree-layer expanded="1" providerKey="memory" checked="Qt::Unchecked" id="bahnhofplatz_bern_graph20171012172619189" source="linestring?crs=epsg:4326&amp;field=MYNUM:integer&amp;field=MYTXT:string" name="bahnhofplatz_bern_graph">
+    <layer-tree-layer expanded="1" providerKey="ogr" checked="Qt::Checked" id="bahnhofplatz_bern_points20171013160130676" source="/home/robin/Documents/PlazaRoute/routing-tests/visibility-graph/data/bahnhofplatz_bern/bahnhofplatz_bern.gpkg" name="bahnhofplatz_bern points">
       <customproperties/>
     </layer-tree-layer>
-    <layer-tree-layer expanded="1" providerKey="memory" checked="Qt::Unchecked" id="test20171012171755341" source="multipolygon?crs=epsg:4326&amp;field=MYNUM:integer&amp;field=MYTXT:string" name="test">
+    <layer-tree-layer expanded="1" providerKey="ogr" checked="Qt::Checked" id="bahnhofplatz_bern_lines20171013160130667" source="/home/robin/Documents/PlazaRoute/routing-tests/visibility-graph/data/bahnhofplatz_bern/bahnhofplatz_bern.gpkg|layerid=3" name="bahnhofplatz_bern lines">
       <customproperties/>
     </layer-tree-layer>
-    <layer-tree-layer expanded="1" providerKey="ogr" checked="Qt::Checked" id="bahnhofplatz_bern_points20171012091558182" source="/home/robin/Documents/PlazaRoute/routing-tests/visibility-graph/data/bahnhofplatz_bern/bahnhofplatz_bern.gpkg" name="bahnhofplatz_bern points">
+    <layer-tree-layer expanded="1" providerKey="ogr" checked="Qt::Checked" id="bahnhofplatz_bern_buildings20171013160130660" source="/home/robin/Documents/PlazaRoute/routing-tests/visibility-graph/data/bahnhofplatz_bern/bahnhofplatz_bern.gpkg|layerid=2" name="bahnhofplatz_bern buildings">
       <customproperties/>
     </layer-tree-layer>
-    <layer-tree-layer expanded="1" providerKey="ogr" checked="Qt::Unchecked" id="bahnhofplatz_bern_buildings20171012091558161" source="/home/robin/Documents/PlazaRoute/routing-tests/visibility-graph/data/bahnhofplatz_bern/bahnhofplatz_bern.gpkg|layerid=2" name="bahnhofplatz_bern buildings">
-      <customproperties/>
-    </layer-tree-layer>
-    <layer-tree-layer expanded="1" providerKey="ogr" checked="Qt::Unchecked" id="bahnhofplatz_bern_lines20171012091558169" source="/home/robin/Documents/PlazaRoute/routing-tests/visibility-graph/data/bahnhofplatz_bern/bahnhofplatz_bern.gpkg|layerid=3" name="bahnhofplatz_bern lines">
-      <customproperties/>
-    </layer-tree-layer>
-    <layer-tree-layer expanded="1" providerKey="ogr" checked="Qt::Checked" id="bahnhofplatz_bern_plazas20171012091558176" source="/home/robin/Documents/PlazaRoute/routing-tests/visibility-graph/data/bahnhofplatz_bern/bahnhofplatz_bern.gpkg|layerid=1" name="bahnhofplatz_bern plazas">
+    <layer-tree-layer expanded="1" providerKey="ogr" checked="Qt::Checked" id="bahnhofplatz_bern_plazas20171013160130671" source="/home/robin/Documents/PlazaRoute/routing-tests/visibility-graph/data/bahnhofplatz_bern/bahnhofplatz_bern.gpkg|layerid=1" name="bahnhofplatz_bern plazas">
       <customproperties/>
     </layer-tree-layer>
   </layer-tree-group>
@@ -37,10 +31,10 @@
   <mapcanvas>
     <units>degrees</units>
     <extent>
-      <xmin>7.43996310554298024</xmin>
-      <ymin>46.94787938715440134</ymin>
-      <xmax>7.4425539805387837</xmax>
-      <ymax>46.94945438715645025</ymax>
+      <xmin>7.43883524859551404</xmin>
+      <ymin>46.94657991573028255</ymin>
+      <xmax>7.44401699859550536</xmax>
+      <ymax>46.94972991573028764</ymax>
     </extent>
     <rotation>0</rotation>
     <projections>0</projections>
@@ -61,61 +55,49 @@
   </mapcanvas>
   <layer-tree-canvas>
     <custom-order enabled="0">
-      <item>bahnhofplatz_bern_buildings20171012091558161</item>
-      <item>bahnhofplatz_bern_lines20171012091558169</item>
-      <item>bahnhofplatz_bern_plazas20171012091558176</item>
-      <item>bahnhofplatz_bern_points20171012091558182</item>
-      <item>test20171012171755341</item>
-      <item>bahnhofplatz_bern_graph20171012172619189</item>
-      <item>entry_lines20171012172621065</item>
-      <item>entry_points20171012172621110</item>
-      <item>shortest_paths20171012172621119</item>
+      <item>bahnhofplatz_bern_buildings20171013160130660</item>
+      <item>bahnhofplatz_bern_lines20171013160130667</item>
+      <item>bahnhofplatz_bern_plazas20171013160130671</item>
+      <item>bahnhofplatz_bern_points20171013160130676</item>
+      <item>entry_points20171013161941426</item>
+      <item>bahnhofplatz_bern_graph20171013161941640</item>
+      <item>shortest_paths20171013161942497</item>
     </custom-order>
   </layer-tree-canvas>
   <legend updateDrawingOrder="true">
     <legendlayer drawingOrder="-1" open="true" checked="Qt::Checked" name="shortest_paths" showFeatureCount="0">
       <filegroup open="true" hidden="false">
-        <legendlayerfile isInOverview="0" layerid="shortest_paths20171012172621119" visible="1"/>
+        <legendlayerfile isInOverview="0" layerid="shortest_paths20171013161942497" visible="1"/>
+      </filegroup>
+    </legendlayer>
+    <legendlayer drawingOrder="-1" open="true" checked="Qt::Checked" name="bahnhofplatz_bern_graph" showFeatureCount="0">
+      <filegroup open="true" hidden="false">
+        <legendlayerfile isInOverview="0" layerid="bahnhofplatz_bern_graph20171013161941640" visible="1"/>
       </filegroup>
     </legendlayer>
     <legendlayer drawingOrder="-1" open="true" checked="Qt::Checked" name="entry_points" showFeatureCount="0">
       <filegroup open="true" hidden="false">
-        <legendlayerfile isInOverview="0" layerid="entry_points20171012172621110" visible="1"/>
-      </filegroup>
-    </legendlayer>
-    <legendlayer drawingOrder="-1" open="true" checked="Qt::Unchecked" name="entry_lines" showFeatureCount="0">
-      <filegroup open="true" hidden="false">
-        <legendlayerfile isInOverview="0" layerid="entry_lines20171012172621065" visible="0"/>
-      </filegroup>
-    </legendlayer>
-    <legendlayer drawingOrder="-1" open="true" checked="Qt::Unchecked" name="bahnhofplatz_bern_graph" showFeatureCount="0">
-      <filegroup open="true" hidden="false">
-        <legendlayerfile isInOverview="0" layerid="bahnhofplatz_bern_graph20171012172619189" visible="0"/>
-      </filegroup>
-    </legendlayer>
-    <legendlayer drawingOrder="-1" open="true" checked="Qt::Unchecked" name="test" showFeatureCount="0">
-      <filegroup open="true" hidden="false">
-        <legendlayerfile isInOverview="0" layerid="test20171012171755341" visible="0"/>
+        <legendlayerfile isInOverview="0" layerid="entry_points20171013161941426" visible="1"/>
       </filegroup>
     </legendlayer>
     <legendlayer drawingOrder="-1" open="true" checked="Qt::Checked" name="bahnhofplatz_bern points" showFeatureCount="0">
       <filegroup open="true" hidden="false">
-        <legendlayerfile isInOverview="0" layerid="bahnhofplatz_bern_points20171012091558182" visible="1"/>
+        <legendlayerfile isInOverview="0" layerid="bahnhofplatz_bern_points20171013160130676" visible="1"/>
       </filegroup>
     </legendlayer>
-    <legendlayer drawingOrder="-1" open="true" checked="Qt::Unchecked" name="bahnhofplatz_bern buildings" showFeatureCount="0">
+    <legendlayer drawingOrder="-1" open="true" checked="Qt::Checked" name="bahnhofplatz_bern lines" showFeatureCount="0">
       <filegroup open="true" hidden="false">
-        <legendlayerfile isInOverview="0" layerid="bahnhofplatz_bern_buildings20171012091558161" visible="0"/>
+        <legendlayerfile isInOverview="0" layerid="bahnhofplatz_bern_lines20171013160130667" visible="1"/>
       </filegroup>
     </legendlayer>
-    <legendlayer drawingOrder="-1" open="true" checked="Qt::Unchecked" name="bahnhofplatz_bern lines" showFeatureCount="0">
+    <legendlayer drawingOrder="-1" open="true" checked="Qt::Checked" name="bahnhofplatz_bern buildings" showFeatureCount="0">
       <filegroup open="true" hidden="false">
-        <legendlayerfile isInOverview="0" layerid="bahnhofplatz_bern_lines20171012091558169" visible="0"/>
+        <legendlayerfile isInOverview="0" layerid="bahnhofplatz_bern_buildings20171013160130660" visible="1"/>
       </filegroup>
     </legendlayer>
     <legendlayer drawingOrder="-1" open="true" checked="Qt::Checked" name="bahnhofplatz_bern plazas" showFeatureCount="0">
       <filegroup open="true" hidden="false">
-        <legendlayerfile isInOverview="0" layerid="bahnhofplatz_bern_plazas20171012091558176" visible="1"/>
+        <legendlayerfile isInOverview="0" layerid="bahnhofplatz_bern_plazas20171013160130671" visible="1"/>
       </filegroup>
     </legendlayer>
   </legend>
@@ -127,7 +109,7 @@
         <xmax>7.44275999999999982</xmax>
         <ymax>46.95049999999999812</ymax>
       </extent>
-      <id>bahnhofplatz_bern_buildings20171012091558161</id>
+      <id>bahnhofplatz_bern_buildings20171013160130660</id>
       <datasource>./data/bahnhofplatz_bern/bahnhofplatz_bern.gpkg|layerid=2</datasource>
       <keywordList>
         <value></value>
@@ -243,7 +225,7 @@
           <symbol alpha="1" clip_to_extent="1" type="fill" name="0">
             <layer pass="0" class="SimpleFill" locked="0">
               <prop k="border_width_map_unit_scale" v="0,0,0,0,0,0"/>
-              <prop k="color" v="53,103,172,255"/>
+              <prop k="color" v="53,144,158,255"/>
               <prop k="joinstyle" v="bevel"/>
               <prop k="offset" v="0,0"/>
               <prop k="offset_map_unit_scale" v="0,0,0,0,0,0"/>
@@ -286,7 +268,7 @@
         <multilineenabled fieldname="" on=""/>
         <selectedonly on=""/>
       </labelattributes>
-      <annotationform>.</annotationform>
+      <annotationform></annotationform>
       <aliases>
         <alias field="fid" index="0" name=""/>
         <alias field="osm_id" index="1" name=""/>
@@ -320,13 +302,13 @@
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions default="-1"/>
-      <attributetableconfig actionWidgetStyle="dropDown" sortExpression="" sortOrder="0">
+      <attributetableconfig actionWidgetStyle="dropDown" sortExpression="" sortOrder="-12548906">
         <columns/>
       </attributetableconfig>
-      <editform>.</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>.</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -368,7 +350,7 @@
       <previewExpression></previewExpression>
     </maplayer>
     <maplayer simplifyAlgorithm="0" minimumScale="0" maximumScale="1e+08" simplifyDrawingHints="1" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" readOnly="0" geometry="Line" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
-      <id>bahnhofplatz_bern_graph20171012172619189</id>
+      <id>bahnhofplatz_bern_graph20171013161941640</id>
       <datasource>memory?geometry=LineString&amp;crs=EPSG:4326&amp;field=MYNUM:integer(-1,0)&amp;field=MYTXT:string(255,0)</datasource>
       <keywordList>
         <value></value>
@@ -411,7 +393,7 @@
               <prop k="customdash_unit" v="MM"/>
               <prop k="draw_inside_polygon" v="0"/>
               <prop k="joinstyle" v="bevel"/>
-              <prop k="line_color" v="206,159,216,255"/>
+              <prop k="line_color" v="83,114,140,255"/>
               <prop k="line_style" v="solid"/>
               <prop k="line_width" v="0.26"/>
               <prop k="line_width_unit" v="MM"/>
@@ -461,7 +443,7 @@
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions default="-1"/>
-      <attributetableconfig actionWidgetStyle="dropDown" sortExpression="" sortOrder="-1853056">
+      <attributetableconfig actionWidgetStyle="dropDown" sortExpression="" sortOrder="1811967744">
         <columns/>
       </attributetableconfig>
       <editform></editform>
@@ -489,7 +471,7 @@
         <xmax>7.44364999999999988</xmax>
         <ymax>46.9515000000000029</ymax>
       </extent>
-      <id>bahnhofplatz_bern_lines20171012091558169</id>
+      <id>bahnhofplatz_bern_lines20171013160130667</id>
       <datasource>./data/bahnhofplatz_bern/bahnhofplatz_bern.gpkg|layerid=3</datasource>
       <keywordList>
         <value></value>
@@ -565,7 +547,7 @@
               <prop k="customdash_unit" v="MM"/>
               <prop k="draw_inside_polygon" v="0"/>
               <prop k="joinstyle" v="bevel"/>
-              <prop k="line_color" v="114,178,163,255"/>
+              <prop k="line_color" v="145,238,119,255"/>
               <prop k="line_style" v="solid"/>
               <prop k="line_width" v="0.26"/>
               <prop k="line_width_unit" v="MM"/>
@@ -607,7 +589,7 @@
         <multilineenabled fieldname="" on=""/>
         <selectedonly on=""/>
       </labelattributes>
-      <annotationform>.</annotationform>
+      <annotationform></annotationform>
       <aliases>
         <alias field="fid" index="0" name=""/>
         <alias field="osm_id" index="1" name=""/>
@@ -626,13 +608,13 @@
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions default="-1"/>
-      <attributetableconfig actionWidgetStyle="dropDown" sortExpression="" sortOrder="0">
+      <attributetableconfig actionWidgetStyle="dropDown" sortExpression="" sortOrder="-12548906">
         <columns/>
       </attributetableconfig>
-      <editform>.</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>.</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -665,7 +647,7 @@
         <xmax>7.4415899999999997</xmax>
         <ymax>46.95020000000000238</ymax>
       </extent>
-      <id>bahnhofplatz_bern_plazas20171012091558176</id>
+      <id>bahnhofplatz_bern_plazas20171013160130671</id>
       <datasource>./data/bahnhofplatz_bern/bahnhofplatz_bern.gpkg|layerid=1</datasource>
       <keywordList>
         <value></value>
@@ -781,7 +763,7 @@
           <symbol alpha="1" clip_to_extent="1" type="fill" name="0">
             <layer pass="0" class="SimpleFill" locked="0">
               <prop k="border_width_map_unit_scale" v="0,0,0,0,0,0"/>
-              <prop k="color" v="165,99,219,255"/>
+              <prop k="color" v="110,216,17,255"/>
               <prop k="joinstyle" v="bevel"/>
               <prop k="offset" v="0,0"/>
               <prop k="offset_map_unit_scale" v="0,0,0,0,0,0"/>
@@ -824,7 +806,7 @@
         <multilineenabled fieldname="" on=""/>
         <selectedonly on=""/>
       </labelattributes>
-      <annotationform>.</annotationform>
+      <annotationform></annotationform>
       <aliases>
         <alias field="fid" index="0" name=""/>
         <alias field="osm_id" index="1" name=""/>
@@ -858,13 +840,13 @@
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions default="-1"/>
-      <attributetableconfig actionWidgetStyle="dropDown" sortExpression="" sortOrder="0">
+      <attributetableconfig actionWidgetStyle="dropDown" sortExpression="" sortOrder="49">
         <columns/>
       </attributetableconfig>
-      <editform>.</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>.</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -912,7 +894,7 @@
         <xmax>7.44235000000000024</xmax>
         <ymax>46.94959999999999667</ymax>
       </extent>
-      <id>bahnhofplatz_bern_points20171012091558182</id>
+      <id>bahnhofplatz_bern_points20171013160130676</id>
       <datasource>./data/bahnhofplatz_bern/bahnhofplatz_bern.gpkg</datasource>
       <keywordList>
         <value></value>
@@ -989,19 +971,19 @@
         <edittype widgetv2type="TextEdit" name="ford">
           <widgetv2config IsMultiline="0" fieldEditable="1" constraint="" UseHtml="0" labelOnTop="0" constraintDescription="" notNull="0"/>
         </edittype>
-        <edittype widgetv2type="TextEdit" name="shop">
-          <widgetv2config IsMultiline="0" fieldEditable="1" constraint="" UseHtml="0" labelOnTop="0" constraintDescription="" notNull="0"/>
-        </edittype>
-        <edittype widgetv2type="TextEdit" name="power">
-          <widgetv2config IsMultiline="0" fieldEditable="1" constraint="" UseHtml="0" labelOnTop="0" constraintDescription="" notNull="0"/>
-        </edittype>
         <edittype widgetv2type="TextEdit" name="building">
           <widgetv2config IsMultiline="0" fieldEditable="1" constraint="" UseHtml="0" labelOnTop="0" constraintDescription="" notNull="0"/>
         </edittype>
-        <edittype widgetv2type="TextEdit" name="harbour">
+        <edittype widgetv2type="TextEdit" name="fixme">
           <widgetv2config IsMultiline="0" fieldEditable="1" constraint="" UseHtml="0" labelOnTop="0" constraintDescription="" notNull="0"/>
         </edittype>
-        <edittype widgetv2type="TextEdit" name="fixme">
+        <edittype widgetv2type="TextEdit" name="indoor">
+          <widgetv2config IsMultiline="0" fieldEditable="1" constraint="" UseHtml="0" labelOnTop="0" constraintDescription="" notNull="0"/>
+        </edittype>
+        <edittype widgetv2type="TextEdit" name="level">
+          <widgetv2config IsMultiline="0" fieldEditable="1" constraint="" UseHtml="0" labelOnTop="0" constraintDescription="" notNull="0"/>
+        </edittype>
+        <edittype widgetv2type="TextEdit" name="layer">
           <widgetv2config IsMultiline="0" fieldEditable="1" constraint="" UseHtml="0" labelOnTop="0" constraintDescription="" notNull="0"/>
         </edittype>
         <edittype widgetv2type="TextEdit" name="other_tags">
@@ -1013,7 +995,7 @@
           <symbol alpha="1" clip_to_extent="1" type="marker" name="0">
             <layer pass="0" class="SimpleMarker" locked="0">
               <prop k="angle" v="0"/>
-              <prop k="color" v="95,78,244,255"/>
+              <prop k="color" v="20,230,237,255"/>
               <prop k="horizontal_anchor_point" v="1"/>
               <prop k="joinstyle" v="bevel"/>
               <prop k="name" v="circle"/>
@@ -1063,7 +1045,7 @@
         <multilineenabled fieldname="" on=""/>
         <selectedonly on=""/>
       </labelattributes>
-      <annotationform>.</annotationform>
+      <annotationform></annotationform>
       <aliases>
         <alias field="fid" index="0" name=""/>
         <alias field="osm_id" index="1" name=""/>
@@ -1082,17 +1064,17 @@
         <alias field="natural" index="14" name=""/>
         <alias field="bridge" index="15" name=""/>
         <alias field="ford" index="16" name=""/>
-        <alias field="shop" index="17" name=""/>
-        <alias field="power" index="18" name=""/>
-        <alias field="building" index="19" name=""/>
-        <alias field="harbour" index="20" name=""/>
-        <alias field="fixme" index="21" name=""/>
+        <alias field="building" index="17" name=""/>
+        <alias field="fixme" index="18" name=""/>
+        <alias field="indoor" index="19" name=""/>
+        <alias field="level" index="20" name=""/>
+        <alias field="layer" index="21" name=""/>
         <alias field="other_tags" index="22" name=""/>
       </aliases>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <attributeactions default="-1"/>
-      <attributetableconfig actionWidgetStyle="dropDown" sortExpression="" sortOrder="0">
+      <attributetableconfig actionWidgetStyle="dropDown" sortExpression="&quot;level&quot;" sortOrder="0">
         <columns>
           <column width="-1" hidden="0" type="field" name="fid"/>
           <column width="-1" hidden="0" type="field" name="osm_id"/>
@@ -1111,19 +1093,19 @@
           <column width="-1" hidden="0" type="field" name="natural"/>
           <column width="-1" hidden="0" type="field" name="bridge"/>
           <column width="-1" hidden="0" type="field" name="ford"/>
-          <column width="-1" hidden="0" type="field" name="shop"/>
-          <column width="-1" hidden="0" type="field" name="power"/>
           <column width="-1" hidden="0" type="field" name="building"/>
-          <column width="-1" hidden="0" type="field" name="harbour"/>
           <column width="-1" hidden="0" type="field" name="fixme"/>
-          <column width="3414" hidden="0" type="field" name="other_tags"/>
+          <column width="-1" hidden="0" type="field" name="indoor"/>
+          <column width="-1" hidden="0" type="field" name="level"/>
+          <column width="-1" hidden="0" type="field" name="layer"/>
+          <column width="3599" hidden="0" type="field" name="other_tags"/>
           <column width="-1" hidden="1" type="actions"/>
         </columns>
       </attributetableconfig>
-      <editform>.</editform>
+      <editform></editform>
       <editforminit/>
       <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath>.</editforminitfilepath>
+      <editforminitfilepath></editforminitfilepath>
       <editforminitcode><![CDATA[]]></editforminitcode>
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
@@ -1150,132 +1132,17 @@
         <default field="natural" expression=""/>
         <default field="bridge" expression=""/>
         <default field="ford" expression=""/>
-        <default field="shop" expression=""/>
-        <default field="power" expression=""/>
         <default field="building" expression=""/>
-        <default field="harbour" expression=""/>
         <default field="fixme" expression=""/>
+        <default field="indoor" expression=""/>
+        <default field="level" expression=""/>
+        <default field="layer" expression=""/>
         <default field="other_tags" expression=""/>
       </defaults>
       <previewExpression>COALESCE( "name", '&lt;NULL>' )</previewExpression>
     </maplayer>
-    <maplayer simplifyAlgorithm="0" minimumScale="0" maximumScale="1e+08" simplifyDrawingHints="1" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" readOnly="0" geometry="Line" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
-      <id>entry_lines20171012172621065</id>
-      <datasource>memory?geometry=LineString&amp;crs=EPSG:4326&amp;field=MYNUM:integer(-1,0)&amp;field=MYTXT:string(255,0)</datasource>
-      <keywordList>
-        <value></value>
-      </keywordList>
-      <layername>entry_lines</layername>
-      <srs>
-        <spatialrefsys>
-          <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-          <srsid>3452</srsid>
-          <srid>4326</srid>
-          <authid>EPSG:4326</authid>
-          <description>WGS 84</description>
-          <projectionacronym>longlat</projectionacronym>
-          <ellipsoidacronym>WGS84</ellipsoidacronym>
-          <geographicflag>true</geographicflag>
-        </spatialrefsys>
-      </srs>
-      <provider encoding="System">memory</provider>
-      <vectorjoins/>
-      <layerDependencies/>
-      <expressionfields/>
-      <map-layer-style-manager current="">
-        <map-layer-style name=""/>
-      </map-layer-style-manager>
-      <edittypes>
-        <edittype widgetv2type="TextEdit" name="MYNUM">
-          <widgetv2config IsMultiline="0" fieldEditable="1" constraint="" UseHtml="0" labelOnTop="0" constraintDescription="" notNull="0"/>
-        </edittype>
-        <edittype widgetv2type="TextEdit" name="MYTXT">
-          <widgetv2config IsMultiline="0" fieldEditable="1" constraint="" UseHtml="0" labelOnTop="0" constraintDescription="" notNull="0"/>
-        </edittype>
-      </edittypes>
-      <renderer-v2 forceraster="0" symbollevels="0" type="singleSymbol" enableorderby="0">
-        <symbols>
-          <symbol alpha="1" clip_to_extent="1" type="line" name="0">
-            <layer pass="0" class="SimpleLine" locked="0">
-              <prop k="capstyle" v="square"/>
-              <prop k="customdash" v="5;2"/>
-              <prop k="customdash_map_unit_scale" v="0,0,0,0,0,0"/>
-              <prop k="customdash_unit" v="MM"/>
-              <prop k="draw_inside_polygon" v="0"/>
-              <prop k="joinstyle" v="bevel"/>
-              <prop k="line_color" v="111,201,245,255"/>
-              <prop k="line_style" v="solid"/>
-              <prop k="line_width" v="0.26"/>
-              <prop k="line_width_unit" v="MM"/>
-              <prop k="offset" v="0"/>
-              <prop k="offset_map_unit_scale" v="0,0,0,0,0,0"/>
-              <prop k="offset_unit" v="MM"/>
-              <prop k="use_custom_dash" v="0"/>
-              <prop k="width_map_unit_scale" v="0,0,0,0,0,0"/>
-            </layer>
-          </symbol>
-        </symbols>
-        <rotation/>
-        <sizescale scalemethod="diameter"/>
-      </renderer-v2>
-      <labeling type="simple"/>
-      <customproperties/>
-      <blendMode>0</blendMode>
-      <featureBlendMode>0</featureBlendMode>
-      <layerTransparency>0</layerTransparency>
-      <displayfield>MYNUM</displayfield>
-      <label>0</label>
-      <labelattributes>
-        <label fieldname="" text="Label"/>
-        <family fieldname="" name="Sans"/>
-        <size fieldname="" units="pt" value="12"/>
-        <bold fieldname="" on="0"/>
-        <italic fieldname="" on="0"/>
-        <underline fieldname="" on="0"/>
-        <strikeout fieldname="" on="0"/>
-        <color fieldname="" red="0" blue="0" green="0"/>
-        <x fieldname=""/>
-        <y fieldname=""/>
-        <offset x="0" y="0" units="pt" yfieldname="" xfieldname=""/>
-        <angle fieldname="" value="0" auto="0"/>
-        <alignment fieldname="" value="center"/>
-        <buffercolor fieldname="" red="255" blue="255" green="255"/>
-        <buffersize fieldname="" units="pt" value="1"/>
-        <bufferenabled fieldname="" on=""/>
-        <multilineenabled fieldname="" on=""/>
-        <selectedonly on=""/>
-      </labelattributes>
-      <annotationform></annotationform>
-      <aliases>
-        <alias field="MYNUM" index="0" name=""/>
-        <alias field="MYTXT" index="1" name=""/>
-      </aliases>
-      <excludeAttributesWMS/>
-      <excludeAttributesWFS/>
-      <attributeactions default="-1"/>
-      <attributetableconfig actionWidgetStyle="dropDown" sortExpression="" sortOrder="0">
-        <columns/>
-      </attributetableconfig>
-      <editform></editform>
-      <editforminit/>
-      <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath></editforminitfilepath>
-      <editforminitcode><![CDATA[]]></editforminitcode>
-      <featformsuppress>0</featformsuppress>
-      <editorlayout>generatedlayout</editorlayout>
-      <widgets/>
-      <conditionalstyles>
-        <rowstyles/>
-        <fieldstyles/>
-      </conditionalstyles>
-      <defaults>
-        <default field="MYNUM" expression=""/>
-        <default field="MYTXT" expression=""/>
-      </defaults>
-      <previewExpression></previewExpression>
-    </maplayer>
     <maplayer simplifyAlgorithm="0" minimumScale="0" maximumScale="1e+08" simplifyDrawingHints="1" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" readOnly="0" geometry="Point" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
-      <id>entry_points20171012172621110</id>
+      <id>entry_points20171013161941426</id>
       <datasource>memory?geometry=Point&amp;crs=EPSG:4326&amp;field=MYNUM:integer(-1,0)&amp;field=MYTXT:string(255,0)</datasource>
       <keywordList>
         <value></value>
@@ -1313,7 +1180,7 @@
           <symbol alpha="1" clip_to_extent="1" type="marker" name="0">
             <layer pass="0" class="SimpleMarker" locked="0">
               <prop k="angle" v="0"/>
-              <prop k="color" v="21,225,161,255"/>
+              <prop k="color" v="182,122,188,255"/>
               <prop k="horizontal_anchor_point" v="1"/>
               <prop k="joinstyle" v="bevel"/>
               <prop k="name" v="circle"/>
@@ -1330,236 +1197,6 @@
               <prop k="size_map_unit_scale" v="0,0,0,0,0,0"/>
               <prop k="size_unit" v="MM"/>
               <prop k="vertical_anchor_point" v="1"/>
-            </layer>
-          </symbol>
-        </symbols>
-        <rotation/>
-        <sizescale scalemethod="diameter"/>
-      </renderer-v2>
-      <labeling type="simple"/>
-      <customproperties/>
-      <blendMode>0</blendMode>
-      <featureBlendMode>0</featureBlendMode>
-      <layerTransparency>0</layerTransparency>
-      <displayfield>MYNUM</displayfield>
-      <label>0</label>
-      <labelattributes>
-        <label fieldname="" text="Label"/>
-        <family fieldname="" name="Sans"/>
-        <size fieldname="" units="pt" value="12"/>
-        <bold fieldname="" on="0"/>
-        <italic fieldname="" on="0"/>
-        <underline fieldname="" on="0"/>
-        <strikeout fieldname="" on="0"/>
-        <color fieldname="" red="0" blue="0" green="0"/>
-        <x fieldname=""/>
-        <y fieldname=""/>
-        <offset x="0" y="0" units="pt" yfieldname="" xfieldname=""/>
-        <angle fieldname="" value="0" auto="0"/>
-        <alignment fieldname="" value="center"/>
-        <buffercolor fieldname="" red="255" blue="255" green="255"/>
-        <buffersize fieldname="" units="pt" value="1"/>
-        <bufferenabled fieldname="" on=""/>
-        <multilineenabled fieldname="" on=""/>
-        <selectedonly on=""/>
-      </labelattributes>
-      <annotationform></annotationform>
-      <aliases>
-        <alias field="MYNUM" index="0" name=""/>
-        <alias field="MYTXT" index="1" name=""/>
-      </aliases>
-      <excludeAttributesWMS/>
-      <excludeAttributesWFS/>
-      <attributeactions default="-1"/>
-      <attributetableconfig actionWidgetStyle="dropDown" sortExpression="" sortOrder="0">
-        <columns/>
-      </attributetableconfig>
-      <editform></editform>
-      <editforminit/>
-      <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath></editforminitfilepath>
-      <editforminitcode><![CDATA[]]></editforminitcode>
-      <featformsuppress>0</featformsuppress>
-      <editorlayout>generatedlayout</editorlayout>
-      <widgets/>
-      <conditionalstyles>
-        <rowstyles/>
-        <fieldstyles/>
-      </conditionalstyles>
-      <defaults>
-        <default field="MYNUM" expression=""/>
-        <default field="MYTXT" expression=""/>
-      </defaults>
-      <previewExpression></previewExpression>
-    </maplayer>
-    <maplayer simplifyAlgorithm="0" minimumScale="0" maximumScale="1e+08" simplifyDrawingHints="1" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" readOnly="0" geometry="Line" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
-      <id>shortest_paths20171012172621119</id>
-      <datasource>memory?geometry=LineString&amp;crs=EPSG:4326&amp;field=MYNUM:integer(-1,0)&amp;field=MYTXT:string(255,0)</datasource>
-      <keywordList>
-        <value></value>
-      </keywordList>
-      <layername>shortest_paths</layername>
-      <srs>
-        <spatialrefsys>
-          <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-          <srsid>3452</srsid>
-          <srid>4326</srid>
-          <authid>EPSG:4326</authid>
-          <description>WGS 84</description>
-          <projectionacronym>longlat</projectionacronym>
-          <ellipsoidacronym>WGS84</ellipsoidacronym>
-          <geographicflag>true</geographicflag>
-        </spatialrefsys>
-      </srs>
-      <provider encoding="System">memory</provider>
-      <vectorjoins/>
-      <layerDependencies/>
-      <expressionfields/>
-      <map-layer-style-manager current="">
-        <map-layer-style name=""/>
-      </map-layer-style-manager>
-      <edittypes>
-        <edittype widgetv2type="TextEdit" name="MYNUM">
-          <widgetv2config IsMultiline="0" fieldEditable="1" constraint="" UseHtml="0" labelOnTop="0" constraintDescription="" notNull="0"/>
-        </edittype>
-        <edittype widgetv2type="TextEdit" name="MYTXT">
-          <widgetv2config IsMultiline="0" fieldEditable="1" constraint="" UseHtml="0" labelOnTop="0" constraintDescription="" notNull="0"/>
-        </edittype>
-      </edittypes>
-      <renderer-v2 forceraster="0" symbollevels="0" type="singleSymbol" enableorderby="0">
-        <symbols>
-          <symbol alpha="1" clip_to_extent="1" type="line" name="0">
-            <layer pass="0" class="SimpleLine" locked="0">
-              <prop k="capstyle" v="square"/>
-              <prop k="customdash" v="5;2"/>
-              <prop k="customdash_map_unit_scale" v="0,0,0,0,0,0"/>
-              <prop k="customdash_unit" v="MM"/>
-              <prop k="draw_inside_polygon" v="0"/>
-              <prop k="joinstyle" v="bevel"/>
-              <prop k="line_color" v="57,161,81,255"/>
-              <prop k="line_style" v="solid"/>
-              <prop k="line_width" v="0.26"/>
-              <prop k="line_width_unit" v="MM"/>
-              <prop k="offset" v="0"/>
-              <prop k="offset_map_unit_scale" v="0,0,0,0,0,0"/>
-              <prop k="offset_unit" v="MM"/>
-              <prop k="use_custom_dash" v="0"/>
-              <prop k="width_map_unit_scale" v="0,0,0,0,0,0"/>
-            </layer>
-          </symbol>
-        </symbols>
-        <rotation/>
-        <sizescale scalemethod="diameter"/>
-      </renderer-v2>
-      <labeling type="simple"/>
-      <customproperties/>
-      <blendMode>0</blendMode>
-      <featureBlendMode>0</featureBlendMode>
-      <layerTransparency>0</layerTransparency>
-      <displayfield>MYNUM</displayfield>
-      <label>0</label>
-      <labelattributes>
-        <label fieldname="" text="Label"/>
-        <family fieldname="" name="Sans"/>
-        <size fieldname="" units="pt" value="12"/>
-        <bold fieldname="" on="0"/>
-        <italic fieldname="" on="0"/>
-        <underline fieldname="" on="0"/>
-        <strikeout fieldname="" on="0"/>
-        <color fieldname="" red="0" blue="0" green="0"/>
-        <x fieldname=""/>
-        <y fieldname=""/>
-        <offset x="0" y="0" units="pt" yfieldname="" xfieldname=""/>
-        <angle fieldname="" value="0" auto="0"/>
-        <alignment fieldname="" value="center"/>
-        <buffercolor fieldname="" red="255" blue="255" green="255"/>
-        <buffersize fieldname="" units="pt" value="1"/>
-        <bufferenabled fieldname="" on=""/>
-        <multilineenabled fieldname="" on=""/>
-        <selectedonly on=""/>
-      </labelattributes>
-      <annotationform></annotationform>
-      <aliases>
-        <alias field="MYNUM" index="0" name=""/>
-        <alias field="MYTXT" index="1" name=""/>
-      </aliases>
-      <excludeAttributesWMS/>
-      <excludeAttributesWFS/>
-      <attributeactions default="-1"/>
-      <attributetableconfig actionWidgetStyle="dropDown" sortExpression="" sortOrder="0">
-        <columns>
-          <column width="-1" hidden="0" type="field" name="MYNUM"/>
-          <column width="-1" hidden="0" type="field" name="MYTXT"/>
-          <column width="-1" hidden="1" type="actions"/>
-        </columns>
-      </attributetableconfig>
-      <editform></editform>
-      <editforminit/>
-      <editforminitcodesource>0</editforminitcodesource>
-      <editforminitfilepath></editforminitfilepath>
-      <editforminitcode><![CDATA[]]></editforminitcode>
-      <featformsuppress>0</featformsuppress>
-      <editorlayout>generatedlayout</editorlayout>
-      <widgets/>
-      <conditionalstyles>
-        <rowstyles/>
-        <fieldstyles/>
-      </conditionalstyles>
-      <defaults>
-        <default field="MYNUM" expression=""/>
-        <default field="MYTXT" expression=""/>
-      </defaults>
-      <previewExpression>COALESCE( "MYNUM", '&lt;NULL>' )</previewExpression>
-    </maplayer>
-    <maplayer simplifyAlgorithm="0" minimumScale="0" maximumScale="1e+08" simplifyDrawingHints="1" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" readOnly="0" geometry="Polygon" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
-      <id>test20171012171755341</id>
-      <datasource>memory?geometry=MultiPolygon&amp;crs=EPSG:4326&amp;field=MYNUM:integer(-1,0)&amp;field=MYTXT:string(255,0)</datasource>
-      <keywordList>
-        <value></value>
-      </keywordList>
-      <layername>test</layername>
-      <srs>
-        <spatialrefsys>
-          <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
-          <srsid>3452</srsid>
-          <srid>4326</srid>
-          <authid>EPSG:4326</authid>
-          <description>WGS 84</description>
-          <projectionacronym>longlat</projectionacronym>
-          <ellipsoidacronym>WGS84</ellipsoidacronym>
-          <geographicflag>true</geographicflag>
-        </spatialrefsys>
-      </srs>
-      <provider encoding="System">memory</provider>
-      <vectorjoins/>
-      <layerDependencies/>
-      <expressionfields/>
-      <map-layer-style-manager current="">
-        <map-layer-style name=""/>
-      </map-layer-style-manager>
-      <edittypes>
-        <edittype widgetv2type="TextEdit" name="MYNUM">
-          <widgetv2config IsMultiline="0" fieldEditable="1" constraint="" UseHtml="0" labelOnTop="0" constraintDescription="" notNull="0"/>
-        </edittype>
-        <edittype widgetv2type="TextEdit" name="MYTXT">
-          <widgetv2config IsMultiline="0" fieldEditable="1" constraint="" UseHtml="0" labelOnTop="0" constraintDescription="" notNull="0"/>
-        </edittype>
-      </edittypes>
-      <renderer-v2 forceraster="0" symbollevels="0" type="singleSymbol" enableorderby="0">
-        <symbols>
-          <symbol alpha="1" clip_to_extent="1" type="fill" name="0">
-            <layer pass="0" class="SimpleFill" locked="0">
-              <prop k="border_width_map_unit_scale" v="0,0,0,0,0,0"/>
-              <prop k="color" v="92,165,120,255"/>
-              <prop k="joinstyle" v="bevel"/>
-              <prop k="offset" v="0,0"/>
-              <prop k="offset_map_unit_scale" v="0,0,0,0,0,0"/>
-              <prop k="offset_unit" v="MM"/>
-              <prop k="outline_color" v="0,0,0,255"/>
-              <prop k="outline_style" v="solid"/>
-              <prop k="outline_width" v="0.26"/>
-              <prop k="outline_width_unit" v="MM"/>
-              <prop k="style" v="solid"/>
             </layer>
           </symbol>
         </symbols>
@@ -1622,6 +1259,121 @@
       </defaults>
       <previewExpression></previewExpression>
     </maplayer>
+    <maplayer simplifyAlgorithm="0" minimumScale="0" maximumScale="1e+08" simplifyDrawingHints="1" minLabelScale="0" maxLabelScale="1e+08" simplifyDrawingTol="1" readOnly="0" geometry="Line" simplifyMaxScale="1" type="vector" hasScaleBasedVisibilityFlag="0" simplifyLocal="1" scaleBasedLabelVisibilityFlag="0">
+      <id>shortest_paths20171013161942497</id>
+      <datasource>memory?geometry=LineString&amp;crs=EPSG:4326&amp;field=MYNUM:integer(-1,0)&amp;field=MYTXT:string(255,0)</datasource>
+      <keywordList>
+        <value></value>
+      </keywordList>
+      <layername>shortest_paths</layername>
+      <srs>
+        <spatialrefsys>
+          <proj4>+proj=longlat +datum=WGS84 +no_defs</proj4>
+          <srsid>3452</srsid>
+          <srid>4326</srid>
+          <authid>EPSG:4326</authid>
+          <description>WGS 84</description>
+          <projectionacronym>longlat</projectionacronym>
+          <ellipsoidacronym>WGS84</ellipsoidacronym>
+          <geographicflag>true</geographicflag>
+        </spatialrefsys>
+      </srs>
+      <provider encoding="System">memory</provider>
+      <vectorjoins/>
+      <layerDependencies/>
+      <expressionfields/>
+      <map-layer-style-manager current="">
+        <map-layer-style name=""/>
+      </map-layer-style-manager>
+      <edittypes>
+        <edittype widgetv2type="TextEdit" name="MYNUM">
+          <widgetv2config IsMultiline="0" fieldEditable="1" constraint="" UseHtml="0" labelOnTop="0" constraintDescription="" notNull="0"/>
+        </edittype>
+        <edittype widgetv2type="TextEdit" name="MYTXT">
+          <widgetv2config IsMultiline="0" fieldEditable="1" constraint="" UseHtml="0" labelOnTop="0" constraintDescription="" notNull="0"/>
+        </edittype>
+      </edittypes>
+      <renderer-v2 forceraster="0" symbollevels="0" type="singleSymbol" enableorderby="0">
+        <symbols>
+          <symbol alpha="1" clip_to_extent="1" type="line" name="0">
+            <layer pass="0" class="SimpleLine" locked="0">
+              <prop k="capstyle" v="square"/>
+              <prop k="customdash" v="5;2"/>
+              <prop k="customdash_map_unit_scale" v="0,0,0,0,0,0"/>
+              <prop k="customdash_unit" v="MM"/>
+              <prop k="draw_inside_polygon" v="0"/>
+              <prop k="joinstyle" v="bevel"/>
+              <prop k="line_color" v="33,130,145,255"/>
+              <prop k="line_style" v="solid"/>
+              <prop k="line_width" v="0.26"/>
+              <prop k="line_width_unit" v="MM"/>
+              <prop k="offset" v="0"/>
+              <prop k="offset_map_unit_scale" v="0,0,0,0,0,0"/>
+              <prop k="offset_unit" v="MM"/>
+              <prop k="use_custom_dash" v="0"/>
+              <prop k="width_map_unit_scale" v="0,0,0,0,0,0"/>
+            </layer>
+          </symbol>
+        </symbols>
+        <rotation/>
+        <sizescale scalemethod="diameter"/>
+      </renderer-v2>
+      <labeling type="simple"/>
+      <customproperties/>
+      <blendMode>0</blendMode>
+      <featureBlendMode>0</featureBlendMode>
+      <layerTransparency>0</layerTransparency>
+      <displayfield>MYNUM</displayfield>
+      <label>0</label>
+      <labelattributes>
+        <label fieldname="" text="Label"/>
+        <family fieldname="" name="Sans"/>
+        <size fieldname="" units="pt" value="12"/>
+        <bold fieldname="" on="0"/>
+        <italic fieldname="" on="0"/>
+        <underline fieldname="" on="0"/>
+        <strikeout fieldname="" on="0"/>
+        <color fieldname="" red="0" blue="0" green="0"/>
+        <x fieldname=""/>
+        <y fieldname=""/>
+        <offset x="0" y="0" units="pt" yfieldname="" xfieldname=""/>
+        <angle fieldname="" value="0" auto="0"/>
+        <alignment fieldname="" value="center"/>
+        <buffercolor fieldname="" red="255" blue="255" green="255"/>
+        <buffersize fieldname="" units="pt" value="1"/>
+        <bufferenabled fieldname="" on=""/>
+        <multilineenabled fieldname="" on=""/>
+        <selectedonly on=""/>
+      </labelattributes>
+      <annotationform></annotationform>
+      <aliases>
+        <alias field="MYNUM" index="0" name=""/>
+        <alias field="MYTXT" index="1" name=""/>
+      </aliases>
+      <excludeAttributesWMS/>
+      <excludeAttributesWFS/>
+      <attributeactions default="-1"/>
+      <attributetableconfig actionWidgetStyle="dropDown" sortExpression="" sortOrder="1761761896">
+        <columns/>
+      </attributetableconfig>
+      <editform></editform>
+      <editforminit/>
+      <editforminitcodesource>0</editforminitcodesource>
+      <editforminitfilepath></editforminitfilepath>
+      <editforminitcode><![CDATA[]]></editforminitcode>
+      <featformsuppress>0</featformsuppress>
+      <editorlayout>generatedlayout</editorlayout>
+      <widgets/>
+      <conditionalstyles>
+        <rowstyles/>
+        <fieldstyles/>
+      </conditionalstyles>
+      <defaults>
+        <default field="MYNUM" expression=""/>
+        <default field="MYTXT" expression=""/>
+      </defaults>
+      <previewExpression></previewExpression>
+    </maplayer>
   </projectlayers>
   <properties>
     <Measurement>
@@ -1633,6 +1385,20 @@
       <ProjectCrs type="QString">EPSG:4326</ProjectCrs>
       <ProjectCRSID type="int">3452</ProjectCRSID>
     </SpatialRefSys>
+    <roadgraphplugin>
+      <topologyToleranceFactor type="double">0</topologyToleranceFactor>
+      <speedField type="QString">Always use default</speedField>
+      <pluginDistanceUnit type="QString">km</pluginDistanceUnit>
+      <directionField type="QString">Always use default</directionField>
+      <layer type="QString">bahnhofplatz_bern_graph</layer>
+      <LastPointToFirstPointDirectionVal type="QString"></LastPointToFirstPointDirectionVal>
+      <FirstPointToLastPointDirectionVal type="QString"></FirstPointToLastPointDirectionVal>
+      <defaultSpeed type="double">1</defaultSpeed>
+      <pluginTimeUnit type="QString">h</pluginTimeUnit>
+      <defaultDirection type="int">3</defaultDirection>
+      <speedUnitName type="QString">km/h</speedUnitName>
+      <BothDirectionVal type="QString"></BothDirectionVal>
+    </roadgraphplugin>
     <Paths>
       <Absolute type="bool">false</Absolute>
     </Paths>
@@ -1647,55 +1413,15 @@
     </Gui>
     <Digitizing>
       <DefaultSnapToleranceUnit type="int">2</DefaultSnapToleranceUnit>
-      <LayerSnappingList type="QStringList">
-        <value>bahnhofplatz_bern_buildings20171012091558161</value>
-        <value>bahnhofplatz_bern_lines20171012091558169</value>
-        <value>bahnhofplatz_bern_plazas20171012091558176</value>
-        <value>bahnhofplatz_bern_points20171012091558182</value>
-        <value>test20171012171755341</value>
-        <value>bahnhofplatz_bern_graph20171012172619189</value>
-        <value>entry_lines20171012172621065</value>
-      </LayerSnappingList>
-      <LayerSnappingEnabledList type="QStringList">
-        <value>disabled</value>
-        <value>disabled</value>
-        <value>disabled</value>
-        <value>disabled</value>
-        <value>disabled</value>
-        <value>disabled</value>
-        <value>disabled</value>
-      </LayerSnappingEnabledList>
+      <LayerSnappingList type="QStringList"/>
+      <LayerSnappingEnabledList type="QStringList"/>
       <SnappingMode type="QString">current_layer</SnappingMode>
       <AvoidIntersectionsList type="QStringList"/>
-      <LayerSnappingToleranceUnitList type="QStringList">
-        <value>2</value>
-        <value>2</value>
-        <value>2</value>
-        <value>2</value>
-        <value>2</value>
-        <value>2</value>
-        <value>2</value>
-      </LayerSnappingToleranceUnitList>
-      <LayerSnapToList type="QStringList">
-        <value>to_vertex_and_segment</value>
-        <value>to_vertex_and_segment</value>
-        <value>to_vertex_and_segment</value>
-        <value>to_vertex_and_segment</value>
-        <value>to_vertex_and_segment</value>
-        <value>to_vertex_and_segment</value>
-        <value>to_vertex_and_segment</value>
-      </LayerSnapToList>
+      <LayerSnappingToleranceUnitList type="QStringList"/>
+      <LayerSnapToList type="QStringList"/>
       <DefaultSnapType type="QString">off</DefaultSnapType>
       <DefaultSnapTolerance type="double">0</DefaultSnapTolerance>
-      <LayerSnappingToleranceList type="QStringList">
-        <value>0.000000</value>
-        <value>0.000000</value>
-        <value>0.000000</value>
-        <value>0.000000</value>
-        <value>0.000000</value>
-        <value>0.000000</value>
-        <value>0.000000</value>
-      </LayerSnappingToleranceList>
+      <LayerSnappingToleranceList type="QStringList"/>
     </Digitizing>
     <PositionPrecision>
       <DecimalPlaces type="int">2</DecimalPlaces>
