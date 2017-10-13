@@ -101,27 +101,25 @@ def get_plaza_outer_geometry(plaza):
     return QgsGeometry.fromPolygon([plaza_polygon])
 
 
-def get_features_inside_plaza(features, plaza):
-    plaza_outer_geom = get_plaza_outer_geometry(plaza)
-    plaza_inner_rings = get_plaza_inner_rings(plaza)
+def is_relevant_point(point_feature):
+    """ returns whether point is a relevant obstacle"""
+    if point_feature["indoor"] != NULL:
+        return False
+    if point_feature["level"] and point_feature["level"] != "0":
+        return False
+    if point_feature["layer"] and point_feature["layer"] != "0":
+        return False
+    return True
+
+
+def get_points_inside_plaza(features, plaza, obstacle_geom):
     found_features = []
     for p in features:
-        if plaza_outer_geom.contains(p.geometry()):
-            p_in_ring = False
-            for ring in plaza_inner_rings:
-                if ring.contains(p.geometry()):
-                    p_in_ring = True
-            if not p_in_ring:
-                found_features.append(p)
-    return found_features
-
-
-def create_visibility_graph(plaza, obstacle_geom, point_layer, memLayer):
-    enclosed_features = get_features_inside_plaza(point_layer.getFeatures(), plaza)
-    plaza_nodes = get_nodes(plaza)
-    obstacle_nodes = [p for polygon in obstacle_geom.asMultiPolyline() for p in polygon]
-    enclosed_nodes = [get_nodes(p) for p in enclosed_features]
-    nodes = plaza_nodes + enclosed_nodes + obstacle_nodes
+        p_geom = p.geometry()
+        if plaza.geometry().intersects(p_geom) and not obstacle_geom.intersects(p_geom):
+            found_features.append(p)
+    filtered_points = filter(lambda p: is_relevant_point(p), found_features)
+    return filtered_points
 
 
 def create_visibility_graph(plaza, obstacle_geom, point_features, entry_points, memLayer):
