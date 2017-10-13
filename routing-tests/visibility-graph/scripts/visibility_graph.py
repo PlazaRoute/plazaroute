@@ -19,14 +19,20 @@ def get_feature(featureId, layer):
     return next(features)  # should only return one feature
 
 
+def unpack_multipolygon(multipolygon):
+    """ returns a list with all points in all polygons of a multipolygon geometry"""
+    if multipolygon.type() != QGis.Polygon or multipolygon.isMultipart():
+        return []
+    points = []
+    [points.extend(ring) for polygon in multipolygon.asMultiPolygon() for ring in polygon]
+    return points
+
+
 def get_nodes(feature):
     geom = feature.geometry()
     if geom.type() == QGis.Polygon:
         if geom.isMultipart():
-            all_nodes = geom.asMultiPolygon()
-            nodes = []
-            # unpack multipolygon
-            [nodes.extend(ring) for polygon in all_nodes for ring in polygon]
+            nodes = unpack_multipolygon(geom)
         else:
             nodes = geom.asPolygon()
     elif geom.type() == QGis.Point:
@@ -41,31 +47,20 @@ def remove_layer_if_it_exists(name):
             QgsMapLayerRegistry.instance().removeMapLayer(layer.id())
 
 
-def create_line_memory_layer(name):
+def create_memory_layer(layer_type, name):
     memLayer = QgsVectorLayer(
-        "linestring?crs=epsg:4326&field=MYNUM:integer&field=MYTXT:string", name, "memory")
+        "%s?crs=epsg:4326&field=MYNUM:integer&field=MYTXT:string" % layer_type, name, "memory")
     remove_layer_if_it_exists(name)
     QgsMapLayerRegistry.instance().addMapLayer(memLayer)
     return memLayer
 
 
+def create_line_memory_layer(name):
+    return create_memory_layer('linestring', name)
+
+
 def create_point_memory_layer(name):
-        memLayer = QgsVectorLayer(
-            "point?crs=epsg:4326&field=MYNUM:integer&field=MYTXT:string", name, "memory")
-        QgsMapLayerRegistry.instance().addMapLayer(memLayer)
-        return memLayer
-
-
-def get_plaza_inner_rings(plaza):
-    """ return geometries of the inner rings """
-    if not plaza.geometry().isMultipart():
-        return []
-    inner_rings = []
-    multipolygon = plaza.geometry().asMultiPolygon()[0]
-    # first element is outer ring, rest is inner
-    for ring_polygon in multipolygon[1:]:
-        inner_rings.append(QgsGeometry.fromPolygon([ring_polygon]))
-    return inner_rings
+    return create_memory_layer('point', name)
 
 
 def find_buildings_inside_plaza(plaza, building_layer):
@@ -81,12 +76,15 @@ def find_buildings_inside_plaza(plaza, building_layer):
 
 def create_obstacle_geometry(plaza, intersecting_buildings):
     """ create a geometry that contains every obstacle on the plaza """
+    if not intersecting_buildings:
+        return QgsGeometry()  # return emtpy geometry
     geom = None
     for building in intersecting_buildings:
         b_geom = building.geometry()
         i = b_geom.intersection(plaza.geometry())
         if i.type() == QGis.Polygon:
             polygon = i.asMultiPolygon()[0][0] if i.isMultipart() else i.asPolygon()[0]
+            # TODO: doesn't work with multipolygon intersection yet
             if geom:  # create first geometry and add subsequent parts
                 geom.addPartGeometry(QgsGeometry.fromPolygon([polygon]))
             else:
@@ -125,8 +123,15 @@ def create_visibility_graph(plaza, obstacle_geom, point_layer, memLayer):
     enclosed_nodes = [get_nodes(p) for p in enclosed_features]
     nodes = plaza_nodes + enclosed_nodes + obstacle_nodes
 
+
+def create_visibility_graph(plaza, obstacle_geom, point_features, entry_points, memLayer):
+    plaza_nodes = get_nodes(plaza)
+    obstacle_nodes = unpack_multipolygon(obstacle_geom)
+    enclosed_nodes = [get_nodes(p) for p in point_features]
+    nodes = set().union(plaza_nodes, enclosed_nodes, obstacle_nodes, entry_points)
+    print('regarded %d nodes' % len(nodes))
     edges = calc_visiblity_graph_edges(memLayer, nodes)
-    return nodes, edges
+    return edges
 
 
 def calc_visiblity_graph_edges(memLayer, nodes):
@@ -147,12 +152,14 @@ def draw_features(layer, features):
 
 
 def edge_is_inside_plaza(plaza, obstacle_geom, edge):
-    i_plaza = plaza.geometry().intersection(edge.geometry())
-    intersects_obstacle = obstacle_geom.intersects(edge.geometry())
-    # if polyline is empty, the line isn't entirely inside the plaza
-    if i_plaza.asPolyline() and not intersects_obstacle:
-        return True
-    return False
+    edge_geom = edge.geometry()
+    i_plaza = plaza.geometry().intersection(edge_geom)
+    intersects_obstacle = obstacle_geom.intersects(edge_geom)
+    i_obstacle = obstacle_geom.intersection(edge_geom)
+    if ((intersects_obstacle and i_obstacle.type() != QGis.Point) or
+            i_plaza.length() < edge_geom.length()):
+        return False
+    return True
 
 
 def get_intersecting_features(plaza, line_layer):
@@ -185,7 +192,8 @@ def get_entry_points(plaza, intersecting_features):
         else:
             intersection_points = None
             if intersection.isMultipart():
-                intersection_points = [p for line in intersection.asMultiPolyline() for p in line]
+                intersection_points = []
+                [intersection_points.extend(line) for line in intersection.asMultiPolyline() for p in line]
             else:
                 intersection_points = intersection.asPolyline()
             for point in intersection_points:
@@ -224,7 +232,7 @@ def calc_dijkstra_shortest_tree(graph, start_point, entry_points):
         end_vertex = tree.findVertex(entry_point)
         if end_vertex == -1:
             # not found
-            print("no path to %s found" % entry_points[3])
+            print("no path to %s found" % entry_point)
         else:
             while start_vertex != end_vertex:
                 in_edges = tree.vertex(end_vertex).inArc()
