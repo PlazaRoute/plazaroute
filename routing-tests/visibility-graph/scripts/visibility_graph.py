@@ -21,7 +21,7 @@ def get_feature(featureId, layer):
 
 def unpack_multipolygon(multipolygon):
     """ returns a list with all points in all polygons of a multipolygon geometry"""
-    if multipolygon.type() != QGis.Polygon or multipolygon.isMultipart():
+    if multipolygon.type() != QGis.Polygon or not multipolygon.isMultipart():
         return []
     points = []
     [points.extend(ring) for polygon in multipolygon.asMultiPolygon() for ring in polygon]
