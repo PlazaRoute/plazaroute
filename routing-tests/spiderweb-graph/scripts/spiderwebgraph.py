@@ -35,8 +35,8 @@ def draw_grid(layer, plaza, spacing):
     columns = int(ceil((xright - xleft) / spacing))
 
     features = []
-    for column in range(0, columns):
-        for row in range(0, rows):
+    for column in range(0, columns + 1):
+        for row in range(0, rows + 1):
 
             x1 = xleft + (column * spacing)
             x2 = xleft + ((column + 1) * spacing)
