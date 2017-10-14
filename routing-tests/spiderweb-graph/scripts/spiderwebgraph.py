@@ -9,19 +9,19 @@ def calculate_boundingbox(features):
             box.combineExtentWith(feature.geometry().boundingBox())
     return box
 
-def get_intersection_line(start, end, base_area):
+def get_intersection_line(start, end, base_area, obstacle_geom):
     line = QgsGeometry.fromPolyline([start, end])
     line_feature = QgsFeature()
     line_feature.setGeometry(line)
-
-    if line_feature.geometry().intersects(base_area):
-        intersection = line_feature.geometry().intersection(base_area)
+    
+    if edge_is_inside_plaza(base_area, obstacle_geom, line_feature):
+        intersection = line_feature.geometry().intersection(base_area.geometry())
         line_feature.setGeometry(intersection)
         return line_feature
     else:
         return None
 
-def draw_grid(layer, plaza, spacing):
+def draw_grid(layer, plaza, spacing, obstacle_geom):
     plaza_geom = plaza.geometry()
     boundingbox = calculate_boundingbox([plaza])
 
@@ -50,22 +50,22 @@ def draw_grid(layer, plaza, spacing):
 
             # horizontal line
             if (column < columns):
-                horizontal_line = get_intersection_line(top_left, top_right, plaza_geom)
+                horizontal_line = get_intersection_line(top_left, top_right, plaza, obstacle_geom)
                 if horizontal_line:
                     features.append(horizontal_line)
 
             # vertical line
             if (row < rows):
-                vertical_line = get_intersection_line(top_left, bottom_left, plaza_geom)
+                vertical_line = get_intersection_line(top_left, bottom_left, plaza, obstacle_geom)
                 if vertical_line:
                     features.append(vertical_line)
 
             # diagonal line
             if (row < rows and column < columns): # TODO correct constraint?
-                diagonal_line = get_intersection_line(top_left, bottom_right, plaza_geom)
+                diagonal_line = get_intersection_line(top_left, bottom_right, plaza, obstacle_geom)
                 if diagonal_line:
                     features.append(diagonal_line)
-                diagonal_line = get_intersection_line(bottom_left, top_right, plaza_geom)
+                diagonal_line = get_intersection_line(bottom_left, top_right, plaza, obstacle_geom)
                 if diagonal_line:
                     features.append(diagonal_line)
 
@@ -91,7 +91,10 @@ def connect_entry_points_with_spiderwebgraph(layer, entry_points):
     layer.dataProvider().addFeatures(line_features)
     QgsMapLayerRegistry.instance().addMapLayer(layer)
 
-def draw_spiderweb_graph(layer, spacing):
+def draw_spiderweb_graph(layer, building_layer, spacing):
     for plaza in layer.getFeatures():
+        intersecting_buildings = find_buildings_inside_plaza(plaza, building_layer)
+        obstacle_geom = create_obstacle_geometry(plaza, intersecting_buildings)
         grid_layer = create_line_memory_layer('spiderweb' + str(plaza.id()))
-        draw_grid(grid_layer, plaza, spacing)
+        draw_grid(grid_layer, plaza, spacing, obstacle_geom)
+        
