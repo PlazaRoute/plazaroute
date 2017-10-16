@@ -1,6 +1,4 @@
 #!/bin/python
-from qgis.networkanalysis import *
-
 
 def create_visibility_graph(plaza, building_layer, line_layer, point_layer):
     intersecting_buildings = find_buildings_inside_plaza(plaza, building_layer)
@@ -8,17 +6,17 @@ def create_visibility_graph(plaza, building_layer, line_layer, point_layer):
     intersecting_features = get_intersecting_features(plaza, line_layer)
     entry_points = get_entry_points(plaza, intersecting_features)
     point_features = get_points_inside_plaza(point_layer.getFeatures(), plaza, obstacle_geom)
-    
+
     draw_entry_points(entry_points)
-    
+
     vis_graph_nodes = get_visibility_graph_nodes(plaza, obstacle_geom, point_features, entry_points)
     remove_layer_if_it_exists('visibility_graph')
     graph_layer = create_line_memory_layer('visibility_graph')
-    
+
     vis_graph_edges = calc_visiblity_graph_edges(graph_layer, vis_graph_nodes)
     filtered_edges = filter(lambda e: edge_is_inside_plaza(plaza, obstacle_geom, e), vis_graph_edges)
     draw_features(graph_layer, filtered_edges)
-    
+
     return calc_shortest_paths(entry_points, graph_layer)
 
 

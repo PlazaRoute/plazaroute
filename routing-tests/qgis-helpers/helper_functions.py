@@ -1,4 +1,5 @@
 #!/bin/python
+from qgis.networkanalysis import *
 
 
 def get_layer(layerName):

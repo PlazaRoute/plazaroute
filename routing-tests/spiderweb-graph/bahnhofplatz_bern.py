@@ -1,10 +1,10 @@
-plaza_layer = get_layer('helvetiaplatz plazas')
-point_layer = get_layer('helvetiaplatz points')
-line_layer = get_layer('helvetiaplatz lines')
-building_layer = get_layer('helvetiaplatz buildings')
+plaza_layer = get_layer('bahnhofplatz_bern plazas')
+point_layer = get_layer('bahnhofplatz_bern points')
+line_layer = get_layer('bahnhofplatz_bern lines')
+building_layer = get_layer('bahnhofplatz_bern buildings')
 
 plaza_features = plaza_layer.getFeatures()
-plaza = get_feature(1, plaza_layer)
+plaza = get_feature(6, plaza_layer)
 
 remove_layer_if_it_exists('spiderweb_graph')
 graph_layer = create_line_memory_layer('spiderweb_graph')

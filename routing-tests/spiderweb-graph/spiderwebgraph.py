@@ -9,19 +9,43 @@ def calculate_boundingbox(features):
             box.combineExtentWith(feature.geometry().boundingBox())
     return box
 
-def get_intersection_line(start, end, base_area, obstacle_geom):
+def get_intersection_line(start, end, plaza, obstacle_geom):
     line = QgsGeometry.fromPolyline([start, end])
     line_feature = QgsFeature()
     line_feature.setGeometry(line)
-    
-    if edge_is_inside_plaza(base_area, obstacle_geom, line_feature):
-        intersection = line_feature.geometry().intersection(base_area.geometry())
+    line_geom = line_feature.geometry()
+    plaza_geom = plaza.geometry()
+
+
+    #if (line_geom.intersects(plaza_geom)) and not line_geom.intersects(obstacle_geom):
+    if edge_is_inside_plaza(plaza, obstacle_geom, line_feature):
+        intersection = line_geom.intersection(plaza_geom)
         line_feature.setGeometry(intersection)
         return line_feature
     else:
         return None
 
-def draw_grid(layer, plaza, spacing, obstacle_geom):
+def connect_entry_points_with_spiderweb_graph(layer, entry_points):
+    spindex = QgsSpatialIndex()
+    for feature in layer.getFeatures():
+        spindex.insertFeature(feature)
+
+    line_features = []
+    for entry_point in entry_points:
+        neighborid = spindex.nearestNeighbor(QgsPoint(entry_point), 1)
+        neighbors = layer.getFeatures(QgsFeatureRequest().setFilterFid(neighborid[0]))
+        neighbor = neighbors.next()
+
+        target = neighbor.geometry().asPolyline()[1]
+        line = QgsFeature()
+        line.setGeometry(QgsGeometry.fromPolyline([entry_point, target]))
+        line_features.append(line)
+
+    layer.dataProvider().addFeatures(line_features)
+    QgsMapLayerRegistry.instance().addMapLayer(layer)
+
+
+def create_spiderweb_graph(layer, plaza, spacing, obstacle_geom):
     plaza_geom = plaza.geometry()
     boundingbox = calculate_boundingbox([plaza])
 
@@ -72,29 +96,12 @@ def draw_grid(layer, plaza, spacing, obstacle_geom):
     layer.dataProvider().addFeatures(features)
     QgsMapLayerRegistry.instance().addMapLayer(layer)
 
-def connect_entry_points_with_spiderwebgraph(layer, entry_points):
-    spindex = QgsSpatialIndex()
-    for feature in layer.getFeatures():
-        spindex.insertFeature(feature)
-
-    line_features = []
-    for entry_point in entry_points:
-        neighborid = spindex.nearestNeighbor(QgsPoint(entry_point), 1)
-        neighbors = layer.getFeatures(QgsFeatureRequest().setFilterFid(neighborid[0]))
-        neighbor = neighbors.next()
-
-        target = neighbor.geometry().asPolyline()[1]
-        line = QgsFeature()
-        line.setGeometry(QgsGeometry.fromPolyline([entry_point, target]))
-        line_features.append(line)
-
-    layer.dataProvider().addFeatures(line_features)
-    QgsMapLayerRegistry.instance().addMapLayer(layer)
-
-def draw_spiderweb_graph(layer, building_layer, spacing):
-    for plaza in layer.getFeatures():
+def create_spiderweb_graphs(plaza_layer, building_layer, spacing):
+    for plaza in plaza_layer.getFeatures():
         intersecting_buildings = find_buildings_inside_plaza(plaza, building_layer)
         obstacle_geom = create_obstacle_geometry(plaza, intersecting_buildings)
-        grid_layer = create_line_memory_layer('spiderweb' + str(plaza.id()))
-        draw_grid(grid_layer, plaza, spacing, obstacle_geom)
-        
+        graph_layer = create_line_memory_layer('spiderweb' + str(plaza.id()))
+        create_spiderweb_graph(graph_layer, plaza, spacing, obstacle_geom)
+        intersecting_features = get_intersecting_features(plaza, line_layer)
+        entry_points = get_entry_points(plaza, intersecting_features)
+        connect_entry_points_with_spiderweb_graph(graph_layer, entry_points)
