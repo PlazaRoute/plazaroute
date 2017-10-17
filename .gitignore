@@ -1,0 +1,12 @@
+venv/
+*~
+.ipynb_checkpoints/
+cache/
+
+# shapefiles
+*.dbf
+*.prj
+*.shp
+*.shx
+
+*.gpkg-*
