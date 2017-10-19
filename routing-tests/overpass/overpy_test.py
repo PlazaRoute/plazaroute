@@ -2,26 +2,25 @@
 
 import overpy
 
+
 def parse_bounding_box(south, west, north, east):
-    return (str(south) + "," +
-            str(west) + "," +
-            str(north) + "," +
-            str(east))
+    return f'{south},{west},{north},{east}'
+
 
 def get_public_transport_stops(south, west, north, east):
     api = overpy.Overpass(url="http://overpass.osm.ch/api/interpreter")
 
     bbox = parse_bounding_box(south, west, north, east)
 
-    query_str = """
-        [bbox:{0}];
+    query_str = f"""
+        [bbox:{bbox}];
         (
         node["public_transport"="stop_position"];
         way["public_transport"="stop_position"];
         relation["public_transport"="stop_position"];
         );
         out body;
-        """.format(bbox)
+        """
 
     result = api.query(query_str)
 
