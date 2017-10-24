@@ -1,11 +1,11 @@
-import random
 import sys
+from datetime import datetime
 import geojson as gjlib
 from lxml import etree
 
 this = sys.modules[__name__]
-# TODO: proper osm_id seed
-this.osm_id = random.randint(10**9, 10**11)
+# osm file can't have more than 10^9 xml nodes
+this.osm_id = (-1) * 10**9
 
 
 def read_geojson_file(filename):
@@ -72,13 +72,18 @@ def _create_node(point):
     lon = str(point[0])
     lat = str(point[1])
     osm_id = str(create_osm_id())
-    xml_node = etree.Element('node', id=osm_id, lat=lat, lon=lon)
+    timestamp = create_osm_timestamp()
+    xml_node = etree.Element('node', id=osm_id, version='1', visible="true",
+                             user="geojson2osm", changeset='1', timestamp=timestamp,
+                             lat=lat, lon=lon)
     return osm_id, xml_node
 
 
 def _create_way(node_ids):
     osm_id = str(create_osm_id())
-    way = etree.Element('way', id=osm_id)
+    timestamp = create_osm_timestamp()
+    way = etree.Element('way', id=osm_id, visible='true', user="geojson2osm",
+                        version='1', changeset='1', timestamp=timestamp)
     nd_refs = [etree.Element('nd', ref=str(node_id)) for node_id in node_ids]
 
     [way.append(nd_ref) for nd_ref in nd_refs]
@@ -89,9 +94,14 @@ def _create_way(node_ids):
 
 def create_osm_id():
     """ creates a 64-bit random integer """
-    # TODO: What are the rules for new ids?
+    # we use negative ids to avoid conflicts with existing OSM data
     this.osm_id += 1
     return this.osm_id
+
+
+def create_osm_timestamp():
+    d = datetime.utcnow()
+    return d.strftime('%Y-%m-%dT%H:%M:%SZ')
 
 
 def _get_way_tags():
