@@ -1,0 +1,2 @@
+osmium==2.13.0
+Shapely==1.6.2
