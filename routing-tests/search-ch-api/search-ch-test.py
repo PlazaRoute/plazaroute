@@ -10,8 +10,7 @@ def get_timetable(start, destination):
     req = requests.get(this.search_ch_url, params=payload)
 
     print(req.url)
-    response = req.json()
-    print(response)
+    print(req.json())
 
 
 if __name__ == '__main__':
