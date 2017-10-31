@@ -9,22 +9,30 @@ def preprocess_plazas(osm_holder):
     # test for helvetiaplatz
     # plaza = next(p for p in osm_holder.plazas if p['osm_id'] == 4533221)
     # test for Bahnhofplatz Bern
-    # plaza = next(p for p in osm_holder.plazas if p['osm_id'] == 5117701)
-    # process_plaza(plaza, osm_holder.lines, osm_holder.buildings, osm_holder.points)
+    plaza = next(p for p in osm_holder.plazas if p['osm_id'] == 5117701)
+    # process_plaza(plaza['geometry'], osm_holder.lines, osm_holder.buildings, osm_holder.points)
+
     for plaza in osm_holder.plazas:
-        process_plaza(plaza, osm_holder.lines, osm_holder.buildings, osm_holder.points)
+        print(f"processing plaza {plaza['osm_id']}")
+        if isinstance(plaza['geometry'], MultiPolygon):
+            for polygon in plaza['geometry']:
+                process_plaza(polygon, osm_holder.lines, osm_holder.buildings, osm_holder.points)
+        else:
+            process_plaza(plaza, osm_holder.lines, osm_holder.buildings, osm_holder.points)
 
 
-def process_plaza(plaza, lines, buildings, points):
+def process_plaza(plaza_geometry, lines, buildings, points):
     """ process a single plaza """
-    print(f"processing plaza {plaza['osm_id']}")
-    entry_points = calc_entry_points(plaza['geometry'], lines)
+    entry_points = calc_entry_points(plaza_geometry, lines)
     if not entry_points:
         print(f"Plaza {plaza['osm_id']} has no entry points")
         return
-    plaza['geometry'] = insert_obstacles(plaza['geometry'], buildings, points)
+    plaza_geometry = insert_obstacles(plaza_geometry, buildings, points)
+    geojson_writer.write_geojson([plaza_geometry], 'plaza.geojson')
+ 
+    graph_edges = create_visibility_graph(plaza_geometry, entry_points)
+    geojson_writer.write_geojson(graph_edges, 'edges.geojson')
 
-    geojson_writer.write_geojson([plaza['geometry']], 'plaza.geojson')
 
 
 def calc_entry_points(plaza_geometry, lines):
@@ -76,6 +84,12 @@ def insert_obstacles(plaza_geometry, buildings, points):
 
     for p_obstacle in point_obstacles:
         plaza_geometry = plaza_geometry.difference(p_obstacle)
+    
+    if isinstance(plaza_geometry, MultiPolygon):
+        print("Multipolygon after cut out!")
+        # take the largest of the polygons
+        plaza_geometry = max(plaza_geometry, key=lambda p: p.area)
+
     return plaza_geometry
 
 
@@ -101,7 +115,31 @@ def create_point_obstacle(point, buffer=5):
 
 def create_visibility_graph(plaza_geometry, entry_points):
     """ create a visibility graph with all plaza and entry points """
-    pass
+    plaza_coords = get_polygon_coords(plaza_geometry)
+    entry_coords = [(p.x, p.y) for p in entry_points]
+    all_coords = set().union(plaza_coords, entry_coords)
+    indexed_coords = {i: coords for i, coords in enumerate(all_coords)}
+    edges = []
+    for start_id, start_coords in indexed_coords.items():
+        for end_id, end_coords in indexed_coords.items():
+            if (start_id > end_id):
+                line = LineString([start_coords, end_coords])
+                if line_visible(line, plaza_geometry):
+                    edges.append(line)
+    return edges
+
+
+def line_visible(line, plaza_geometry):
+    """ check if the line is "visible", i.e. unobstructed through the plaza """
+    return line.equals(plaza_geometry.intersection(line))
+
+
+def get_polygon_coords(polygon):
+    """ return a list of coordinates of all points in a multipolygon """
+    coords = list(polygon.exterior.coords)
+    for ring in polygon.interiors:
+        coords.extend(ring.coords)
+    return coords
 
 
 def line_in_plaza_approx(line, plaza_geometry, buffer=0):

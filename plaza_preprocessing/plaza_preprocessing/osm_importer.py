@@ -70,7 +70,7 @@ class _PlazaHandler(osmium.SimpleHandler):
             }
             self.plazas.append(area)
 
-        elif "building" in a.tags and a.tags.get("layer", "0") != "0":
+        elif "building" in a.tags and a.tags.get("layer", "0") == "0":
             geom = self._create_multipolygon_geometry(a)
             self.buildings.append(geom)
 
