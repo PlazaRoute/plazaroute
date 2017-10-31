@@ -8,7 +8,7 @@ WKBFAB = osmium.geom.WKBFactory()
 
 
 def import_osm(filename):
-    """ imports a OSM / PBF file and returns a holder with all plazas, buildings, 
+    """ imports a OSM / PBF file and returns a holder with all plazas, buildings,
     lines and points with shapely geometries """
     handler = _PlazaHandler()
     # index_type = 'dense_file_array' # uses over 25GB of space for Switzerland

@@ -1,5 +1,6 @@
 from plaza_preprocessing import osm_importer as importer
 from plaza_preprocessing.osm_merger import geojson_writer
+from math import ceil
 from shapely.geometry import (Point, MultiPoint, LineString, MultiLineString,
                               Polygon, MultiPolygon, box)
 
@@ -9,7 +10,7 @@ def preprocess_plazas(osm_holder):
     # test for helvetiaplatz
     # plaza = next(p for p in osm_holder.plazas if p['osm_id'] == 4533221)
     # test for Bahnhofplatz Bern
-    plaza = next(p for p in osm_holder.plazas if p['osm_id'] == 5117701)
+    # plaza = next(p for p in osm_holder.plazas if p['osm_id'] == 5117701)
     # process_plaza(plaza['geometry'], osm_holder.lines, osm_holder.buildings, osm_holder.points)
 
     for plaza in osm_holder.plazas:
@@ -30,7 +31,8 @@ def process_plaza(plaza_geometry, lines, buildings, points):
     plaza_geometry = insert_obstacles(plaza_geometry, buildings, points)
     geojson_writer.write_geojson([plaza_geometry], 'plaza.geojson')
  
-    graph_edges = create_visibility_graph(plaza_geometry, entry_points)
+    # graph_edges = create_visibility_graph(plaza_geometry, entry_points)
+    graph_edges = create_spiderweb_graph(plaza_geometry, entry_points)
     geojson_writer.write_geojson(graph_edges, 'edges.geojson')
 
 
@@ -142,6 +144,65 @@ def get_polygon_coords(polygon):
     return coords
 
 
+def create_spiderweb_graph(plaza_geometry, entry_points, spacing_m=1):
+    """ create a spiderwebgraph and connect edges to entry points """
+    graph_edges = calc_spiderwebgraph(plaza_geometry, spacing_m)
+    return graph_edges
+
+
+
+def calc_spiderwebgraph(plaza_geometry, spacing_m):
+    """ calculate spider web graph edges"""
+    spacing = meters_to_degrees(spacing_m)
+    x_left, y_bottom, x_right, y_top = plaza_geometry.bounds
+
+    # based on https://github.com/michaelminn/mmqgis
+    rows = int(ceil((y_top - y_bottom) / spacing))
+    columns = int(ceil((x_right - x_left) / spacing))
+
+    graph_lines = []
+    for column in range(0, columns + 1):
+        for row in range(0, rows + 1):
+
+            x_1 = x_left + (column * spacing)
+            x_2 = x_left + ((column + 1) * spacing)
+            y_1 = y_bottom + (row * spacing)
+            y_2 = y_bottom + ((row + 1) * spacing)
+
+            top_left = (x_1, y_1)
+            top_right = (x_2, y_1)
+            bottom_left = (x_1, y_2)
+            bottom_right = (x_2, y_2)
+
+            # horizontal line
+            if column < columns:
+                graph_lines.append(
+                    get_spiderweb_intersection_line(top_left, top_right, plaza_geometry))
+
+            # vertical line
+            if row < rows:
+                graph_lines.append(
+                    get_spiderweb_intersection_line(top_left, bottom_left, plaza_geometry))
+
+            # diagonal line
+            if row < rows and column < columns: # TODO correct constraint?
+                graph_lines.append(
+                    get_spiderweb_intersection_line(top_left, bottom_right, plaza_geometry))
+                graph_lines.append(
+                    get_spiderweb_intersection_line(bottom_left, top_right, plaza_geometry))
+
+    return graph_lines
+
+
+def get_spiderweb_intersection_line(start, end, plaza_geometry):
+    """ returns a line that is completely inside the plaza, if possible """
+    line = LineString([start, end])
+    # if not line_visible(line, plaza_geometry):
+    if not plaza_geometry.intersects(line):
+        return None
+    return plaza_geometry.intersection(line)
+
+
 def line_in_plaza_approx(line, plaza_geometry, buffer=0):
     """
     determines if a line's bounding box is in the bounding box of the plaza,
@@ -191,5 +252,5 @@ def meters_to_degrees(meters):
 
 if __name__ == '__main__':
     # osm_holder = importer.import_osm('data/helvetiaplatz_umfeld.osm')
-    osm_holder = importer.import_osm('data/switzerland-exact.osm.pbf')
-    preprocess_plazas(osm_holder)
+    holder = importer.import_osm('data/switzerland-exact.osm.pbf')
+    preprocess_plazas(holder)
