@@ -42,9 +42,11 @@ class _PlazaHandler(osmium.SimpleHandler):
         self._relations = {}
         self.invalid_count = 0
 
-
     def node(self, n):
+        # TODO: Proper tag filtering
         if "amenity" in n.tags:
+            if "indoor" in n.tags or n.tags.get("level", "0") != "0" or n.tags.get("layer", "0") != "0":
+                return
             wkb = WKBFAB.create_point(n)
             self.points.append(wkblib.loads(wkb, hex=True))
 
@@ -68,7 +70,7 @@ class _PlazaHandler(osmium.SimpleHandler):
             }
             self.plazas.append(area)
 
-        elif "building" in a.tags:
+        elif "building" in a.tags and a.tags.get("layer", "0") != "0":
             geom = self._create_multipolygon_geometry(a)
             self.buildings.append(geom)
 
