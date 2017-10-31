@@ -8,18 +8,28 @@ WKBFAB = osmium.geom.WKBFactory()
 
 
 def import_osm(filename):
-    """ imports a OSM / PBF file and returns a list of all plazas,
-    points and buildings with shapely geometries """
+    """ imports a OSM / PBF file and returns a holder with all plazas, buildings, 
+    lines and points with shapely geometries """
     handler = _PlazaHandler()
     # index_type = 'dense_file_array' # uses over 25GB of space for Switzerland
     index_type = 'sparse_mem_array'
     handler.apply_file(filename, locations=False, idx=index_type)
-    print(len(handler.plazas))
-    print(len(handler.buildings))
-    print(len(handler.points))
+    print(f'{len(handler.plazas)} plazas')
+    print(f'{len(handler.buildings)} buildings')
+    print(f'{len(handler.lines)} lines')
+    print(f'{len(handler.points)} points')
     handler.add_missing_ring_ids()
+    # print(list(filter(lambda p: len(p['outer_ring_ids']) >2, handler.plazas)))
+    print(f'encountered {handler.invalid_count} invalid ways')
+    return OSMHolder(handler.plazas, handler.buildings, handler.lines, handler.points)
 
-    return handler.plazas, handler.points, handler.buildings
+
+class OSMHolder:
+    def __init__(self, plazas, buildings, lines, points):
+        self.plazas = plazas
+        self.buildings = buildings
+        self.lines = lines
+        self.points = points
 
 
 class _PlazaHandler(osmium.SimpleHandler):
@@ -28,15 +38,28 @@ class _PlazaHandler(osmium.SimpleHandler):
         self.plazas = []
         self.buildings = []
         self.points = []
+        self.lines = []
         self._relations = {}
+        self.invalid_count = 0
+
 
     def node(self, n):
         if "amenity" in n.tags:
             wkb = WKBFAB.create_point(n)
             self.points.append(wkblib.loads(wkb, hex=True))
 
+    def way(self, w):
+        # TODO: proper filtering
+        if ("highway" in w.tags or w.tags.get("railway") == "tram") and not w.is_closed():
+            try:
+                wkb = WKBFAB.create_linestring(w)
+                self.lines.append(wkblib.loads(wkb, hex=True))
+            except:
+                print(f'Invalid location in {w.id}')
+                self.invalid_count += 1
+
     def area(self, a):
-        if a.tags.get("highway") == "pedestrian" and not a.tags.get("area") == "no":
+        if a.tags.get("highway") == "pedestrian" and a.tags.get("area") != "no":
             area = {
                 'osm_id': a.orig_id(),
                 'geometry': self._create_multipolygon_geometry(a),
@@ -50,7 +73,7 @@ class _PlazaHandler(osmium.SimpleHandler):
             self.buildings.append(geom)
 
     def relation(self, r):
-        if r.tags.get("highway") == "pedestrian" and not r.tags.get("area") == "no":
+        if r.tags.get("highway") == "pedestrian" and r.tags.get("area") != "no":
             outer_rings = []
             for member in r.members:
                 if member.role == "outer":
