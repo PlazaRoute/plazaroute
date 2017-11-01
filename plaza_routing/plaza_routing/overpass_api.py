@@ -46,8 +46,7 @@ def get_public_transport_stops(latitude, longitude):
 
 
 def _get_public_transport_lines(latitude, longitude,
-                                route_type, line,
-                                start_uic_ref, exit_uic_ref):
+                                line, start_uic_ref, exit_uic_ref):
     """
     Retrieves all public transport lines (relations) that serve the public transport stop node
     with ref start_uic_ref. We'll get more than one one for a specific uic_ref.
@@ -61,12 +60,12 @@ def _get_public_transport_lines(latitude, longitude,
             node["uic_ref"={exit_uic_ref}];
         );
         out body;
-        rel(bn:"stop")({bbox})["type"="route"]["route"={route_type}]["ref"={line}];
+        rel(bn:"stop")({bbox})["type"="route"]["ref"={line}];
         (
             node(r)["uic_ref"={start_uic_ref}]({bbox});
         );
         out body;
-        relation["type"="route"]["route"={route_type}]["ref"={line}]({bbox});
+        relation["type"="route"]["ref"={line}]({bbox});
         out body;
         """
 
@@ -110,8 +109,7 @@ def _get_public_transport_stop_node(lines):
 
 
 def get_inital_public_transport_stop_position(latitude, longitude,
-                                              route_type, line,
-                                              start_uic_ref, exit_uic_ref):
+                                              line, start_uic_ref, exit_uic_ref):
     """
     Retrieves the initial public transport stop position (latitude, longitude)
     for a specific uic_ref (start_uic_ref). OSM returns multiple public transport
@@ -123,7 +121,6 @@ def get_inital_public_transport_stop_position(latitude, longitude,
     """
 
     lines = _get_public_transport_lines(latitude, longitude,
-                                        route_type, line,
-                                        start_uic_ref, exit_uic_ref)
+                                        line, start_uic_ref, exit_uic_ref)
     start_node = _get_public_transport_stop_node(lines)
     return {'latitude': start_node.lat, 'longitude': start_node.lon}
