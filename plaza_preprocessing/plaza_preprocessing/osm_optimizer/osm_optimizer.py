@@ -1,5 +1,6 @@
 from plaza_preprocessing import osm_importer as importer
 from plaza_preprocessing.osm_merger import geojson_writer
+from plaza_preprocessing.osm_optimizer import helpers
 from math import ceil
 from shapely.geometry import (Point, MultiPoint, LineString, MultiLineString,
                               MultiPolygon, box)
@@ -7,25 +8,28 @@ from shapely.geometry import (Point, MultiPoint, LineString, MultiLineString,
 
 class PlazaPreprocessor:
 
-    def __init__(self, osm_id, plaza_geometry, lines, buildings, points):
+    def __init__(self, osm_id, plaza_geometry, osm_holder, graph_processor):
         self.osm_id = osm_id
         self.plaza_geometry = plaza_geometry
-        self.lines = lines
-        self.buildings = buildings
-        self.points = points
+        self.lines = osm_holder.lines
+        self.buildings = osm_holder.buildings
+        self.points = osm_holder.points
+        self.graph_processor = graph_processor
 
     def process_plaza(self):
         """ process a single plaza """
         entry_points = self._calc_entry_points()
-        if not entry_points:
-            print(f"Plaza {self.osm_id} has no entry points")
+        if len(entry_points) < 2:
+            print(f"Plaza {self.osm_id} has fewer than 2 entry points")
             return
+        geojson_writer.write_geojson(entry_points, 'entry_points.geojson')
         self._insert_obstacles()
         geojson_writer.write_geojson([self.plaza_geometry], 'plaza.geojson')
 
-        # graph_edges = self.create_visibility_graph(entry_points)
-        graph_edges = self.create_spiderweb_graph(entry_points)
-        geojson_writer.write_geojson(graph_edges, 'edges.geojson')
+        self.graph_processor.entry_points = entry_points
+        self.graph_processor.plaza_geometry = self.plaza_geometry
+        self.graph_processor.create_graph_edges()
+        geojson_writer.write_geojson(self.graph_processor.graph_edges, 'edges.geojson')
 
     def _calc_entry_points(self):
         """
@@ -79,7 +83,8 @@ class PlazaPreprocessor:
         if isinstance(self.plaza_geometry, MultiPolygon):
             print("Multipolygon after cut out!")
             # take the largest of the polygons
-            plaza_geometry = max(self.plaza_geometry, key=lambda p: p.area)
+            self.plaza_geometry = max(
+                self.plaza_geometry, key=lambda p: p.area)
 
     def _find_intersecting_buildings(self):
         """ finds all buildings on the plaza that have not been cut out"""
@@ -91,55 +96,86 @@ class PlazaPreprocessor:
 
     def _create_point_obstacle(self, point, buffer=5):
         """ create a polygon around a point with a buffer in meters """
-        buffer_deg = self.meters_to_degrees(buffer)
+        buffer_deg = helpers.meters_to_degrees(buffer)
         min_x = point.x - buffer_deg
         min_y = point.y - buffer_deg
         max_x = point.x + buffer_deg
         max_y = point.y + buffer_deg
         return box(min_x, min_y, max_x, max_y)
 
-    def create_visibility_graph(self, entry_points):
+    def _line_in_plaza_approx(self, line, plaza_geometry, buffer=0):
+        """
+        determines if a line's bounding box is in the bounding box of the plaza,
+        with optional buffer in degrees (enlarged bounding box)
+        """
+        min_x1, min_y1, max_x1, max_y1 = plaza_geometry.bounds
+        line_bbox = line.bounds
+        min_x1 -= buffer / 2
+        min_y1 -= buffer / 2
+        max_x1 += buffer / 2
+        max_y1 += buffer / 2
+        return helpers.bounding_boxes_overlap(min_x1, min_y1, max_x1, max_y1, *line_bbox)
+
+    def _point_in_plaza_bbox(self, point, plaza_geometry):
+        """ determines whether a point is inside the bounding box of the plaza """
+        min_x, min_y, max_x, max_y = plaza_geometry.bounds
+        return helpers.point_in_bounding_box(point, min_x, min_y, max_x, max_y)
+
+
+class VisibilityGraphProcessor:
+    def __init__(self):
+        self.plaza_geometry = None
+        self.entry_points = []
+        self.graph_edges = []
+
+    def create_graph_edges(self):
         """ create a visibility graph with all plaza and entry points """
-        plaza_coords = self.get_polygon_coords(
-            self.plaza_geometry)  # TODO: extract
-        entry_coords = [(p.x, p.y) for p in entry_points]
+        if not self.plaza_geometry:
+            raise "Plaza geometry not defined for visibility graph processor"
+        if not self.entry_points:
+            raise "No entry points defined for graph processor"
+
+        plaza_coords = helpers.get_polygon_coords(self.plaza_geometry)
+        entry_coords = [(p.x, p.y) for p in self.entry_points]
         all_coords = set().union(plaza_coords, entry_coords)
         indexed_coords = {i: coords for i, coords in enumerate(all_coords)}
-        edges = []
         for start_id, start_coords in indexed_coords.items():
             for end_id, end_coords in indexed_coords.items():
                 if (start_id > end_id):
                     line = LineString([start_coords, end_coords])
                     if self._line_visible(line):
-                        edges.append(line)
-        return edges
+                        self.graph_edges.append(line)
 
     def _line_visible(self, line):
         """ check if the line is "visible", i.e. unobstructed through the plaza """
         return line.equals(self.plaza_geometry.intersection(line))
 
-    def get_polygon_coords(self, polygon):
-        """ return a list of coordinates of all points in a multipolygon """
-        coords = list(polygon.exterior.coords)
-        for ring in polygon.interiors:
-            coords.extend(ring.coords)
-        return coords
 
-    def create_spiderweb_graph(self, entry_points, spacing_m=1):
+class SpiderWebGraphProcessor:
+    def __init__(self, spacing_m):
+        self.spacing_m = spacing_m
+        self.plaza_geometry = None
+        self.entry_points = []
+        self.graph_edges = []
+
+    def create_graph_edges(self):
         """ create a spiderwebgraph and connect edges to entry points """
-        graph_edges = self.calc_spiderwebgraph(spacing_m)
-        return graph_edges
+        if not self.plaza_geometry:
+            raise "Plaza geometry not defined for spiderwebgraph processor"
+        if not self.entry_points:
+            raise "No entry points defined for spiderwebgraph processor"
+        self._calc_spiderwebgraph()
+        self._connect_entry_points_with_graph()
 
-    def calc_spiderwebgraph(self, spacing_m):
+    def _calc_spiderwebgraph(self):
         """ calculate spider web graph edges"""
-        spacing = self.meters_to_degrees(spacing_m)
+        spacing = helpers.meters_to_degrees(self.spacing_m)
         x_left, y_bottom, x_right, y_top = self.plaza_geometry.bounds
 
         # based on https://github.com/michaelminn/mmqgis
         rows = int(ceil((y_top - y_bottom) / spacing))
         columns = int(ceil((x_right - x_left) / spacing))
 
-        graph_lines = []
         for column in range(0, columns + 1):
             for row in range(0, rows + 1):
 
@@ -155,22 +191,24 @@ class PlazaPreprocessor:
 
                 # horizontal line
                 if column < columns:
-                    graph_lines.append(
-                        self._get_spiderweb_intersection_line(top_left, top_right))
+                    h_line = self._get_spiderweb_intersection_line(top_left, top_right)
+                    if h_line:
+                        self.graph_edges.append(h_line)
 
                 # vertical line
                 if row < rows:
-                    graph_lines.append(
-                        self._get_spiderweb_intersection_line(top_left, bottom_left))
+                    v_line = self._get_spiderweb_intersection_line(top_left, bottom_left)
+                    if v_line:
+                        self.graph_edges.append(v_line)
 
                 # diagonal line
                 if row < rows and column < columns:  # TODO correct constraint?
-                    graph_lines.append(
-                        self._get_spiderweb_intersection_line(top_left, bottom_right))
-                    graph_lines.append(
-                        self._get_spiderweb_intersection_line(bottom_left, top_right))
-
-        return graph_lines
+                    d1_line = self._get_spiderweb_intersection_line(top_left, bottom_right)
+                    if d1_line:
+                        self.graph_edges.append(d1_line)
+                    d2_line = self._get_spiderweb_intersection_line(bottom_left, top_right)
+                    if d2_line:
+                        self.graph_edges.append(d2_line)
 
     def _get_spiderweb_intersection_line(self, start, end):
         """ returns a line that is completely inside the plaza, if possible """
@@ -180,47 +218,17 @@ class PlazaPreprocessor:
             return None
         return self.plaza_geometry.intersection(line)
 
-    def line_in_plaza_approx(self, line, plaza_geometry, buffer=0):
-        """
-        determines if a line's bounding box is in the bounding box of the plaza,
-        with optional buffer in degrees (enlarged bounding box)
-        """
-        min_x1, min_y1, max_x1, max_y1 = plaza_geometry.bounds
-        line_bbox = line.bounds
-        min_x1 -= buffer / 2
-        min_y1 -= buffer / 2
-        max_x1 += buffer / 2
-        max_y1 += buffer / 2
-        return self._bounding_boxes_overlap(min_x1, min_y1, max_x1, max_y1, *line_bbox)
+    def _connect_entry_points_with_graph(self):
+        print('connecting entry points')
+        connection_lines = []
+        for entry_point in self.entry_points:
+            neighbor_line = helpers.find_nearest_geometry(entry_point, self.graph_edges)
 
-    def _bounding_boxes_overlap(self, min_x1, min_y1, max_x1, max_y1, min_x2, min_y2, max_x2, max_y2):
-        """ takes two bounding boxes and checks if they overlap """
-        if min_x1 <= min_x2 and max_x1 <= min_x2:
-            return False
-        if min_y1 <= min_y2 and max_y1 <= min_y2:
-            return False
-        if min_x1 >= max_x2 or min_y1 >= max_y2:
-            return False
-
-        return True
-
-    def point_in_plaza_bbox(self, point, plaza_geometry):
-        """ determines whether a point is inside the bounding box of the plaza """
-        min_x, min_y, max_x, max_y = plaza_geometry.bounds
-        return self.point_in_bounding_box(point, min_x, min_y, max_x, max_y)
-
-    def point_in_bounding_box(self, point, min_x, min_y, max_x, max_y):
-        if point.x < min_x or point.x > max_x:
-            return False
-        if point.y < min_y or point.y > max_y:
-            return False
-        return True
-
-    def meters_to_degrees(self, meters):
-        """ convert meters to approximate degrees """
-        #  meters * 360 / (2 * PI * 6400000)
-        # multiply by (1/cos(lat) for longitude)
-        return meters * 1 / 111701
+            target_point = min(
+                neighbor_line.coords, key=lambda c: Point(c).distance(entry_point))
+            connection_line = (LineString([(entry_point.x, entry_point.y), target_point]))
+            connection_lines.append(connection_line)
+        self.graph_edges.extend(connection_lines)
 
 
 def preprocess_plazas(osm_holder):
@@ -229,8 +237,9 @@ def preprocess_plazas(osm_holder):
     # plaza = next(p for p in osm_holder.plazas if p['osm_id'] == 4533221)
     # test for Bahnhofplatz Bern
     # plaza = next(p for p in osm_holder.plazas if p['osm_id'] == 5117701)
+
     # processor = PlazaPreprocessor(
-    #   plaza['geometry'], osm_holder.lines, osm_holder.buildings, osm_holder.points)
+    #     plaza['osm_id'], plaza['geometry'], osm_holder, SpiderWebGraphProcessor(spacing_m=1))
     # processor.process_plaza()
 
     for plaza in osm_holder.plazas:
@@ -238,16 +247,16 @@ def preprocess_plazas(osm_holder):
         if isinstance(plaza['geometry'], MultiPolygon):
             for polygon in plaza['geometry']:
                 processor = PlazaPreprocessor(
-                   plaza['osm_id'], polygon, osm_holder.lines, osm_holder.buildings, osm_holder.points)
+                    plaza['osm_id'], polygon, osm_holder, SpiderWebGraphProcessor(spacing_m=2))
                 processor.process_plaza()
 
         else:
             processor = PlazaPreprocessor(
-                plaza['osm_id'], plaza, osm_holder.lines, osm_holder.buildings, osm_holder.points)
+                plaza['osm_id'], plaza, osm_holder, SpiderWebGraphProcessor(spacing_m=2))
             processor.process_plaza()
 
 
 if __name__ == '__main__':
     # holder = importer.import_osm('data/helvetiaplatz_umfeld.osm')
-    holder = importer.import_osm('data/switzerland-exact.osm.pbf')
+    holder = importer.import_osm('data/switzerland.pbf')
     preprocess_plazas(holder)

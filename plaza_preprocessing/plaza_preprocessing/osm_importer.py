@@ -1,4 +1,5 @@
 import osmium
+from osmium._osmium import InvalidLocationError
 import shapely.wkb as wkblib
 
 PBF_PATH = "data/helvetiaplatz_umfeld.osm"
@@ -56,8 +57,11 @@ class _PlazaHandler(osmium.SimpleHandler):
             try:
                 wkb = WKBFAB.create_linestring(w)
                 self.lines.append(wkblib.loads(wkb, hex=True))
-            except:
+            except InvalidLocationError:
                 print(f'Invalid location in {w.id}')
+                self.invalid_count += 1
+            except RuntimeError as ex:
+                print(f'Error with {w.id}, {len(w.nodes)} nodes: {ex}')
                 self.invalid_count += 1
 
     def area(self, a):
