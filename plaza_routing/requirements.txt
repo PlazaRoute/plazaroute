@@ -1,0 +1,1 @@
+flask-restplus==0.10.1
