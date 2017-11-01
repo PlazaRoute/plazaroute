@@ -10,3 +10,7 @@ def test_get_public_transport_stops():
     overpass_api.get_public_transport_stops(
         sechselaeutenplatz['latitude'], sechselaeutenplatz['longitude'])
     assert True
+
+
+def test_get_inital_public_transport_stop_position():
+    assert True
