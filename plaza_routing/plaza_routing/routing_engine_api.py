@@ -16,6 +16,11 @@ class Strategy(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def route(self, start, destination):
+        """
+        Returns an array of coordinates for a route defined by
+        start and destination.
+        Ex. [[8.544978, 47.366343], [8.545068, 47.366354]]
+        """
         pass
 
 
@@ -32,14 +37,14 @@ class GraphhopperStrategy(Strategy):
                                                 points_encoded=False,
                                                 instructions=False,
                                                 key='').result()
-        return result
+        # return the first path
+        return result.paths[0].points.coordinates
 
 
 def main():
     routing_engine = RoutingEngine(GraphhopperStrategy())
     result = routing_engine.route('47.366353,8.544976', '47.365888,8.54709')
-    for path in result.paths:
-        print(path.points.coordinates)
+    print(result)
 
 
 if __name__ == "__main__":
