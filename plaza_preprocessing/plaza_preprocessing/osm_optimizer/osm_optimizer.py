@@ -216,7 +216,8 @@ class SpiderWebGraphProcessor:
         # if not line_visible(line, plaza_geometry):
         if not self.plaza_geometry.intersects(line):
             return None
-        return self.plaza_geometry.intersection(line)
+        intersection = self.plaza_geometry.intersection(line)
+        return intersection if isinstance(intersection, LineString) else None
 
     def _connect_entry_points_with_graph(self):
         print('connecting entry points')
@@ -258,5 +259,6 @@ def preprocess_plazas(osm_holder):
 
 if __name__ == '__main__':
     # holder = importer.import_osm('data/helvetiaplatz_umfeld.osm')
-    holder = importer.import_osm('data/switzerland.pbf')
+    # holder = importer.import_osm('data/switzerland-exact.osm.pbf')
+    holder = importer.import_osm('data/stadt-zuerich.pbf')
     preprocess_plazas(holder)
