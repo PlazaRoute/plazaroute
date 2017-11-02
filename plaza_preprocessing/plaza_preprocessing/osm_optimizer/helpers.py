@@ -1,4 +1,5 @@
 """ helper functions """
+from shapely.geometry import Point, MultiPoint, LineString, MultiLineString, GeometryCollection
 
 def point_in_bounding_box(point, min_x, min_y, max_x, max_y):
     if point.x < min_x or point.x > max_x:
@@ -6,6 +7,22 @@ def point_in_bounding_box(point, min_x, min_y, max_x, max_y):
     if point.y < min_y or point.y > max_y:
         return False
     return True
+
+
+def unpack_geometry_coordinates(geometry):
+    """ return a list with every point in LineString and Point geometries """
+    geom_type = type(geometry)
+    if geom_type == GeometryCollection:
+        coords = []
+        for geom in geometry:
+            coords.extend(unpack_geometry_coordinates(geom))
+        return coords
+    elif geom_type == MultiLineString or geom_type == MultiPoint:
+        return [c for element in geometry for c in element.coords]
+    elif geom_type == LineString or geom_type == Point:
+        return list(geometry.coords)
+    else:
+        raise ValueError(f"Unsupported Geometry type {type(geometry)}")
 
 
 def meters_to_degrees(meters):

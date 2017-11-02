@@ -2,8 +2,7 @@ from plaza_preprocessing import osm_importer as importer
 from plaza_preprocessing.osm_merger import geojson_writer
 from plaza_preprocessing.osm_optimizer import helpers
 from math import ceil
-from shapely.geometry import (Point, MultiPoint, LineString, MultiLineString,
-                              MultiPolygon, box)
+from shapely.geometry import Point, LineString, MultiPolygon, box
 
 
 class PlazaPreprocessor:
@@ -19,17 +18,24 @@ class PlazaPreprocessor:
     def process_plaza(self):
         """ process a single plaza """
         entry_points = self._calc_entry_points()
+
         if len(entry_points) < 2:
             print(f"Plaza {self.osm_id} has fewer than 2 entry points")
             return
-        geojson_writer.write_geojson(entry_points, 'entry_points.geojson')
+
         self._insert_obstacles()
+        if not self.plaza_geometry:
+            # TODO: Log
+            print(f"Plaza {self.osm_id} is completely obstructed by obstacles")
+            return
+
         geojson_writer.write_geojson([self.plaza_geometry], 'plaza.geojson')
 
         self.graph_processor.entry_points = entry_points
         self.graph_processor.plaza_geometry = self.plaza_geometry
         self.graph_processor.create_graph_edges()
-        geojson_writer.write_geojson(self.graph_processor.graph_edges, 'edges.geojson')
+        geojson_writer.write_geojson(
+            self.graph_processor.graph_edges, 'edges.geojson')
 
     def _calc_entry_points(self):
         """
@@ -131,9 +137,9 @@ class VisibilityGraphProcessor:
     def create_graph_edges(self):
         """ create a visibility graph with all plaza and entry points """
         if not self.plaza_geometry:
-            raise "Plaza geometry not defined for visibility graph processor"
+            raise ValueError("Plaza geometry not defined for visibility graph processor")
         if not self.entry_points:
-            raise "No entry points defined for graph processor"
+            raise ValueError("No entry points defined for graph processor")
 
         plaza_coords = helpers.get_polygon_coords(self.plaza_geometry)
         entry_coords = [(p.x, p.y) for p in self.entry_points]
@@ -161,9 +167,9 @@ class SpiderWebGraphProcessor:
     def create_graph_edges(self):
         """ create a spiderwebgraph and connect edges to entry points """
         if not self.plaza_geometry:
-            raise "Plaza geometry not defined for spiderwebgraph processor"
+            raise ValueError("Plaza geometry not defined for spiderwebgraph processor")
         if not self.entry_points:
-            raise "No entry points defined for spiderwebgraph processor"
+            raise ValueError("No entry points defined for spiderwebgraph processor")
         self._calc_spiderwebgraph()
         self._connect_entry_points_with_graph()
 
