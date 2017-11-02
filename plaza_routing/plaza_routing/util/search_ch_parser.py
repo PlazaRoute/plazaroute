@@ -3,6 +3,10 @@ import colander
 
 
 class ExitType(colander.SchemaType):
+    """
+    The exit attribute is not always defined and there is no other
+    solution to define a default value for a colander.MappingSchema.
+    """
     def serialize(self, node, appstruct):
         raise NotImplementedError()
 
@@ -49,6 +53,7 @@ class SearchChResponse(colander.MappingSchema):
 
 
 def parse_connections(response):
+    """ parses a search.ch response to a suitable data structure """
     try:
         return SearchChResponse().deserialize(json.loads(response))
     except colander.Invalid as e:
