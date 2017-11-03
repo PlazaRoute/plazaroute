@@ -6,22 +6,15 @@ def test_get_public_transport_stops():
     expected_response = set(['Zürich, Kreuzstrasse', 'Zürich, Opernhaus', 'Zürich, Bürkliplatz',
                              'Zürich, Kunsthaus', 'Zürich Stadelhofen FB', 'Zürich, Bellevue',
                              'Zürich Stadelhofen', 'Zürich, Helmhaus'])
-    sechselaeutenplatz = {
-            'latitude': 47.3661,
-            'longitude': 8.5458
-    }
-    stops = overpass_api.get_public_transport_stops(
-        sechselaeutenplatz['latitude'], sechselaeutenplatz['longitude'])
+    sechselaeutenplatz = (47.3661, 8.5458)
+    stops = overpass_api.get_public_transport_stops(sechselaeutenplatz)
     assert expected_response == stops
 
 
 def test_get_public_transport_stops_empty_result():
-    obersee = {
-            'latitude': 47.2100,
-            'longitude': 8.8249
-    }
+    obersee = (47.2100, 8.8249)
     with pytest.raises(ValueError):
-        overpass_api.get_public_transport_stops(obersee['latitude'], obersee['longitude'])
+        overpass_api.get_public_transport_stops(obersee)
 
 
 def test_get_initial_public_transport_stop_position():
