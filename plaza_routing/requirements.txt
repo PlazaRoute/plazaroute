@@ -1,2 +1,3 @@
 requests==2.18.4
 colander==1.4
+bravado==9.1.1
