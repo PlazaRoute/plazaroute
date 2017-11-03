@@ -55,19 +55,13 @@ def _get_public_transport_lines(start_position,
     """
     bbox = _parse_bounding_box(*start_position)
     query_str = f"""
-        (
-            node["uic_ref"={exit_uic_ref}];
-        );
-        out body;
-        rel(bn:"stop")({bbox})["type"="route"]["ref"={line}];
-        (
-            node(r)["uic_ref"={start_uic_ref}]({bbox});
-        );
-        out body;
-        relation["type"="route"]["ref"={line}]({bbox});
-        out body;
+        node(r:"stop")["uic_ref"={start_uic_ref}]({bbox});
+        rel({bbox})["type"="route"]["ref"={line}]->.lines;
+        (.lines;);
+        out;
+        node(r.lines:"stop")["uic_ref"~"{start_uic_ref}|{exit_uic_ref}"];
+        out;
         """
-
     result = API.query(query_str)
     return _merge_nodes_with_corresponding_relation(
         result.nodes, result.relations, start_uic_ref)
