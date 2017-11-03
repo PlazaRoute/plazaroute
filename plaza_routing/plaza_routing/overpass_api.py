@@ -2,7 +2,7 @@ import overpy
 import math
 
 OVERPASS_API_URL = 'http://overpass.osm.ch/api/interpreter'
-BOUNDING_BOX_BUFFER_METERS = 200
+BOUNDING_BOX_BUFFER_METERS = 1000
 
 API = overpy.Overpass(url=OVERPASS_API_URL)
 
@@ -19,11 +19,14 @@ def get_public_transport_stops(latitude, longitude):
         """
 
     public_transport_stops = API.query(query_str)
+    if not public_transport_stops.nodes:
+        raise ValueError('no public transport stops found for the given location and range')
+
     return set(stop.tags.get('uic_name') for stop in public_transport_stops.nodes)
 
 
 def get_initial_public_transport_stop_position(start_position, line,
-                                              start_uic_ref, exit_uic_ref):
+                                               start_uic_ref, exit_uic_ref):
     """
     Retrieves the initial public transport stop position (latitude, longitude)
     for a specific uic_ref (start_uic_ref). OSM returns multiple public transport
@@ -37,7 +40,8 @@ def get_initial_public_transport_stop_position(start_position, line,
     lines = _get_public_transport_lines(start_position,
                                         line, start_uic_ref, exit_uic_ref)
     start_node = _get_public_transport_stop_node(lines)
-    return (start_node.lat, start_node.lon)
+    # TODO work with Decimal objects or parse to floats
+    return (float(start_node.lat), float(start_node.lon))
 
 
 def _get_public_transport_lines(start_position,
@@ -97,7 +101,7 @@ def _get_public_transport_stop_node(lines):
                 start_node = line['start']
                 return start_node
             elif member.ref == line['exit'].id:
-                continue
+                break
     raise RuntimeError("Start node of transport lines not found")
 
 
