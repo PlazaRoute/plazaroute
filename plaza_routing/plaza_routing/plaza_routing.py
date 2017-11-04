@@ -2,25 +2,30 @@ from flask import Flask
 from flask_restplus import Resource, Api, reqparse
 
 app = Flask(__name__)
-api = Api(app, version='1.0', title='PlazaRouting API',
+api = Api(app,
+          version='1.0', title='PlazaRouting API',
           description='PlazaRouting API'
           )
 
 ns = api.namespace('api', description='Routing operations')
 
-parser = reqparse.RequestParser()
-parser.add_argument('start', type=str, required=True, help='Start cannot be converted')
-parser.add_argument('destination', type=str, required=True, help='Destination cannot be converted')
+routing_arguments = reqparse.RequestParser()
+routing_arguments.add_argument('start', type=str, required=True, help='Start locaton')
+routing_arguments.add_argument('destination', type=str, required=True, help='Destination address')
+
 
 @ns.route('/route')
 class PlazaRouting(Resource):
 
-    @ns.expect(parser, validate=True)
-    @ns.param('start', description='Start location')
-    @ns.param('destination', description='Destination address')
+    @ns.expect(routing_arguments, validate=True)
+    @api.response(200, 'Route successfully retrieved.')
     def get(self):
-        args = parser.parse_args()
-        return {'start': args.get('start'), 'destination': args.get('destination')}
+        args = routing_arguments.parse_args()
+        return route(args.get('start'), args.get('destination'))
+
+
+def route(start, destination):
+    return {'coordinates': [[47.1008, 8.6711], [47.1098, 8.6712]]}
 
 
 if __name__ == '__main__':
