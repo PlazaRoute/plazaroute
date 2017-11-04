@@ -15,12 +15,13 @@ class PlazaPreprocessor:
         self.buildings = osm_holder.buildings
         self.points = osm_holder.points
         self.graph_processor = graph_processor
+        self.entry_points = None
 
     def process_plaza(self):
         """ process a single plaza """
-        entry_points = self._calc_entry_points()
+        self._calc_entry_points()
 
-        if len(entry_points) < 2:
+        if len(self.entry_points) < 2:
             print(f"Plaza {self.osm_id} has fewer than 2 entry points")
             return
 
@@ -32,7 +33,7 @@ class PlazaPreprocessor:
 
         geojson_writer.write_geojson([self.plaza_geometry], 'plaza.geojson')
 
-        self.graph_processor.entry_points = entry_points
+        self.graph_processor.entry_points = self.entry_points
         self.graph_processor.plaza_geometry = self.plaza_geometry
         self.graph_processor.create_graph_edges()
         geojson_writer.write_geojson(
@@ -46,16 +47,14 @@ class PlazaPreprocessor:
         """
         intersecting_lines = self._find_intersescting_lines()
 
-        entry_points = []
         for line in intersecting_lines:
             intersection = line.intersection(self.plaza_geometry)
 
-            intersection_coords = helpers.unpack_geometry_coordinates(intersection)
+            intersection_coords = helpers.unpack_geometry_coordinates(
+                intersection)
             intersection_points = list(map(Point, intersection_coords))
-            entry_points.extend(
+            self.entry_points.extend(
                 [p for p in intersection_points if self.plaza_geometry.touches(p)])
-
-        return entry_points
 
     def _find_intersescting_lines(self):
         """ return every line that intersects with the plaza """
@@ -64,7 +63,6 @@ class PlazaPreprocessor:
         # lines_in_approx = list(
         #     filter(lambda l: line_in_plaza_approx(l, plaza_geometry, buffer=bbox_buffer), lines))
         return list(filter(self.plaza_geometry.intersects, self.lines))
-
 
     def _insert_obstacles(self):
         """ cuts out holes for obstacles on the plaza geometry """
@@ -139,7 +137,7 @@ def preprocess_plazas(osm_holder):
         processor = PlazaPreprocessor(
             plaza['osm_id'], plaza['geometry'], osm_holder, SpiderWebGraphProcessor(spacing_m=5))
         plaza['graph_edges'] = processor.process_plaza()
-        # TODO: Add entry points
+        plaza['entry_points'] = processor.entry_points
 
 
 if __name__ == '__main__':
