@@ -18,7 +18,7 @@ def unpack_geometry_coordinates(geometry):
             coords.union(unpack_geometry_coordinates(geom))
         return coords
     elif geom_type == MultiLineString or geom_type == MultiPoint:
-        return [c for element in geometry for c in element.coords]
+        return set().union([c for element in geometry for c in element.coords])
     elif geom_type == LineString or geom_type == Point:
         return set(geometry.coords)
     else:
