@@ -6,16 +6,14 @@ api = Api(app,
           version='1.0', title='PlazaRouting API',
           description='PlazaRouting API'
           )
-
 ns = api.namespace('api', description='Routing operations')
 
 routing_arguments = reqparse.RequestParser()
 routing_arguments.add_argument('start', type=str, required=True, help='Start locaton')
 routing_arguments.add_argument('destination', type=str, required=True, help='Destination address')
 
-
 routing_response_model = api.model('RoutingResponse', {
-    'coordinates': fields.List(fields.List(fields.Float)),
+    'coordinates': fields.List(fields.List(fields.Float))
 })
 
 
