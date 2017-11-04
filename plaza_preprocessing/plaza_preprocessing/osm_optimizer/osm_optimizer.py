@@ -3,7 +3,7 @@ from plaza_preprocessing.osm_merger import geojson_writer
 from plaza_preprocessing.osm_optimizer import helpers
 from plaza_preprocessing.osm_optimizer.visibilitygraphprocessor import VisibilityGraphProcessor
 from plaza_preprocessing.osm_optimizer.spiderwebgraphprocessor import SpiderWebGraphProcessor
-from shapely.geometry import Point, LineString, MultiPolygon, box
+from shapely.geometry import Point, MultiPolygon, box
 
 
 class PlazaPreprocessor:
@@ -26,18 +26,15 @@ class PlazaPreprocessor:
             return
 
         self._insert_obstacles()
+        geojson_writer.write_geojson([self.plaza_geometry], 'plaza.geojson')
         if not self.plaza_geometry:
             # TODO: Log
             print(f"Plaza {self.osm_id} is completely obstructed by obstacles")
             return
 
-        geojson_writer.write_geojson([self.plaza_geometry], 'plaza.geojson')
-
         self.graph_processor.entry_points = self.entry_points
         self.graph_processor.plaza_geometry = self.plaza_geometry
         self.graph_processor.create_graph_edges()
-        geojson_writer.write_geojson(
-            self.graph_processor.graph_edges, 'edges.geojson')
 
         return self.graph_processor.graph_edges
 
@@ -46,15 +43,16 @@ class PlazaPreprocessor:
         calculate points where lines intersect with the outer ring of the plaza
         """
         intersecting_lines = self._find_intersescting_lines()
-
+        intersection_coords = set()
         for line in intersecting_lines:
             intersection = line.intersection(self.plaza_geometry)
+            intersection_coords = intersection_coords.union(
+                helpers.unpack_geometry_coordinates(intersection))
 
-            intersection_coords = helpers.unpack_geometry_coordinates(
-                intersection)
-            intersection_points = list(map(Point, intersection_coords))
-            self.entry_points.extend(
-                [p for p in intersection_points if self.plaza_geometry.touches(p) and p not in self.entry_points])
+        intersection_points = list(map(Point, intersection_coords))
+        self.entry_points.extend(
+            [p for p in intersection_points if self.plaza_geometry.touches(p)])
+
 
     def _find_intersescting_lines(self):
         """ return every line that intersects with the plaza """
