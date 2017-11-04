@@ -10,17 +10,17 @@ def point_in_bounding_box(point, min_x, min_y, max_x, max_y):
 
 
 def unpack_geometry_coordinates(geometry):
-    """ return a list with every point in LineString and Point geometries """
+    """ return a set with every point in LineString and Point geometries """
     geom_type = type(geometry)
     if geom_type == GeometryCollection:
-        coords = []
+        coords = set()
         for geom in geometry:
-            coords.extend(unpack_geometry_coordinates(geom))
+            coords.union(unpack_geometry_coordinates(geom))
         return coords
     elif geom_type == MultiLineString or geom_type == MultiPoint:
         return [c for element in geometry for c in element.coords]
     elif geom_type == LineString or geom_type == Point:
-        return list(geometry.coords)
+        return set(geometry.coords)
     else:
         raise ValueError(f"Unsupported Geometry type {type(geometry)}")
 

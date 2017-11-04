@@ -15,7 +15,7 @@ class PlazaPreprocessor:
         self.buildings = osm_holder.buildings
         self.points = osm_holder.points
         self.graph_processor = graph_processor
-        self.entry_points = None
+        self.entry_points = []
 
     def process_plaza(self):
         """ process a single plaza """
@@ -54,7 +54,7 @@ class PlazaPreprocessor:
                 intersection)
             intersection_points = list(map(Point, intersection_coords))
             self.entry_points.extend(
-                [p for p in intersection_points if self.plaza_geometry.touches(p)])
+                [p for p in intersection_points if self.plaza_geometry.touches(p) and p not in self.entry_points])
 
     def _find_intersescting_lines(self):
         """ return every line that intersects with the plaza """
