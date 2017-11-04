@@ -37,6 +37,8 @@ class PlazaPreprocessor:
         geojson_writer.write_geojson(
             self.graph_processor.graph_edges, 'edges.geojson')
 
+        return self.graph_processor.graph_edges
+
     def _calc_entry_points(self):
         """
         calculate points where lines intersect with the outer ring of the plaza
@@ -46,21 +48,11 @@ class PlazaPreprocessor:
         entry_points = []
         for line in intersecting_lines:
             intersection = line.intersection(self.plaza_geometry)
-            intersection_type = type(intersection)
-            if intersection_type == Point:
-                entry_points.append(intersection)
-            elif intersection_type == MultiPoint:
-                entry_points.extend(list(intersection))
-            else:
-                intersection_coords = []
-                if intersection_type == MultiLineString:
-                    intersection_coords.extend(
-                        [c for line in intersection for c in line.coords])
-                else:
-                    intersection_coords = list(intersection.coords)
-                intersection_points = list(map(Point, intersection_coords))
-                entry_points.extend(
-                    [p for p in intersection_points if self.plaza_geometry.touches(p)])
+
+            intersection_coords = helpers.unpack_geometry_coordinates(intersection)
+            intersection_points = list(map(Point, intersection_coords))
+            entry_points.extend(
+                [p for p in intersection_points if self.plaza_geometry.touches(p)])
 
         return entry_points
 
@@ -71,6 +63,7 @@ class PlazaPreprocessor:
         # lines_in_approx = list(
         #     filter(lambda l: line_in_plaza_approx(l, plaza_geometry, buffer=bbox_buffer), lines))
         return list(filter(self.plaza_geometry.intersects, self.lines))
+
 
     def _insert_obstacles(self):
         """ cuts out holes for obstacles on the plaza geometry """
@@ -244,23 +237,21 @@ def preprocess_plazas(osm_holder):
     # plaza = next(p for p in osm_holder.plazas if p['osm_id'] == 4533221)
     # test for Bahnhofplatz Bern
     # plaza = next(p for p in osm_holder.plazas if p['osm_id'] == 5117701)
+    # plaza = next(p for p in osm_holder.plazas if p['osm_id'] == 182055194)
 
     # processor = PlazaPreprocessor(
-    #     plaza['osm_id'], plaza['geometry'], osm_holder, SpiderWebGraphProcessor(spacing_m=1))
+    #     plaza['osm_id'], plaza['geometry'], osm_holder, SpiderWebGraphProcessor(spacing_m=2))
     # processor.process_plaza()
 
     for plaza in osm_holder.plazas:
         print(f"processing plaza {plaza['osm_id']}")
-        if isinstance(plaza['geometry'], MultiPolygon):
-            for polygon in plaza['geometry']:
-                processor = PlazaPreprocessor(
-                    plaza['osm_id'], polygon, osm_holder, SpiderWebGraphProcessor(spacing_m=2))
-                processor.process_plaza()
+        graph_edges = []
+        processor = PlazaPreprocessor(
+            plaza['osm_id'], plaza['geometry'], osm_holder, VisibilityGraphProcessor())
+        graph_edges.append(processor.process_plaza())
 
-        else:
-            processor = PlazaPreprocessor(
-                plaza['osm_id'], plaza, osm_holder, SpiderWebGraphProcessor(spacing_m=2))
-            processor.process_plaza()
+        plaza['graph_edges'] = graph_edges
+        # TODO: Add entry points
 
 
 if __name__ == '__main__':
