@@ -1,0 +1,11 @@
+language: python
+python:
+  - "3.6"
+install:
+  - cd plaza_routing
+  - pip install .
+  - pip install -r requirements.txt
+  - pip install -r requirements-dev.txt
+# command to run tests
+script:
+  - pytest # or py.test for Python versions 3.5 and below
