@@ -14,7 +14,7 @@ def import_osm(filename):
     handler = _PlazaHandler()
     # index_type = 'dense_file_array' # uses over 25GB of space for Switzerland
     index_type = 'sparse_mem_array'
-    handler.apply_file(filename, locations=False, idx=index_type)
+    handler.apply_file(filename, locations=True, idx=index_type)
     print(f'{len(handler.plazas)} plazas')
     print(f'{len(handler.buildings)} buildings')
     print(f'{len(handler.lines)} lines')

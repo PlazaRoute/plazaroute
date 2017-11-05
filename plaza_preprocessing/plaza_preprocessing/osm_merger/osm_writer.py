@@ -1,3 +1,4 @@
+from osmium import SimpleWriter
 from osmium.osm.mutable import Way, Node
 
 class OSMWriter:
@@ -24,14 +25,20 @@ class OSMWriter:
             for edge in plaza['graph_edges']:
                 self._create_way(edge)
 
-            self.entry_node_mappings[plaza.get('outer_ring_id')] = list(map(
-                lambda p: self._get_node_id((p.x, p.y)),
-                plaza['entry_points']))
+            self.entry_node_mappings[plaza.get('outer_ring_id')] = [
+                {'id': self._get_node_id((p.x, p.y)), 'coords': (p.x, p.y)}
+                for p in plaza['entry_points']]
 
     def write_to_file(self, filename):
         """ write the nodes and ways to an OSM file """
-        # TODO: Write using Osmium Writer
-        pass
+        writer = SimpleWriter(filename)
+        try:
+            for node in self.nodes.values():
+                writer.add_node(node)
+            for way in self.ways:
+                writer.add_way(way)
+        finally:
+            writer.close()
 
     def _create_way(self, edge):
         """ create a way with corresponding nodes """
