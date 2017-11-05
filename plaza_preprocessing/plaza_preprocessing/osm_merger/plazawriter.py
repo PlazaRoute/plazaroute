@@ -1,7 +1,8 @@
+from datetime import datetime
 from osmium import SimpleWriter
 from osmium.osm.mutable import Way, Node
 
-class OSMWriter:
+class PlazaWriter:
     """
     Reads plaza graph edges and produces an OSM Format
     """
@@ -47,7 +48,11 @@ class OSMWriter:
             node_refs.append(self._get_node_id(coords))
         way_id = self._get_new_way_osm_id()
         way = Way(nodes=node_refs)
+        # TODO: configurable tags
+        way.tags = [('highway', 'footway')]
         way.id = way_id
+        way.version = 1
+        way.timestamp = self._create_osm_timestamp()
         self.ways.append(way)
 
 
@@ -61,6 +66,8 @@ class OSMWriter:
             node_id = self._get_new_node_osm_id()
             node = Node(location=coords)
             node.id = node_id
+            node.version = 1
+            node.timestamp = self._create_osm_timestamp()
             self.nodes[coords] = node
             return node_id
 
@@ -71,3 +78,7 @@ class OSMWriter:
     def _get_new_way_osm_id(self):
         self.osm_id_ways += 1
         return self.osm_id_ways
+
+    def _create_osm_timestamp(self):
+        now = datetime.utcnow()
+        return now.strftime('%Y-%m-%dT%H:%M:%SZ')

@@ -2,8 +2,8 @@ import osmium
 from osmium._osmium import InvalidLocationError
 import shapely.wkb as wkblib
 
-PBF_PATH = "data/helvetiaplatz_umfeld.osm"
-# PBF_PATH = "data/switzerland-exact.osm.pbf"
+# PBF_PATH = "data/helvetiaplatz_umfeld.osm"
+PBF_PATH = "switzerland-exact.osm.pbf"
 
 WKBFAB = osmium.geom.WKBFactory()
 
