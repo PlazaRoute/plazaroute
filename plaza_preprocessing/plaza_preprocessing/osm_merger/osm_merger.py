@@ -20,7 +20,8 @@ class WayExtractor(SimpleHandler):
             w_mutable = w.replace()
             self.ways[w.id] = {
                 'version': w.version,
-                'nodes': [{'id': n.ref, 'coords': (n.lon, n.lat)} for n in w.nodes]
+                'nodes': [{'id': n.ref, 'coords': (n.lon, n.lat)} for n in w.nodes],
+                'tags': {t.k: t.v for t in w.tags}
             }
 
 
@@ -66,7 +67,7 @@ def write_modified_ways(plaza_ways, filename):
         osm_way = Way(nodes=node_refs)
         osm_way.id = way_id
         # TODO: write same tags as original way
-        osm_way.tags = [('highway', 'footway')]
+        osm_way.tags = way['tags']
         # increase version number to overwrite original way
         osm_way.version = way['version'] + 1
         osm_way.timestamp = _create_osm_timestamp()
