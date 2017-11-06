@@ -9,10 +9,11 @@ install:
   - pip install -r plaza_routing/requirements-dev.txt
   - pip install -r plaza_preprocessing/requirements-dev.txt
 script:
-  - pip install --editable plaza_preprocessing/
-  - pytest plaza_preprocessing/
+  # TODO: build libboost-python for python3
+  # - pip install --editable plaza_preprocessing/
+  # - pytest plaza_preprocessing/
   - pip install --editable plaza_routing/
-  - pytest plaza_preprocessing/
+  - pytest plaza_routing/
 addons:
   apt:
     packages:
