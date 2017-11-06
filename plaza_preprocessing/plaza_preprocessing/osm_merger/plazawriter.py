@@ -12,7 +12,7 @@ class PlazaWriter:
         # use coordinates as keys and osmium objects as values
         self.nodes = {}
         self.ways = []
-        # maps outer ring ways of plazas to entry node ids
+        # maps entry ways of plazas to entry node ids
         self.entry_node_mappings = {}
 
     def read_plazas(self, plazas):
@@ -26,9 +26,11 @@ class PlazaWriter:
             for edge in plaza['graph_edges']:
                 self._create_way(edge)
 
-            self.entry_node_mappings[plaza.get('outer_ring_id')] = [
-                {'id': self._get_node_id((p.x, p.y)), 'coords': (p.x, p.y)}
-                for p in plaza['entry_points']]
+            for entry_line in plaza.get('entry_lines'):
+                self.entry_node_mappings[entry_line['way_id']] = [
+                    {'id': self._get_node_id((p.x, p.y)), 'coords': (p.x, p.y)}
+                    for p in entry_line['entry_points']]
+
 
     def write_to_file(self, filename):
         """ write the nodes and ways to an OSM file """

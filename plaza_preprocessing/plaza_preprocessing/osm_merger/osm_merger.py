@@ -16,7 +16,7 @@ class WayExtractor(SimpleHandler):
 
     def way(self, w):
         """ collect outer rings of plazas into a dictionary"""
-        if w.is_closed() and w.id in self.entry_node_mappings:
+        if w.id in self.entry_node_mappings:
             w_mutable = w.replace()
             self.ways[w.id] = {
                 'version': w.version,
@@ -58,15 +58,15 @@ def insert_entry_nodes(plaza_ways, entry_node_mappings):
 
 def write_modified_ways(plaza_ways, filename):
     """
-    write the modified ways (plaza polygons) to an OSM file
+    write the modified ways to an OSM file
     """
     ways = []
     for way_id, way in plaza_ways.items():
         node_refs = [node['id'] for node in way['nodes']]
         osm_way = Way(nodes=node_refs)
         osm_way.id = way_id
-        # TODO: configurable tags
-        osm_way.tags = ('highway', 'footway')
+        # TODO: write same tags as original way
+        osm_way.tags = [('highway', 'footway')]
         # increase version number to overwrite original way
         osm_way.version = way['version'] + 1
         osm_way.timestamp = _create_osm_timestamp()
@@ -98,7 +98,7 @@ def _find_insert_position(entry_node, way_nodes):
     entry_point = Point(entry_node['coords'])
     exact_match = _find_exact_insert_position(entry_point, way_nodes)
 
-    return exact_match if exact_match else (
+    return exact_match if exact_match is not None else (
         _find_interpolated_insert_position(entry_point, way_nodes))
 
 
@@ -116,13 +116,12 @@ def _find_exact_insert_position(entry_point, way_nodes):
 
 def _find_interpolated_insert_position(entry_point, way_nodes):
     """
-    draws a line between pairs of polygon points and returns the
+    draws a line between pairs of way points and returns the
     index of the end node of the line to which the entry point is
     closest to
     """
     min_node = {'pos': None, 'distance': maxsize}
     for i in range(0, len(way_nodes) - 1):
-        # first and last nodes are the same
         start_node = way_nodes[i]
         end_node = way_nodes[i + 1]
         line = LineString(

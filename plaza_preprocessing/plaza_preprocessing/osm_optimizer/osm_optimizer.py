@@ -16,6 +16,7 @@ class PlazaPreprocessor:
         self.graph_processor = graph_processor
         self.entry_points = []
         self.graph_edges = None
+        self.entry_lines = []
 
     def process_plaza(self):
         """ process a single plaza """
@@ -27,6 +28,8 @@ class PlazaPreprocessor:
 
         self._insert_obstacles()
         # geojson_writer.write_geojson([self.plaza_geometry], 'plaza.geojson')
+        # geojson_writer.write_geojson(self.entry_points, 'entry_points.geojson')
+
         if not self.plaza_geometry:
             # TODO: Log
             print(f"Discarding Plaza {self.osm_id}: completely obstructed by obstacles")
@@ -46,13 +49,32 @@ class PlazaPreprocessor:
         intersecting_lines = self._find_intersescting_lines()
         intersection_coords = set()
         for line in intersecting_lines:
-            intersection = line.intersection(self.plaza_geometry)
+            line_geom = line['geometry']
+            intersection = line_geom.intersection(self.plaza_geometry)
             intersection_coords = intersection_coords.union(
                 helpers.unpack_geometry_coordinates(intersection))
 
         intersection_points = list(map(Point, intersection_coords))
+        # for point in intersection_points:
+        #     if self.plaza_geometry.touches(point):
+        #         self.entry_points.append(point)
+        #         self.entry_lines.append()
         self.entry_points.extend(
             [p for p in intersection_points if self.plaza_geometry.touches(p)])
+
+        self.map_entry_lines(intersecting_lines)
+        print(self.entry_lines)
+
+    def map_entry_lines(self, intersecting_lines):
+        """ map entry lines to entry points """
+        for line in intersecting_lines:
+            matching_entry_points = list(filter(
+                lambda p: (p.x, p.y) in line['geometry'].coords, self.entry_points))
+            if matching_entry_points:
+                self.entry_lines.append({
+                    'way_id': line['id'],
+                    'entry_points': matching_entry_points
+                })
 
 
     def _find_intersescting_lines(self):
@@ -61,7 +83,11 @@ class PlazaPreprocessor:
         # bbox_buffer = 5 * 10**-3  # about 500m
         # lines_in_approx = list(
         #     filter(lambda l: line_in_plaza_approx(l, plaza_geometry, buffer=bbox_buffer), lines))
-        return list(filter(self.plaza_geometry.intersects, self.lines))
+        intersecting_lines = []
+        for line in self.lines:
+            if self.plaza_geometry.intersects(line['geometry']):
+                intersecting_lines.append(line)
+        return intersecting_lines
 
     def _insert_obstacles(self):
         """ cuts out holes for obstacles on the plaza geometry """

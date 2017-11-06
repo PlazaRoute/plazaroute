@@ -57,7 +57,8 @@ class _PlazaHandler(osmium.SimpleHandler):
         if ("highway" in w.tags or w.tags.get("railway") == "tram") and not w.is_closed():
             try:
                 wkb = WKBFAB.create_linestring(w)
-                self.lines.append(wkblib.loads(wkb, hex=True))
+                geometry = wkblib.loads(wkb, hex=True)
+                self.lines.append({'id': w.id, 'geometry': geometry})
             except InvalidLocationError:
                 print(f'Invalid location in {w.id}')
                 self.invalid_count += 1

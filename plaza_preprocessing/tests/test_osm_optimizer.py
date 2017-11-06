@@ -20,6 +20,7 @@ def test_simple_plaza(process_strategy):
     edges = processor.graph_edges
     assert len(edges) > 10
     assert len(processor.entry_points) == 7
+    assert len(processor.entry_lines) == 5
 
 
 def test_complicated_plaza(process_strategy):
@@ -29,6 +30,7 @@ def test_complicated_plaza(process_strategy):
     edges = processor.graph_edges
     assert len(edges) > 20
     assert len(processor.entry_points) == 17
+    assert len(processor.entry_lines) == 22
 
 
 def test_obstructed_plaza(process_strategy):
@@ -46,6 +48,15 @@ def test_entry_points():
         assert len(processor.entry_points) == 16
         # TODO: is 0 instead of 16
     assert len(processor.entry_points) == 0
+
+
+def test_entry_lines(process_strategy):
+    processor = prepare_processing('helvetiaplatz', 39429064, process_strategy)
+    success = processor.process_plaza()
+    assert success
+    assert len(processor.entry_lines) == 3
+    assert all(
+        len(l['entry_points']) == 1 for l in processor.entry_lines)
 
 
 def prepare_processing(testfile, plaza_id, process_strategy):

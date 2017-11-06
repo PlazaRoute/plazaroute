@@ -24,7 +24,7 @@ def test_read_plaza():
     assert len(plaza_writer.nodes) == 4
     assert len(plaza_writer.ways) == 2
     assert plaza_writer.ways[1].nodes[2] == plaza_writer.ways[0].nodes[1]
-    assert len(plaza_writer.entry_node_mappings[42]) == 2
+    assert len(plaza_writer.entry_node_mappings[99]) == 1
 
 
 def test_read_real_plaza(process_strategy):
@@ -34,18 +34,21 @@ def test_read_real_plaza(process_strategy):
     assert success
     edges = processor.graph_edges
     entry_points = processor.entry_points
+    entry_lines = processor.entry_lines
     assert edges
+    assert entry_lines
     assert len(entry_points) > 2
     plaza['graph_edges'] = edges
     plaza['entry_points'] = entry_points
+    plaza['entry_lines'] = entry_lines
 
     plaza_writer = PlazaWriter()
     plaza_writer.read_plazas([plaza])
     assert len(plaza_writer.ways) == len(edges)
     assert len(plaza_writer.nodes) < len(edges) / 2
-    ring_id = plaza['outer_ring_id']
-    assert ring_id in plaza_writer.entry_node_mappings
-    assert len(plaza_writer.entry_node_mappings[ring_id]) == len(entry_points)
+    way_id = 259200019  # footway with 2 entry points
+    assert way_id in plaza_writer.entry_node_mappings
+    assert len(plaza_writer.entry_node_mappings[way_id]) == 2
 
 
 def test_write_to_file():
@@ -67,8 +70,10 @@ def test_write_to_file_real_plaza(process_strategy):
     assert success
     edges = processor.graph_edges
     entry_points = processor.entry_points
+    entry_lines = processor.entry_lines
     plaza['graph_edges'] = edges
     plaza['entry_points'] = entry_points
+    plaza['entry_lines'] = entry_lines
 
     plaza_writer = PlazaWriter()
     plaza_writer.read_plazas([plaza])
@@ -89,8 +94,11 @@ def test_merge_plaza_graphs(process_strategy):
     assert success
     edges = processor.graph_edges
     entry_points = processor.entry_points
+    entry_lines = processor.entry_lines
     plaza['graph_edges'] = edges
     plaza['entry_points'] = entry_points
+    plaza['entry_lines'] = entry_lines
+
     merged_filename = 'testfile-merged.osm'
     try:
         osm_merger.merge_plaza_graphs(
@@ -99,8 +107,30 @@ def test_merge_plaza_graphs(process_strategy):
         assert os.path.exists(merged_filename)
 
     finally:
-        os.remove(merged_filename)
+        # os.remove(merged_filename)
+        pass
 
+def test_merge_simple_plaza(process_strategy):
+    plaza, processor = prepare_processing(
+        'helvetiaplatz', 39429064, process_strategy)
+    success = processor.process_plaza()
+    assert success
+    edges = processor.graph_edges
+    entry_points = processor.entry_points
+    entry_lines = processor.entry_lines
+
+    plaza['graph_edges'] = edges
+    plaza['entry_points'] = entry_points
+    plaza['entry_lines'] = entry_lines
+
+    merged_filename = 'testfile-merged.osm'
+    try:
+        osm_merger.merge_plaza_graphs(
+            [plaza], testfilemanager.get_testfile_name('helvetiaplatz'),
+            merged_filename)
+        assert os.path.exists(merged_filename)
+    finally:
+        os.remove(merged_filename)
 
 def test_find_exact_insert_position():
     entry_point = Point(2, 2)
@@ -109,7 +139,6 @@ def test_find_exact_insert_position():
         {'id': 2, 'coords': (2, 0)},
         {'id': 3, 'coords': (2, 2)},
         {'id': 4, 'coords': (0, 2)},
-        {'id': 1, 'coords': (0, 0)}
     ]
     pos = osm_merger._find_exact_insert_position(entry_point, way_nodes)
     assert pos == 2
@@ -122,7 +151,6 @@ def test_find_interpolated_insert_position():
         {'id': 2, 'coords': (2, 0)},
         {'id': 3, 'coords': (3, 2)},
         {'id': 4, 'coords': (1, 2)},
-        {'id': 1, 'coords': (0, 0)}
     ]
     pos = osm_merger._find_interpolated_insert_position(
         entry_point, way_nodes)
@@ -130,7 +158,7 @@ def test_find_interpolated_insert_position():
 
 
 def test_insert_entry_nodes():
-    plaza_ways = {
+    entry_ways = {
         '42': {
             'version': 1,
             'nodes': [
@@ -138,7 +166,6 @@ def test_insert_entry_nodes():
                 {'id': 2, 'coords': (2, 0)},
                 {'id': 3, 'coords': (3, 2)},
                 {'id': 4, 'coords': (1, 2)},
-                {'id': 1, 'coords': (0, 0)}
             ]
         }
     }
@@ -147,28 +174,26 @@ def test_insert_entry_nodes():
             {'id': -99, 'coords': (0, 0)},
             {'id': -98, 'coords': (1, 0)},
             {'id': -97, 'coords': (1.5, 2)},
-            {'id': -96, 'coords': (0.5, 1)}
+            {'id': -96, 'coords': (1, 2)},
         ]
     }
-    plaza_ways_expected = {
+    entry_ways_expected = {
         '42': {
             'version': 1,
             'nodes': [
-                {'id': 1, 'coords': (0, 0)},
                 {'id': -99, 'coords': (0, 0)},
+                {'id': 1, 'coords': (0, 0)},
                 {'id': -98, 'coords': (1, 0)},
                 {'id': 2, 'coords': (2, 0)},
                 {'id': 3, 'coords': (3, 2)},
                 {'id': -97, 'coords': (1.5, 2)},
-                {'id': 4, 'coords': (1, 2)},
-                {'id': -96, 'coords': (0.5, 1)},
-                {'id': 1, 'coords': (0, 0)}
+                {'id': -96, 'coords': (1, 2)},
+                {'id': 4, 'coords': (1, 2)}
             ]
         }
     }
-    osm_merger.insert_entry_nodes(plaza_ways, entry_node_mappings)
-
-    assert plaza_ways == plaza_ways_expected
+    osm_merger.insert_entry_nodes(entry_ways, entry_node_mappings)
+    assert entry_ways == entry_ways_expected
 
 
 def create_test_plaza():
@@ -181,7 +206,16 @@ def create_test_plaza():
     plaza = {
         'graph_edges': edges,
         'entry_points': entry_points,
-        'outer_ring_id': 42
+        'entry_lines': [
+            {
+                'way_id': 99,
+                'entry_points': [Point(0, 0)]
+            },
+            {
+                'way_id': 98,
+                'entry_points': [Point(3, 4)]
+            }
+        ]
     }
     return plaza
 
