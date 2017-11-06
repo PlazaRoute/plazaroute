@@ -63,7 +63,6 @@ class PlazaPreprocessor:
             [p for p in intersection_points if self.plaza_geometry.touches(p)])
 
         self.map_entry_lines(intersecting_lines)
-        print(self.entry_lines)
 
     def map_entry_lines(self, intersecting_lines):
         """ map entry lines to entry points """
@@ -156,6 +155,7 @@ def preprocess_plazas(osm_holder):
         if success:
             plaza['graph_edges'] = processor.graph_edges
             plaza['entry_points'] = processor.entry_points
+            plaza['entry_lines'] = processor.entry_lines
             processed_plazas.append(plaza)
 
     return processed_plazas
