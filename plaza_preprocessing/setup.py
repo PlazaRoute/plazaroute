@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# encoding: utf-8
 from setuptools import setup, find_packages
 
 
@@ -8,9 +6,9 @@ with open('README.md') as f:
 
 
 setup(
-    name='plaza_routing',
+    name='plaza_preprocessing',
     version='0.0.1',
-    description='Plaza routing service for PlazaRoute',
+    description='Plaza preprocessing for PlazaRoute',
     long_description=readme,
     author='Jonas Matter, Robin Suter',
     author_email='robin@robinsuter.ch',
