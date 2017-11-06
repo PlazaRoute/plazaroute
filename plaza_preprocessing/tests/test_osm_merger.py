@@ -107,8 +107,8 @@ def test_merge_plaza_graphs(process_strategy):
         assert os.path.exists(merged_filename)
 
     finally:
-        # os.remove(merged_filename)
-        pass
+        os.remove(merged_filename)
+
 
 def test_merge_simple_plaza(process_strategy):
     plaza, processor = prepare_processing(
