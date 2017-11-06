@@ -1,2 +1,5 @@
 overpy==0.4
+flask-restplus==0.10.1
 requests==2.18.4
+colander==1.4
+bravado==9.1.1
