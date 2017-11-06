@@ -5,8 +5,6 @@ from plaza_preprocessing.osm_optimizer.visibilitygraphprocessor import Visibilit
 from plaza_preprocessing.osm_optimizer.spiderwebgraphprocessor import SpiderWebGraphProcessor
 
 
-
-
 @pytest.fixture(params=['visibility', 'spiderweb'])
 def process_strategy(request):
     if request.param == 'visibility':
@@ -17,14 +15,18 @@ def process_strategy(request):
 
 def test_simple_plaza(process_strategy):
     processor = prepare_processing('helvetiaplatz', 4533221, process_strategy)
-    edges = processor.process_plaza()
+    success = processor.process_plaza()
+    assert success
+    edges = processor.graph_edges
     assert len(edges) > 10
     assert len(processor.entry_points) == 7
 
 
 def test_complicated_plaza(process_strategy):
     processor = prepare_processing('bahnhofplatz_bern', 5117701, process_strategy)
-    edges = processor.process_plaza()
+    success = processor.process_plaza()
+    assert success
+    edges = processor.graph_edges
     assert len(edges) > 20
     assert len(processor.entry_points) == 17
 

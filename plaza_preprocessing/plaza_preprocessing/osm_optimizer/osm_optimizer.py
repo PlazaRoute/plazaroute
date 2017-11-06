@@ -1,4 +1,3 @@
-from plaza_preprocessing import osm_importer as importer
 from plaza_preprocessing.osm_merger import geojson_writer
 from plaza_preprocessing.osm_optimizer import helpers
 from plaza_preprocessing.osm_optimizer.visibilitygraphprocessor import VisibilityGraphProcessor
@@ -16,27 +15,29 @@ class PlazaPreprocessor:
         self.points = osm_holder.points
         self.graph_processor = graph_processor
         self.entry_points = []
+        self.graph_edges = None
 
     def process_plaza(self):
         """ process a single plaza """
         self._calc_entry_points()
 
         if len(self.entry_points) < 2:
-            print(f"Plaza {self.osm_id} has fewer than 2 entry points")
-            return
+            print(f"Discarding Plaza {self.osm_id}: fewer than 2 entry points")
+            return False
 
         self._insert_obstacles()
-        geojson_writer.write_geojson([self.plaza_geometry], 'plaza.geojson')
+        # geojson_writer.write_geojson([self.plaza_geometry], 'plaza.geojson')
         if not self.plaza_geometry:
             # TODO: Log
-            print(f"Plaza {self.osm_id} is completely obstructed by obstacles")
-            return
+            print(f"Discarding Plaza {self.osm_id}: completely obstructed by obstacles")
+            return False
 
         self.graph_processor.entry_points = self.entry_points
         self.graph_processor.plaza_geometry = self.plaza_geometry
         self.graph_processor.create_graph_edges()
-
-        return self.graph_processor.graph_edges
+        self.graph_edges = self.graph_processor.graph_edges
+        # geojson_writer.write_geojson(self.graph_processor.graph_edges, 'edges.geojson')
+        return True
 
     def _calc_entry_points(self):
         """
@@ -77,7 +78,7 @@ class PlazaPreprocessor:
             self.plaza_geometry = self.plaza_geometry.difference(p_obstacle)
 
         if isinstance(self.plaza_geometry, MultiPolygon):
-            print("Multipolygon after cut out!")
+            print(f"Plaza {self.osm_id}: Multipolygon after cut out, discarding smaller polygon")
             # take the largest of the polygons
             self.plaza_geometry = max(
                 self.plaza_geometry, key=lambda p: p.area)
@@ -120,26 +121,15 @@ class PlazaPreprocessor:
 
 def preprocess_plazas(osm_holder):
     """ preprocess all plazas from osm_importer """
-    # test for helvetiaplatz
-    # plaza = next(p for p in osm_holder.plazas if p['osm_id'] == 4533221)
-    # test for Bahnhofplatz Bern
-    # plaza = next(p for p in osm_holder.plazas if p['osm_id'] == 5117701)
-    # plaza = next(p for p in osm_holder.plazas if p['osm_id'] == 182055194)
-
-    # processor = PlazaPreprocessor(
-    #     plaza['osm_id'], plaza['geometry'], osm_holder, SpiderWebGraphProcessor(spacing_m=2))
-    # processor.process_plaza()
-
+    processed_plazas = []
     for plaza in osm_holder.plazas:
-        print(f"processing plaza {plaza['osm_id']}")
+        print(f"Processing plaza {plaza['osm_id']}")
         processor = PlazaPreprocessor(
-            plaza['osm_id'], plaza['geometry'], osm_holder, SpiderWebGraphProcessor(spacing_m=5))
-        plaza['graph_edges'] = processor.process_plaza()
-        plaza['entry_points'] = processor.entry_points
+            plaza['osm_id'], plaza['geometry'], osm_holder, VisibilityGraphProcessor())
+        success = processor.process_plaza()
+        if success:
+            plaza['graph_edges'] = processor.graph_edges
+            plaza['entry_points'] = processor.entry_points
+            processed_plazas.append(plaza)
 
-
-if __name__ == '__main__':
-    # holder = importer.import_osm('data/helvetiaplatz_umfeld.osm')
-    # holder = importer.import_osm('data/switzerland-exact.osm.pbf')
-    holder = importer.import_osm('data/stadt-zuerich.pbf')
-    preprocess_plazas(holder)
+    return processed_plazas

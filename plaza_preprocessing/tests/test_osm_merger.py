@@ -30,7 +30,9 @@ def test_read_plaza():
 def test_read_real_plaza(process_strategy):
     plaza, processor = prepare_processing(
         'helvetiaplatz', 4533221, process_strategy)
-    edges = processor.process_plaza()
+    success = processor.process_plaza()
+    assert success
+    edges = processor.graph_edges
     entry_points = processor.entry_points
     assert edges
     assert len(entry_points) > 2
@@ -61,7 +63,9 @@ def test_write_to_file():
 def test_write_to_file_real_plaza(process_strategy):
     plaza, processor = prepare_processing(
         'helvetiaplatz', 4533221, process_strategy)
-    edges = processor.process_plaza()
+    success = processor.process_plaza()
+    assert success
+    edges = processor.graph_edges
     entry_points = processor.entry_points
     plaza['graph_edges'] = edges
     plaza['entry_points'] = entry_points
@@ -81,7 +85,9 @@ def test_merge_plaza_graphs(process_strategy):
         'helvetiaplatz', 4533221, process_strategy)
     # plaza, processor = prepare_processing(
     #     'bahnhofplatz_bern', 5117701, process_strategy)
-    edges = processor.process_plaza()
+    success = processor.process_plaza()
+    assert success
+    edges = processor.graph_edges
     entry_points = processor.entry_points
     plaza['graph_edges'] = edges
     plaza['entry_points'] = entry_points
@@ -93,8 +99,6 @@ def test_merge_plaza_graphs(process_strategy):
         assert os.path.exists(merged_filename)
 
     finally:
-        os.remove('plazas.osm')
-        os.remove('modified_ways.osm')
         os.remove(merged_filename)
 
 

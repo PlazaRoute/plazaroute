@@ -9,7 +9,6 @@ def merge_three_osm_files(out_file, *filenames):
     cmd = ['osmosis']
     for filename in filenames:
         extension = splitext(filename)[1]
-        print(extension)
         if extension == '.osm':
             cmd.append('--rx')
         else:

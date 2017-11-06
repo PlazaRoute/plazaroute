@@ -1,4 +1,5 @@
 from sys import maxsize
+from os import remove
 from datetime import datetime
 from osmium import SimpleHandler, SimpleWriter
 from osmium.osm.mutable import Way
@@ -30,19 +31,19 @@ def merge_plaza_graphs(plazas, osm_file, merged_file):
     # TODO: Proper temp file
     plazas_file = 'plazas.osm'
     modified_ways_file = 'modified_ways.osm'
+    try:
+        entry_node_mappings = _write_plazas_to_osm(plazas, plazas_file)
 
-    entry_node_mappings = _write_plazas_to_osm(plazas, plazas_file)
+        plaza_ways = _extract_plaza_ways(entry_node_mappings, osm_file)
+        insert_entry_nodes(plaza_ways, entry_node_mappings)
 
-    plaza_ways = _extract_plaza_ways(entry_node_mappings, osm_file)
-    insert_entry_nodes(plaza_ways, entry_node_mappings)
+        write_modified_ways(plaza_ways, modified_ways_file)
 
-    write_modified_ways(plaza_ways, modified_ways_file)
-
-    osmosishelper.merge_three_osm_files(
-        merged_file, osm_file, plazas_file, modified_ways_file)
-
-    # TODO: Proper temp file
-    # TODO: merge together with osmosis
+        osmosishelper.merge_three_osm_files(
+            merged_file, osm_file, plazas_file, modified_ways_file)
+    finally:
+        remove(plazas_file)
+        remove(modified_ways_file)
 
 
 def insert_entry_nodes(plaza_ways, entry_node_mappings):
@@ -68,7 +69,7 @@ def write_modified_ways(plaza_ways, filename):
         osm_way.tags = ('highway', 'footway')
         # increase version number to overwrite original way
         osm_way.version = way['version'] + 1
-        osm_way.timestamp = create_osm_timestamp()
+        osm_way.timestamp = _create_osm_timestamp()
         ways.append(osm_way)
 
     writer = SimpleWriter(filename)
@@ -140,7 +141,8 @@ def _extract_plaza_ways(entry_node_mappings, osm_file):
     index_type = 'sparse_mem_array'
     way_extractor.apply_file(osm_file, locations=True, idx=index_type)
     return way_extractor.ways
-    
-def create_osm_timestamp():
+
+
+def _create_osm_timestamp():
     now = datetime.utcnow()
     return now.strftime('%Y-%m-%dT%H:%M:%SZ')
