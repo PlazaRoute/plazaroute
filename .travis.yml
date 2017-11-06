@@ -17,3 +17,4 @@ addons:
   apt:
     packages:
     - osmosis
+    - libboost-python-dev
