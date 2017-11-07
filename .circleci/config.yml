@@ -23,9 +23,8 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "requirements.txt" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+          - plazarouting-dependencies-{{ checksum "plaza_routing/requirements.txt" }}
+          - plazapreprocessing-dependencies-{{ checksum "plaza_preprocessing/requirements.txt" }}
 
       - run:
           name: install dependencies
@@ -40,15 +39,17 @@ jobs:
       - save_cache:
           paths:
             - ./venv
-          key: v1-dependencies-{{ checksum "requirements.txt" }}
+          key: plazarouting-dependencies-{{ checksum "plaza_routing/requirements.txt" }}
         
       # run tests!
       - run:
           name: run tests
           command: |
             . venv/bin/activate
-            cd plaza_routing
-            pytest
+            pip install --editable plaza_routing/
+            pytest plaza_routing
+            pip install --editable plaza_preprocessing/
+            pytest plaza_preprocessing
 
       # - store_artifacts:
       #     path: test-reports
