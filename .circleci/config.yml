@@ -6,14 +6,7 @@ version: 2
 jobs:
   build:
     docker:
-      # specify the version you desire here
-      # use `-browsers` prefix for selenium tests, e.g. `3.6.1-browsers`
       - image: excap/plazaroute-ci
-      
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/postgres:9.4
 
     working_directory: ~/repo
 
@@ -23,8 +16,7 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - plazarouting-dependencies-{{ checksum "plaza_routing/requirements.txt" }}
-          - plazapreprocessing-dependencies-{{ checksum "plaza_preprocessing/requirements.txt" }}
+          - plazaroute-dependencies-{{ checksum "plaza_routing/requirements.txt" }}{{ checksum "plaza_processing/requirements.txt" }}{{ checksum "plaza_routing/requirements-dev.txt" }}{{ checksum "plaza_processing/requirements-dev.txt" }}
 
       - run:
           name: install dependencies
@@ -39,7 +31,7 @@ jobs:
       - save_cache:
           paths:
             - ./venv
-          key: plazarouting-dependencies-{{ checksum "plaza_routing/requirements.txt" }}
+          key: plazaroute-dependencies-{{ checksum "plaza_routing/requirements.txt" }}{{ checksum "plaza_processing/requirements.txt" }}{{ checksum "plaza_routing/requirements-dev.txt" }}{{ checksum "plaza_processing/requirements-dev.txt" }}
         
       # run tests!
       - run:
@@ -50,8 +42,4 @@ jobs:
             pytest plaza_routing
             pip install --editable plaza_preprocessing/
             pytest plaza_preprocessing
-
-      # - store_artifacts:
-      #     path: test-reports
-      #     destination: test-reports
           
