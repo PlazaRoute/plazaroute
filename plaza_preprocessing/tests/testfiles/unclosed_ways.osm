@@ -1,0 +1,916 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="CGImap 0.6.0 (1860 thorn-03.openstreetmap.org)" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">
+ <bounds minlat="46.5121600" minlon="6.6097000" maxlat="46.5131400" maxlon="6.6118700"/>
+ <node id="35297578" visible="true" version="8" changeset="3094552" timestamp="2009-11-11T23:30:41Z" user="HB9DTX" uid="103273" lat="46.5128101" lon="6.6103698"/>
+ <node id="35297579" visible="true" version="4" changeset="6245649" timestamp="2010-10-31T20:08:38Z" user="Stéphane Brunner" uid="17835" lat="46.5131017" lon="6.6106457"/>
+ <node id="266293489" visible="true" version="8" changeset="3172163" timestamp="2009-11-20T22:08:39Z" user="Stéphane Brunner" uid="17835" lat="46.5135595" lon="6.6111071"/>
+ <node id="266539534" visible="true" version="6" changeset="6245649" timestamp="2010-10-31T20:08:28Z" user="Stéphane Brunner" uid="17835" lat="46.5118751" lon="6.6100368"/>
+ <node id="266539542" visible="true" version="4" changeset="6245649" timestamp="2010-10-31T20:08:24Z" user="Stéphane Brunner" uid="17835" lat="46.5125286" lon="6.6100634"/>
+ <node id="266539543" visible="true" version="5" changeset="6245649" timestamp="2010-10-31T20:07:59Z" user="Stéphane Brunner" uid="17835" lat="46.5127756" lon="6.6115583"/>
+ <node id="266539544" visible="true" version="4" changeset="3172163" timestamp="2009-11-20T22:08:05Z" user="Stéphane Brunner" uid="17835" lat="46.5121519" lon="6.6099866"/>
+ <node id="266539547" visible="true" version="4" changeset="6291437" timestamp="2010-11-04T20:26:38Z" user="Stéphane Brunner" uid="17835" lat="46.5123947" lon="6.6104630"/>
+ <node id="266539548" visible="true" version="3" changeset="3094552" timestamp="2009-11-11T23:30:42Z" user="HB9DTX" uid="103273" lat="46.5124768" lon="6.6113352"/>
+ <node id="266539549" visible="true" version="4" changeset="3172163" timestamp="2009-11-20T22:08:35Z" user="Stéphane Brunner" uid="17835" lat="46.5126082" lon="6.6121528"/>
+ <node id="266539550" visible="true" version="3" changeset="3172163" timestamp="2009-11-20T22:08:36Z" user="Stéphane Brunner" uid="17835" lat="46.5131078" lon="6.6118442"/>
+ <node id="266539551" visible="true" version="6" changeset="6245649" timestamp="2010-10-31T20:08:38Z" user="Stéphane Brunner" uid="17835" lat="46.5129386" lon="6.6123638"/>
+ <node id="268303484" visible="true" version="4" changeset="3098853" timestamp="2009-11-12T15:18:58Z" user="HB9DTX" uid="103273" lat="46.5128201" lon="6.6103386"/>
+ <node id="268303486" visible="true" version="5" changeset="3098853" timestamp="2009-11-12T15:18:58Z" user="HB9DTX" uid="103273" lat="46.5129872" lon="6.6097486"/>
+ <node id="268303488" visible="true" version="5" changeset="3098853" timestamp="2009-11-12T15:18:58Z" user="HB9DTX" uid="103273" lat="46.5133660" lon="6.6100144"/>
+ <node id="268303490" visible="true" version="4" changeset="3098853" timestamp="2009-11-12T15:18:59Z" user="HB9DTX" uid="103273" lat="46.5131674" lon="6.6106359"/>
+ <node id="271437125" visible="true" version="9" changeset="3518863" timestamp="2010-01-02T14:38:55Z" user="Stéphane Brunner" uid="17835" lat="46.5141513" lon="6.6112909"/>
+ <node id="282021865" visible="true" version="5" changeset="6245649" timestamp="2010-10-31T20:08:27Z" user="Stéphane Brunner" uid="17835" lat="46.5130438" lon="6.6107242"/>
+ <node id="282021868" visible="true" version="5" changeset="6245649" timestamp="2010-10-31T20:08:08Z" user="Stéphane Brunner" uid="17835" lat="46.5127483" lon="6.6113440"/>
+ <node id="282021870" visible="true" version="5" changeset="6245649" timestamp="2010-10-31T20:08:29Z" user="Stéphane Brunner" uid="17835" lat="46.5127570" lon="6.6104509"/>
+ <node id="282021876" visible="true" version="5" changeset="6245649" timestamp="2010-10-31T20:08:03Z" user="Stéphane Brunner" uid="17835" lat="46.5125370" lon="6.6112035"/>
+ <node id="282021881" visible="true" version="5" changeset="6245649" timestamp="2010-10-31T20:08:08Z" user="Stéphane Brunner" uid="17835" lat="46.5127056" lon="6.6106685"/>
+ <node id="282021883" visible="true" version="5" changeset="6245649" timestamp="2010-10-31T20:08:29Z" user="Stéphane Brunner" uid="17835" lat="46.5125665" lon="6.6103242"/>
+ <node id="282021888" visible="true" version="6" changeset="6291437" timestamp="2010-11-04T20:26:38Z" user="Stéphane Brunner" uid="17835" lat="46.5124988" lon="6.6105318"/>
+ <node id="321866119" visible="true" version="1" changeset="626386" timestamp="2008-12-26T21:31:16Z" user="Marc Mongenet" uid="74847" lat="46.5124093" lon="6.6099798"/>
+ <node id="411864532" visible="true" version="3" changeset="3245371" timestamp="2009-11-29T13:34:23Z" user="Marc Mongenet" uid="74847" lat="46.5139453" lon="6.6112859"/>
+ <node id="418851113" visible="true" version="4" changeset="3245371" timestamp="2009-11-29T13:34:23Z" user="Marc Mongenet" uid="74847" lat="46.5138866" lon="6.6113154"/>
+ <node id="418851115" visible="true" version="4" changeset="3172163" timestamp="2009-11-20T22:08:37Z" user="Stéphane Brunner" uid="17835" lat="46.5132934" lon="6.6119912"/>
+ <node id="560983235" visible="true" version="3" changeset="6245649" timestamp="2010-10-31T20:08:28Z" user="Stéphane Brunner" uid="17835" lat="46.5128879" lon="6.6110708"/>
+ <node id="560983236" visible="true" version="3" changeset="6245649" timestamp="2010-10-31T20:08:03Z" user="Stéphane Brunner" uid="17835" lat="46.5127355" lon="6.6105192"/>
+ <node id="560983237" visible="true" version="3" changeset="6245649" timestamp="2010-10-31T20:08:36Z" user="Stéphane Brunner" uid="17835" lat="46.5128435" lon="6.6110413"/>
+ <node id="560983238" visible="true" version="3" changeset="6245649" timestamp="2010-10-31T20:08:08Z" user="Stéphane Brunner" uid="17835" lat="46.5129641" lon="6.6108286"/>
+ <node id="560983239" visible="true" version="3" changeset="6245649" timestamp="2010-10-31T20:08:41Z" user="Stéphane Brunner" uid="17835" lat="46.5130028" lon="6.6108544"/>
+ <node id="561204463" visible="true" version="1" changeset="3098853" timestamp="2009-11-12T15:18:56Z" user="HB9DTX" uid="103273" lat="46.5126190" lon="6.6081658"/>
+ <node id="561204464" visible="true" version="2" changeset="3245627" timestamp="2009-11-29T13:58:47Z" user="Marc Mongenet" uid="74847" lat="46.5130881" lon="6.6079469"/>
+ <node id="561204466" visible="true" version="2" changeset="3245627" timestamp="2009-11-29T13:58:47Z" user="Marc Mongenet" uid="74847" lat="46.5135432" lon="6.6079839"/>
+ <node id="561204467" visible="true" version="2" changeset="3245627" timestamp="2009-11-29T13:58:47Z" user="Marc Mongenet" uid="74847" lat="46.5133815" lon="6.6079492"/>
+ <node id="561204471" visible="true" version="2" changeset="3245627" timestamp="2009-11-29T13:58:48Z" user="Marc Mongenet" uid="74847" lat="46.5139149" lon="6.6082312"/>
+ <node id="561204472" visible="true" version="1" changeset="3098853" timestamp="2009-11-12T15:18:57Z" user="HB9DTX" uid="103273" lat="46.5138923" lon="6.6080833"/>
+ <node id="561204473" visible="true" version="2" changeset="3245627" timestamp="2009-11-29T13:58:48Z" user="Marc Mongenet" uid="74847" lat="46.5138331" lon="6.6080338"/>
+ <node id="561204476" visible="true" version="2" changeset="3245627" timestamp="2009-11-29T13:58:49Z" user="Marc Mongenet" uid="74847" lat="46.5122139" lon="6.6082995"/>
+ <node id="561204477" visible="true" version="2" changeset="3245627" timestamp="2009-11-29T13:58:49Z" user="Marc Mongenet" uid="74847" lat="46.5121752" lon="6.6083455"/>
+ <node id="561204478" visible="true" version="2" changeset="3245627" timestamp="2009-11-29T13:58:49Z" user="Marc Mongenet" uid="74847" lat="46.5121791" lon="6.6085043"/>
+ <node id="561204480" visible="true" version="2" changeset="3245627" timestamp="2009-11-29T13:58:49Z" user="Marc Mongenet" uid="74847" lat="46.5123087" lon="6.6092430"/>
+ <node id="561204481" visible="true" version="2" changeset="3245627" timestamp="2009-11-29T13:58:49Z" user="Marc Mongenet" uid="74847" lat="46.5123103" lon="6.6092728"/>
+ <node id="561204482" visible="true" version="2" changeset="3245627" timestamp="2009-11-29T13:58:49Z" user="Marc Mongenet" uid="74847" lat="46.5122239" lon="6.6095711"/>
+ <node id="561204485" visible="true" version="1" changeset="3098853" timestamp="2009-11-12T15:18:57Z" user="HB9DTX" uid="103273" lat="46.5131809" lon="6.6094107"/>
+ <node id="561204486" visible="true" version="1" changeset="3098853" timestamp="2009-11-12T15:18:57Z" user="HB9DTX" uid="103273" lat="46.5121242" lon="6.6097277"/>
+ <node id="561204487" visible="true" version="1" changeset="3098853" timestamp="2009-11-12T15:18:57Z" user="HB9DTX" uid="103273" lat="46.5121860" lon="6.6098772"/>
+ <node id="561204488" visible="true" version="2" changeset="3245627" timestamp="2009-11-29T13:58:49Z" user="Marc Mongenet" uid="74847" lat="46.5123206" lon="6.6098979"/>
+ <node id="561204489" visible="true" version="2" changeset="3245627" timestamp="2009-11-29T13:58:49Z" user="Marc Mongenet" uid="74847" lat="46.5125815" lon="6.6099029"/>
+ <node id="561204493" visible="true" version="1" changeset="3098853" timestamp="2009-11-12T15:18:57Z" user="HB9DTX" uid="103273" lat="46.5127402" lon="6.6098772"/>
+ <node id="561204496" visible="true" version="2" changeset="3245627" timestamp="2009-11-29T13:58:49Z" user="Marc Mongenet" uid="74847" lat="46.5137182" lon="6.6085991"/>
+ <node id="561204497" visible="true" version="2" changeset="3245627" timestamp="2009-11-29T13:58:49Z" user="Marc Mongenet" uid="74847" lat="46.5138502" lon="6.6084565"/>
+ <node id="561204498" visible="true" version="2" changeset="3245627" timestamp="2009-11-29T13:58:50Z" user="Marc Mongenet" uid="74847" lat="46.5139168" lon="6.6083436"/>
+ <node id="563294386" visible="true" version="1" changeset="3109122" timestamp="2009-11-13T21:50:13Z" user="Stéphane Brunner" uid="17835" lat="46.5140752" lon="6.6112679"/>
+ <node id="567601039" visible="true" version="1" changeset="3172163" timestamp="2009-11-20T22:01:54Z" user="Stéphane Brunner" uid="17835" lat="46.5133013" lon="6.6114250"/>
+ <node id="567601044" visible="true" version="1" changeset="3172163" timestamp="2009-11-20T22:01:54Z" user="Stéphane Brunner" uid="17835" lat="46.5132210" lon="6.6116892"/>
+ <node id="567601049" visible="true" version="1" changeset="3172163" timestamp="2009-11-20T22:01:55Z" user="Stéphane Brunner" uid="17835" lat="46.5131177" lon="6.6113072"/>
+ <node id="567601052" visible="true" version="1" changeset="3172163" timestamp="2009-11-20T22:01:55Z" user="Stéphane Brunner" uid="17835" lat="46.5130374" lon="6.6115714"/>
+ <node id="567601088" visible="true" version="2" changeset="3172163" timestamp="2009-11-20T22:08:54Z" user="Stéphane Brunner" uid="17835" lat="46.5137740" lon="6.6113047"/>
+ <node id="567601215" visible="true" version="1" changeset="3172163" timestamp="2009-11-20T22:02:26Z" user="Stéphane Brunner" uid="17835" lat="46.5134442" lon="6.6120792"/>
+ <node id="567607156" visible="true" version="2" changeset="6245649" timestamp="2010-10-31T20:08:03Z" user="Stéphane Brunner" uid="17835" lat="46.5132871" lon="6.6109623"/>
+ <node id="567607159" visible="true" version="2" changeset="6245649" timestamp="2010-10-31T20:07:59Z" user="Stéphane Brunner" uid="17835" lat="46.5128239" lon="6.6111035"/>
+ <node id="567607160" visible="true" version="2" changeset="6245649" timestamp="2010-10-31T20:08:30Z" user="Stéphane Brunner" uid="17835" lat="46.5128069" lon="6.6111579"/>
+ <node id="567607161" visible="true" version="2" changeset="6245649" timestamp="2010-10-31T20:08:03Z" user="Stéphane Brunner" uid="17835" lat="46.5127877" lon="6.6111451"/>
+ <node id="567607162" visible="true" version="2" changeset="6245649" timestamp="2010-10-31T20:08:37Z" user="Stéphane Brunner" uid="17835" lat="46.5128047" lon="6.6110908"/>
+ <node id="567607163" visible="true" version="2" changeset="6245649" timestamp="2010-10-31T20:08:27Z" user="Stéphane Brunner" uid="17835" lat="46.5132304" lon="6.6111507"/>
+ <node id="574442222" visible="true" version="1" changeset="3245371" timestamp="2009-11-29T13:34:15Z" user="Marc Mongenet" uid="74847" lat="46.5140133" lon="6.6112686"/>
+ <node id="574442224" visible="true" version="1" changeset="3245371" timestamp="2009-11-29T13:34:15Z" user="Marc Mongenet" uid="74847" lat="46.5138106" lon="6.6113195"/>
+ <node id="574476810" visible="true" version="1" changeset="3245627" timestamp="2009-11-29T13:58:42Z" user="Marc Mongenet" uid="74847" lat="46.5124113" lon="6.6082304"/>
+ <node id="574476823" visible="true" version="1" changeset="3245627" timestamp="2009-11-29T13:58:43Z" user="Marc Mongenet" uid="74847" lat="46.5133456" lon="6.6079436"/>
+ <node id="574476824" visible="true" version="1" changeset="3245627" timestamp="2009-11-29T13:58:43Z" user="Marc Mongenet" uid="74847" lat="46.5130477" lon="6.6079506"/>
+ <node id="574476858" visible="true" version="1" changeset="3245627" timestamp="2009-11-29T13:58:44Z" user="Marc Mongenet" uid="74847" lat="46.5138737" lon="6.6080514"/>
+ <node id="574476870" visible="true" version="1" changeset="3245627" timestamp="2009-11-29T13:58:44Z" user="Marc Mongenet" uid="74847" lat="46.5139174" lon="6.6082634"/>
+ <node id="574476885" visible="true" version="1" changeset="3245627" timestamp="2009-11-29T13:58:44Z" user="Marc Mongenet" uid="74847" lat="46.5121742" lon="6.6084508"/>
+ <node id="574476887" visible="true" version="1" changeset="3245627" timestamp="2009-11-29T13:58:44Z" user="Marc Mongenet" uid="74847" lat="46.5122202" lon="6.6086995"/>
+ <node id="574476889" visible="true" version="1" changeset="3245627" timestamp="2009-11-29T13:58:44Z" user="Marc Mongenet" uid="74847" lat="46.5122825" lon="6.6094349"/>
+ <node id="574476892" visible="true" version="1" changeset="3245627" timestamp="2009-11-29T13:58:44Z" user="Marc Mongenet" uid="74847" lat="46.5122583" lon="6.6095051"/>
+ <node id="574476894" visible="true" version="1" changeset="3245627" timestamp="2009-11-29T13:58:44Z" user="Marc Mongenet" uid="74847" lat="46.5122741" lon="6.6094721"/>
+ <node id="574476897" visible="true" version="1" changeset="3245627" timestamp="2009-11-29T13:58:44Z" user="Marc Mongenet" uid="74847" lat="46.5125121" lon="6.6099048"/>
+ <node id="574476899" visible="true" version="1" changeset="3245627" timestamp="2009-11-29T13:58:44Z" user="Marc Mongenet" uid="74847" lat="46.5124168" lon="6.6099030"/>
+ <node id="574476902" visible="true" version="1" changeset="3245627" timestamp="2009-11-29T13:58:44Z" user="Marc Mongenet" uid="74847" lat="46.5136254" lon="6.6086992"/>
+ <node id="574476904" visible="true" version="1" changeset="3245627" timestamp="2009-11-29T13:58:44Z" user="Marc Mongenet" uid="74847" lat="46.5138928" lon="6.6084066"/>
+ <node id="574476906" visible="true" version="1" changeset="3245627" timestamp="2009-11-29T13:58:45Z" user="Marc Mongenet" uid="74847" lat="46.5139100" lon="6.6083717"/>
+ <node id="574476909" visible="true" version="1" changeset="3245627" timestamp="2009-11-29T13:58:45Z" user="Marc Mongenet" uid="74847" lat="46.5139211" lon="6.6083122"/>
+ <node id="972676275" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:04:58Z" user="Stéphane Brunner" uid="17835" lat="46.5132289" lon="6.6113486"/>
+ <node id="972676285" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:08Z" user="Erdling1957" uid="527033" lat="46.5129291" lon="6.6113922">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972676300" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:04:58Z" user="Stéphane Brunner" uid="17835" lat="46.5131961" lon="6.6113227"/>
+ <node id="972676313" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:03Z" user="Erdling1957" uid="527033" lat="46.5123305" lon="6.6104813">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972676321" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:04:59Z" user="Stéphane Brunner" uid="17835" lat="46.5124229" lon="6.6099257"/>
+ <node id="972676323" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:04:59Z" user="Stéphane Brunner" uid="17835" lat="46.5130152" lon="6.6109102"/>
+ <node id="972676326" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:04:59Z" user="Stéphane Brunner" uid="17835" lat="46.5130303" lon="6.6116124"/>
+ <node id="972676345" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:05:00Z" user="Stéphane Brunner" uid="17835" lat="46.5125841" lon="6.6121084"/>
+ <node id="972676347" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:05:00Z" user="Stéphane Brunner" uid="17835" lat="46.5131378" lon="6.6117734"/>
+ <node id="972676348" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:05:00Z" user="Stéphane Brunner" uid="17835" lat="46.5131395" lon="6.6088026"/>
+ <node id="972676354" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:09Z" user="Erdling1957" uid="527033" lat="46.5129638" lon="6.6102588">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972676368" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:05:00Z" user="Stéphane Brunner" uid="17835" lat="46.5131013" lon="6.6107137"/>
+ <node id="972676372" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:05:00Z" user="Stéphane Brunner" uid="17835" lat="46.5139342" lon="6.6083656"/>
+ <node id="972676375" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:05:00Z" user="Stéphane Brunner" uid="17835" lat="46.5125829" lon="6.6087939"/>
+ <node id="972676383" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:05:01Z" user="Stéphane Brunner" uid="17835" lat="46.5127783" lon="6.6114852"/>
+ <node id="972676385" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:05:01Z" user="Stéphane Brunner" uid="17835" lat="46.5133643" lon="6.6117720"/>
+ <node id="972676390" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:05:01Z" user="Stéphane Brunner" uid="17835" lat="46.5123531" lon="6.6109092"/>
+ <node id="972676477" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:05:04Z" user="Stéphane Brunner" uid="17835" lat="46.5127325" lon="6.6102461"/>
+ <node id="972676495" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:00Z" user="Erdling1957" uid="527033" lat="46.5123531" lon="6.6109106">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972676503" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:05:05Z" user="Stéphane Brunner" uid="17835" lat="46.5134921" lon="6.6115098"/>
+ <node id="972676505" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:05:05Z" user="Stéphane Brunner" uid="17835" lat="46.5129137" lon="6.6123138"/>
+ <node id="972676522" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:05:05Z" user="Stéphane Brunner" uid="17835" lat="46.5133831" lon="6.6111656"/>
+ <node id="972676527" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:00Z" user="Erdling1957" uid="527033" lat="46.5127847" lon="6.6113284">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972676805" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:05:15Z" user="Stéphane Brunner" uid="17835" lat="46.5115372" lon="6.6113251"/>
+ <node id="972676809" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:05:15Z" user="Stéphane Brunner" uid="17835" lat="46.5133441" lon="6.6100208"/>
+ <node id="972676823" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:16Z" user="Erdling1957" uid="527033" lat="46.5125674" lon="6.6101819">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972676824" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:05:16Z" user="Stéphane Brunner" uid="17835" lat="46.5121982" lon="6.6098926"/>
+ <node id="972676825" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:05:16Z" user="Stéphane Brunner" uid="17835" lat="46.5130262" lon="6.6117326"/>
+ <node id="972676830" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:05:16Z" user="Stéphane Brunner" uid="17835" lat="46.5132759" lon="6.6117010"/>
+ <node id="972676839" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:05:16Z" user="Stéphane Brunner" uid="17835" lat="46.5128172" lon="6.6093082"/>
+ <node id="972676843" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:27Z" user="Erdling1957" uid="527033" lat="46.5131228" lon="6.6107918">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972677023" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:05:27Z" user="Stéphane Brunner" uid="17835" lat="46.5124073" lon="6.6100046"/>
+ <node id="972677052" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:05:28Z" user="Stéphane Brunner" uid="17835" lat="46.5136629" lon="6.6087070"/>
+ <node id="972677054" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:05:28Z" user="Stéphane Brunner" uid="17835" lat="46.5136115" lon="6.6112257"/>
+ <node id="972677058" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:05:28Z" user="Stéphane Brunner" uid="17835" lat="46.5125145" lon="6.6093235"/>
+ <node id="972677060" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:05:28Z" user="Stéphane Brunner" uid="17835" lat="46.5129912" lon="6.6109306"/>
+ <node id="972677062" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:05:28Z" user="Stéphane Brunner" uid="17835" lat="46.5130146" lon="6.6123674"/>
+ <node id="972677083" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:05:29Z" user="Stéphane Brunner" uid="17835" lat="46.5124927" lon="6.6100946"/>
+ <node id="972677106" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:05:30Z" user="Stéphane Brunner" uid="17835" lat="46.5132838" lon="6.6100021"/>
+ <node id="972677115" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:05:32Z" user="Stéphane Brunner" uid="17835" lat="46.5138755" lon="6.6081727"/>
+ <node id="972677118" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:08Z" user="Erdling1957" uid="527033" lat="46.5124583" lon="6.6101153">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972677543" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:05:47Z" user="Stéphane Brunner" uid="17835" lat="46.5122741" lon="6.6087287"/>
+ <node id="972677567" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:05:48Z" user="Stéphane Brunner" uid="17835" lat="46.5127531" lon="6.6116181"/>
+ <node id="972677576" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:05:48Z" user="Stéphane Brunner" uid="17835" lat="46.5137369" lon="6.6081966"/>
+ <node id="972677581" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:26Z" user="Erdling1957" uid="527033" lat="46.5126740" lon="6.6115408">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972677587" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:05:48Z" user="Stéphane Brunner" uid="17835" lat="46.5126026" lon="6.6098714"/>
+ <node id="972677648" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:05:50Z" user="Stéphane Brunner" uid="17835" lat="46.5127546" lon="6.6103611"/>
+ <node id="972678467" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:06:06Z" user="Stéphane Brunner" uid="17835" lat="46.5122811" lon="6.6099082"/>
+ <node id="972678470" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:06:06Z" user="Stéphane Brunner" uid="17835" lat="46.5133060" lon="6.6114074"/>
+ <node id="972678529" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:00Z" user="Erdling1957" uid="527033" lat="46.5129405" lon="6.6112769">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972678542" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:03Z" user="Erdling1957" uid="527033" lat="46.5130696" lon="6.6104312">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972678591" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:06:08Z" user="Stéphane Brunner" uid="17835" lat="46.5120533" lon="6.6097014"/>
+ <node id="972678603" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:15Z" user="Erdling1957" uid="527033" lat="46.5123223" lon="6.6106309">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972678627" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:06:09Z" user="Stéphane Brunner" uid="17835" lat="46.5125029" lon="6.6099839"/>
+ <node id="972678635" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:06:09Z" user="Stéphane Brunner" uid="17835" lat="46.5132998" lon="6.6084817"/>
+ <node id="972678662" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:06:10Z" user="Stéphane Brunner" uid="17835" lat="46.5130219" lon="6.6109473"/>
+ <node id="972679515" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:06:41Z" user="Stéphane Brunner" uid="17835" lat="46.5130010" lon="6.6117151"/>
+ <node id="972679516" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:06:41Z" user="Stéphane Brunner" uid="17835" lat="46.5123551" lon="6.6097345"/>
+ <node id="972679520" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:06:41Z" user="Stéphane Brunner" uid="17835" lat="46.5132087" lon="6.6088227"/>
+ <node id="972679522" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:06:41Z" user="Stéphane Brunner" uid="17835" lat="46.5131124" lon="6.6118963"/>
+ <node id="972679524" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:04Z" user="Erdling1957" uid="527033" lat="46.5129333" lon="6.6103510">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972679533" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:06:42Z" user="Stéphane Brunner" uid="17835" lat="46.5131287" lon="6.6107305"/>
+ <node id="972679535" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:06:42Z" user="Stéphane Brunner" uid="17835" lat="46.5139319" lon="6.6082461"/>
+ <node id="972679537" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:14Z" user="Erdling1957" uid="527033" lat="46.5124471" lon="6.6104430">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972679539" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:06:43Z" user="Stéphane Brunner" uid="17835" lat="46.5125297" lon="6.6087562"/>
+ <node id="972679541" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:06:43Z" user="Stéphane Brunner" uid="17835" lat="46.5133605" lon="6.6116860"/>
+ <node id="972679549" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:06:43Z" user="Stéphane Brunner" uid="17835" lat="46.5124013" lon="6.6109311"/>
+ <node id="972679570" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:08Z" user="Erdling1957" uid="527033" lat="46.5129219" lon="6.6117821">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972679572" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:06:45Z" user="Stéphane Brunner" uid="17835" lat="46.5127144" lon="6.6101773"/>
+ <node id="972679582" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:08Z" user="Erdling1957" uid="527033" lat="46.5123959" lon="6.6110494">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972679590" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:06:46Z" user="Stéphane Brunner" uid="17835" lat="46.5135128" lon="6.6113350"/>
+ <node id="972679599" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:06:46Z" user="Stéphane Brunner" uid="17835" lat="46.5126503" lon="6.6121512"/>
+ <node id="972679611" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:06:47Z" user="Stéphane Brunner" uid="17835" lat="46.5133521" lon="6.6112653"/>
+ <node id="972679638" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:10Z" user="Erdling1957" uid="527033" lat="46.5127979" lon="6.6112541">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972679649" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:06:49Z" user="Stéphane Brunner" uid="17835" lat="46.5115273" lon="6.6111190"/>
+ <node id="972679661" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:06:49Z" user="Stéphane Brunner" uid="17835" lat="46.5133137" lon="6.6109792"/>
+ <node id="972679669" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:14Z" user="Erdling1957" uid="527033" lat="46.5126065" lon="6.6102169">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972679672" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:06:50Z" user="Stéphane Brunner" uid="17835" lat="46.5122140" lon="6.6099560"/>
+ <node id="972679683" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:06:50Z" user="Stéphane Brunner" uid="17835" lat="46.5128617" lon="6.6091603"/>
+ <node id="972679684" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:06:50Z" user="Stéphane Brunner" uid="17835" lat="46.5132581" lon="6.6117488"/>
+ <node id="972679692" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:17Z" user="Erdling1957" uid="527033" lat="46.5130578" lon="6.6099276">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972679732" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:06:52Z" user="Stéphane Brunner" uid="17835" lat="46.5125189" lon="6.6111932"/>
+ <node id="972679736" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:06:53Z" user="Stéphane Brunner" uid="17835" lat="46.5137545" lon="6.6086797"/>
+ <node id="972679737" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:06:53Z" user="Stéphane Brunner" uid="17835" lat="46.5125367" lon="6.6092518"/>
+ <node id="972679738" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:06:53Z" user="Stéphane Brunner" uid="17835" lat="46.5127579" lon="6.6115275"/>
+ <node id="972679748" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:06:53Z" user="Stéphane Brunner" uid="17835" lat="46.5130898" lon="6.6123210"/>
+ <node id="972679757" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:06:53Z" user="Stéphane Brunner" uid="17835" lat="46.5123219" lon="6.6105919"/>
+ <node id="972679769" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:06:54Z" user="Stéphane Brunner" uid="17835" lat="46.5132470" lon="6.6111613"/>
+ <node id="972679773" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:06:54Z" user="Stéphane Brunner" uid="17835" lat="46.5130366" lon="6.6097579"/>
+ <node id="972679792" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:19Z" user="Erdling1957" uid="527033" lat="46.5123794" lon="6.6103436">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972679799" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:06:55Z" user="Stéphane Brunner" uid="17835" lat="46.5121633" lon="6.6086308"/>
+ <node id="972679807" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:06:55Z" user="Stéphane Brunner" uid="17835" lat="46.5126064" lon="6.6120831"/>
+ <node id="972679813" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:06:56Z" user="Stéphane Brunner" uid="17835" lat="46.5133239" lon="6.6109212"/>
+ <node id="972679815" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:06:56Z" user="Stéphane Brunner" uid="17835" lat="46.5136511" lon="6.6080857"/>
+ <node id="972679824" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:05Z" user="Erdling1957" uid="527033" lat="46.5125766" lon="6.6112707">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972679825" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:06:56Z" user="Stéphane Brunner" uid="17835" lat="46.5125937" lon="6.6096975"/>
+ <node id="972679842" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:06:57Z" user="Stéphane Brunner" uid="17835" lat="46.5117352" lon="6.6116519"/>
+ <node id="972679859" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:06:58Z" user="Stéphane Brunner" uid="17835" lat="46.5125320" lon="6.6101262"/>
+ <node id="972679871" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:06:59Z" user="Stéphane Brunner" uid="17835" lat="46.5123551" lon="6.6097887"/>
+ <node id="972679872" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:06:59Z" user="Stéphane Brunner" uid="17835" lat="46.5133210" lon="6.6113841"/>
+ <node id="972679877" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:13Z" user="Erdling1957" uid="527033" lat="46.5129730" lon="6.6111825">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972679892" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:15Z" user="Erdling1957" uid="527033" lat="46.5130990" lon="6.6103476">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972679912" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:28Z" user="Erdling1957" uid="527033" lat="46.5123343" lon="6.6108527">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972679920" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:00Z" user="Stéphane Brunner" uid="17835" lat="46.5133515" lon="6.6085893"/>
+ <node id="972679948" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:02Z" user="Stéphane Brunner" uid="17835" lat="46.5124209" lon="6.6097299"/>
+ <node id="972679951" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:02Z" user="Stéphane Brunner" uid="17835" lat="46.5128829" lon="6.6116452"/>
+ <node id="972679955" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:02Z" user="Stéphane Brunner" uid="17835" lat="46.5131274" lon="6.6119331"/>
+ <node id="972679957" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:02Z" user="Stéphane Brunner" uid="17835" lat="46.5132512" lon="6.6087623"/>
+ <node id="972679978" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:03Z" user="Stéphane Brunner" uid="17835" lat="46.5140129" lon="6.6081403"/>
+ <node id="972679981" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:13Z" user="Erdling1957" uid="527033" lat="46.5125298" lon="6.6102311">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972679984" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:03Z" user="Stéphane Brunner" uid="17835" lat="46.5125038" lon="6.6086468"/>
+ <node id="972680005" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:04Z" user="Stéphane Brunner" uid="17835" lat="46.5124975" lon="6.6111810"/>
+ <node id="972680044" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:07Z" user="Erdling1957" uid="527033" lat="46.5128046" lon="6.6116781">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972680048" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:05Z" user="Stéphane Brunner" uid="17835" lat="46.5125631" lon="6.6100208"/>
+ <node id="972680079" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:21Z" user="Erdling1957" uid="527033" lat="46.5124794" lon="6.6111663">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972680088" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:06Z" user="Stéphane Brunner" uid="17835" lat="46.5135898" lon="6.6112831"/>
+ <node id="972680105" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:06Z" user="Stéphane Brunner" uid="17835" lat="46.5126437" lon="6.6121014"/>
+ <node id="972680133" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:07Z" user="Stéphane Brunner" uid="17835" lat="46.5132863" lon="6.6113172"/>
+ <node id="972680174" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:22:59Z" user="Erdling1957" uid="527033" lat="46.5128172" lon="6.6111991">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972680194" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:09Z" user="Stéphane Brunner" uid="17835" lat="46.5115396" lon="6.6105638"/>
+ <node id="972680217" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:21Z" user="Erdling1957" uid="527033" lat="46.5126644" lon="6.6102759">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972680224" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:10Z" user="Stéphane Brunner" uid="17835" lat="46.5123836" lon="6.6098865"/>
+ <node id="972680227" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:10Z" user="Stéphane Brunner" uid="17835" lat="46.5130965" lon="6.6112671"/>
+ <node id="972680259" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:11Z" user="Stéphane Brunner" uid="17835" lat="46.5132158" lon="6.6117938"/>
+ <node id="972680264" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:11Z" user="Stéphane Brunner" uid="17835" lat="46.5131207" lon="6.6091100"/>
+ <node id="972680271" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:24Z" user="Erdling1957" uid="527033" lat="46.5130332" lon="6.6100369">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972680327" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:13Z" user="Stéphane Brunner" uid="17835" lat="46.5138062" lon="6.6085500"/>
+ <node id="972680328" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:13Z" user="Stéphane Brunner" uid="17835" lat="46.5128012" lon="6.6116020"/>
+ <node id="972680340" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:13Z" user="Stéphane Brunner" uid="17835" lat="46.5126278" lon="6.6091359"/>
+ <node id="972680342" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:13Z" user="Stéphane Brunner" uid="17835" lat="46.5129456" lon="6.6122937"/>
+ <node id="972680347" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:13Z" user="Stéphane Brunner" uid="17835" lat="46.5132393" lon="6.6120602"/>
+ <node id="972680352" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:14Z" user="Stéphane Brunner" uid="17835" lat="46.5123742" lon="6.6107641"/>
+ <node id="972680366" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:14Z" user="Stéphane Brunner" uid="17835" lat="46.5129358" lon="6.6097852"/>
+ <node id="972680368" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:25Z" user="Erdling1957" uid="527033" lat="46.5122576" lon="6.6106014">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972680403" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:15Z" user="Stéphane Brunner" uid="17835" lat="46.5133107" lon="6.6109963"/>
+ <node id="972680405" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:15Z" user="Stéphane Brunner" uid="17835" lat="46.5136570" lon="6.6080430"/>
+ <node id="972680406" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:11Z" user="Erdling1957" uid="527033" lat="46.5126662" lon="6.6113582">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972680409" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:15Z" user="Stéphane Brunner" uid="17835" lat="46.5126620" lon="6.6096559"/>
+ <node id="972680425" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:16Z" user="Stéphane Brunner" uid="17835" lat="46.5116432" lon="6.6115803"/>
+ <node id="972680431" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:16Z" user="Stéphane Brunner" uid="17835" lat="46.5131731" lon="6.6106442"/>
+ <node id="972680440" visible="true" version="2" changeset="6291437" timestamp="2010-11-04T20:26:38Z" user="Stéphane Brunner" uid="17835" lat="46.5124147" lon="6.6104762"/>
+ <node id="972680461" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:17Z" user="Stéphane Brunner" uid="17835" lat="46.5131345" lon="6.6116889"/>
+ <node id="972680470" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:17Z" user="Stéphane Brunner" uid="17835" lat="46.5127341" lon="6.6094390"/>
+ <node id="972680471" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:17Z" user="Stéphane Brunner" uid="17835" lat="46.5133351" lon="6.6114115"/>
+ <node id="972680484" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:17Z" user="Stéphane Brunner" uid="17835" lat="46.5130235" lon="6.6110872">
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972680487" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:16Z" user="Erdling1957" uid="527033" lat="46.5131307" lon="6.6102537">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972680490" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:17Z" user="Stéphane Brunner" uid="17835" lat="46.5120283" lon="6.6100437"/>
+ <node id="972680506" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:19Z" user="Erdling1957" uid="527033" lat="46.5124185" lon="6.6109445">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972680509" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:18Z" user="Stéphane Brunner" uid="17835" lat="46.5134385" lon="6.6085585"/>
+ <node id="972680522" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:18Z" user="Stéphane Brunner" uid="17835" lat="46.5125886" lon="6.6094844"/>
+ <node id="972680551" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:20Z" user="Stéphane Brunner" uid="17835" lat="46.5127987" lon="6.6115304"/>
+ <node id="972680560" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:20Z" user="Stéphane Brunner" uid="17835" lat="46.5130955" lon="6.6119482"/>
+ <node id="972680561" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:21Z" user="Stéphane Brunner" uid="17835" lat="46.5131958" lon="6.6087020"/>
+ <node id="972680587" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:22Z" user="Stéphane Brunner" uid="17835" lat="46.5139707" lon="6.6080447"/>
+ <node id="972680589" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:22Z" user="Erdling1957" uid="527033" lat="46.5125681" lon="6.6102639">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972680604" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:22Z" user="Stéphane Brunner" uid="17835" lat="46.5124671" lon="6.6086229"/>
+ <node id="972680605" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:23Z" user="Stéphane Brunner" uid="17835" lat="46.5131044" lon="6.6117841"/>
+ <node id="972680614" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:23Z" user="Stéphane Brunner" uid="17835" lat="46.5124494" lon="6.6113497"/>
+ <node id="972680685" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:09Z" user="Erdling1957" uid="527033" lat="46.5127769" lon="6.6117803">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972680689" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:28Z" user="Stéphane Brunner" uid="17835" lat="46.5125196" lon="6.6099259"/>
+ <node id="972680710" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:29Z" user="Stéphane Brunner" uid="17835" lat="46.5127910" lon="6.6116382"/>
+ <node id="972680711" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:29Z" user="Stéphane Brunner" uid="17835" lat="46.5122973" lon="6.6098820"/>
+ <node id="972680724" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:30Z" user="Stéphane Brunner" uid="17835" lat="46.5132571" lon="6.6112708"/>
+ <node id="972680744" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:23Z" user="Erdling1957" uid="527033" lat="46.5128605" lon="6.6115697">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972680752" visible="true" version="2" changeset="6376096" timestamp="2010-11-15T09:59:07Z" user="Stéphane Brunner" uid="17835" lat="46.5115694" lon="6.6103679"/>
+ <node id="972680760" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:10Z" user="Erdling1957" uid="527033" lat="46.5124238" lon="6.6102387">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972680764" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:31Z" user="Stéphane Brunner" uid="17835" lat="46.5123820" lon="6.6099209"/>
+ <node id="972680767" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:31Z" user="Stéphane Brunner" uid="17835" lat="46.5129781" lon="6.6108864"/>
+ <node id="972680768" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:31Z" user="Stéphane Brunner" uid="17835" lat="46.5130017" lon="6.6115927"/>
+ <node id="972680769" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:31Z" user="Stéphane Brunner" uid="17835" lat="46.5131801" lon="6.6117624"/>
+ <node id="972680779" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:32Z" user="Stéphane Brunner" uid="17835" lat="46.5130317" lon="6.6089735"/>
+ <node id="972680786" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:11Z" user="Erdling1957" uid="527033" lat="46.5129956" lon="6.6101478">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972680807" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:33Z" user="Stéphane Brunner" uid="17835" lat="46.5138614" lon="6.6084800"/>
+ <node id="972680808" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:33Z" user="Stéphane Brunner" uid="17835" lat="46.5125727" lon="6.6089475"/>
+ <node id="972680810" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:33Z" user="Stéphane Brunner" uid="17835" lat="46.5127656" lon="6.6116478"/>
+ <node id="972680819" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:33Z" user="Stéphane Brunner" uid="17835" lat="46.5132646" lon="6.6119277"/>
+ <node id="972680822" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:34Z" user="Stéphane Brunner" uid="17835" lat="46.5123405" lon="6.6108585"/>
+ <node id="972680834" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:01Z" user="Erdling1957" uid="527033" lat="46.5130019" lon="6.6118537">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972680838" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:34Z" user="Stéphane Brunner" uid="17835" lat="46.5127954" lon="6.6102305"/>
+ <node id="972680847" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:13Z" user="Erdling1957" uid="527033" lat="46.5123689" lon="6.6107686">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972680857" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:35Z" user="Stéphane Brunner" uid="17835" lat="46.5133746" lon="6.6110796"/>
+ <node id="972680865" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:27Z" user="Erdling1957" uid="527033" lat="46.5127456" lon="6.6114324">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972680868" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:35Z" user="Stéphane Brunner" uid="17835" lat="46.5126817" lon="6.6094878"/>
+ <node id="972680875" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:36Z" user="Stéphane Brunner" uid="17835" lat="46.5115679" lon="6.6114318"/>
+ <node id="972680880" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:36Z" user="Stéphane Brunner" uid="17835" lat="46.5132581" lon="6.6102520"/>
+ <node id="972680892" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:22Z" user="Erdling1957" uid="527033" lat="46.5125147" lon="6.6103731">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972680905" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:37Z" user="Stéphane Brunner" uid="17835" lat="46.5121165" lon="6.6098715"/>
+ <node id="972680906" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:37Z" user="Stéphane Brunner" uid="17835" lat="46.5123715" lon="6.6104476"/>
+ <node id="972680910" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:37Z" user="Stéphane Brunner" uid="17835" lat="46.5130563" lon="6.6116355"/>
+ <node id="972680915" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:37Z" user="Stéphane Brunner" uid="17835" lat="46.5127677" lon="6.6093226"/>
+ <node id="972680921" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:37Z" user="Stéphane Brunner" uid="17835" lat="46.5132440" lon="6.6116627"/>
+ <node id="972680925" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:01Z" user="Erdling1957" uid="527033" lat="46.5130921" lon="6.6109063">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972680931" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:38Z" user="Stéphane Brunner" uid="17835" lat="46.5123195" lon="6.6100133"/>
+ <node id="972680938" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:26Z" user="Erdling1957" uid="527033" lat="46.5124335" lon="6.6111149">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972680942" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:38Z" user="Stéphane Brunner" uid="17835" lat="46.5134937" lon="6.6087019"/>
+ <node id="972680944" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:38Z" user="Stéphane Brunner" uid="17835" lat="46.5126132" lon="6.6094108"/>
+ <node id="972680964" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:39Z" user="Stéphane Brunner" uid="17835" lat="46.5128010" lon="6.6114988"/>
+ <node id="972680969" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:39Z" user="Stéphane Brunner" uid="17835" lat="46.5129865" lon="6.6123101"/>
+ <node id="972680970" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:39Z" user="Stéphane Brunner" uid="17835" lat="46.5132363" lon="6.6085210"/>
+ <node id="972680984" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:39Z" user="Stéphane Brunner" uid="17835" lat="46.5124608" lon="6.6100396"/>
+ <node id="972680987" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:39Z" user="Stéphane Brunner" uid="17835" lat="46.5136593" lon="6.6110663"/>
+ <node id="972680997" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:40Z" user="Stéphane Brunner" uid="17835" lat="46.5139143" lon="6.6080379"/>
+ <node id="972680999" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:12Z" user="Erdling1957" uid="527033" lat="46.5127373" lon="6.6103523">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972681001" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:40Z" user="Stéphane Brunner" uid="17835" lat="46.5122798" lon="6.6099386"/>
+ <node id="972681003" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:40Z" user="Stéphane Brunner" uid="17835" lat="46.5123222" lon="6.6086468"/>
+ <node id="972681021" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:41Z" user="Stéphane Brunner" uid="17835" lat="46.5127399" lon="6.6115508"/>
+ <node id="972681030" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:41Z" user="Stéphane Brunner" uid="17835" lat="46.5138168" lon="6.6082273"/>
+ <node id="972681032" visible="true" version="2" changeset="9809105" timestamp="2011-11-12T22:23:08Z" user="Erdling1957" uid="527033" lat="46.5127240" lon="6.6116212">
+  <tag k="denotation" v="urban"/>
+  <tag k="natural" v="tree"/>
+ </node>
+ <node id="972681036" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:41Z" user="Stéphane Brunner" uid="17835" lat="46.5125473" lon="6.6098872"/>
+ <node id="972681056" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:42Z" user="Stéphane Brunner" uid="17835" lat="46.5130834" lon="6.6118497"/>
+ <node id="988260747" visible="true" version="1" changeset="6362634" timestamp="2010-11-13T22:25:17Z" user="Stéphane Brunner" uid="17835" lat="46.5133614" lon="6.6120450"/>
+ <node id="989943072" visible="true" version="1" changeset="6376096" timestamp="2010-11-15T09:58:48Z" user="Stéphane Brunner" uid="17835" lat="46.5115526" lon="6.6104599"/>
+ <node id="3878647508" visible="true" version="2" changeset="35785865" timestamp="2015-12-06T13:46:17Z" user="didier2020" uid="300459" lat="46.5128017" lon="6.6102930"/>
+ <node id="3878647522" visible="true" version="2" changeset="35785865" timestamp="2015-12-06T13:46:18Z" user="didier2020" uid="300459" lat="46.5128946" lon="6.6099669"/>
+ <node id="3878647523" visible="true" version="2" changeset="35785865" timestamp="2015-12-06T13:46:18Z" user="didier2020" uid="300459" lat="46.5129043" lon="6.6103722"/>
+ <node id="3878647529" visible="true" version="2" changeset="35785865" timestamp="2015-12-06T13:46:18Z" user="didier2020" uid="300459" lat="46.5130165" lon="6.6100461"/>
+ <node id="4107087599" visible="true" version="1" changeset="38398064" timestamp="2016-04-08T06:37:44Z" user="floyd70" uid="3068030" lat="46.5127496" lon="6.6111069">
+  <tag k="addr:city" v="Lausanne"/>
+  <tag k="addr:housenumber" v="5"/>
+  <tag k="addr:street" v="Avenue Emile-Henri-Jaques-Dalcroze"/>
+ </node>
+ <way id="24509120" visible="true" version="8" changeset="47908714" timestamp="2017-04-18T14:49:50Z" user="Simon Doppler" uid="5688287">
+  <nd ref="266539534"/>
+  <nd ref="266539544"/>
+  <nd ref="321866119"/>
+  <nd ref="266539542"/>
+  <nd ref="35297578"/>
+  <tag k="bicycle" v="yes"/>
+  <tag k="highway" v="pedestrian"/>
+  <tag k="name" v="Avenue Emile-Henri-Jaques-Dalcroze"/>
+  <tag k="surface" v="asphalt"/>
+ </way>
+ <way id="24509124" visible="true" version="4" changeset="6245649" timestamp="2010-10-31T20:08:39Z" user="Stéphane Brunner" uid="17835">
+  <nd ref="266539542"/>
+  <nd ref="266539547"/>
+  <tag k="highway" v="path"/>
+ </way>
+ <way id="24509125" visible="true" version="4" changeset="12679609" timestamp="2012-08-10T12:33:37Z" user="efred" uid="125339">
+  <nd ref="266539550"/>
+  <nd ref="266539551"/>
+  <tag k="highway" v="path"/>
+ </way>
+ <way id="24683923" visible="true" version="2" changeset="12679609" timestamp="2012-08-10T12:34:40Z" user="efred" uid="125339">
+  <nd ref="268303484"/>
+  <nd ref="268303486"/>
+  <nd ref="268303488"/>
+  <nd ref="268303490"/>
+  <nd ref="268303484"/>
+  <tag k="amenity" v="parking"/>
+ </way>
+ <way id="24683925" visible="true" version="6" changeset="6362643" timestamp="2010-11-13T22:26:24Z" user="Stéphane Brunner" uid="17835">
+  <nd ref="35297579"/>
+  <nd ref="972676323"/>
+  <nd ref="972680767"/>
+  <nd ref="972676383"/>
+  <nd ref="266539543"/>
+  <nd ref="972680328"/>
+  <nd ref="266539550"/>
+  <nd ref="418851115"/>
+  <nd ref="988260747"/>
+  <nd ref="567601215"/>
+  <tag k="highway" v="path"/>
+ </way>
+ <way id="24980284" visible="true" version="9" changeset="8087309" timestamp="2011-05-08T20:29:23Z" user="Stéphane Brunner" uid="17835">
+  <nd ref="271437125"/>
+  <nd ref="563294386"/>
+  <nd ref="574442222"/>
+  <nd ref="411864532"/>
+  <nd ref="418851113"/>
+  <nd ref="574442224"/>
+  <nd ref="567601088"/>
+  <nd ref="266293489"/>
+  <nd ref="35297579"/>
+  <nd ref="35297578"/>
+  <tag k="highway" v="service"/>
+  <tag k="name" v="Avenue Emile-Henri-Jaques-Dalcroze"/>
+  <tag k="service" v="alley"/>
+ </way>
+ <way id="25856227" visible="true" version="9" changeset="6291437" timestamp="2010-11-04T20:26:38Z" user="Stéphane Brunner" uid="17835">
+  <nd ref="282021876"/>
+  <nd ref="282021868"/>
+  <nd ref="567607160"/>
+  <nd ref="567607161"/>
+  <nd ref="567607162"/>
+  <nd ref="567607159"/>
+  <nd ref="560983237"/>
+  <nd ref="560983235"/>
+  <nd ref="560983238"/>
+  <nd ref="560983239"/>
+  <nd ref="282021865"/>
+  <nd ref="560983236"/>
+  <nd ref="282021870"/>
+  <tag k="source" v="Orthophoto Ville de Lausanne 2008"/>
+ </way>
+ <way id="44179218" visible="true" version="2" changeset="3245627" timestamp="2009-11-29T13:58:53Z" user="Marc Mongenet" uid="74847">
+  <nd ref="561204466"/>
+  <nd ref="561204467"/>
+  <nd ref="574476823"/>
+  <nd ref="561204464"/>
+  <nd ref="574476824"/>
+  <nd ref="561204463"/>
+  <nd ref="574476810"/>
+  <nd ref="561204476"/>
+  <nd ref="561204477"/>
+  <nd ref="574476885"/>
+  <nd ref="561204478"/>
+  <nd ref="574476887"/>
+  <nd ref="561204480"/>
+  <nd ref="561204481"/>
+  <nd ref="574476889"/>
+  <nd ref="574476894"/>
+  <nd ref="574476892"/>
+  <nd ref="561204482"/>
+  <nd ref="561204486"/>
+  <nd ref="561204487"/>
+  <nd ref="561204488"/>
+  <nd ref="574476899"/>
+  <nd ref="574476897"/>
+  <nd ref="561204489"/>
+  <nd ref="561204493"/>
+  <nd ref="561204485"/>
+  <nd ref="574476902"/>
+  <nd ref="561204496"/>
+  <nd ref="561204497"/>
+  <nd ref="574476904"/>
+  <nd ref="574476906"/>
+  <nd ref="561204498"/>
+  <nd ref="574476909"/>
+  <nd ref="574476870"/>
+  <nd ref="561204471"/>
+  <nd ref="561204472"/>
+  <nd ref="574476858"/>
+  <nd ref="561204473"/>
+  <nd ref="561204466"/>
+  <tag k="railway" v="miniature"/>
+  <tag k="source" v="Orthophoto Ville de Lausanne 2008"/>
+ </way>
+ <way id="44746407" visible="true" version="4" changeset="3339876" timestamp="2009-12-10T10:08:12Z" user="Stéphane Brunner" uid="17835">
+  <nd ref="567601039"/>
+  <nd ref="567601049"/>
+  <nd ref="567601052"/>
+  <nd ref="567601044"/>
+  <nd ref="567601039"/>
+  <tag k="addr:city" v="Lausanne"/>
+  <tag k="addr:country" v="CH"/>
+  <tag k="building" v="yes"/>
+  <tag k="source" v="Orthophoto Ville de Lausanne 2008"/>
+ </way>
+ <way id="83531598" visible="true" version="2" changeset="6291437" timestamp="2010-11-04T20:26:37Z" user="Stéphane Brunner" uid="17835">
+  <nd ref="282021888"/>
+  <nd ref="972680440"/>
+  <tag k="source" v="Orthophoto Ville de Lausanne 2008"/>
+ </way>
+ <way id="83531606" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:45Z" user="Stéphane Brunner" uid="17835">
+  <nd ref="266539547"/>
+  <nd ref="972679732"/>
+  <tag k="highway" v="pedestrian"/>
+ </way>
+ <way id="83531610" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:46Z" user="Stéphane Brunner" uid="17835">
+  <nd ref="972680405"/>
+  <nd ref="972679815"/>
+  <nd ref="972677576"/>
+  <nd ref="972681030"/>
+  <nd ref="972677115"/>
+  <nd ref="972680997"/>
+  <nd ref="972680587"/>
+  <nd ref="972679978"/>
+  <nd ref="972679535"/>
+  <nd ref="972676372"/>
+  <nd ref="972680807"/>
+  <nd ref="972680327"/>
+  <nd ref="972679736"/>
+  <nd ref="972677052"/>
+  <nd ref="972680942"/>
+  <nd ref="972680509"/>
+  <nd ref="972679920"/>
+  <nd ref="972678635"/>
+  <nd ref="972680970"/>
+  <nd ref="972680561"/>
+  <nd ref="972679957"/>
+  <nd ref="972679520"/>
+  <nd ref="972676348"/>
+  <nd ref="972680779"/>
+  <nd ref="972680264"/>
+  <nd ref="972679683"/>
+  <nd ref="972676839"/>
+  <nd ref="972680915"/>
+  <nd ref="972680470"/>
+  <nd ref="972680868"/>
+  <nd ref="972680409"/>
+  <nd ref="972679825"/>
+  <nd ref="972677587"/>
+  <nd ref="972681036"/>
+  <nd ref="972680689"/>
+  <nd ref="972680048"/>
+  <nd ref="972679572"/>
+  <nd ref="972676477"/>
+  <tag k="source" v="Orthophoto Ville de Lausanne 2008"/>
+ </way>
+ <way id="83531611" visible="true" version="3" changeset="6376096" timestamp="2010-11-15T09:59:05Z" user="Stéphane Brunner" uid="17835">
+  <nd ref="972680752"/>
+  <nd ref="989943072"/>
+  <nd ref="972680194"/>
+  <nd ref="972679649"/>
+  <nd ref="972676805"/>
+  <nd ref="972680875"/>
+  <nd ref="972680425"/>
+  <nd ref="972679842"/>
+  <nd ref="972676345"/>
+  <nd ref="972679807"/>
+  <nd ref="972677567"/>
+  <nd ref="972681021"/>
+  <nd ref="972680614"/>
+  <nd ref="972680005"/>
+  <tag k="source" v="Orthophoto Ville de Lausanne 2008"/>
+ </way>
+ <way id="83531617" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:47Z" user="Stéphane Brunner" uid="17835">
+  <nd ref="972676300"/>
+  <nd ref="972679769"/>
+  <nd ref="567607163"/>
+  <nd ref="567607156"/>
+  <nd ref="972679661"/>
+  <nd ref="972679813"/>
+  <nd ref="972679533"/>
+  <nd ref="972676368"/>
+  <nd ref="972678662"/>
+  <nd ref="972677060"/>
+  <nd ref="972680964"/>
+  <nd ref="972680551"/>
+  <nd ref="972679951"/>
+  <nd ref="972679515"/>
+  <nd ref="972676326"/>
+  <nd ref="972680768"/>
+  <nd ref="972680227"/>
+  <nd ref="972676300"/>
+  <tag k="landuse" v="grass"/>
+  <tag k="source" v="Orthophoto Ville de Lausanne 2008"/>
+ </way>
+ <way id="83531622" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:48Z" user="Stéphane Brunner" uid="17835">
+  <nd ref="972677054"/>
+  <nd ref="972680088"/>
+  <nd ref="972679590"/>
+  <nd ref="972676503"/>
+  <nd ref="972679541"/>
+  <nd ref="972676385"/>
+  <nd ref="972680819"/>
+  <nd ref="972680347"/>
+  <nd ref="972679748"/>
+  <nd ref="972677062"/>
+  <nd ref="972680969"/>
+  <nd ref="972680560"/>
+  <nd ref="972679955"/>
+  <nd ref="972679522"/>
+  <nd ref="972676347"/>
+  <nd ref="972680769"/>
+  <nd ref="972680259"/>
+  <nd ref="972679684"/>
+  <nd ref="972676830"/>
+  <nd ref="972680921"/>
+  <nd ref="972680471"/>
+  <nd ref="972679872"/>
+  <nd ref="972678470"/>
+  <nd ref="972676275"/>
+  <nd ref="972680724"/>
+  <nd ref="972680133"/>
+  <nd ref="972679611"/>
+  <nd ref="972676522"/>
+  <nd ref="972680857"/>
+  <nd ref="972680403"/>
+  <nd ref="972679661"/>
+  <nd ref="972679813"/>
+  <nd ref="972677054"/>
+  <tag k="landuse" v="forest"/>
+ </way>
+ <way id="83531627" visible="true" version="2" changeset="6291437" timestamp="2010-11-04T20:26:38Z" user="Stéphane Brunner" uid="17835">
+  <nd ref="972680440"/>
+  <nd ref="266539547"/>
+  <nd ref="972680906"/>
+ </way>
+ <way id="83531639" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:50Z" user="Stéphane Brunner" uid="17835">
+  <nd ref="972679732"/>
+  <nd ref="266539548"/>
+  <nd ref="972679738"/>
+  <nd ref="266539543"/>
+  <nd ref="972680810"/>
+  <nd ref="266539549"/>
+  <tag k="highway" v="path"/>
+ </way>
+ <way id="83531640" visible="true" version="3" changeset="6371616" timestamp="2010-11-14T21:58:52Z" user="Stéphane Brunner" uid="17835">
+  <nd ref="972676477"/>
+  <nd ref="972680838"/>
+  <nd ref="972680366"/>
+  <nd ref="972679773"/>
+  <nd ref="972677106"/>
+  <nd ref="972676809"/>
+  <nd ref="972680880"/>
+  <nd ref="972680431"/>
+  <nd ref="972680987"/>
+  <tag k="source" v="Orthophoto Ville de Lausanne 2008"/>
+ </way>
+ <way id="83531649" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:51Z" user="Stéphane Brunner" uid="17835">
+  <nd ref="972680711"/>
+  <nd ref="972678467"/>
+  <nd ref="972681001"/>
+  <nd ref="972679672"/>
+  <nd ref="972676824"/>
+  <nd ref="972680905"/>
+  <nd ref="972678591"/>
+  <tag k="source" v="Orthophoto Ville de Lausanne 2008"/>
+ </way>
+ <way id="83531652" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:52Z" user="Stéphane Brunner" uid="17835">
+  <nd ref="972680342"/>
+  <nd ref="972681056"/>
+  <nd ref="972680710"/>
+  <nd ref="972680105"/>
+  <nd ref="972679599"/>
+  <nd ref="972676505"/>
+  <nd ref="972680342"/>
+  <tag k="landuse" v="grass"/>
+  <tag k="source" v="Orthophoto Ville de Lausanne 2008"/>
+ </way>
+ <way id="83531681" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:54Z" user="Stéphane Brunner" uid="17835">
+  <nd ref="972676477"/>
+  <nd ref="972678627"/>
+  <nd ref="972676321"/>
+  <nd ref="972680764"/>
+  <nd ref="972680224"/>
+  <nd ref="972680711"/>
+ </way>
+ <way id="83531692" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:55Z" user="Stéphane Brunner" uid="17835">
+  <nd ref="972679799"/>
+  <nd ref="972677543"/>
+  <nd ref="972681003"/>
+  <nd ref="972680604"/>
+  <nd ref="972679984"/>
+  <nd ref="972679539"/>
+  <nd ref="972676375"/>
+  <nd ref="972680808"/>
+  <nd ref="972680340"/>
+  <nd ref="972679737"/>
+  <nd ref="972677058"/>
+  <nd ref="972680944"/>
+  <nd ref="972680522"/>
+  <nd ref="972679948"/>
+  <nd ref="972679516"/>
+  <nd ref="972679871"/>
+  <nd ref="972680711"/>
+  <tag k="source" v="Orthophoto Ville de Lausanne 2008"/>
+ </way>
+ <way id="83531698" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:56Z" user="Stéphane Brunner" uid="17835">
+  <nd ref="972680605"/>
+  <nd ref="972676825"/>
+  <nd ref="972680910"/>
+  <nd ref="972680461"/>
+  <nd ref="972680605"/>
+  <tag k="landuse" v="grass"/>
+  <tag k="source" v="Orthophoto Ville de Lausanne 2008"/>
+ </way>
+ <way id="83926363" visible="true" version="1" changeset="6291437" timestamp="2010-11-04T20:26:35Z" user="Stéphane Brunner" uid="17835">
+  <nd ref="282021870"/>
+  <nd ref="282021883"/>
+  <nd ref="282021888"/>
+  <tag k="source" v="Orthophoto Ville de Lausanne 2008"/>
+ </way>
+ <way id="83926364" visible="true" version="1" changeset="6291437" timestamp="2010-11-04T20:26:35Z" user="Stéphane Brunner" uid="17835">
+  <nd ref="282021888"/>
+  <nd ref="282021881"/>
+  <nd ref="282021876"/>
+  <tag k="source" v="Orthophoto Ville de Lausanne 2008"/>
+ </way>
+ <way id="83926365" visible="true" version="1" changeset="6291437" timestamp="2010-11-04T20:26:35Z" user="Stéphane Brunner" uid="17835">
+  <nd ref="972680906"/>
+  <nd ref="972677083"/>
+  <nd ref="972680984"/>
+  <nd ref="972677023"/>
+  <nd ref="972680931"/>
+  <nd ref="972680490"/>
+  <tag k="source" v="Orthophoto Ville de Lausanne 2008"/>
+ </way>
+ <way id="83926366" visible="true" version="1" changeset="6291437" timestamp="2010-11-04T20:26:35Z" user="Stéphane Brunner" uid="17835">
+  <nd ref="972680440"/>
+  <nd ref="972679859"/>
+  <nd ref="972677648"/>
+  <nd ref="282021870"/>
+  <tag k="source" v="Orthophoto Ville de Lausanne 2008"/>
+ </way>
+ <way id="83926367" visible="true" version="1" changeset="6291437" timestamp="2010-11-04T20:26:35Z" user="Stéphane Brunner" uid="17835">
+  <nd ref="972680005"/>
+  <nd ref="972679549"/>
+  <nd ref="972676390"/>
+  <nd ref="972680822"/>
+  <nd ref="972680352"/>
+  <nd ref="972679757"/>
+  <nd ref="972680906"/>
+  <tag k="source" v="Orthophoto Ville de Lausanne 2008"/>
+ </way>
+ <way id="83926368" visible="true" version="1" changeset="6291437" timestamp="2010-11-04T20:26:36Z" user="Stéphane Brunner" uid="17835">
+  <nd ref="972680005"/>
+  <nd ref="972679732"/>
+  <nd ref="282021876"/>
+ </way>
+ <way id="384558925" visible="true" version="2" changeset="35785865" timestamp="2015-12-06T13:44:44Z" user="didier2020" uid="300459">
+  <nd ref="3878647522"/>
+  <nd ref="3878647529"/>
+  <nd ref="3878647523"/>
+  <nd ref="3878647508"/>
+  <nd ref="3878647522"/>
+  <tag k="building" v="yes"/>
+ </way>
+ <relation id="1250455" visible="true" version="1" changeset="6245649" timestamp="2010-10-31T20:07:56Z" user="Stéphane Brunner" uid="17835">
+  <member type="way" ref="83531687" role="outer"/>
+  <member type="way" ref="83531650" role="outer"/>
+  <member type="way" ref="83531649" role="outer"/>
+  <member type="way" ref="83531692" role="outer"/>
+  <tag k="landuse" v="forest"/>
+  <tag k="source" v="Orthophoto Ville de Lausanne 2008"/>
+  <tag k="type" v="multipolygon"/>
+ </relation>
+ <relation id="1250459" visible="true" version="2" changeset="32610888" timestamp="2015-07-13T19:09:16Z" user="mathieuS" uid="40504">
+  <member type="way" ref="83531680" role="outer"/>
+  <member type="way" ref="83531610" role="outer"/>
+  <member type="way" ref="83531681" role="outer"/>
+  <member type="way" ref="83531692" role="outer"/>
+  <tag k="landuse" v="grass"/>
+  <tag k="source" v="Orthophoto Ville de Lausanne 2008"/>
+  <tag k="type" v="multipolygon"/>
+ </relation>
+ <relation id="1250461" visible="true" version="3" changeset="6371616" timestamp="2010-11-14T21:58:17Z" user="Stéphane Brunner" uid="17835">
+  <member type="way" ref="85277565" role="outer"/>
+  <member type="way" ref="85277664" role="outer"/>
+  <member type="way" ref="85334461" role="outer"/>
+  <member type="way" ref="85334447" role="outer"/>
+  <member type="way" ref="85334473" role="outer"/>
+  <member type="way" ref="85334449" role="outer"/>
+  <member type="way" ref="85334474" role="outer"/>
+  <member type="way" ref="85334451" role="outer"/>
+  <member type="way" ref="83531640" role="outer"/>
+  <member type="way" ref="83531610" role="outer"/>
+  <tag k="landuse" v="forest"/>
+  <tag k="source" v="Orthophoto Ville de Lausanne 2008"/>
+  <tag k="type" v="multipolygon"/>
+ </relation>
+ <relation id="1250463" visible="true" version="2" changeset="6291437" timestamp="2010-11-04T20:26:38Z" user="Stéphane Brunner" uid="17835">
+  <member type="way" ref="83531611" role="outer"/>
+  <member type="way" ref="83926367" role="outer"/>
+  <member type="way" ref="83926365" role="outer"/>
+  <member type="way" ref="83531682" role="outer"/>
+  <tag k="landuse" v="grass"/>
+  <tag k="source" v="Orthophoto Ville de Lausanne 2008"/>
+  <tag k="type" v="multipolygon"/>
+ </relation>
+ <relation id="1255716" visible="true" version="1" changeset="6291437" timestamp="2010-11-04T20:26:36Z" user="Stéphane Brunner" uid="17835">
+  <member type="way" ref="83531627" role="outer"/>
+  <member type="way" ref="83926367" role="outer"/>
+  <member type="way" ref="83926368" role="outer"/>
+  <member type="way" ref="83926364" role="outer"/>
+  <member type="way" ref="83531598" role="outer"/>
+  <tag k="area" v="yes"/>
+  <tag k="highway" v="pedestrian"/>
+  <tag k="type" v="multipolygon"/>
+ </relation>
+ <relation id="1255717" visible="true" version="3" changeset="47061334" timestamp="2017-03-22T08:30:45Z" user="nyuriks" uid="339581">
+  <member type="way" ref="25856227" role="outer"/>
+  <member type="way" ref="83926363" role="outer"/>
+  <member type="way" ref="83926364" role="outer"/>
+  <tag k="addr:city" v="Lausanne"/>
+  <tag k="addr:country" v="CH"/>
+  <tag k="amenity" v="theatre"/>
+  <tag k="building" v="yes"/>
+  <tag k="name" v="Théâtre de Vidy"/>
+  <tag k="source" v="Orthophoto Ville de Lausanne 2008"/>
+  <tag k="type" v="multipolygon"/>
+  <tag k="wikidata" v="Q689365"/>
+  <tag k="wikipedia" v="fr:Théâtre Vidy-Lausanne"/>
+ </relation>
+ <relation id="1255718" visible="true" version="1" changeset="6291437" timestamp="2010-11-04T20:26:37Z" user="Stéphane Brunner" uid="17835">
+  <member type="way" ref="83531598" role="outer"/>
+  <member type="way" ref="83926366" role="outer"/>
+  <member type="way" ref="83926363" role="outer"/>
+  <tag k="landuse" v="grass"/>
+  <tag k="source" v="Orthophoto Ville de Lausanne 2008"/>
+  <tag k="type" v="multipolygon"/>
+ </relation>
+</osm>
