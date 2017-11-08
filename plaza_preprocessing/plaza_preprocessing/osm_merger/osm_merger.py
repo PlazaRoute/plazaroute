@@ -83,7 +83,7 @@ def _write_modified_ways(plaza_ways, filename):
 
 def _write_plazas_to_osm(plazas, filename):
     plaza_writer = PlazaWriter()
-    plaza_writer.read_plazas(plazas)
+    plaza_writer.transform_plazas(plazas)
     plaza_writer.write_to_file(filename)
     return plaza_writer.entry_node_mappings
 

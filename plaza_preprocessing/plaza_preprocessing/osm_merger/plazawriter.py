@@ -5,7 +5,7 @@ from osmium.osm.mutable import Way, Node
 
 class PlazaWriter:
     """
-    Reads plaza graph edges and produces an OSM Format
+    Transforms plaza graph edges to an OSM Format
     """
 
     def __init__(self):
@@ -16,7 +16,7 @@ class PlazaWriter:
         # maps entry ways of plazas to entry node ids
         self.entry_node_mappings = {}
 
-    def read_plazas(self, plazas):
+    def transform_plazas(self, plazas):
         """ takes a list of plazas with edge geometries and constructs nodes and ways """
         for plaza in plazas:
             if "graph_edges" not in plaza:

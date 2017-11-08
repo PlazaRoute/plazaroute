@@ -20,7 +20,7 @@ def process_strategy(request):
 def test_read_plaza():
     plaza_writer = PlazaWriter()
     plaza = create_test_plaza()
-    plaza_writer.read_plazas([plaza])
+    plaza_writer.transform_plazas([plaza])
     assert len(plaza_writer.nodes) == 4
     assert len(plaza_writer.ways) == 2
     assert plaza_writer.ways[1].nodes[2] == plaza_writer.ways[0].nodes[1]
@@ -32,7 +32,7 @@ def test_read_real_plaza(process_strategy):
     assert plaza
 
     plaza_writer = PlazaWriter()
-    plaza_writer.read_plazas([plaza])
+    plaza_writer.transform_plazas([plaza])
     assert len(plaza_writer.ways) == len(plaza['graph_edges'])
     assert len(plaza_writer.nodes) < len(plaza['graph_edges']) / 2
     way_id = 259200019  # footway with 2 entry points
@@ -43,7 +43,7 @@ def test_read_real_plaza(process_strategy):
 def test_write_to_file():
     plaza_writer = PlazaWriter()
     plaza = create_test_plaza()
-    plaza_writer.read_plazas([plaza])
+    plaza_writer.transform_plazas([plaza])
     filename = 'testfile.osm'
     try:
         plaza_writer.write_to_file('testfile.osm')
@@ -58,7 +58,7 @@ def test_write_to_file_real_plaza(process_strategy):
     assert plaza
 
     plaza_writer = PlazaWriter()
-    plaza_writer.read_plazas([plaza])
+    plaza_writer.transform_plazas([plaza])
     filename = 'testfile.osm'
     try:
         plaza_writer.write_to_file('testfile.osm')
