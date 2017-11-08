@@ -5,6 +5,7 @@ Merge files together with osmosis
 osmosis must be available in PATH!
 """
 
+
 def merge_three_osm_files(out_file, *filenames):
     cmd = ['osmosis']
     for filename in filenames:

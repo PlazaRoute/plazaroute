@@ -1,82 +1,94 @@
-from plaza_preprocessing.osm_merger import geojson_writer
-from plaza_preprocessing.osm_optimizer import helpers
+from plaza_preprocessing.osm_optimizer import utils
 from plaza_preprocessing.osm_optimizer.visibilitygraphprocessor import VisibilityGraphProcessor
 from plaza_preprocessing.osm_optimizer.spiderwebgraphprocessor import SpiderWebGraphProcessor
 from shapely.geometry import Point, MultiPolygon, box
 
 
+def preprocess_plazas(osm_holder):
+    """ preprocess all plazas from osm_importer """
+    plaza_processor = PlazaPreprocessor(osm_holder, VisibilityGraphProcessor())
+    processed_plazas = []
+    for plaza in osm_holder.plazas:
+        print(f"Processing plaza {plaza['osm_id']}")
+        processed_plaza = plaza_processor.process_plaza(plaza)
+        if processed_plaza is not None:
+            processed_plazas.append(processed_plaza)
+
+    return processed_plazas
+
+
 class PlazaPreprocessor:
 
-    def __init__(self, osm_id, plaza_geometry, osm_holder, graph_processor):
-        self.osm_id = osm_id
-        self.plaza_geometry = plaza_geometry
+    def __init__(self, osm_holder, graph_processor):
         self.lines = osm_holder.lines
         self.buildings = osm_holder.buildings
         self.points = osm_holder.points
         self.graph_processor = graph_processor
-        self.entry_points = []
-        self.graph_edges = None
-        self.entry_lines = []
 
-    def process_plaza(self):
+    def process_plaza(self, plaza):
         """ process a single plaza """
-        self._calc_entry_points()
+        intersecting_lines = self._find_intersescting_lines(plaza)
 
-        if len(self.entry_points) < 2:
-            print(f"Discarding Plaza {self.osm_id}: fewer than 2 entry points")
-            return False
+        entry_points = self._calc_entry_points(plaza, intersecting_lines)
 
-        self._insert_obstacles()
-        # geojson_writer.write_geojson([self.plaza_geometry], 'plaza.geojson')
-        # geojson_writer.write_geojson(self.entry_points, 'entry_points.geojson')
+        if len(entry_points) < 2:
+            print(f"Discarding Plaza {plaza['osm_id']}: fewer than 2 entry points")
+            return None
 
-        if not self.plaza_geometry:
+        entry_lines = self._map_entry_lines(intersecting_lines, entry_points)
+
+        plaza_geom_without_obstacles = self._calc_obstacle_geometry(plaza)
+
+        if not plaza_geom_without_obstacles:
             # TODO: Log
-            print(f"Discarding Plaza {self.osm_id}: completely obstructed by obstacles")
-            return False
+            print(f"Discarding Plaza {plaza['osm_id']}: completely obstructed by obstacles")
+            return None
 
-        self.graph_processor.entry_points = self.entry_points
-        self.graph_processor.plaza_geometry = self.plaza_geometry
+        self.graph_processor.entry_points = entry_points
+        self.graph_processor.plaza_geometry = plaza_geom_without_obstacles
         self.graph_processor.create_graph_edges()
-        self.graph_edges = self.graph_processor.graph_edges
-        # geojson_writer.write_geojson(self.graph_processor.graph_edges, 'edges.geojson')
-        return True
 
-    def _calc_entry_points(self):
+        graph_edges = self.graph_processor.graph_edges
+
+        plaza['geometry'] = plaza_geom_without_obstacles
+        plaza['entry_points'] = entry_points
+        plaza['entry_lines'] = entry_lines
+        plaza['graph_edges'] = graph_edges
+
+        return plaza
+
+    def _calc_entry_points(self, plaza, intersecting_lines):
         """
         calculate points where lines intersect with the outer ring of the plaza
         """
-        intersecting_lines = self._find_intersescting_lines()
         intersection_coords = set()
         for line in intersecting_lines:
             line_geom = line['geometry']
-            intersection = line_geom.intersection(self.plaza_geometry)
+            intersection = line_geom.intersection(plaza['geometry'])
             intersection_coords = intersection_coords.union(
-                helpers.unpack_geometry_coordinates(intersection))
+                utils.unpack_geometry_coordinates(intersection))
 
         intersection_points = list(map(Point, intersection_coords))
-        # for point in intersection_points:
-        #     if self.plaza_geometry.touches(point):
-        #         self.entry_points.append(point)
-        #         self.entry_lines.append()
-        self.entry_points.extend(
-            [p for p in intersection_points if self.plaza_geometry.touches(p)])
 
-        self.map_entry_lines(intersecting_lines)
+        entry_points = [
+            p for p in intersection_points if plaza['geometry'].touches(p)]
 
-    def map_entry_lines(self, intersecting_lines):
+        return entry_points
+
+    def _map_entry_lines(self, intersecting_lines, entry_points):
         """ map entry lines to entry points """
+        entry_lines = []
         for line in intersecting_lines:
             matching_entry_points = list(filter(
-                lambda p: (p.x, p.y) in line['geometry'].coords, self.entry_points))
+                lambda p: (p.x, p.y) in line['geometry'].coords, entry_points))
             if matching_entry_points:
-                self.entry_lines.append({
+                entry_lines.append({
                     'way_id': line['id'],
                     'entry_points': matching_entry_points
                 })
+        return entry_lines
 
-
-    def _find_intersescting_lines(self):
+    def _find_intersescting_lines(self, plaza):
         """ return every line that intersects with the plaza """
         # filtering is slower than checking every line
         # bbox_buffer = 5 * 10**-3  # about 500m
@@ -84,41 +96,46 @@ class PlazaPreprocessor:
         #     filter(lambda l: line_in_plaza_approx(l, plaza_geometry, buffer=bbox_buffer), lines))
         intersecting_lines = []
         for line in self.lines:
-            if self.plaza_geometry.intersects(line['geometry']):
+            if plaza['geometry'].intersects(line['geometry']):
                 intersecting_lines.append(line)
         return intersecting_lines
 
-    def _insert_obstacles(self):
+    def _calc_obstacle_geometry(self, plaza):
         """ cuts out holes for obstacles on the plaza geometry """
-        intersecting_buildings = self._find_intersecting_buildings()
+        intersecting_buildings = self._find_intersecting_buildings(plaza)
 
+        geometry_without_buildings = plaza['geometry']
         for building in intersecting_buildings:
-            self.plaza_geometry = self.plaza_geometry.difference(building)
+            geometry_without_buildings = geometry_without_buildings.difference(building)
 
-        points_on_plaza = self._get_points_inside_plaza()
+        points_on_plaza = self._get_points_inside_plaza(plaza)
         point_obstacles = list(
             map(lambda p: self._create_point_obstacle(p, buffer=2), points_on_plaza))
 
-        for p_obstacle in point_obstacles:
-            self.plaza_geometry = self.plaza_geometry.difference(p_obstacle)
+        geometry_without_obstacles = geometry_without_buildings
+        for point_obstacle in point_obstacles:
+            geometry_without_obstacles = geometry_without_obstacles.difference(point_obstacle)
 
-        if isinstance(self.plaza_geometry, MultiPolygon):
-            print(f"Plaza {self.osm_id}: Multipolygon after cut out, discarding smaller polygon")
+        if isinstance(geometry_without_obstacles, MultiPolygon):
+            print(
+                f"Plaza {plaza['osm_id']}: Multipolygon after cut out, discarding smaller polygon")
             # take the largest of the polygons
-            self.plaza_geometry = max(
-                self.plaza_geometry, key=lambda p: p.area)
+            geometry_without_obstacles = max(
+                geometry_without_obstacles, key=lambda p: p.area)
 
-    def _find_intersecting_buildings(self):
+        return geometry_without_obstacles
+
+    def _find_intersecting_buildings(self, plaza):
         """ finds all buildings on the plaza that have not been cut out"""
-        return list(filter(self.plaza_geometry.intersects, self.buildings))
+        return list(filter(plaza['geometry'].intersects, self.buildings))
 
-    def _get_points_inside_plaza(self):
+    def _get_points_inside_plaza(self, plaza):
         """ finds all points that are on the plaza geometry """
-        return list(filter(self.plaza_geometry.intersects, self.points))
+        return list(filter(plaza['geometry'].intersects, self.points))
 
     def _create_point_obstacle(self, point, buffer=5):
         """ create a polygon around a point with a buffer in meters """
-        buffer_deg = helpers.meters_to_degrees(buffer)
+        buffer_deg = utils.meters_to_degrees(buffer)
         min_x = point.x - buffer_deg
         min_y = point.y - buffer_deg
         max_x = point.x + buffer_deg
@@ -136,26 +153,9 @@ class PlazaPreprocessor:
         min_y1 -= buffer / 2
         max_x1 += buffer / 2
         max_y1 += buffer / 2
-        return helpers.bounding_boxes_overlap(min_x1, min_y1, max_x1, max_y1, *line_bbox)
+        return utils.bounding_boxes_overlap(min_x1, min_y1, max_x1, max_y1, *line_bbox)
 
     def _point_in_plaza_bbox(self, point, plaza_geometry):
         """ determines whether a point is inside the bounding box of the plaza """
         min_x, min_y, max_x, max_y = plaza_geometry.bounds
-        return helpers.point_in_bounding_box(point, min_x, min_y, max_x, max_y)
-
-
-def preprocess_plazas(osm_holder):
-    """ preprocess all plazas from osm_importer """
-    processed_plazas = []
-    for plaza in osm_holder.plazas:
-        print(f"Processing plaza {plaza['osm_id']}")
-        processor = PlazaPreprocessor(
-            plaza['osm_id'], plaza['geometry'], osm_holder, VisibilityGraphProcessor())
-        success = processor.process_plaza()
-        if success:
-            plaza['graph_edges'] = processor.graph_edges
-            plaza['entry_points'] = processor.entry_points
-            plaza['entry_lines'] = processor.entry_lines
-            processed_plazas.append(plaza)
-
-    return processed_plazas
+        return utils.point_in_bounding_box(point, min_x, min_y, max_x, max_y)

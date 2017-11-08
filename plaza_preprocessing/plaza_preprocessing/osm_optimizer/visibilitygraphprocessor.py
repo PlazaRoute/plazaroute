@@ -1,5 +1,6 @@
-from plaza_preprocessing.osm_optimizer import helpers
+from plaza_preprocessing.osm_optimizer import utils
 from shapely.geometry import LineString
+
 
 class VisibilityGraphProcessor:
     """ process a plaza using a visibility graph """
@@ -15,7 +16,7 @@ class VisibilityGraphProcessor:
         if not self.entry_points:
             raise ValueError("No entry points defined for graph processor")
 
-        plaza_coords = helpers.get_polygon_coords(self.plaza_geometry)
+        plaza_coords = utils.get_polygon_coords(self.plaza_geometry)
         entry_coords = [(p.x, p.y) for p in self.entry_points]
         all_coords = set().union(plaza_coords, entry_coords)
         indexed_coords = {i: coords for i, coords in enumerate(all_coords)}
@@ -29,4 +30,3 @@ class VisibilityGraphProcessor:
     def _line_visible(self, line):
         """ check if the line is "visible", i.e. unobstructed through the plaza """
         return line.equals(self.plaza_geometry.intersection(line))
-

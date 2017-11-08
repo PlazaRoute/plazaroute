@@ -15,19 +15,19 @@ class WayExtractor(SimpleHandler):
         self.entry_node_mappings = entry_node_mappings
         self.ways = {}
 
-    def way(self, w):
+    def way(self, way):
         """ collect outer rings of plazas into a dictionary"""
-        if w.id in self.entry_node_mappings:
-            self.ways[w.id] = {
-                'version': w.version,
-                'nodes': [{'id': n.ref, 'coords': (n.lon, n.lat)} for n in w.nodes],
-                'tags': {t.k: t.v for t in w.tags}
+        if way.id in self.entry_node_mappings:
+            self.ways[way.id] = {
+                'version': way.version,
+                'nodes': [{'id': n.ref, 'coords': (n.lon, n.lat)} for n in way.nodes],
+                'tags': {t.k: t.v for t in way.tags}
             }
 
 
 def merge_plaza_graphs(plazas, osm_file, merged_file):
     """
-    merge graph edges of plazas back into the "big" OSM file
+    merge graph edges of plazas back into the original OSM file
     """
     # TODO: Proper temp file
     plazas_file = 'plazas.osm'
@@ -36,9 +36,9 @@ def merge_plaza_graphs(plazas, osm_file, merged_file):
         entry_node_mappings = _write_plazas_to_osm(plazas, plazas_file)
 
         plaza_ways = _extract_plaza_ways(entry_node_mappings, osm_file)
-        insert_entry_nodes(plaza_ways, entry_node_mappings)
+        _insert_entry_nodes(plaza_ways, entry_node_mappings)
 
-        write_modified_ways(plaza_ways, modified_ways_file)
+        _write_modified_ways(plaza_ways, modified_ways_file)
 
         osmosishelper.merge_three_osm_files(
             merged_file, osm_file, plazas_file, modified_ways_file)
@@ -47,17 +47,17 @@ def merge_plaza_graphs(plazas, osm_file, merged_file):
         remove(modified_ways_file)
 
 
-def insert_entry_nodes(plaza_ways, entry_node_mappings):
+def _insert_entry_nodes(plaza_ways, entry_node_mappings):
     """ insert entry node refs to the ways in the correct position """
     for way_id, entry_nodes in entry_node_mappings.items():
         if way_id not in plaza_ways:
-            raise RuntimeError(f"Way {way_id} was not found in large osm file")
+            raise RuntimeError(f"Way {way_id} was not found in original osm file")
         way_nodes = plaza_ways.get(way_id).get('nodes')
         for entry_node in entry_nodes:
             way_nodes = _insert_entry_node(entry_node, way_nodes)
 
 
-def write_modified_ways(plaza_ways, filename):
+def _write_modified_ways(plaza_ways, filename):
     """
     write the modified ways to an OSM file
     """
@@ -89,7 +89,7 @@ def _write_plazas_to_osm(plazas, filename):
 
 
 def _insert_entry_node(entry_node, way_nodes):
-    """ insert node_id in the correct position of way_nodes """
+    """ insert node reference in the correct position of way_nodes """
     insert_position = _find_insert_position(entry_node, way_nodes)
     way_nodes.insert(insert_position, entry_node)
     return way_nodes

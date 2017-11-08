@@ -38,43 +38,57 @@ class _PlazaHandler(osmium.SimpleHandler):
         self.lines = []
         self.invalid_count = 0
 
-    def node(self, n):
-        # TODO: Proper tag filtering
-        if "amenity" in n.tags:
-            if "indoor" in n.tags or n.tags.get("level", "0") != "0" or n.tags.get("layer", "0") != "0":
-                return
-            wkb = WKBFAB.create_point(n)
-            self.points.append(wkblib.loads(wkb, hex=True))
+    def node(self, node):
+        if self._is_relevant_node(node):
+            point_wkb = WKBFAB.create_point(node)
+            point_geometry = wkblib.loads(point_wkb, hex=True)
+            self.points.append(point_geometry)
 
-    def way(self, w):
-        # TODO: proper filtering
-        if ("highway" in w.tags or w.tags.get("railway") == "tram") and not w.is_closed():
+    def way(self, way):
+        if self._is_relevant_way(way):
             try:
-                wkb = WKBFAB.create_linestring(w)
-                geometry = wkblib.loads(wkb, hex=True)
-                self.lines.append({'id': w.id, 'geometry': geometry})
+                line_wkb = WKBFAB.create_linestring(way)
+                line_geometry = wkblib.loads(line_wkb, hex=True)
+                self.lines.append({'id': way.id, 'geometry': line_geometry})
             except InvalidLocationError:
-                print(f'Invalid location in {w.id}')
+                print(f'Invalid location in {way.id}')
                 self.invalid_count += 1
             except RuntimeError as ex:
-                print(f'Error with {w.id}, {len(w.nodes)} nodes: {ex}')
+                print(f'Error with {way.id}, {len(way.nodes)} nodes: {ex}')
                 self.invalid_count += 1
 
-    def area(self, a):
-        if a.tags.get("highway") == "pedestrian" and a.tags.get("area") != "no":
-            multipolygon = self._create_multipolygon_geometry(a)
+    def area(self, area):
+        if self._is_plaza(area):
+            multipolygon_wkb = WKBFAB.create_multipolygon(area)
+            multipolygon_geom = wkblib.loads(multipolygon_wkb, hex=True)
 
-            for polygon in multipolygon.geoms:
+            for polygon in multipolygon_geom.geoms:
                 plaza = {
-                    'osm_id': a.orig_id(),
+                    'osm_id': area.orig_id(),
                     'geometry': polygon
                 }
                 self.plazas.append(plaza)
 
-        elif "building" in a.tags and a.tags.get("layer", "0") == "0":
-            geom = self._create_multipolygon_geometry(a)
-            self.buildings.append(geom)
+        elif self._is_relevant_building(area):
+            building_wkb = WKBFAB.create_multipolygon(area)
+            building_geom = wkblib.loads(building_wkb, hex=True)
+            self.buildings.append(building_geom)
 
-    def _create_multipolygon_geometry(self, multipolygon):
-        wkb = WKBFAB.create_multipolygon(multipolygon)
-        return wkblib.loads(wkb, hex=True)
+    def _is_relevant_node(self, node):
+        return "amenity" in node.tags and \
+            "indoor" not in node.tags and \
+            node.tags.get("level", "0") == "0" and \
+            node.tags.get("layer", "0") == "0"
+
+    def _is_relevant_way(self, way):
+        return not way.is_closed() and \
+            "highway" in way.tags or \
+            way.tags.get("railway") == "tram"
+
+    def _is_plaza(self, area):
+        return area.tags.get("highway") == "pedestrian" and \
+            area.tags.get("area") != "no"
+
+    def _is_relevant_building(self, area):
+        return "building" in area.tags \
+            and area.tags.get("layer", "0") == "0"

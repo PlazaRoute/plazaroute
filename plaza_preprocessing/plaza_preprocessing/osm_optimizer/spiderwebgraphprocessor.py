@@ -1,6 +1,7 @@
 from math import ceil
-from plaza_preprocessing.osm_optimizer import helpers
+from plaza_preprocessing.osm_optimizer import utils
 from shapely.geometry import Point, LineString
+
 
 class SpiderWebGraphProcessor:
     """ Process a plaza with a spider web graph """
@@ -21,7 +22,7 @@ class SpiderWebGraphProcessor:
 
     def _calc_spiderwebgraph(self):
         """ calculate spider web graph edges"""
-        spacing = helpers.meters_to_degrees(self.spacing_m)
+        spacing = utils.meters_to_degrees(self.spacing_m)
         x_left, y_bottom, x_right, y_top = self.plaza_geometry.bounds
 
         # based on https://github.com/michaelminn/mmqgis
@@ -74,7 +75,7 @@ class SpiderWebGraphProcessor:
     def _connect_entry_points_with_graph(self):
         connection_lines = []
         for entry_point in self.entry_points:
-            neighbor_line = helpers.find_nearest_geometry(entry_point, self.graph_edges)
+            neighbor_line = utils.find_nearest_geometry(entry_point, self.graph_edges)
 
             target_point = min(
                 neighbor_line.coords, key=lambda c: Point(c).distance(entry_point))
