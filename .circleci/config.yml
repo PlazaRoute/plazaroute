@@ -16,7 +16,7 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - plazaroute-dependencies-{{ checksum "plaza_routing/requirements.txt" }}{{ checksum "plaza_processing/requirements.txt" }}{{ checksum "plaza_routing/requirements-dev.txt" }}{{ checksum "plaza_processing/requirements-dev.txt" }}
+          - plazaroute-dependencies-{{ checksum "plaza_routing/requirements.txt" }}{{ checksum "plaza_preprocessing/requirements.txt" }}{{ checksum "plaza_routing/requirements-dev.txt" }}{{ checksum "plaza_preprocessing/requirements-dev.txt" }}
 
       - run:
           name: install dependencies
@@ -31,7 +31,7 @@ jobs:
       - save_cache:
           paths:
             - ./venv
-          key: plazaroute-dependencies-{{ checksum "plaza_routing/requirements.txt" }}{{ checksum "plaza_processing/requirements.txt" }}{{ checksum "plaza_routing/requirements-dev.txt" }}{{ checksum "plaza_processing/requirements-dev.txt" }}
+          key: plazaroute-dependencies-{{ checksum "plaza_routing/requirements.txt" }}{{ checksum "plaza_preprocessing/requirements.txt" }}{{ checksum "plaza_routing/requirements-dev.txt" }}{{ checksum "plaza_preprocessing/requirements-dev.txt" }}
         
       # run tests!
       - run:
