@@ -31,7 +31,7 @@ class OSMHolder:
 
 class _PlazaHandler(osmium.SimpleHandler):
     def __init__(self):
-        osmium.SimpleHandler.__init__(self)
+        super().__init__()
         self.plazas = []
         self.buildings = []
         self.points = []
@@ -61,8 +61,6 @@ class _PlazaHandler(osmium.SimpleHandler):
                 self.invalid_count += 1
 
     def area(self, a):
-        if a.orig_id() == 1255716:
-            print(a.num_rings())
         if a.tags.get("highway") == "pedestrian" and a.tags.get("area") != "no":
             multipolygon = self._create_multipolygon_geometry(a)
 

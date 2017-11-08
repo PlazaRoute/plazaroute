@@ -7,17 +7,17 @@ from shapely.geometry import Point, LineString
 from plaza_preprocessing.osm_merger.plazawriter import PlazaWriter
 import plaza_preprocessing.osm_merger.osmosishelper as osmosishelper
 
+
 class WayExtractor(SimpleHandler):
     """ collect outer ways of plazas """
     def __init__(self, entry_node_mappings):
-        SimpleHandler.__init__(self)
+        super().__init__()
         self.entry_node_mappings = entry_node_mappings
         self.ways = {}
 
     def way(self, w):
         """ collect outer rings of plazas into a dictionary"""
         if w.id in self.entry_node_mappings:
-            w_mutable = w.replace()
             self.ways[w.id] = {
                 'version': w.version,
                 'nodes': [{'id': n.ref, 'coords': (n.lon, n.lat)} for n in w.nodes],
@@ -135,6 +135,7 @@ def _find_interpolated_insert_position(entry_point, way_nodes):
             min_node['pos'] = i + 1
             min_node['distance'] = distance
     return min_node['pos']
+
 
 def _extract_plaza_ways(entry_node_mappings, osm_file):
     way_extractor = WayExtractor(entry_node_mappings)

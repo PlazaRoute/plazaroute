@@ -2,6 +2,7 @@ from datetime import datetime
 from osmium import SimpleWriter
 from osmium.osm.mutable import Way, Node
 
+
 class PlazaWriter:
     """
     Reads plaza graph edges and produces an OSM Format
@@ -18,9 +19,9 @@ class PlazaWriter:
     def read_plazas(self, plazas):
         """ takes a list of plazas with edge geometries and constructs nodes and ways """
         for plaza in plazas:
-            if not "graph_edges" in plaza:
+            if "graph_edges" not in plaza:
                 raise ValueError(f"No graph edges in {plaza['osm_id']}")
-            if not "entry_points" in plaza:
+            if "entry_points" not in plaza:
                 raise ValueError(f"No entry points in {plaza['osm_id']}")
 
             for edge in plaza['graph_edges']:
@@ -30,7 +31,6 @@ class PlazaWriter:
                 self.entry_node_mappings[entry_line['way_id']] = [
                     {'id': self._get_node_id((p.x, p.y)), 'coords': (p.x, p.y)}
                     for p in entry_line['entry_points']]
-
 
     def write_to_file(self, filename):
         """ write the nodes and ways to an OSM file """
@@ -56,7 +56,6 @@ class PlazaWriter:
         way.version = 1
         way.timestamp = self._create_osm_timestamp()
         self.ways.append(way)
-
 
     def _get_node_id(self, coords):
         """

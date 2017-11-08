@@ -132,6 +132,7 @@ def test_merge_simple_plaza(process_strategy):
     finally:
         os.remove(merged_filename)
 
+
 def test_find_exact_insert_position():
     entry_point = Point(2, 2)
     way_nodes = [
@@ -197,7 +198,6 @@ def test_insert_entry_nodes():
 
 
 def create_test_plaza():
-    plaza_writer = PlazaWriter()
     edges = [
         LineString([(0, 0), (1, 1)]),
         LineString([(0, 1), (3, 4), (1, 1)])

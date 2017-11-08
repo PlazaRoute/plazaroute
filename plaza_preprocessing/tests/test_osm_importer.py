@@ -1,11 +1,11 @@
 import pytest
-from plaza_preprocessing import osm_importer
-from plaza_preprocessing.osm_merger import geojson_writer
 import testfilemanager
+
 
 def test_empty_file():
     with pytest.raises(RuntimeError):
-        holder = testfilemanager.import_testfile('empty_file')
+        testfilemanager.import_testfile('empty_file')
+
 
 def test_simple_plaza():
     holder = testfilemanager.import_testfile('helvetiaplatz')
@@ -25,7 +25,7 @@ def test_relation_plaza_with_single_polygon():
     """ test a relation with 1 polygon with inner rings """
     holder = testfilemanager.import_testfile('bahnhofplatz_bern')
     bahnhofplatz = get_plazas_by_id(holder.plazas, 5117701)
-    assert len(bahnhofplatz) ==  1
+    assert len(bahnhofplatz) == 1
     bahnhofplatz = bahnhofplatz[0]
     assert bahnhofplatz['geometry']
     assert len(bahnhofplatz['geometry'].interiors) == 5
