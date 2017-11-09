@@ -14,9 +14,9 @@ jobs:
       - checkout
 
       # Download and cache dependencies
-      # - restore_cache:
-      #     keys:
-      #     - plazaroute-dependencies-{{ checksum "plaza_routing/requirements.txt" }}{{ checksum "plaza_preprocessing/requirements.txt" }}{{ checksum "plaza_routing/requirements-dev.txt" }}{{ checksum "plaza_preprocessing/requirements-dev.txt" }}
+      - restore_cache:
+          keys:
+          - plazaroute-dependencies-{{ checksum "plaza_routing/requirements.txt" }}{{ checksum "plaza_preprocessing/requirements.txt" }}{{ checksum "plaza_routing/requirements-dev.txt" }}{{ checksum "plaza_preprocessing/requirements-dev.txt" }}
 
       - run:
           name: install dependencies
