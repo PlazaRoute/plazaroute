@@ -13,3 +13,11 @@ RUN apt-get install -y build-essential libboost-python-dev libexpat1-dev zlib1g-
 RUN wget https://bootstrap.pypa.io/get-pip.py
 RUN python3 get-pip.py
 RUN pip3 install --upgrade wheel setuptools virtualenv
+
+# set locale to UTF-8 (for file encodings)
+# from https://stackoverflow.com/questions/28405902/how-to-set-the-locale-inside-a-docker-container
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y locales
+RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
+    dpkg-reconfigure --frontend=noninteractive locales && \
+    update-locale LANG=en_US.UTF-8
+ENV LANG en_US.UTF-8
