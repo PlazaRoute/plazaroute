@@ -40,7 +40,7 @@ def get_initial_public_transport_stop_position(start_position, line,
                                         start_uic_ref, exit_uic_ref)
     start_node = _get_public_transport_stop_node(lines)
     # TODO work with Decimal objects or parse to floats
-    return (float(start_node.lat), float(start_node.lon))
+    return float(start_node.lat), float(start_node.lon)
 
 
 def _get_public_transport_lines(start_position, line,
@@ -74,6 +74,8 @@ def _merge_nodes_with_corresponding_relation(nodes, relations, start_uic_ref):
     start_uic_ref is required to differ between start and exit nodes.
     """
     lines = []
+    start_node = None
+    exit_node = None
     for relation in relations:
         for node in nodes:
             for member in relation.members:

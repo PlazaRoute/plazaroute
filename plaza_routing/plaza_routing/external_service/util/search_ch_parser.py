@@ -58,5 +58,3 @@ def parse_connections(response):
         return SearchChResponse().deserialize(json.loads(response))
     except colander.Invalid as e:
         raise RuntimeError(e.asdict())
-    except:
-        raise ValueError('connections cannot be parsed')
