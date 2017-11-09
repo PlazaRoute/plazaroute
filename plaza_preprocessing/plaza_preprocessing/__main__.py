@@ -11,7 +11,8 @@ def preprocess_osm(osm_filename, out_file):
     osm_merger.merge_plaza_graphs(processed_plazas, osm_filename, out_file)
 
 
-if len(argv) != 3:
-    print('usage: plaza_preprocessing <osm-source-file> <merged-file-dest>')
-    exit(1)
-preprocess_osm(argv[1], argv[2])
+if __name__ == "__main__":
+    if len(argv) != 3:
+        print('usage: plaza_preprocessing <osm-source-file> <merged-file-dest>')
+        exit(1)
+    preprocess_osm(argv[1], argv[2])
