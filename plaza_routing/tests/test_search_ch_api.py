@@ -1,5 +1,6 @@
 import pytest
-from plaza_routing import search_ch_api
+
+from plaza_routing.external_service import search_ch_api
 
 
 def test_get_connection():

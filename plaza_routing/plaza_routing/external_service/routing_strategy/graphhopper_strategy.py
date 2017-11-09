@@ -1,7 +1,8 @@
 import os
-from bravado.client import SwaggerClient
-from plaza_routing.routing_strategy.strategy import Strategy
 
+from bravado.client import SwaggerClient
+
+from plaza_routing.external_service.routing_strategy.strategy import Strategy
 
 GRAPHHOPPER_SWAGGER_FILE = 'graphhopper_swagger.json'
 

@@ -1,6 +1,8 @@
-import pytest
 import os
-from plaza_routing.util import search_ch_parser
+
+import pytest
+
+from plaza_routing.external_service.util import search_ch_parser
 
 
 def test_parse_connections():

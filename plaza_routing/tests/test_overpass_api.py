@@ -1,5 +1,6 @@
 import pytest
-from plaza_routing import overpass_api
+
+from plaza_routing.external_service import overpass_api
 
 
 def test_get_public_transport_stops():
