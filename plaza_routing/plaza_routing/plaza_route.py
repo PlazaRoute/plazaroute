@@ -13,8 +13,8 @@ routing_arguments.add_argument('start', type=str, required=True, help='Start loc
 routing_arguments.add_argument('destination', type=str, required=True, help='Destination address')
 
 routing_response_model = api.model('RoutingResponse', {
-    'coordinates': fields.List(fields.List(fields.Float))
-})
+        'coordinates': fields.List(fields.List(fields.Float))
+    })
 
 
 @ns.route('/route')
