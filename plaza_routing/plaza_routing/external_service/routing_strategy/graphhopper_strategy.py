@@ -14,10 +14,15 @@ class GraphhopperStrategy(Strategy):
         self._client = SwaggerClient.from_url(f'file://{swagger_file}')
 
     def route(self, start, destination):
-        result = self._client.Routing.get_route(point=[f'{start[0]},{start[1]}', f'{destination[0]},{destination[1]}'],
+        response = self._client.Routing.get_route(point=[f'{start[0]},{start[1]}', f'{destination[0]},{destination[1]}'],
                                                 vehicle='foot',
                                                 points_encoded=False,
                                                 instructions=False,
                                                 key='').result()
-        # return the first path
-        return result.paths[0].points.coordinates
+        first_path = response.paths[0]
+
+        return {'time': first_path.time,
+                'ascend': first_path.ascend,
+                'descend': first_path.descend,
+                'path': first_path.points.coordinates,
+               }
