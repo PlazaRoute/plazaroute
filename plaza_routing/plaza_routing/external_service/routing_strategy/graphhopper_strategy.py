@@ -14,7 +14,7 @@ class GraphhopperStrategy(Strategy):
         self._client = SwaggerClient.from_url(f'file://{swagger_file}')
 
     def route(self, start, destination):
-        result = self._client.Routing.get_route(point=[start, destination],
+        result = self._client.Routing.get_route(point=[f'{start[0]},{start[1]}', f'{destination[0]},{destination[1]}'],
                                                 vehicle='foot',
                                                 points_encoded=False,
                                                 instructions=False,
