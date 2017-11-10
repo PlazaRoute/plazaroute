@@ -27,3 +27,11 @@ def test_get_connection_invalid_time():
         search_ch_api.get_connection('Zürich, Sternen Oerlikon',
                                      'Zürich, Messe/Hallenstadion',
                                      '07/00')
+
+
+def test_get_connection_same_start_and_destination():
+    with pytest.raises(RuntimeError):
+        search_ch_api.get_connection('Zürich, Hallenstadionn',
+                                     'Zürich, Messe/Hallenstadion',
+                                     '07:00')
+    # TODO should we handle this case with a deticated validation before we pass the response to the parser

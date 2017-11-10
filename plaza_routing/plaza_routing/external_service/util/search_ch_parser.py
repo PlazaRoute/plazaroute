@@ -59,6 +59,7 @@ def parse_connections(response):
         _add_calculated_values(parsed_response['connections'])
         return parsed_response
     except colander.Invalid as e:
+        print(f'colander failed with {e.asdict()} for response {response}')
         raise RuntimeError(e.asdict())
 
 
