@@ -3,7 +3,6 @@ import math
 
 OVERPASS_API_URL = 'http://overpass.osm.ch/api/interpreter'
 BOUNDING_BOX_BUFFER_METERS = 1000
-BOUNDING_BOX_SWITZERLAND = '5.9559,45.818,10.4921,47.8084'
 
 API = overpy.Overpass(url=OVERPASS_API_URL)
 
@@ -26,10 +25,8 @@ def get_public_transport_stops(start_position):
     return set(stop.tags.get('uic_name') for stop in public_transport_stops.nodes)
 
 
-def get_initial_public_transport_stop_position(line,
-                                               start_uic_ref,
-                                               exit_uic_ref,
-                                               start_position=None):
+def get_initial_public_transport_stop_position(start_position, line,
+                                               start_uic_ref, exit_uic_ref):
     """
     Retrieves the initial public transport stop position (latitude, longitude)
     for a specific uic_ref (start_uic_ref). OSM returns multiple public transport
@@ -39,16 +36,15 @@ def get_initial_public_transport_stop_position(line,
     If the node with ref exit_uic_ref comes after the node with ref start_uic_ref
     in the relation, we've got the public transport stop in the right direction of travel.
     """
-    lines = _get_public_transport_lines(line, start_uic_ref, exit_uic_ref, start_position)
+    lines = _get_public_transport_lines(start_position, line,
+                                        start_uic_ref, exit_uic_ref)
     start_node = _get_public_transport_stop_node(lines)
     # TODO work with Decimal objects or parse to floats
     return float(start_node.lat), float(start_node.lon)
 
 
-def _get_public_transport_lines(line,
-                                start_uic_ref,
-                                exit_uic_ref,
-                                start_position=None):
+def _get_public_transport_lines(start_position, line,
+                                start_uic_ref, exit_uic_ref):
     """
     Retrieves all public transport lines (relations) that serve the public transport stop node
     with ref start_uic_ref. We'll get more than one one for a specific uic_ref (for each
@@ -109,14 +105,8 @@ def _get_public_transport_stop_node(lines):
     raise RuntimeError("Start node of transport lines not found")
 
 
-def _parse_bounding_box(latitude=None, longitude=None):
-    """
-    Calculates the bounding box for a specific location and a given buffer.
-    If no location is specified, the bounding box of Switzerland is returned.
-    """
-    if not latitude and not longitude:
-        return BOUNDING_BOX_SWITZERLAND
-    
+def _parse_bounding_box(latitude, longitude):
+    """ calculates the bounding box for a specific location and a given buffer """
     buffer_degrees = _meters_to_degrees(BOUNDING_BOX_BUFFER_METERS)
 
     # divide by 2 to add only half on each side

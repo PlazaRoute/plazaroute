@@ -27,10 +27,12 @@ def test_get_initial_public_transport_stop_position():
     Public transport stops at Zürich, Messe/Hallenstadion have the uic_ref 8591273.
     Public transport stops at Zürich, Sternen Oerlikon have the uic_ref 8591382.
     """
+    current_location = (47.41077, 8.55240)
     bus_number = '94'
     start_stop_uicref = '8591273'
     exit_stop_uicref = '8591382'
-    stop_position = overpass_api.get_initial_public_transport_stop_position(bus_number,
+    stop_position = overpass_api.get_initial_public_transport_stop_position(current_location,
+                                                                            bus_number,
                                                                             start_stop_uicref,
                                                                             exit_stop_uicref)
     assert (47.4106724, 8.5520512) == stop_position
@@ -46,10 +48,12 @@ def test_get_initial_public_transport_stop_position_other_direction():
     Public transport stops at Zürich, Messe/Hallenstadion have the uic_ref 8591273.
     Public transport stops at Zürich, Hallenbad Oerlikon have the uic_ref 8591175.
     """
+    current_location = (47.41077, 8.55240)
     bus_number = '94'
     start_stop_uicref = '8591273'
     exit_stop_uicref = '8591175'
-    stop_position = overpass_api.get_initial_public_transport_stop_position(bus_number,
+    stop_position = overpass_api.get_initial_public_transport_stop_position(current_location,
+                                                                            bus_number,
                                                                             start_stop_uicref,
                                                                             exit_stop_uicref)
     assert (47.4107102, 8.5528703) == stop_position
@@ -63,10 +67,12 @@ def test_get_initial_public_transport_stop_position_end_terminal():
     Public transport stops at Zürich, Sternen Oerlikon have the uic_ref 8591382.
     Public transport stops at Zürich, Bahnhof Oerlikon have the uic_ref 8580449.
     """
+    current_location = (47.41025, 8.54679)
     bus_number = '94'
     start_stop_uicref = '8591382'
     exit_stop_uicref = '8580449'
-    stop_position = overpass_api.get_initial_public_transport_stop_position(bus_number,
+    stop_position = overpass_api.get_initial_public_transport_stop_position(current_location,
+                                                                            bus_number,
                                                                             start_stop_uicref,
                                                                             exit_stop_uicref)
     assert (47.4102250, 8.5467743) == stop_position
@@ -80,18 +86,12 @@ def test_get_initial_public_transport_stop_position_start_terminal():
     Public transport stops at Zürich, Bahnhof Oerlikon have the uic_ref 8580449.
     Public transport stops at Zürich, Sternen Oerlikon have the uic_ref 8591382.
     """
+    current_location = (47.41142, 8.54466)
     bus_number = '94'
     start_stop_uicref = '8580449'
     exit_stop_uicref = '8591382'
-    stop_position = overpass_api.get_initial_public_transport_stop_position(bus_number,
+    stop_position = overpass_api.get_initial_public_transport_stop_position(current_location,
+                                                                            bus_number,
                                                                             start_stop_uicref,
                                                                             exit_stop_uicref)
     assert (47.4114541, 8.5447442) == stop_position
-
-
-def test_get_initial_public_transport_stop_position_with_first_walking_leg():
-    """
-
-    Zürich Stadelhofen FB
-    """
-    pass
