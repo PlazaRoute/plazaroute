@@ -1,7 +1,27 @@
-from sys import argv
+import sys
+import logging
 from plaza_preprocessing.osm_optimizer import osm_optimizer
 from plaza_preprocessing import osm_importer
 from plaza_preprocessing.osm_merger import osm_merger
+
+logger = logging.getLogger('plaza_preprocessing')
+
+
+def setup_logging(verbose=False, quiet=False):
+    logger.setLevel(logging.INFO)
+    ch = logging.StreamHandler(sys.stdout)
+    formatter = logging.Formatter(
+            '[%(levelname)-7s] - %(message)s')
+    if verbose and not quiet:
+        logger.setLevel(logging.DEBUG)
+        formatter = logging.Formatter(
+            '%(asctime)s - %(name)s - [%(levelname)-7s] - %(message)s')
+    if quiet:
+        logger.setLevel(logging.WARNING)
+
+    ch.setFormatter(formatter)
+    logger.addHandler(ch)
+    logger.debug("Setting up logging complete")
 
 
 def preprocess_osm(osm_filename, out_file):
@@ -12,7 +32,10 @@ def preprocess_osm(osm_filename, out_file):
 
 
 if __name__ == "__main__":
-    if len(argv) != 3:
+    if len(sys.argv) != 3:
         print('usage: plaza_preprocessing <osm-source-file> <merged-file-dest>')
         exit(1)
-    preprocess_osm(argv[1], argv[2])
+
+    # TODO: make configurable
+    setup_logging(verbose=True)
+    preprocess_osm(sys.argv[1], sys.argv[2])
