@@ -55,6 +55,13 @@ class SearchChResponse(colander.MappingSchema):
 def parse_connections(response):
     """ parses a search.ch response to a suitable data structure """
     try:
-        return SearchChResponse().deserialize(json.loads(response))
+        parsed_response = SearchChResponse().deserialize(json.loads(response))
+        _add_calculated_values(parsed_response['connections'])
+        return parsed_response
     except colander.Invalid as e:
         raise RuntimeError(e.asdict())
+
+
+def _add_calculated_values(connections):
+    for connection in connections:
+        connection['number_of_legs'] = len(connection['legs'])

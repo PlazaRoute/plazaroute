@@ -11,6 +11,7 @@ def test_get_connection():
     assert connection['from'] == 'Zürich, Sternen Oerlikon'
     assert connection['to'] == 'Zürich, Messe/Hallenstadion'
     assert len(connection['legs']) == 2
+    assert connection['number_of_legs'] == 2
 
     # last leg should be a final station or an address without an exit
     assert connection['legs'][1]['exit'] == []

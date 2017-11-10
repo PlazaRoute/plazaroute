@@ -15,10 +15,10 @@ class GraphhopperStrategy(Strategy):
 
     def route(self, start, destination):
         response = self._client.Routing.get_route(point=[f'{start[0]},{start[1]}', f'{destination[0]},{destination[1]}'],
-                                                vehicle='foot',
-                                                points_encoded=False,
-                                                instructions=False,
-                                                key='').result()
+                                                  vehicle='foot',
+                                                  points_encoded=False,
+                                                  instructions=False,
+                                                  key='').result()
         first_path = response.paths[0]
 
         return {'time': first_path.time,
