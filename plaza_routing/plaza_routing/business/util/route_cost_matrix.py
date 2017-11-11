@@ -1,5 +1,6 @@
 WEIGHTS = {
     'time':             2,
+    'duration':         2,
     'ascend':           0.75,
     'descend':          0.5,
     'number_of_legs':   1

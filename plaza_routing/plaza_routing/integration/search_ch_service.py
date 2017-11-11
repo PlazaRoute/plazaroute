@@ -1,6 +1,6 @@
 import re
 import requests
-from plaza_routing.external_service.util import search_ch_parser
+from plaza_routing.integration.util import search_ch_parser
 
 SEARCH_CH_API_URL = 'https://timetable.search.ch/api/route.json'
 TIME_REGEX = re.compile(r'^(([01]\d|2[0-3]):([0-5]\d)|24:00)$')

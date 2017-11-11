@@ -2,7 +2,7 @@ import os
 
 from bravado.client import SwaggerClient
 
-from plaza_routing.external_service.routing_strategy.strategy import Strategy
+from plaza_routing.integration.routing_strategy.strategy import Strategy
 
 GRAPHHOPPER_SWAGGER_FILE = 'graphhopper_swagger.json'
 
@@ -21,7 +21,8 @@ class GraphhopperStrategy(Strategy):
                                                   key='').result()
         first_path = response.paths[0]
 
-        return {'time': first_path.time,
+        return {'type': 'walking',
+                'time': first_path.time,
                 'ascend': first_path.ascend,
                 'descend': first_path.descend,
                 'path': first_path.points.coordinates,

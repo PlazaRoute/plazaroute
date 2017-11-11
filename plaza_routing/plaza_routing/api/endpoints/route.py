@@ -1,7 +1,7 @@
 from flask_restplus import Resource, reqparse, fields
 
 from plaza_routing.api.restplus import api
-from plaza_routing.plaza_route import route
+from plaza_routing.business.plaza_route_service import route
 
 ns = api.namespace('route', description='Routing operations')
 

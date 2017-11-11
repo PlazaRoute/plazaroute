@@ -1,6 +1,6 @@
 import pytest
 
-from plaza_routing.external_service import overpass_api
+from plaza_routing.integration import overpass_service
 
 
 def test_get_public_transport_stops():
@@ -8,14 +8,14 @@ def test_get_public_transport_stops():
                              'Zürich, Kunsthaus', 'Zürich Stadelhofen FB', 'Zürich, Bellevue',
                              'Zürich Stadelhofen', 'Zürich, Helmhaus'])
     sechselaeutenplatz = (47.3661, 8.5458)
-    stops = overpass_api.get_public_transport_stops(sechselaeutenplatz)
+    stops = overpass_service.get_public_transport_stops(sechselaeutenplatz)
     assert expected_response == stops
 
 
 def test_get_public_transport_stops_empty_result():
     obersee = (47.2100, 8.8249)
     with pytest.raises(ValueError):
-        overpass_api.get_public_transport_stops(obersee)
+        overpass_service.get_public_transport_stops(obersee)
 
 
 def test_get_initial_public_transport_stop_position():
@@ -31,10 +31,10 @@ def test_get_initial_public_transport_stop_position():
     bus_number = '94'
     start_stop_uicref = '8591273'
     exit_stop_uicref = '8591382'
-    stop_position = overpass_api.get_initial_public_transport_stop_position(current_location,
-                                                                            bus_number,
-                                                                            start_stop_uicref,
-                                                                            exit_stop_uicref)
+    stop_position = overpass_service.get_initial_public_transport_stop_position(current_location,
+                                                                                bus_number,
+                                                                                start_stop_uicref,
+                                                                                exit_stop_uicref)
     assert (47.4106724, 8.5520512) == stop_position
 
 
@@ -52,10 +52,10 @@ def test_get_initial_public_transport_stop_position_other_direction():
     bus_number = '94'
     start_stop_uicref = '8591273'
     exit_stop_uicref = '8591175'
-    stop_position = overpass_api.get_initial_public_transport_stop_position(current_location,
-                                                                            bus_number,
-                                                                            start_stop_uicref,
-                                                                            exit_stop_uicref)
+    stop_position = overpass_service.get_initial_public_transport_stop_position(current_location,
+                                                                                bus_number,
+                                                                                start_stop_uicref,
+                                                                                exit_stop_uicref)
     assert (47.4107102, 8.5528703) == stop_position
 
 
@@ -71,10 +71,10 @@ def test_get_initial_public_transport_stop_position_end_terminal():
     bus_number = '94'
     start_stop_uicref = '8591382'
     exit_stop_uicref = '8580449'
-    stop_position = overpass_api.get_initial_public_transport_stop_position(current_location,
-                                                                            bus_number,
-                                                                            start_stop_uicref,
-                                                                            exit_stop_uicref)
+    stop_position = overpass_service.get_initial_public_transport_stop_position(current_location,
+                                                                                bus_number,
+                                                                                start_stop_uicref,
+                                                                                exit_stop_uicref)
     assert (47.4102250, 8.5467743) == stop_position
 
 
@@ -90,8 +90,8 @@ def test_get_initial_public_transport_stop_position_start_terminal():
     bus_number = '94'
     start_stop_uicref = '8580449'
     exit_stop_uicref = '8591382'
-    stop_position = overpass_api.get_initial_public_transport_stop_position(current_location,
-                                                                            bus_number,
-                                                                            start_stop_uicref,
-                                                                            exit_stop_uicref)
+    stop_position = overpass_service.get_initial_public_transport_stop_position(current_location,
+                                                                                bus_number,
+                                                                                start_stop_uicref,
+                                                                                exit_stop_uicref)
     assert (47.4114541, 8.5447442) == stop_position
