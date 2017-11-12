@@ -147,9 +147,9 @@ def _merge_nodes_with_corresponding_relation(nodes, relations, start_uic_ref):
     start_uic_ref is required to differ between start and exit nodes.
     """
     lines = []
+    start_node = None
+    exit_node = None
     for relation in relations:
-        start_node = None
-        exit_node = None
         for node in nodes:
             for member in relation.members:
                 if node.id == member.ref:
