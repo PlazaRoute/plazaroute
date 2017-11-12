@@ -4,9 +4,9 @@ from plaza_routing.integration import overpass_service
 
 
 def test_get_public_transport_stops():
-    expected_response = set(['Zürich, Kreuzstrasse', 'Zürich, Opernhaus', 'Zürich, Bürkliplatz',
-                             'Zürich, Kunsthaus', 'Zürich Stadelhofen FB', 'Zürich, Bellevue',
-                             'Zürich Stadelhofen', 'Zürich, Helmhaus'])
+    expected_response = {'Zürich, Kreuzstrasse', 'Zürich, Opernhaus', 'Zürich, Bürkliplatz',
+                         'Zürich, Kunsthaus', 'Zürich Stadelhofen FB', 'Zürich, Bellevue',
+                         'Zürich Stadelhofen', 'Zürich, Helmhaus'}
     sechselaeutenplatz = (47.3661, 8.5458)
     stops = overpass_service.get_public_transport_stops(sechselaeutenplatz)
     assert expected_response == stops
@@ -81,7 +81,7 @@ def test_get_initial_public_transport_stop_position_end_terminal():
 def test_get_initial_public_transport_stop_position_start_terminal():
     """
     Same as test_get_initial_public_transport_stop_position_end_terminal
-    but with a terminal (Zürich, Bahnhof Oerlikon) a initial stop position.
+    but with a terminal (Zürich, Bahnhof Oerlikon) as an initial stop position.
 
     Public transport stops at Zürich, Bahnhof Oerlikon have the uic_ref 8580449.
     Public transport stops at Zürich, Sternen Oerlikon have the uic_ref 8591382.
@@ -95,3 +95,43 @@ def test_get_initial_public_transport_stop_position_start_terminal():
                                                                                 start_stop_uicref,
                                                                                 exit_stop_uicref)
     assert (47.4114541, 8.5447442) == stop_position
+
+
+def test_get_initial_public_transport_stop_position_fallback():
+    """
+    Initial stop position for the line 161 to get from Zürich, Rote Fabrik to Zürich, Stadtgrenze.
+
+    Both stops do not provide an uic_ref so the fallback method will be used
+    to determine the initial public transport stop position.
+    """
+    current_location = (47.34252, 8.53608)
+    bus_number = '161'
+    start_stop_uicref = '8587347'  # TODO how does search.ch get these uic_refs?
+    exit_stop_uicref = '8591357'
+    stop_position = overpass_service.get_initial_public_transport_stop_position(current_location,
+                                                                                bus_number,
+                                                                                start_stop_uicref,
+                                                                                exit_stop_uicref)
+    assert (47.3424624, 8.5362646) == stop_position
+
+
+def test_get_initial_public_transport_stop_position_corrupt_relation():
+    """
+    Initial stop position for the line S6 to get from Zürich, Bahnhof Oerlikon to Zürich, Hardbrücke.
+    The stop in Zürich, Bahnhof Oerlikon does not provide an uic_ref for the line S6.
+    The fallback method will be used in this case.
+
+    The relation for the S6 is wrongly (order of nodes is not correct) mapped and the fallback method will fail too.
+
+    Public transport stops at Zürich, Bahnhof Oerlikon have the uic_ref 8503006.
+    Public transport stops at Zürich, Hardbrücke have the uic_ref 8503020.
+    """
+    current_location = (47.41012, 8.54644)
+    train_number = 'S6'
+    start_stop_uicref = '8503006'
+    exit_stop_uicref = '8503020'
+    with pytest.raises(ValueError):
+        overpass_service.get_initial_public_transport_stop_position(current_location,
+                                                                    train_number,
+                                                                    start_stop_uicref,
+                                                                    exit_stop_uicref)

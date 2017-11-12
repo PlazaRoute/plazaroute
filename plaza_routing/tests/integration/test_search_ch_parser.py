@@ -1,5 +1,4 @@
 import os
-
 import pytest
 
 from plaza_routing.integration.util import search_ch_parser
