@@ -10,7 +10,7 @@ osmosis must be available in PATH!
 logger = logging.getLogger('plaza_preprocessing.osmosishelper')
 
 
-def merge_three_osm_files(out_file, *filenames):
+def merge_osm_files(out_file, *filenames):
     logger.debug(f"Merging {filenames} to {out_file}")
     cmd = ['osmosis']
     for filename in filenames:
@@ -21,7 +21,8 @@ def merge_three_osm_files(out_file, *filenames):
             cmd.append('--rb')
         cmd.append(filename)
 
-    cmd.extend(['--merge', '--merge'])
+    # add n - 1 merge commands
+    cmd.extend(['--merge'] * (len(filenames) - 1))
 
     if splitext(out_file)[1] == '.osm':
         cmd.append('--wx')

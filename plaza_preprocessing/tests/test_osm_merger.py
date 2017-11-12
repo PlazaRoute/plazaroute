@@ -3,7 +3,7 @@ import os.path
 import testfilemanager
 import utils
 from shapely.geometry import LineString, Point
-from plaza_preprocessing.osm_merger.plazawriter import PlazaWriter
+import plaza_preprocessing.osm_merger.plazawriter as plazawriter
 import plaza_preprocessing.osm_merger.osm_merger as osm_merger
 from plaza_preprocessing.osm_optimizer.visibilitygraphprocessor import VisibilityGraphProcessor
 from plaza_preprocessing.osm_optimizer.spiderwebgraphprocessor import SpiderWebGraphProcessor
@@ -17,39 +17,40 @@ def process_strategy(request):
         return SpiderWebGraphProcessor(spacing_m=5)
 
 
-def test_read_plaza():
-    plaza_writer = PlazaWriter()
+def test_transform_plaza():
+    plaza_transformer = plazawriter.PlazaTransformer(0, 0)
     plaza = create_test_plaza()
-    plaza_writer.transform_plazas([plaza])
-    assert len(plaza_writer.nodes) == 4
-    assert len(plaza_writer.ways) == 2
-    assert plaza_writer.ways[1].nodes[2] == plaza_writer.ways[0].nodes[1]
-    assert len(plaza_writer.entry_node_mappings[99]) == 1
+    plaza_transformer.transform_plaza(plaza)
+    assert len(plaza_transformer.nodes) == 4
+    assert len(plaza_transformer.ways) == 2
+    assert plaza_transformer.ways[1].nodes[2] == plaza_transformer.ways[0].nodes[1]
+    assert len(plaza_transformer.entry_node_mappings[99]) == 1
 
 
-def test_read_real_plaza(process_strategy):
+def test_transform_real_plaza(process_strategy):
     plaza = utils.process_plaza('helvetiaplatz', 4533221, process_strategy)
     assert plaza
 
-    plaza_writer = PlazaWriter()
-    plaza_writer.transform_plazas([plaza])
-    assert len(plaza_writer.ways) == len(plaza['graph_edges'])
-    assert len(plaza_writer.nodes) < len(plaza['graph_edges']) / 2
+    plaza_transformer = plazawriter.PlazaTransformer(0, 0)
+    plaza_transformer.transform_plaza(plaza)
+    assert len(plaza_transformer.ways) == len(plaza['graph_edges'])
+    assert len(plaza_transformer.nodes) < len(plaza['graph_edges']) / 2
     way_id = 259200019  # footway with 2 entry points
-    assert way_id in plaza_writer.entry_node_mappings
-    assert len(plaza_writer.entry_node_mappings[way_id]) == 2
+    assert way_id in plaza_transformer.entry_node_mappings
+    assert len(plaza_transformer.entry_node_mappings[way_id]) == 2
 
 
 def test_write_to_file():
-    plaza_writer = PlazaWriter()
     plaza = create_test_plaza()
-    plaza_writer.transform_plazas([plaza])
-    filename = 'testfile.osm'
+    node_file = 'test_nodes.osm'
+    way_file = 'test_ways.osm'
     try:
-        plaza_writer.write_to_file('testfile.osm')
-        assert os.path.exists(filename)
+        plazawriter.transform_plazas([plaza], node_file, way_file)
+        assert os.path.exists(node_file)
+        assert os.path.exists(way_file)
     finally:
-        os.remove(filename)
+        os.remove(node_file)
+        os.remove(way_file)
 
 
 def test_write_to_file_real_plaza(process_strategy):
@@ -57,14 +58,15 @@ def test_write_to_file_real_plaza(process_strategy):
         'helvetiaplatz', 4533221, process_strategy)
     assert plaza
 
-    plaza_writer = PlazaWriter()
-    plaza_writer.transform_plazas([plaza])
-    filename = 'testfile.osm'
+    node_file = 'test_nodes.osm'
+    way_file = 'test_ways.osm'
     try:
-        plaza_writer.write_to_file('testfile.osm')
-        assert os.path.exists(filename)
+        plazawriter.transform_plazas([plaza], node_file, way_file)
+        assert os.path.exists(node_file)
+        assert os.path.exists(way_file)
     finally:
-        os.remove(filename)
+        os.remove(node_file)
+        os.remove(way_file)
 
 
 def test_merge_plaza_graphs(process_strategy):
