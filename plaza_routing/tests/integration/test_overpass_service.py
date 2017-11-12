@@ -135,3 +135,21 @@ def test_get_initial_public_transport_stop_position_corrupt_relation():
                                                                     train_number,
                                                                     start_stop_uicref,
                                                                     exit_stop_uicref)
+
+
+def test_get_initial_public_transport_stop_position_relation_without_uic_ref():
+    """
+    Start node does not have an uic_ref, the exit node however holds an uic_ref.
+    For the exit node it is not possible to retrieve relations based on the exit_uic_ref because there does not
+    exist one with it. This is the reasons why all reachable public stop nodes have to be returned
+    in _get_destination_stops() and not just the nodes at the destination.
+    """
+    current_location = (47.33937, 8.53810)
+    bus_number = '161'
+    start_stop_uicref = '8591357'
+    exit_stop_uicref = '8591317'
+    stop_position = overpass_service.get_initial_public_transport_stop_position(current_location,
+                                                                                bus_number,
+                                                                                start_stop_uicref,
+                                                                                exit_stop_uicref)
+    assert (47.3385962, 8.5383397) == stop_position

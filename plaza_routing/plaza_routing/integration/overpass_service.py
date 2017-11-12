@@ -37,12 +37,10 @@ def get_initial_public_transport_stop_position(start_position, line,
     in the relation, we've got the public transport stop in the right direction of travel.
     """
     try:
-        lines = _get_public_transport_lines(start_position, line,
-                                            start_uic_ref, exit_uic_ref)
+        lines = _get_public_transport_lines(start_position, line, start_uic_ref, exit_uic_ref)
     except ValueError:
         try:
-            lines = _get_public_transport_lines_fallback(start_position, line,
-                                                         start_uic_ref, exit_uic_ref)
+            lines = _get_public_transport_lines_fallback(start_position, line, start_uic_ref)
         except ValueError:
             print(f'initial public transport stop position cannot be retrieved with the current OSM data, '
                   f'the line {line} with start_uic_ref {start_uic_ref} should be skipped.')
@@ -78,7 +76,7 @@ def _get_public_transport_lines(start_position, line,
 
 
 def _get_public_transport_lines_fallback(start_position, line,
-                                         start_uic_ref, exit_uic_ref):
+                                         start_uic_ref):
     """
     Same motivation as in _get_public_transport_lines().
     Some public transport stops are not mapped with an uic_ref, so we'll use the Recovery Block pattern to provide
@@ -88,7 +86,7 @@ def _get_public_transport_lines_fallback(start_position, line,
     This results in two requests to Overpass and thus a longer response time.
     """
     start_stops, lines = _get_start_stops_and_lines(start_position, line, start_uic_ref)
-    destination_stops = _get_destination_stops(start_position, line, start_uic_ref, exit_uic_ref)
+    destination_stops = _get_destination_stops(start_position, line, start_uic_ref)
     return _merge_nodes_with_corresponding_relation_fallback(start_stops, destination_stops, lines)
 
 
@@ -117,12 +115,14 @@ def _get_start_stops_and_lines(start_position, line, start_uic_ref):
     return result.nodes, result.relations
 
 
-def _get_destination_stops(start_position, line, start_uic_ref, exit_uic_ref):
+def _get_destination_stops(start_position, line, start_uic_ref):
     """
-    Returns the destination public transport stops that serves the stop
-    based on the provided line, start_uic_ref and exit_uic_ref.
+    Returns all possible public transport stops that are reachable
+    based on the provided line and start_uic_ref.
+    We are not able to retrieve only the nodes at the destination because of some public stop relations
+    that do not hold an uic_ref.
 
-    Same reason as in _get_start_stops_and_lines().
+    Same reason to use as in _get_start_stops_and_lines().
     """
     bbox = _parse_bounding_box(*start_position)
     query_str = f"""
@@ -130,11 +130,11 @@ def _get_destination_stops(start_position, line, start_uic_ref, exit_uic_ref):
                 node(r)["public_transport"="stop_position"]->.initialstartstops;
                 rel(bn.initialstartstops)["ref"={line}]->.lines;
                 node(r.lines:"stop");
-                rel(bn)["uic_ref"={exit_uic_ref}]->.stops;
-                node(r.stops)["public_transport"="stop_position"]->.initialstops;
+                rel(bn)->.stoprelations;
+                node(r.stoprelations)["public_transport"="stop_position"]->.initialstops;
                 node(r.lines)->.stops;
                 node.initialstops.stops->.destinationstops;
-                (.destinationstops;);
+                (.destinationstops; - .initialstartstops;);
                 out;
                 """
     result = API.query(query_str)
@@ -178,6 +178,11 @@ def _merge_nodes_with_corresponding_relation_fallback(start_nodes, destination_n
                     start_node = temp_start_node
                     break
             for temp_destination_node in destination_nodes:
+                """
+                We do not mind that the selected destination node does not correlate with our desired destination.
+                We are using this node to determine the right direction of travel thus it is not of interest if
+                the selected node is the last node in the relation or one in the middle.
+                """
                 if temp_destination_node.id == member.ref:
                     destination_node = temp_destination_node
                     break
