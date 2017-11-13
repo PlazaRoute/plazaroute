@@ -34,9 +34,9 @@ def merge_plaza_graphs(plazas, osm_file, merged_file):
     """
     logger.info(f"Merging {len(plazas)} processed plazas back into {osm_file}")
     # TODO: Proper temp file
-    plaza_way_file = 'plaza_ways.osm'
-    plaza_node_file = 'plaza_nodes.osm'
-    modified_ways_file = 'modified_ways.osm'
+    plaza_way_file = 'plaza_ways.pbf'
+    plaza_node_file = 'plaza_nodes.pbf'
+    modified_ways_file = 'modified_ways.pbf'
     try:
         entry_node_mappings = plazawriter.transform_plazas(
             plazas, plaza_node_file, plaza_way_file)
