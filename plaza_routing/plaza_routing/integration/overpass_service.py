@@ -25,8 +25,8 @@ def get_public_transport_stops(start_position):
     return set(stop.tags.get('uic_name') for stop in public_transport_stops.nodes)
 
 
-def get_initial_public_transport_stop_position(start_position, line,
-                                               start_uic_ref, exit_uic_ref):
+def get_initial_public_transport_stop_position(lookup_position, start_uic_ref, exit_uic_ref, line,
+                                               fallback_initial_stop_position):
     """
     Retrieves the initial public transport stop position (latitude, longitude)
     for a specific uic_ref (start_uic_ref). OSM returns multiple public transport
@@ -35,23 +35,36 @@ def get_initial_public_transport_stop_position(start_position, line,
     in the relation (ex. bus lines) that serves the stop.
     If the node with ref exit_uic_ref comes after the node with ref start_uic_ref
     in the relation, we've got the public transport stop in the right direction of travel.
+
+    Returns the fallback_initial_stop_position if all retrieval options from Overpass fail.
     """
     try:
-        lines = _get_public_transport_lines(start_position, line, start_uic_ref, exit_uic_ref)
+        return _retrieve_initial_public_transport_stop_position(lookup_position, start_uic_ref, exit_uic_ref, line)
+    except ValueError:
+        return fallback_initial_stop_position
+
+
+def _retrieve_initial_public_transport_stop_position(lookup_position, start_uic_ref, exit_uic_ref, line):
+    """
+    Retrieves the initial public transport stop position with Overpass.
+    Recovery Block pattern is used to deal with inconsistent OSM data.
+    """
+    try:
+        lines = _get_public_transport_lines(lookup_position, start_uic_ref, exit_uic_ref, line)
     except ValueError:
         try:
-            lines = _get_public_transport_lines_fallback(start_position, line, start_uic_ref)
+            lines = _get_public_transport_lines_fallback(lookup_position, start_uic_ref, exit_uic_ref, line)
         except ValueError:
-            print(f'initial public transport stop position cannot be retrieved with the current OSM data, '
-                  f'the line {line} with start_uic_ref {start_uic_ref} should be skipped.')
-            raise RuntimeError("initial public transport stop position cannot be retrieved")
+            print(f'initial public transport stop position cannot be retrieved with the current OSM data '
+                  f'for the uic_ref {start_uic_ref} and line {line}')
+            raise ValueError(f'initial public transport stop position cannot be retrieved with the current OSM data '
+                             f'for the uic_ref {start_uic_ref} and line {line}')
 
     start_node = _get_public_transport_stop_node(lines)
     return float(start_node.lat), float(start_node.lon)
 
 
-def _get_public_transport_lines(start_position, line,
-                                start_uic_ref, exit_uic_ref):
+def _get_public_transport_lines(start_position, start_uic_ref, exit_uic_ref, line):
     """
     Retrieves all public transport lines (relations) that serve the public transport stop node
     with ref start_uic_ref. We'll get more than one one for a specific uic_ref (for each
@@ -70,13 +83,12 @@ def _get_public_transport_lines(start_position, line,
         node(r.lines:"stop")["uic_ref"~"{start_uic_ref}|{exit_uic_ref}"];
         out;
         """
+
     result = API.query(query_str)
-    return _merge_nodes_with_corresponding_relation(
-        result.nodes, result.relations, start_uic_ref)
+    return _merge_nodes_with_corresponding_relation(result.nodes, result.relations, start_uic_ref)
 
 
-def _get_public_transport_lines_fallback(start_position, line,
-                                         start_uic_ref):
+def _get_public_transport_lines_fallback(start_position, start_uic_ref, exit_uic_ref, line):
     """
     Same motivation as in _get_public_transport_lines().
     Some public transport stops are not mapped with an uic_ref, so we'll use the Recovery Block pattern to provide
@@ -85,12 +97,12 @@ def _get_public_transport_lines_fallback(start_position, line,
     To achieve that, we'll retrieve the start and destination nodes separately.
     This results in two requests to Overpass and thus a longer response time.
     """
-    start_stops, lines = _get_start_stops_and_lines(start_position, line, start_uic_ref)
-    destination_stops = _get_destination_stops(start_position, line, start_uic_ref)
+    start_stops, lines = _get_start_stops_and_lines(start_position, start_uic_ref, line)
+    destination_stops = _get_destination_stops(start_position, start_uic_ref, exit_uic_ref, line)
     return _merge_nodes_with_corresponding_relation_fallback(start_stops, destination_stops, lines)
 
 
-def _get_start_stops_and_lines(start_position, line, start_uic_ref):
+def _get_start_stops_and_lines(start_position, start_uic_ref, line):
     """
     Returns the start public transport stops and the corresponding line that serves the stop
     based on the provided line and uic_ref.
@@ -111,16 +123,19 @@ def _get_start_stops_and_lines(start_position, line, start_uic_ref):
             (.startstops;);
             out;
             """
+
     result = API.query(query_str)
     return result.nodes, result.relations
 
 
-def _get_destination_stops(start_position, line, start_uic_ref):
+def _get_destination_stops(start_position, start_uic_ref, exit_uic_ref, line):
     """
-    Returns all possible public transport stops that are reachable
-    based on the provided line and start_uic_ref.
-    We are not able to retrieve only the nodes at the destination because of some public stop relations
-    that do not hold an uic_ref.
+    Returns the destination public transport stops based on the exit_uic_ref.
+    The relations for the line are loaded based on the line and the start_uic_ref.
+    start_uic_ref is needed because the bounding box includes only relations with the start_uic_ref.
+    For the loaded relations all public transport stop nodes are selected. Based on these nodes all
+    parent relations with the exit_uic_ref are retrieved. This could for our advantage include platform relations.
+    We are now able to select the public transport stops that are member of this relation.
 
     Same reason to use as in _get_start_stops_and_lines().
     """
@@ -130,13 +145,14 @@ def _get_destination_stops(start_position, line, start_uic_ref):
                 node(r)["public_transport"="stop_position"]->.initialstartstops;
                 rel(bn.initialstartstops)["ref"={line}]->.lines;
                 node(r.lines:"stop");
-                rel(bn)->.stoprelations;
+                rel(bn)["uic_ref"={exit_uic_ref}]->.stoprelations;
                 node(r.stoprelations)["public_transport"="stop_position"]->.initialstops;
                 node(r.lines)->.stops;
                 node.initialstops.stops->.destinationstops;
-                (.destinationstops; - .initialstartstops;);
+                (.destinationstops;);
                 out;
                 """
+
     result = API.query(query_str)
     return result.nodes
 
@@ -147,9 +163,9 @@ def _merge_nodes_with_corresponding_relation(nodes, relations, start_uic_ref):
     start_uic_ref is required to differ between start and exit nodes.
     """
     lines = []
-    start_node = None
-    exit_node = None
     for relation in relations:
+        start_node = None
+        exit_node = None
         for node in nodes:
             for member in relation.members:
                 if node.id == member.ref:
@@ -157,17 +173,16 @@ def _merge_nodes_with_corresponding_relation(nodes, relations, start_uic_ref):
                         start_node = node
                     else:
                         exit_node = node
+
+        if start_node is None or exit_node is None:
+            raise ValueError("Could not retrieve start and exit node based on the uic_ref, fallback to more complex "
+                             "retrieval")
         lines.append({'rel': relation, 'start': start_node, 'exit': exit_node})
-    if start_node is None or exit_node is None:
-        raise ValueError("Could not retrieve start and exit node based on the uic_ref, fallback to more complex "
-                         "retrieval")
     return lines
 
 
 def _merge_nodes_with_corresponding_relation_fallback(start_nodes, destination_nodes, relations):
-    """
-    Merges nodes to relations based on the members in the relation.
-    """
+    """ merges start nodes und destination nodes to relations based on the members in the relation """
     lines = []
     for relation in relations:
         start_node = None
@@ -178,14 +193,12 @@ def _merge_nodes_with_corresponding_relation_fallback(start_nodes, destination_n
                     start_node = temp_start_node
                     break
             for temp_destination_node in destination_nodes:
-                """
-                We do not mind that the selected destination node does not correlate with our desired destination.
-                We are using this node to determine the right direction of travel thus it is not of interest if
-                the selected node is the last node in the relation or one in the middle.
-                """
                 if temp_destination_node.id == member.ref:
                     destination_node = temp_destination_node
                     break
+        if start_node is None or destination_node is None:
+            raise ValueError("Could not retrieve start and exit node based on the provided relation, start nodes and "
+                             "destination nodes, return fallback coordinate")
         lines.append({'rel': relation, 'start': start_node, 'exit': destination_node})
     return lines
 
@@ -197,14 +210,24 @@ def _get_public_transport_stop_node(lines):
     to the public transport line in the right direction of travel based on the order
     of the start and exit node in the relation.
     """
+    start_node = None
+    start_node_modify_counter = 0
     for line in lines:
         for member in line['rel'].members:
             if member.ref == line['start'].id:
                 start_node = line['start']
-                return start_node
+                start_node_modify_counter += 1
             elif member.ref == line['exit'].id:
                 break
-    raise ValueError("Could not retrieve start and exit node based on the id, no retrieval is possible in this case")
+
+    """
+    Should fail if the start node is modified multiple times or is not set at all.
+    Both cases result from the fact that the order of the nodes in the relation is not correct.
+    """
+    if start_node_modify_counter > 1 or not start_node:
+        raise ValueError("Could not retrieve start and exit node because of an incorrect order in the relation")
+    else:
+        return start_node
 
 
 def _parse_bounding_box(latitude, longitude):

@@ -28,13 +28,14 @@ def test_get_initial_public_transport_stop_position():
     Public transport stops at Zürich, Sternen Oerlikon have the uic_ref 8591382.
     """
     current_location = (47.41077, 8.55240)
-    bus_number = '94'
+    fallback_initial_stop_position = (1, 1)  # irrelevant and will not be used
     start_stop_uicref = '8591273'
     exit_stop_uicref = '8591382'
+    bus_number = '94'
     stop_position = overpass_service.get_initial_public_transport_stop_position(current_location,
+                                                                                start_stop_uicref, exit_stop_uicref,
                                                                                 bus_number,
-                                                                                start_stop_uicref,
-                                                                                exit_stop_uicref)
+                                                                                fallback_initial_stop_position)
     assert (47.4106724, 8.5520512) == stop_position
 
 
@@ -49,13 +50,14 @@ def test_get_initial_public_transport_stop_position_other_direction():
     Public transport stops at Zürich, Hallenbad Oerlikon have the uic_ref 8591175.
     """
     current_location = (47.41077, 8.55240)
-    bus_number = '94'
+    fallback_initial_stop_position = (1, 1)  # irrelevant and will not be used
     start_stop_uicref = '8591273'
     exit_stop_uicref = '8591175'
+    bus_number = '94'
     stop_position = overpass_service.get_initial_public_transport_stop_position(current_location,
+                                                                                start_stop_uicref, exit_stop_uicref,
                                                                                 bus_number,
-                                                                                start_stop_uicref,
-                                                                                exit_stop_uicref)
+                                                                                fallback_initial_stop_position)
     assert (47.4107102, 8.5528703) == stop_position
 
 
@@ -68,13 +70,14 @@ def test_get_initial_public_transport_stop_position_end_terminal():
     Public transport stops at Zürich, Bahnhof Oerlikon have the uic_ref 8580449.
     """
     current_location = (47.41025, 8.54679)
-    bus_number = '94'
+    fallback_initial_stop_position = (1, 1)  # irrelevant and will not be used
     start_stop_uicref = '8591382'
     exit_stop_uicref = '8580449'
+    bus_number = '94'
     stop_position = overpass_service.get_initial_public_transport_stop_position(current_location,
+                                                                                start_stop_uicref, exit_stop_uicref,
                                                                                 bus_number,
-                                                                                start_stop_uicref,
-                                                                                exit_stop_uicref)
+                                                                                fallback_initial_stop_position)
     assert (47.4102250, 8.5467743) == stop_position
 
 
@@ -87,13 +90,14 @@ def test_get_initial_public_transport_stop_position_start_terminal():
     Public transport stops at Zürich, Sternen Oerlikon have the uic_ref 8591382.
     """
     current_location = (47.41142, 8.54466)
-    bus_number = '94'
+    fallback_initial_stop_position = (1, 1)  # irrelevant and will not be used
     start_stop_uicref = '8580449'
     exit_stop_uicref = '8591382'
+    bus_number = '94'
     stop_position = overpass_service.get_initial_public_transport_stop_position(current_location,
+                                                                                start_stop_uicref, exit_stop_uicref,
                                                                                 bus_number,
-                                                                                start_stop_uicref,
-                                                                                exit_stop_uicref)
+                                                                                fallback_initial_stop_position)
     assert (47.4114541, 8.5447442) == stop_position
 
 
@@ -105,13 +109,14 @@ def test_get_initial_public_transport_stop_position_fallback():
     to determine the initial public transport stop position.
     """
     current_location = (47.34252, 8.53608)
-    bus_number = '161'
-    start_stop_uicref = '8587347'  # TODO how does search.ch get these uic_refs?
+    fallback_initial_stop_position = (1, 1)  # irrelevant and will not be used
+    start_stop_uicref = '8587347'
     exit_stop_uicref = '8591357'
+    bus_number = '161'
     stop_position = overpass_service.get_initial_public_transport_stop_position(current_location,
+                                                                                start_stop_uicref, exit_stop_uicref,
                                                                                 bus_number,
-                                                                                start_stop_uicref,
-                                                                                exit_stop_uicref)
+                                                                                fallback_initial_stop_position)
     assert (47.3424624, 8.5362646) == stop_position
 
 
@@ -122,34 +127,37 @@ def test_get_initial_public_transport_stop_position_corrupt_relation():
     The fallback method will be used in this case.
 
     The relation for the S6 is wrongly (order of nodes is not correct) mapped and the fallback method will fail too.
+    Thus the last option is chosen and the fallback_initial_stop_position will be returned.
 
     Public transport stops at Zürich, Bahnhof Oerlikon have the uic_ref 8503006.
     Public transport stops at Zürich, Hardbrücke have the uic_ref 8503020.
     """
     current_location = (47.41012, 8.54644)
-    train_number = 'S6'
+    fallback_initial_stop_position = (47.41152601531714, 8.544113562238525)
     start_stop_uicref = '8503006'
     exit_stop_uicref = '8503020'
-    with pytest.raises(ValueError):
-        overpass_service.get_initial_public_transport_stop_position(current_location,
-                                                                    train_number,
-                                                                    start_stop_uicref,
-                                                                    exit_stop_uicref)
+    train_number = 'S6'
+    stop_position = overpass_service.get_initial_public_transport_stop_position(current_location,
+                                                                                start_stop_uicref, exit_stop_uicref,
+                                                                                train_number,
+                                                                                fallback_initial_stop_position)
+    assert (47.41152601531714, 8.544113562238525) == stop_position
 
 
 def test_get_initial_public_transport_stop_position_relation_without_uic_ref():
     """
-    Start node does not have an uic_ref, the exit node however holds an uic_ref.
-    For the exit node it is not possible to retrieve relations based on the exit_uic_ref because there does not
-    exist one with it. This is the reasons why all reachable public stop nodes have to be returned
-    in _get_destination_stops() and not just the nodes at the destination.
+    Start node does not have an uic_ref, the exit node however holds an uic_ref. The first retrieval method fill fail
+    because of this. For the exit node it is not possible to retrieve relations based on the exit_uic_ref because there
+    does not exist one with it. Thus the last option is chosen and the fallback_initial_stop_position will be
+    returned.
     """
     current_location = (47.33937, 8.53810)
-    bus_number = '161'
+    fallback_initial_stop_position = (47.338911019762165, 8.53813643293702)
     start_stop_uicref = '8591357'
     exit_stop_uicref = '8591317'
+    bus_number = '161'
     stop_position = overpass_service.get_initial_public_transport_stop_position(current_location,
+                                                                                start_stop_uicref, exit_stop_uicref,
                                                                                 bus_number,
-                                                                                start_stop_uicref,
-                                                                                exit_stop_uicref)
-    assert (47.3385962, 8.5383397) == stop_position
+                                                                                fallback_initial_stop_position)
+    assert (47.338911019762165, 8.53813643293702) == stop_position
