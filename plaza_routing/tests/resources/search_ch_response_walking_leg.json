@@ -1,0 +1,133 @@
+{
+  "count": 1,
+  "rawtime": 840,
+  "maxtime": 840,
+  "connections": [
+    {
+      "from": "Zürich, Rote Fabrik",
+      "departure": "2017-11-12 13:42:00",
+      "to": "Zürich Enge, Bahnhof",
+      "arrival": "2017-11-12 13:56:00",
+      "duration": 840,
+      "legs": [
+        {
+          "departure": "2017-11-12 13:42:00",
+          "x": "682928",
+          "y": "244121",
+          "isaddress": false,
+          "name": "Zürich, Rote Fabrik",
+          "sbb_name": null,
+          "stopid": "8587347",
+          "type": "walk",
+          "terminal": "Zürich, Post Wollishofen",
+          "runningtime": 480,
+          "exit": {
+            "arrival": "2017-11-12 13:50:00",
+            "stopid": "8591304",
+            "x": 682694,
+            "y": 244311,
+            "name": "Zürich, Post Wollishofen",
+            "sbb_name": "Zürich, Post Wollishofen",
+            "waittime": 0
+          }
+        },
+        {
+          "arrival": "2017-11-12 13:50:00",
+          "departure": "2017-11-12 13:50:00",
+          "tripid": "T2017_44005_003849_001_a72b879_0",
+          "number": "T 44005",
+          "stopid": "8591304",
+          "x": 682694,
+          "y": 244311,
+          "name": "Zürich, Post Wollishofen",
+          "sbb_name": "Zürich, Post Wollishofen",
+          "type": "tram",
+          "line": "7",
+          "terminal": "Stettbach, Bahnhof",
+          "waittime": 0,
+          "fgcolor": "fff",
+          "bgcolor": "000",
+          "*G": "T",
+          "*L": "7",
+          "operator": "VBZ    F",
+          "stops": [
+            {
+              "arrival": "2017-11-12 13:51:00",
+              "departure": "2017-11-12 13:51:00",
+              "name": "Zürich Wollishofen, Bahnhof (Tram)",
+              "stopid": "8591081",
+              "x": 682687,
+              "y": 244596
+            },
+            {
+              "arrival": "2017-11-12 13:52:00",
+              "departure": "2017-11-12 13:52:00",
+              "name": "Zürich, Billoweg",
+              "stopid": "8591082",
+              "x": 682609,
+              "y": 245088
+            },
+            {
+              "arrival": "2017-11-12 13:53:00",
+              "departure": "2017-11-12 13:53:00",
+              "name": "Zürich, Brunaustr.",
+              "stopid": "8591100",
+              "x": 682620,
+              "y": 245607
+            },
+            {
+              "arrival": "2017-11-12 13:55:00",
+              "departure": "2017-11-12 13:55:00",
+              "name": "Zürich, Museum Rietberg",
+              "stopid": "8591283",
+              "x": 682563,
+              "y": 246116
+            }
+          ],
+          "runningtime": 360,
+          "exit": {
+            "arrival": "2017-11-12 13:56:00",
+            "stopid": "8591058",
+            "x": 682559,
+            "y": 246495,
+            "name": "Zürich Enge, Bahnhof",
+            "sbb_name": "Zürich Enge, Bahnhof"
+          },
+          "attributes": {
+            "1_0_NF": "Niederflureinstieg"
+          }
+        },
+        {
+          "arrival": "2017-11-12 13:56:00",
+          "stopid": "8591058",
+          "x": 682559,
+          "y": 246495,
+          "name": "Zürich Enge, Bahnhof",
+          "sbb_name": "Zürich Enge, Bahnhof",
+          "normal_time": 0,
+          "stops": null
+        }
+      ]
+    }
+  ],
+  "url": "https://fahrplan.search.ch/Z%C3%BCrich,Rote-Fabrik..Z%C3%BCrich-Enge",
+  "points": [
+    {
+      "text": "Zürich, Rote Fabrik",
+      "url": "https://map.search.ch/Z%C3%BCrich,Rote-Fabrik",
+      "id": "8587347",
+      "x": "682928",
+      "y": "244121"
+    },
+    {
+      "text": "Zürich Enge",
+      "url": "https://map.search.ch/Z%C3%BCrich-Enge",
+      "id": "8503010",
+      "x": "682501",
+      "y": "246491"
+    }
+  ],
+  "description": "Von Rote Fabrik nach Enge am Sonntag 12.11.2017",
+  "request": "route",
+  "eof": 1
+}

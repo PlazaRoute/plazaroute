@@ -20,6 +20,8 @@ class Exit(colander.MappingSchema):
     stopid = colander.SchemaNode(colander.String(), missing=None)
     name = colander.SchemaNode(colander.String(), missing=None)
     arrival = colander.SchemaNode(colander.String())
+    x = colander.SchemaNode(colander.Int())
+    y = colander.SchemaNode(colander.Int())
 
 
 class Leg(colander.MappingSchema):
@@ -28,7 +30,10 @@ class Leg(colander.MappingSchema):
     name = colander.SchemaNode(colander.String(), missing=None)
     line = colander.SchemaNode(colander.String(), missing=None)
     line_type = colander.SchemaNode(colander.String(), name='type', missing=None)
+    terminal = colander.SchemaNode(colander.String(), missing=None)
     exit = colander.SchemaNode(ExitType(), missing=[])
+    x = colander.SchemaNode(colander.Int())
+    y = colander.SchemaNode(colander.Int())
 
 
 class Legs(colander.SequenceSchema):
@@ -55,8 +60,14 @@ class SearchChResponse(colander.MappingSchema):
 def parse_connections(response):
     """ parses a search.ch response to a suitable data structure """
     try:
-        return SearchChResponse().deserialize(json.loads(response))
+        parsed_response = SearchChResponse().deserialize(json.loads(response))
+        _add_calculated_values(parsed_response['connections'])
+        return parsed_response
     except colander.Invalid as e:
+        print(f'colander failed with {e.asdict()} for response {response}')
         raise RuntimeError(e.asdict())
-    except:
-        raise ValueError('connections cannot be parsed')
+
+
+def _add_calculated_values(connections):
+    for connection in connections:
+        connection['number_of_legs'] = len(connection['legs'])
