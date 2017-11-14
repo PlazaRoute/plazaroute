@@ -161,3 +161,52 @@ def test_get_initial_public_transport_stop_position_relation_without_uic_ref():
                                                                                 bus_number,
                                                                                 fallback_initial_stop_position)
     assert (47.338911019762165, 8.53813643293702) == stop_position
+
+
+def test_get_initial_public_transport_stop_position_empty_result():
+    """ an empty result set is returned by the Overpass queries based on provided parameters """
+    current_location = (47.36343, 8.53531)
+    fallback_initial_stop_position = (1, 1)
+    start_stop_uicref = '8591317'
+    exit_stop_uicref = '8591058'
+    tram_number = '23'
+    stop_position = overpass_service.get_initial_public_transport_stop_position(current_location,
+                                                                                start_stop_uicref, exit_stop_uicref,
+                                                                                tram_number,
+                                                                                fallback_initial_stop_position)
+    assert (1, 1) == stop_position
+
+
+def test_get_initial_public_transport_stop_position_multiple_relations_for_line():
+    """
+    Tram 5 has multiple lines with different terminals that serve the stop Zürich, Rentenanstalt
+    to Zürich, Bahnhof Enge. All lines are a possible option and all start from the same stop.
+    """
+    current_location = (47.36331, 8.53528)
+    fallback_initial_stop_position = (1, 1)
+    start_stop_uicref = '8591317'
+    exit_stop_uicref = '8591058'
+    tram_number = '5'
+    stop_position = overpass_service.get_initial_public_transport_stop_position(current_location,
+                                                                                start_stop_uicref, exit_stop_uicref,
+                                                                                tram_number,
+                                                                                fallback_initial_stop_position)
+    assert (47.3634496, 8.5345504) == stop_position
+
+
+def test_get_initial_public_transport_stop_position_multiple_relations_for_line_foo():
+    """
+    Tram 5 has multiple lines with different terminals that serve the stop Zürich, Rentenanstalt
+    to Zürich, Bahnhof Enge. But to get from Zürich, Rentenanstalt to Bahnhof Enge/Bederstrasse
+    just on line is a possible option.
+    """
+    current_location = (47.36331, 8.53528)
+    fallback_initial_stop_position = (1, 1)
+    start_stop_uicref = '8591317'
+    exit_stop_uicref = '8591059'
+    tram_number = '5'
+    stop_position = overpass_service.get_initial_public_transport_stop_position(current_location,
+                                                                                start_stop_uicref, exit_stop_uicref,
+                                                                                tram_number,
+                                                                                fallback_initial_stop_position)
+    assert (47.3634496, 8.5345504) == stop_position

@@ -3,6 +3,7 @@ import math
 
 OVERPASS_API_URL = 'http://overpass.osm.ch/api/interpreter'
 BOUNDING_BOX_BUFFER_METERS = 1000
+INITIAL_STOP_BOUNDING_BOX_BUFFER_METERS = 100
 
 API = overpy.Overpass(url=OVERPASS_API_URL)
 
@@ -74,7 +75,7 @@ def _get_public_transport_lines(start_position, start_uic_ref, exit_uic_ref, lin
     The exit nodes are necessary to retrieve the line in the right direction of travel
     in a later step.
     """
-    bbox = _parse_bounding_box(*start_position)
+    bbox = _parse_bounding_box(*start_position, INITIAL_STOP_BOUNDING_BOX_BUFFER_METERS)
     query_str = f"""
         node(r:"stop")["uic_ref"={start_uic_ref}]({bbox});
         rel({bbox})["type"="route"]["ref"={line}]->.lines;
@@ -85,6 +86,8 @@ def _get_public_transport_lines(start_position, start_uic_ref, exit_uic_ref, lin
         """
 
     result = API.query(query_str)
+    if not result.nodes or not result.relations:
+        raise ValueError(f"No nodes or relations provided for {start_uic_ref}, fallback to more complex retrieval")
     return _merge_nodes_with_corresponding_relation(result.nodes, result.relations, start_uic_ref)
 
 
@@ -111,7 +114,7 @@ def _get_start_stops_and_lines(start_position, start_uic_ref, line):
     In that case the nodes and lines will retrieved based on the relation with the given uic_ref.
     stop_area (relation) are also mapped with the uic_ref.
     """
-    bbox = _parse_bounding_box(*start_position)
+    bbox = _parse_bounding_box(*start_position, INITIAL_STOP_BOUNDING_BOX_BUFFER_METERS)
     query_str = f"""
             rel({bbox})["uic_ref"={start_uic_ref}];
             node(r)["public_transport"="stop_position"]->.initialstops;
@@ -125,6 +128,8 @@ def _get_start_stops_and_lines(start_position, start_uic_ref, line):
             """
 
     result = API.query(query_str)
+    if not result.nodes or not result.relations:
+        raise ValueError(f"No nodes or relations provided for {start_uic_ref}, fallback to more complex retrieval")
     return result.nodes, result.relations
 
 
@@ -139,7 +144,7 @@ def _get_destination_stops(start_position, start_uic_ref, exit_uic_ref, line):
 
     Same reason to use as in _get_start_stops_and_lines().
     """
-    bbox = _parse_bounding_box(*start_position)
+    bbox = _parse_bounding_box(*start_position, INITIAL_STOP_BOUNDING_BOX_BUFFER_METERS)
     query_str = f"""
                 rel({bbox})["uic_ref"={start_uic_ref}];
                 node(r)["public_transport"="stop_position"]->.initialstartstops;
@@ -154,6 +159,8 @@ def _get_destination_stops(start_position, start_uic_ref, exit_uic_ref, line):
                 """
 
     result = API.query(query_str)
+    if not result.nodes:
+        raise ValueError(f"No nodes or relations provided for {exit_uic_ref}, fallback to more complex retrieval")
     return result.nodes
 
 
@@ -165,19 +172,21 @@ def _merge_nodes_with_corresponding_relation(nodes, relations, start_uic_ref):
     lines = []
     for relation in relations:
         start_node = None
-        exit_node = None
+        destination_node = None
         for node in nodes:
             for member in relation.members:
                 if node.id == member.ref:
                     if node.tags.get('uic_ref') == start_uic_ref:
                         start_node = node
                     else:
-                        exit_node = node
+                        destination_node = node
 
-        if start_node is None or exit_node is None:
-            raise ValueError("Could not retrieve start and exit node based on the uic_ref, fallback to more complex "
-                             "retrieval")
-        lines.append({'rel': relation, 'start': start_node, 'exit': exit_node})
+        if start_node is None or destination_node is None:
+            continue
+        lines.append({'rel': relation, 'start': start_node, 'exit': destination_node})
+    if not lines:
+        raise ValueError("Could not retrieve start and exit node based on the uic_ref, fallback to more complex "
+                         "retrieval")
     return lines
 
 
@@ -197,9 +206,11 @@ def _merge_nodes_with_corresponding_relation_fallback(start_nodes, destination_n
                     destination_node = temp_destination_node
                     break
         if start_node is None or destination_node is None:
-            raise ValueError("Could not retrieve start and exit node based on the provided relation, start nodes and "
-                             "destination nodes, return fallback coordinate")
+            continue
         lines.append({'rel': relation, 'start': start_node, 'exit': destination_node})
+    if not lines:
+        raise ValueError("Could not retrieve start and exit node based on the provided relation, start nodes and "
+                         "destination nodes, return fallback coordinate")
     return lines
 
 
@@ -215,8 +226,9 @@ def _get_public_transport_stop_node(lines):
     for line in lines:
         for member in line['rel'].members:
             if member.ref == line['start'].id:
+                if start_node and start_node != line['start']:
+                    start_node_modify_counter += 1
                 start_node = line['start']
-                start_node_modify_counter += 1
             elif member.ref == line['exit'].id:
                 break
 
@@ -230,9 +242,9 @@ def _get_public_transport_stop_node(lines):
         return start_node
 
 
-def _parse_bounding_box(latitude, longitude):
+def _parse_bounding_box(latitude, longitude, buffer_meters=BOUNDING_BOX_BUFFER_METERS):
     """ calculates the bounding box for a specific location and a given buffer """
-    buffer_degrees = _meters_to_degrees(BOUNDING_BOX_BUFFER_METERS)
+    buffer_degrees = _meters_to_degrees(buffer_meters)
 
     # divide by 2 to add only half on each side
     buffer_latitude = buffer_degrees / 2
