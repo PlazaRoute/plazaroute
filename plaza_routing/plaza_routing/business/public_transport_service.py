@@ -40,7 +40,7 @@ def get_path_for_public_transport_connection(connection):
             'terminal': leg['terminal'],
             'departure': leg['departure'],
             'arrival': leg['exit']['arrival'],
-            'start_position': start_position
+            'start_position': [*start_position]
         }
         result['path'].append(path)
         relevant_legs_counter += 1
@@ -51,7 +51,7 @@ def get_path_for_public_transport_connection(connection):
 
 def _get_stopovers(stopovers):
     """
-    Returns the coordinates for all provided stepovers in a list.
+    Returns the coordinates for all provided stopovers in a list.
     The approximation based on the search.ch coordinates is enough.
     """
     path = []
