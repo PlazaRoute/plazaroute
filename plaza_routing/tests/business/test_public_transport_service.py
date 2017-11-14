@@ -15,7 +15,7 @@ def test_get_path_for_public_transport_connection_single_leg():
                     'terminal': 'Kilchberg ZH, Kirche',
                     'arrival': '2017-11-12 13:38:00',
                     'departure': '2017-11-12 13:35:00',
-                    'start_position': (47.3424624, 8.5362646)
+                    'start_position': [47.3424624, 8.5362646]
                 }],
         'time': 180,
         'number_of_legs': 1
@@ -42,7 +42,7 @@ def test_get_path_for_public_transport_connection_filtered_walking_leg():
                     'terminal': 'Stettbach, Bahnhof',
                     'arrival': '2017-11-12 13:56:00',
                     'departure': '2017-11-12 13:50:00',
-                    'start_position': (47.3448353, 8.5333468)
+                    'start_position': [47.3448353, 8.5333468]
                 }],
         'time': 840,
         'number_of_legs': 1
@@ -70,7 +70,7 @@ def test_get_path_for_public_transport_connection_multiple_leg():
                     'terminal': 'Zürich, Bürkliplatz',
                     'arrival': '2017-11-12 14:13:00',
                     'departure': '2017-11-12 14:07:00',
-                    'start_position': (47.338911019762165, 8.53813643293702)
+                    'start_position': [47.338911019762165, 8.53813643293702]
                 },
                 {
                     'name': 'Zürich, Rentenanstalt',
@@ -79,7 +79,7 @@ def test_get_path_for_public_transport_connection_multiple_leg():
                     'terminal': 'Zürich Enge, Bahnhof',
                     'arrival': '2017-11-12 14:21:00',
                     'departure': '2017-11-12 14:19:00',
-                    'start_position': (47.3634496, 8.5345504)
+                    'start_position': [47.3634496, 8.5345504]
                 }],
         'time': 840,
         'number_of_legs': 2
