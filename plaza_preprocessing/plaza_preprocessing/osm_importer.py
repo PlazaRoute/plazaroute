@@ -1,23 +1,27 @@
+import logging
 import osmium
 from osmium._osmium import InvalidLocationError
 import shapely.wkb as wkblib
 
+logger = logging.getLogger('plaza_preprocessing.osm_importer')
 WKBFAB = osmium.geom.WKBFactory()
 
 
 def import_osm(filename):
     """ imports a OSM / PBF file and returns a holder with all plazas, buildings,
     lines and points with shapely geometries """
+    logger.info(f'importing {filename}')
     handler = _PlazaHandler()
     # index_type = 'dense_file_array' # uses over 25GB of space for Switzerland
     index_type = 'sparse_mem_array'
     handler.apply_file(filename, locations=True, idx=index_type)
-    print(f'{len(handler.plazas)} plazas')
-    print(f'{len(handler.buildings)} buildings')
-    print(f'{len(handler.lines)} lines')
-    print(f'{len(handler.points)} points')
+    logger.debug(f'found {len(handler.plazas)} plazas')
+    logger.debug(f'found {len(handler.buildings)} buildings')
+    logger.debug(f'found {len(handler.lines)} lines')
+    logger.debug(f'found {len(handler.points)} points')
 
-    print(f'encountered {handler.invalid_count} invalid objects (probably because of boundaries)')
+    if handler.invalid_count > 0:
+        logger.warning(f'encountered {handler.invalid_count} invalid objects (may be because of boundaries)')
     return OSMHolder(handler.plazas, handler.buildings, handler.lines, handler.points)
 
 
@@ -51,10 +55,10 @@ class _PlazaHandler(osmium.SimpleHandler):
                 line_geometry = wkblib.loads(line_wkb, hex=True)
                 self.lines.append({'id': way.id, 'geometry': line_geometry})
             except InvalidLocationError:
-                print(f'Invalid location in {way.id}')
+                logger.debug(f'Encountered invalid location in way {way.id}')
                 self.invalid_count += 1
             except RuntimeError as ex:
-                print(f'Error with {way.id}, {len(way.nodes)} nodes: {ex}')
+                logger.debug(f'Error importing way {way.id}: {ex}')
                 self.invalid_count += 1
 
     def area(self, area):
