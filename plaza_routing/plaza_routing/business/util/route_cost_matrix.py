@@ -1,6 +1,6 @@
 WEIGHTS = {
-    'time':             2,
-    'duration':         2,
+    'time':             2,  # walking time
+    'duration':         2,  # travel duration of public transport connection
     'ascend':           0.75,
     'descend':          0.5,
     'number_of_legs':   1

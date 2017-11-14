@@ -22,7 +22,7 @@ class GraphhopperStrategy(Strategy):
         first_path = response.paths[0]
 
         return {'type': 'walking',
-                'time': first_path.time,
+                'time': first_path.time / 1000,  # convert time to seconds
                 'ascend': first_path.ascend,
                 'descend': first_path.descend,
                 'path': first_path.points.coordinates,
