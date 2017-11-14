@@ -1,3 +1,5 @@
+import sys
+import logging
 from flask import Flask, Blueprint
 from plaza_routing.api.restplus import api
 from plaza_routing.api.endpoints.route import ns as route_namespace
@@ -12,6 +14,9 @@ RESTPLUS_SWAGGER_UI_DOC_EXPANSION = 'list'
 RESTPLUS_VALIDATE = True
 RESTPLUS_MASK_SWAGGER = False
 RESTPLUS_ERROR_404_HELP = False
+
+
+logger = logging.getLogger('plaza_routing')
 
 
 def configure_app(flask_app):
@@ -31,9 +36,27 @@ def initialize_app(flask_app):
     flask_app.register_blueprint(api_blueprint)
 
 
+def setup_logging(verbose=False, quiet=False):
+    logger.setLevel(logging.INFO)
+    console_handler = logging.StreamHandler(sys.stdout)
+    formatter = logging.Formatter(
+            '[%(levelname)-7s] - %(message)s')
+    if verbose and not quiet:
+        logger.setLevel(logging.DEBUG)
+        formatter = logging.Formatter(
+            '%(asctime)s - %(name)s - [%(levelname)-7s] - %(message)s')
+    if quiet:
+        logger.setLevel(logging.WARNING)
+
+    console_handler.setFormatter(formatter)
+    logger.addHandler(console_handler)
+    logger.debug("Setting up logging complete")
+
+
 def main():
     app = Flask(__name__)
     initialize_app(app)
+    setup_logging(verbose=True)
     app.run(debug=FLASK_DEBUG)
 
 

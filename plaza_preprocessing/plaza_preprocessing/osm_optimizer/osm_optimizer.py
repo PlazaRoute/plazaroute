@@ -1,19 +1,24 @@
+import logging
 from plaza_preprocessing.osm_optimizer import utils
 from plaza_preprocessing.osm_optimizer.visibilitygraphprocessor import VisibilityGraphProcessor
 from plaza_preprocessing.osm_optimizer.spiderwebgraphprocessor import SpiderWebGraphProcessor
 from shapely.geometry import Point, MultiPolygon, box
 
+logger = logging.getLogger('plaza_preprocessing.osm_optimizer')
+
 
 def preprocess_plazas(osm_holder):
     """ preprocess all plazas from osm_importer """
+    logger.info(f"Start processing {len(osm_holder.plazas)} plazas")
     plaza_processor = PlazaPreprocessor(osm_holder, VisibilityGraphProcessor())
     processed_plazas = []
     for plaza in osm_holder.plazas:
-        print(f"Processing plaza {plaza['osm_id']}")
+        logger.info(f"Processing plaza {plaza['osm_id']}")
         processed_plaza = plaza_processor.process_plaza(plaza)
         if processed_plaza is not None:
             processed_plazas.append(processed_plaza)
 
+    logger.info(f"Finished processing {len(processed_plazas)} plazas (rest were discarded)")
     return processed_plazas
 
 
@@ -32,7 +37,7 @@ class PlazaPreprocessor:
         entry_points = self._calc_entry_points(plaza, intersecting_lines)
 
         if len(entry_points) < 2:
-            print(f"Discarding Plaza {plaza['osm_id']}: fewer than 2 entry points")
+            logger.debug(f"Discarding Plaza {plaza['osm_id']} - it has fewer than 2 entry points")
             return None
 
         entry_lines = self._map_entry_lines(intersecting_lines, entry_points)
@@ -40,8 +45,7 @@ class PlazaPreprocessor:
         plaza_geom_without_obstacles = self._calc_obstacle_geometry(plaza)
 
         if not plaza_geom_without_obstacles:
-            # TODO: Log
-            print(f"Discarding Plaza {plaza['osm_id']}: completely obstructed by obstacles")
+            logger.debug(f"Discarding Plaza {plaza['osm_id']}: completely obstructed by obstacles")
             return None
 
         self.graph_processor.entry_points = entry_points
@@ -117,7 +121,7 @@ class PlazaPreprocessor:
             geometry_without_obstacles = geometry_without_obstacles.difference(point_obstacle)
 
         if isinstance(geometry_without_obstacles, MultiPolygon):
-            print(
+            logger.debug(
                 f"Plaza {plaza['osm_id']}: Multipolygon after cut out, discarding smaller polygon")
             # take the largest of the polygons
             geometry_without_obstacles = max(

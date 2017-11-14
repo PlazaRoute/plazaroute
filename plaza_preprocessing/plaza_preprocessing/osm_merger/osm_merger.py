@@ -1,11 +1,14 @@
 from sys import maxsize
 from os import remove
+import logging
 from datetime import datetime
 from osmium import SimpleHandler, SimpleWriter
 from osmium.osm.mutable import Way
 from shapely.geometry import Point, LineString
-from plaza_preprocessing.osm_merger.plazawriter import PlazaWriter
+import plaza_preprocessing.osm_merger.plazawriter as plazawriter
 import plaza_preprocessing.osm_merger.osmosishelper as osmosishelper
+
+logger = logging.getLogger('plaza_preprocessing.osm_merger')
 
 
 class WayExtractor(SimpleHandler):
@@ -29,21 +32,27 @@ def merge_plaza_graphs(plazas, osm_file, merged_file):
     """
     merge graph edges of plazas back into the original OSM file
     """
+    logger.info(f"Merging {len(plazas)} processed plazas back into {osm_file}")
     # TODO: Proper temp file
-    plazas_file = 'plazas.osm'
-    modified_ways_file = 'modified_ways.osm'
+    plaza_way_file = 'plaza_ways.pbf'
+    plaza_node_file = 'plaza_nodes.pbf'
+    modified_ways_file = 'modified_ways.pbf'
     try:
-        entry_node_mappings = _write_plazas_to_osm(plazas, plazas_file)
+        entry_node_mappings = plazawriter.transform_plazas(
+            plazas, plaza_node_file, plaza_way_file)
 
         plaza_ways = _extract_plaza_ways(entry_node_mappings, osm_file)
         _insert_entry_nodes(plaza_ways, entry_node_mappings)
 
         _write_modified_ways(plaza_ways, modified_ways_file)
 
-        osmosishelper.merge_three_osm_files(
-            merged_file, osm_file, plazas_file, modified_ways_file)
+        osmosishelper.merge_osm_files(
+            merged_file, osm_file, plaza_way_file, plaza_node_file, modified_ways_file)
+
+        logger.info(f"Merged OSM file written to {merged_file}")
     finally:
-        remove(plazas_file)
+        remove(plaza_way_file)
+        remove(plaza_node_file)
         remove(modified_ways_file)
 
 
@@ -53,6 +62,7 @@ def _insert_entry_nodes(plaza_ways, entry_node_mappings):
         if way_id not in plaza_ways:
             raise RuntimeError(f"Way {way_id} was not found in original osm file")
         way_nodes = plaza_ways.get(way_id).get('nodes')
+        logger.debug(f"Inserting {len(entry_nodes)} entry point references into way {way_id}")
         for entry_node in entry_nodes:
             way_nodes = _insert_entry_node(entry_node, way_nodes)
 
@@ -61,6 +71,7 @@ def _write_modified_ways(plaza_ways, filename):
     """
     write the modified ways to an OSM file
     """
+    logger.debug(f"Writing modified ways to {filename}")
     ways = []
     for way_id, way in plaza_ways.items():
         node_refs = [node['id'] for node in way['nodes']]
@@ -79,13 +90,6 @@ def _write_modified_ways(plaza_ways, filename):
             writer.add_way(way)
     finally:
         writer.close()
-
-
-def _write_plazas_to_osm(plazas, filename):
-    plaza_writer = PlazaWriter()
-    plaza_writer.transform_plazas(plazas)
-    plaza_writer.write_to_file(filename)
-    return plaza_writer.entry_node_mappings
 
 
 def _insert_entry_node(entry_node, way_nodes):
@@ -121,6 +125,8 @@ def _find_interpolated_insert_position(entry_point, way_nodes):
     index of the end node of the line to which the entry point is
     closest to
     """
+    logger.debug(
+        f"Entry point {entry_point.coords} is not on way node, finding interpolated position")
     min_node = {'pos': None, 'distance': maxsize}
     for i in range(0, len(way_nodes) - 1):
         start_node = way_nodes[i]

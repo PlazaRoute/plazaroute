@@ -1,0 +1,45 @@
+# Python CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-python/ for more details
+#
+version: 2
+jobs:
+  build:
+    docker:
+      - image: excap/plazaroute-ci
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - plazaroute-deps-{{ checksum "plaza_routing/requirements.txt" }}{{ checksum "plaza_preprocessing/requirements.txt" }}{{ checksum "plaza_routing/requirements-dev.txt" }}{{ checksum "plaza_preprocessing/requirements-dev.txt" }}
+
+      - run:
+          name: install dependencies
+          command: |
+            virtualenv venv
+            . venv/bin/activate
+            pip install -r plaza_preprocessing/requirements.txt
+            pip install -r plaza_preprocessing/requirements-dev.txt
+            pip install -r plaza_routing/requirements.txt
+            pip install -r plaza_routing/requirements-dev.txt
+
+      - save_cache:
+          paths:
+            - ./venv
+          key: plazaroute-deps-{{ checksum "plaza_routing/requirements.txt" }}{{ checksum "plaza_preprocessing/requirements.txt" }}{{ checksum "plaza_routing/requirements-dev.txt" }}{{ checksum "plaza_preprocessing/requirements-dev.txt" }}
+        
+      # run tests!
+      - run:
+          name: run tests
+          command: |
+            . venv/bin/activate
+            pip install --editable plaza_routing/
+            pytest plaza_routing
+            pip install --editable plaza_preprocessing/
+            pytest plaza_preprocessing
+          

@@ -3,45 +3,70 @@ from osmium import SimpleWriter
 from osmium.osm.mutable import Way, Node
 
 
-class PlazaWriter:
-    """
-    Transforms plaza graph edges to an OSM Format
-    """
+OSM_ID_START = (-1) * 10**9
 
-    def __init__(self):
-        self.osm_id_nodes = self.osm_id_ways = (-1) * 10**9
-        # use coordinates as keys and osmium objects as values
-        self.nodes = {}
-        self.ways = []
-        # maps entry ways of plazas to entry node ids
-        self.entry_node_mappings = {}
 
-    def transform_plazas(self, plazas):
-        """ takes a list of plazas with edge geometries and constructs nodes and ways """
+def transform_plazas(plazas, node_file, way_file):
+    """ transforms plazas to OSM and write them to a file """
+    node_writer = SimpleWriter(node_file)
+    way_writer = SimpleWriter(way_file)
+
+    entry_node_mappings = {}
+    osm_id_nodes = osm_id_ways = OSM_ID_START
+
+    try:
         for plaza in plazas:
             if "graph_edges" not in plaza:
                 raise ValueError(f"No graph edges in {plaza['osm_id']}")
             if "entry_points" not in plaza:
                 raise ValueError(f"No entry points in {plaza['osm_id']}")
 
-            for edge in plaza['graph_edges']:
-                self._create_way(edge)
+            transformer = PlazaTransformer(osm_id_nodes, osm_id_ways)
+            transformer.transform_plaza(plaza)
 
-            for entry_line in plaza.get('entry_lines'):
-                self.entry_node_mappings[entry_line['way_id']] = [
-                    {'id': self._get_node_id((p.x, p.y)), 'coords': (p.x, p.y)}
-                    for p in entry_line['entry_points']]
+            # merge entry node mappings
+            entry_node_mappings = {**entry_node_mappings, **transformer.entry_node_mappings}
 
-    def write_to_file(self, filename):
-        """ write the nodes and ways to an OSM file """
-        writer = SimpleWriter(filename)
-        try:
-            for node in self.nodes.values():
-                writer.add_node(node)
-            for way in self.ways:
-                writer.add_way(way)
-        finally:
-            writer.close()
+            for node in transformer.nodes.values():
+                node_writer.add_node(node)
+            for way in transformer.ways:
+                way_writer.add_way(way)
+
+            osm_id_nodes += len(transformer.nodes)
+            osm_id_ways += len(transformer.ways)
+    finally:
+        node_writer.close()
+        way_writer.close()
+    return entry_node_mappings
+
+
+class PlazaTransformer:
+    """
+    Transforms plaza graph edges to an OSM Format
+    """
+
+    def __init__(self, start_id_nodes, start_id_ways):
+        self.osm_id_nodes = start_id_nodes
+        self.osm_id_ways = start_id_ways
+        # use coordinates as keys and osmium objects as values
+        self.nodes = {}
+        self.ways = []
+        # maps entry ways of plazas to entry node ids
+        self.entry_node_mappings = {}
+
+    def transform_plaza(self, plaza):
+        """ takes a plaza with edge geometries and constructs nodes and ways """
+
+        for edge in plaza['graph_edges']:
+            self._create_way(edge)
+
+        for entry_line in plaza.get('entry_lines'):
+            self.entry_node_mappings[entry_line['way_id']] = [
+                {
+                    'id': self._get_node_id((p.x, p.y)),
+                    'coords': (p.x, p.y)
+                }
+                for p in entry_line['entry_points']]
 
     def _create_way(self, edge):
         """ create a way with corresponding nodes """
