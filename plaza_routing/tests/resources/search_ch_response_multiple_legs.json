@@ -1,0 +1,151 @@
+{
+  "count": 1,
+  "rawtime": 840,
+  "maxtime": 840,
+  "connections": [
+    {
+      "from": "Zürich, Seerose",
+      "departure": "2017-11-12 14:07:00",
+      "to": "Zürich Enge, Bahnhof",
+      "arrival": "2017-11-12 14:21:00",
+      "duration": 840,
+      "legs": [
+        {
+          "departure": "2017-11-12 14:07:00",
+          "tripid": "T2017_37559_000849_001_bc8ce39_0",
+          "number": "BUS 37559",
+          "stopid": "8591357",
+          "x": 683094,
+          "y": 243699,
+          "name": "Zürich, Seerose",
+          "sbb_name": "Zürich, Seerose",
+          "type": "bus",
+          "line": "161",
+          "terminal": "Zürich, Bürkliplatz",
+          "*G": "BUS",
+          "*L": "161",
+          "operator": "VBZ",
+          "stops": [
+            {
+              "arrival": "2017-11-12 14:08:00",
+              "departure": "2017-11-12 14:08:00",
+              "name": "Zürich, Rote Fabrik",
+              "stopid": "8587347",
+              "x": 682928,
+              "y": 244121
+            },
+            {
+              "arrival": "2017-11-12 14:10:00",
+              "departure": "2017-11-12 14:10:00",
+              "name": "Zürich Wollishofen, Bahnhof (Bus)",
+              "stopid": "8591080",
+              "x": 682794,
+              "y": 244659
+            },
+            {
+              "arrival": "2017-11-12 14:10:00",
+              "departure": "2017-11-12 14:10:00",
+              "name": "Zürich, Landiwiese",
+              "stopid": "8591241",
+              "x": 682780,
+              "y": 245037
+            },
+            {
+              "arrival": "2017-11-12 14:11:00",
+              "departure": "2017-11-12 14:11:00",
+              "name": "Zürich, Sukkulentensammlung",
+              "stopid": "8591387",
+              "x": 682779,
+              "y": 245475
+            },
+            {
+              "arrival": "2017-11-12 14:12:00",
+              "departure": "2017-11-12 14:12:00",
+              "name": "Zürich, Schweizer Rück",
+              "stopid": "8591352",
+              "x": 682863,
+              "y": 246027
+            }
+          ],
+          "runningtime": 360,
+          "exit": {
+            "arrival": "2017-11-12 14:13:00",
+            "stopid": "8591317",
+            "x": 682822,
+            "y": 246416,
+            "name": "Zürich, Rentenanstalt",
+            "sbb_name": "Zürich, Rentenanstalt",
+            "waittime": 360
+          },
+          "attributes": {
+            "1_0_NF": "Niederflureinstieg"
+          }
+        },
+        {
+          "arrival": "2017-11-12 14:13:00",
+          "departure": "2017-11-12 14:19:00",
+          "tripid": "T2017_18946_003849_001_3a7bd91_0",
+          "number": "T 18946",
+          "stopid": "8591317",
+          "x": 682822,
+          "y": 246416,
+          "name": "Zürich, Rentenanstalt",
+          "sbb_name": "Zürich, Rentenanstalt",
+          "type": "tram",
+          "line": "5",
+          "terminal": "Zürich Enge, Bahnhof",
+          "waittime": 360,
+          "normal_time": 120,
+          "fgcolor": "fff",
+          "bgcolor": "750",
+          "*G": "T",
+          "*L": "5",
+          "operator": "VBZ    F",
+          "stops": [],
+          "runningtime": 120,
+          "exit": {
+            "arrival": "2017-11-12 14:21:00",
+            "stopid": "8591058",
+            "x": 682559,
+            "y": 246495,
+            "name": "Zürich Enge, Bahnhof",
+            "sbb_name": "Zürich Enge, Bahnhof"
+          },
+          "attributes": {
+            "1_0_NF": "Niederflureinstieg"
+          }
+        },
+        {
+          "arrival": "2017-11-12 14:21:00",
+          "stopid": "8591058",
+          "x": 682559,
+          "y": 246495,
+          "name": "Zürich Enge, Bahnhof",
+          "sbb_name": "Zürich Enge, Bahnhof",
+          "normal_time": 0,
+          "stops": null
+        }
+      ]
+    }
+  ],
+  "url": "https://fahrplan.search.ch/Z%C3%BCrich,Seerose..Z%C3%BCrich-Enge",
+  "points": [
+    {
+      "text": "Zürich, Seerose",
+      "url": "https://map.search.ch/Z%C3%BCrich,Seerose",
+      "id": "8591357",
+      "x": "683094",
+      "y": "243699"
+    },
+    {
+      "text": "Zürich Enge",
+      "url": "https://map.search.ch/Z%C3%BCrich-Enge",
+      "id": "8503010",
+      "x": "682501",
+      "y": "246491"
+    }
+  ],
+  "description": "Von Seerose nach Enge am Sonntag 12.11.2017",
+  "request": "route",
+  "eof": 1
+}

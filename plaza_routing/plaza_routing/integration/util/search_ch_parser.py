@@ -20,6 +20,8 @@ class Exit(colander.MappingSchema):
     stopid = colander.SchemaNode(colander.String(), missing=None)
     name = colander.SchemaNode(colander.String(), missing=None)
     arrival = colander.SchemaNode(colander.String())
+    x = colander.SchemaNode(colander.Int())
+    y = colander.SchemaNode(colander.Int())
 
 
 class Leg(colander.MappingSchema):
@@ -28,7 +30,10 @@ class Leg(colander.MappingSchema):
     name = colander.SchemaNode(colander.String(), missing=None)
     line = colander.SchemaNode(colander.String(), missing=None)
     line_type = colander.SchemaNode(colander.String(), name='type', missing=None)
+    terminal = colander.SchemaNode(colander.String(), missing=None)
     exit = colander.SchemaNode(ExitType(), missing=[])
+    x = colander.SchemaNode(colander.Int())
+    y = colander.SchemaNode(colander.Int())
 
 
 class Legs(colander.SequenceSchema):

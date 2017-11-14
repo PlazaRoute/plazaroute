@@ -1,0 +1,84 @@
+{
+  "count": 1,
+  "rawtime": 180,
+  "maxtime": 180,
+  "connections": [
+    {
+      "from": "Zürich, Rote Fabrik",
+      "departure": "2017-11-12 13:35:00",
+      "to": "Zürich, Stadtgrenze",
+      "arrival": "2017-11-12 13:38:00",
+      "duration": 180,
+      "legs": [
+        {
+          "departure": "2017-11-12 13:35:00",
+          "tripid": "T2017_26273_000849_001_7f500d8_0",
+          "number": "BUS 26273",
+          "stopid": "8587347",
+          "x": 682928,
+          "y": 244121,
+          "name": "Zürich, Rote Fabrik",
+          "sbb_name": "Zürich, Rote Fabrik",
+          "type": "bus",
+          "line": "161",
+          "terminal": "Kilchberg ZH, Kirche",
+          "*G": "BUS",
+          "*L": "161",
+          "operator": "VBZ",
+          "stops": [
+            {
+              "arrival": "2017-11-12 13:36:00",
+              "departure": "2017-11-12 13:36:00",
+              "name": "Zürich, Seerose",
+              "stopid": "8591357",
+              "x": 683094,
+              "y": 243699
+            }
+          ],
+          "runningtime": 180,
+          "exit": {
+            "arrival": "2017-11-12 13:38:00",
+            "stopid": "8591378",
+            "x": 683352,
+            "y": 243272,
+            "name": "Zürich, Stadtgrenze",
+            "sbb_name": "Zürich, Stadtgrenze"
+          },
+          "attributes": {
+            "1_0_NF": "Niederflureinstieg"
+          }
+        },
+        {
+          "arrival": "2017-11-12 13:38:00",
+          "stopid": "8591378",
+          "x": 683352,
+          "y": 243272,
+          "name": "Zürich, Stadtgrenze",
+          "sbb_name": "Zürich, Stadtgrenze",
+          "normal_time": 0,
+          "stops": null
+        }
+      ]
+    }
+  ],
+  "url": "https://fahrplan.search.ch/Z%C3%BCrich,Rote-Fabrik..Z%C3%BCrich,Stadtgrenze",
+  "points": [
+    {
+      "text": "Zürich, Rote Fabrik",
+      "url": "https://map.search.ch/Z%C3%BCrich,Rote-Fabrik",
+      "id": "8587347",
+      "x": "682928",
+      "y": "244121"
+    },
+    {
+      "text": "Zürich, Stadtgrenze",
+      "url": "https://map.search.ch/Z%C3%BCrich,Stadtgrenze",
+      "id": "8591378",
+      "x": "683352",
+      "y": "243272"
+    }
+  ],
+  "description": "Von Rote Fabrik nach Stadtgrenze am Sonntag 12.11.2017",
+  "request": "route",
+  "eof": 1
+}
