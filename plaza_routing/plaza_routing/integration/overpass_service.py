@@ -14,7 +14,7 @@ def get_public_transport_stops(start_position):
     query_str = f"""
         [bbox:{bbox}];
         (
-        node["public_transport"="stop_position"];
+            node["public_transport"="stop_position"];node["highway"="bus_stop"];
         );
         out body;
         """

@@ -18,6 +18,14 @@ def test_get_public_transport_stops_empty_result():
         overpass_service.get_public_transport_stops(obersee)
 
 
+def test_get_public_transport_stops_highway_bus_stops():
+    expected_response = {'Volketswil, Hofwisen', 'Volketswil, Chappeli', 'Volketswil, Hegnau',
+                         'Volketswil, Zimikon', 'Volketswil, In der Höh'}
+    zimikon = (47.38516, 8.67263)
+    stops = overpass_service.get_public_transport_stops(zimikon)
+    assert expected_response == stops
+
+
 def test_get_initial_public_transport_stop_position():
     """
     To get from Zürich, Messe/Hallenstadion to Zürich, Sternen Oerlikon you have to take
@@ -194,7 +202,7 @@ def test_get_initial_public_transport_stop_position_multiple_relations_for_line(
     assert (47.3634496, 8.5345504) == stop_position
 
 
-def test_get_initial_public_transport_stop_position_multiple_relations_for_line_foo():
+def test_get_initial_public_transport_stop_position_multiple_relations_for_line__one_option():
     """
     Tram 5 has multiple lines with different terminals that serve the stop Zürich, Rentenanstalt
     to Zürich, Bahnhof Enge. But to get from Zürich, Rentenanstalt to Bahnhof Enge/Bederstrasse
@@ -210,3 +218,4 @@ def test_get_initial_public_transport_stop_position_multiple_relations_for_line_
                                                                                 tram_number,
                                                                                 fallback_initial_stop_position)
     assert (47.3634496, 8.5345504) == stop_position
+
