@@ -38,6 +38,8 @@ def get_path_for_public_transport_connection(connection):
             'line_type': leg['type'],
             'line': leg['line'],
             'terminal': leg['terminal'],
+            'departure': leg['departure'],
+            'arrival': leg['exit']['arrival'],
             'start_position': start_position
         }
         result['path'].append(path)

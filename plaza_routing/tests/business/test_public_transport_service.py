@@ -13,6 +13,8 @@ def test_get_path_for_public_transport_connection_single_leg():
                     'line_type': 'bus',
                     'line': '161',
                     'terminal': 'Kilchberg ZH, Kirche',
+                    'arrival': '2017-11-12 13:38:00',
+                    'departure': '2017-11-12 13:35:00',
                     'start_position': (47.3424624, 8.5362646)
                 }],
         'time': 180,
@@ -38,6 +40,8 @@ def test_get_path_for_public_transport_connection_filtered_walking_leg():
                     'line_type': 'tram',
                     'line': '7',
                     'terminal': 'Stettbach, Bahnhof',
+                    'arrival': '2017-11-12 13:56:00',
+                    'departure': '2017-11-12 13:50:00',
                     'start_position': (47.3448353, 8.5333468)
                 }],
         'time': 840,
@@ -64,6 +68,8 @@ def test_get_path_for_public_transport_connection_multiple_leg():
                     'line_type': 'bus',
                     'line': '161',
                     'terminal': 'Zürich, Bürkliplatz',
+                    'arrival': '2017-11-12 14:13:00',
+                    'departure': '2017-11-12 14:07:00',
                     'start_position': (47.338911019762165, 8.53813643293702)
                 },
                 {
@@ -71,6 +77,8 @@ def test_get_path_for_public_transport_connection_multiple_leg():
                     'line_type': 'tram',
                     'line': '5',
                     'terminal': 'Zürich Enge, Bahnhof',
+                    'arrival': '2017-11-12 14:21:00',
+                    'departure': '2017-11-12 14:19:00',
                     'start_position': (47.3634496, 8.5345504)
                 }],
         'time': 840,
