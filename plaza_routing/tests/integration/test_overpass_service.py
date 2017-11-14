@@ -202,7 +202,7 @@ def test_get_initial_public_transport_stop_position_multiple_relations_for_line(
     assert (47.3634496, 8.5345504) == stop_position
 
 
-def test_get_initial_public_transport_stop_position_multiple_relations_for_line__one_option():
+def test_get_initial_public_transport_stop_position_multiple_relations_for_line_one_option():
     """
     Tram 5 has multiple lines with different terminals that serve the stop Zürich, Rentenanstalt
     to Zürich, Bahnhof Enge. But to get from Zürich, Rentenanstalt to Bahnhof Enge/Bederstrasse
@@ -218,4 +218,3 @@ def test_get_initial_public_transport_stop_position_multiple_relations_for_line_
                                                                                 tram_number,
                                                                                 fallback_initial_stop_position)
     assert (47.3634496, 8.5345504) == stop_position
-
