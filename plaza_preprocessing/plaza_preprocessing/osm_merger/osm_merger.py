@@ -5,7 +5,7 @@ from datetime import datetime
 from osmium import SimpleHandler, SimpleWriter
 from osmium.osm.mutable import Way
 from shapely.geometry import Point, LineString
-from plaza_preprocessing.osm_merger.plazawriter import PlazaWriter
+import plaza_preprocessing.osm_merger.plazawriter as plazawriter
 import plaza_preprocessing.osm_merger.osmosishelper as osmosishelper
 
 logger = logging.getLogger('plaza_preprocessing.osm_merger')
@@ -34,22 +34,25 @@ def merge_plaza_graphs(plazas, osm_file, merged_file):
     """
     logger.info(f"Merging {len(plazas)} processed plazas back into {osm_file}")
     # TODO: Proper temp file
-    plazas_file = 'plazas.osm'
-    modified_ways_file = 'modified_ways.osm'
+    plaza_way_file = 'plaza_ways.pbf'
+    plaza_node_file = 'plaza_nodes.pbf'
+    modified_ways_file = 'modified_ways.pbf'
     try:
-        entry_node_mappings = _write_plazas_to_osm(plazas, plazas_file)
+        entry_node_mappings = plazawriter.transform_plazas(
+            plazas, plaza_node_file, plaza_way_file)
 
         plaza_ways = _extract_plaza_ways(entry_node_mappings, osm_file)
         _insert_entry_nodes(plaza_ways, entry_node_mappings)
 
         _write_modified_ways(plaza_ways, modified_ways_file)
 
-        osmosishelper.merge_three_osm_files(
-            merged_file, osm_file, plazas_file, modified_ways_file)
+        osmosishelper.merge_osm_files(
+            merged_file, osm_file, plaza_way_file, plaza_node_file, modified_ways_file)
 
         logger.info(f"Merged OSM file written to {merged_file}")
     finally:
-        remove(plazas_file)
+        remove(plaza_way_file)
+        remove(plaza_node_file)
         remove(modified_ways_file)
 
 
@@ -87,14 +90,6 @@ def _write_modified_ways(plaza_ways, filename):
             writer.add_way(way)
     finally:
         writer.close()
-
-
-def _write_plazas_to_osm(plazas, filename):
-    logger.debug(f"Writing processed plazas to {filename}")
-    plaza_writer = PlazaWriter()
-    plaza_writer.transform_plazas(plazas)
-    plaza_writer.write_to_file(filename)
-    return plaza_writer.entry_node_mappings
 
 
 def _insert_entry_node(entry_node, way_nodes):
