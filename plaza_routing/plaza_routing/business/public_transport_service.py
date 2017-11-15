@@ -24,23 +24,27 @@ def get_path_for_public_transport_connection(connection):
         start_uic_ref = leg['stopid']
         exit_uic_ref = leg['exit']['stopid']
 
-        fallback_initial_stop_position = coordinate_transformer.transform_ch_to_wgs(leg['x'], leg['y'])
+        fallback_start_position = coordinate_transformer.transform_ch_to_wgs(leg['x'], leg['y'])
+        fallback_exit_position = coordinate_transformer.transform_ch_to_wgs(leg['exit']['x'], leg['exit']['y'])
 
         # TODO we use the same variable twice as parameter because they have a different intend (REFACTORING)
-        lookup_position = fallback_initial_stop_position
-        start_position = overpass_service.get_initial_public_transport_stop_position(lookup_position,
-                                                                                     start_uic_ref, exit_uic_ref,
-                                                                                     line,
-                                                                                     fallback_initial_stop_position)
+        lookup_position = fallback_start_position
+        start_position, exit_position = overpass_service.get_start_exit_stop_position(lookup_position,
+                                                                                      start_uic_ref, exit_uic_ref,
+                                                                                      line,
+                                                                                      fallback_start_position,
+                                                                                      fallback_exit_position)
 
         path = {
             'name': leg['name'],
             'line_type': leg['type'],
             'line': leg['line'],
+            'destination': leg['exit']['name'],
             'terminal': leg['terminal'],
             'departure': leg['departure'],
             'arrival': leg['exit']['arrival'],
-            'start_position': [*start_position]
+            'start_position': [*start_position],
+            'exit_position': [*exit_position]
         }
         result['path'].append(path)
         relevant_legs_counter += 1
