@@ -55,11 +55,11 @@ def _retrieve_best_route_combination(start_tuple, destination, destination_tuple
             continue
 
         first_leg = connection['legs'][0]
-        initial_stop_location = _get_public_transport_stop_location(first_leg, start_tuple)
-        start_walking_route = routing_engine.route(start_tuple, initial_stop_location)
+        initial_start_location = _get_start_exit_stop_position(first_leg, start_tuple)[0]
+        start_walking_route = routing_engine.route(start_tuple, initial_start_location)
 
         last_leg = connection['legs'][-2]
-        final_stop_location = _get_public_transport_stop_location(last_leg, destination_tuple)
+        final_stop_location = _get_start_exit_stop_position(last_leg, destination_tuple)[1]
         end_walking_route = routing_engine.route(final_stop_location, destination_tuple)
 
         total_cost = route_cost_matrix.calculate_costs((start_walking_route, connection, end_walking_route))
@@ -82,17 +82,19 @@ def _is_relevant_connection(connection):
     return True
 
 
-def _get_public_transport_stop_location(leg, center_location):
+def _get_start_exit_stop_position(leg, center_location):
     line = leg['line']
     start_stop_uicref = leg['stopid']
     exit_stop_uicref = leg['exit']['stopid']
-    fallback_initial_stop_position = coordinate_transformer.transform_ch_to_wgs(leg['x'], leg['y'])
-    initial_stop_location = overpass_service.get_initial_public_transport_stop_position(center_location,
-                                                                                        start_stop_uicref,
-                                                                                        exit_stop_uicref,
-                                                                                        line,
-                                                                                        fallback_initial_stop_position)
-    return initial_stop_location
+    fallback_start_position = coordinate_transformer.transform_ch_to_wgs(leg['x'], leg['y'])
+    fallback_exit_position = coordinate_transformer.transform_ch_to_wgs(leg['exit']['x'], leg['exit']['y'])
+    start_position, exit_position = overpass_service.get_start_exit_stop_position(center_location,
+                                                                                  start_stop_uicref,
+                                                                                  exit_stop_uicref,
+                                                                                  line,
+                                                                                  fallback_start_position,
+                                                                                  fallback_exit_position)
+    return start_position, exit_position
 
 
 def _convert_walking_route_to_overall_response(walking_route):
