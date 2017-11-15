@@ -2,12 +2,12 @@ import os
 
 from bravado.client import SwaggerClient
 
-from plaza_routing.integration.routing_strategy.strategy import Strategy
+from plaza_routing.integration.routing_strategy.routingstrategy import RoutingStrategy
 
 GRAPHHOPPER_SWAGGER_FILE = 'graphhopper_swagger.json'
 
 
-class GraphhopperStrategy(Strategy):
+class GraphhopperRoutingStrategy(RoutingStrategy):
 
     def __init__(self):
         swagger_file = os.path.join(os.path.dirname(__file__), GRAPHHOPPER_SWAGGER_FILE)
