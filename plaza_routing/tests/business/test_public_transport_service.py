@@ -8,6 +8,8 @@ from plaza_routing.business import public_transport_service
 def test_get_path_for_public_transport_connection_single_leg():
     expected_response = {
         'type': 'public_transport',
+        'duration': 180,
+        'number_of_legs': 1,
         'path': [{
                     'name': 'Zürich, Rote Fabrik',
                     'line_type': 'bus',
@@ -18,9 +20,7 @@ def test_get_path_for_public_transport_connection_single_leg():
                     'departure': '2017-11-12 13:35:00',
                     'start_position': [47.3424624, 8.5362646],
                     'exit_position': [47.3349277, 8.5416616]
-                }],
-        'time': 180,
-        'number_of_legs': 1
+                }]
     }
 
     search_ch_response_path = os.path.dirname(__file__)
@@ -37,6 +37,8 @@ def test_get_path_for_public_transport_connection_single_leg():
 def test_get_path_for_public_transport_connection_filtered_walking_leg():
     expected_response = {
         'type': 'public_transport',
+        'duration': 840,
+        'number_of_legs': 1,
         'path': [{
                     'name': 'Zürich, Post Wollishofen',
                     'line_type': 'tram',
@@ -47,9 +49,7 @@ def test_get_path_for_public_transport_connection_filtered_walking_leg():
                     'departure': '2017-11-12 13:50:00',
                     'start_position': [47.3448353, 8.5333468],
                     'exit_position': [47.3643805, 8.5314319]  # TODO check
-                }],
-        'time': 840,
-        'number_of_legs': 1
+                }]
     }
 
     search_ch_response_path = os.path.dirname(__file__)
@@ -67,6 +67,8 @@ def test_get_path_for_public_transport_connection_filtered_walking_leg():
 def test_get_path_for_public_transport_connection_multiple_leg():
     expected_response = {
         'type': 'public_transport',
+        'duration': 840,
+        'number_of_legs': 2,
         'path': [{
                     'name': 'Zürich, Seerose',
                     'line_type': 'bus',
@@ -88,9 +90,7 @@ def test_get_path_for_public_transport_connection_multiple_leg():
                     'departure': '2017-11-12 14:19:00',
                     'start_position': [47.3634496, 8.5345504],
                     'exit_position': [47.3640971, 8.5314535]
-                }],
-        'time': 840,
-        'number_of_legs': 2
+                }]
     }
 
     search_ch_response_path = os.path.dirname(__file__)

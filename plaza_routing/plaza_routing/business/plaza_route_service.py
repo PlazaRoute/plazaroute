@@ -10,7 +10,7 @@ from plaza_routing.integration import search_ch_service
 from plaza_routing.integration.routing_engine_service import RoutingEngine
 from plaza_routing.integration.routing_strategy.graphhopper_strategy import GraphhopperRoutingStrategy
 
-MAX_WALKING_TIME = 60 * 5
+MAX_WALKING_DURATION = 60 * 5
 
 
 def route(start, destination):
@@ -22,9 +22,9 @@ def route(start, destination):
     routing_engine = RoutingEngine(GraphhopperRoutingStrategy())
 
     walking_route = routing_engine.route(start_tuple, destination_tuple)
-    walking_route_time = walking_route['time']
+    walking_route_duration = walking_route['duration']
 
-    if walking_route_time <= MAX_WALKING_TIME:
+    if walking_route_duration <= MAX_WALKING_DURATION:
         # walking is faster to even consider public transportation
         return _convert_walking_route_to_overall_response(walking_route)
 
@@ -33,10 +33,10 @@ def route(start, destination):
                                                   departure,
                                                   routing_engine)
 
-    if not best_route or walking_route_time < best_route['accumulated_time']:
+    if not best_route or walking_route_duration < best_route['accumulated_duration']:
         # walking is still faster than taking the public transportation or
         # no connection was found for the given start and destination
-        print(f"{walking_route_time} smaller than {best_route['accumulated_time']}" )
+        print(f"{walking_route_duration} smaller than {best_route['accumulated_duration']}")
         return _convert_walking_route_to_overall_response(walking_route)
 
     return best_route
@@ -70,7 +70,8 @@ def _retrieve_best_route_combination(start_tuple, destination, destination_tuple
                 'public_transport_connection':
                     public_transport_service.get_path_for_public_transport_connection(connection),
                 'end_walking_route': end_walking_route,
-                'accumulated_time': start_walking_route['time'] + connection['duration'] + end_walking_route['time']
+                'accumulated_duration':
+                    start_walking_route['duration'] + connection['duration'] + end_walking_route['duration']
             }
     return temp_best_route
 
@@ -102,7 +103,7 @@ def _convert_walking_route_to_overall_response(walking_route):
         'start_walking_route': walking_route,
         'public_transport_connection': {},
         'end_walking_route': {},
-        'accumulated_time': walking_route['time']
+        'accumulated_duration': walking_route['duration']
     }
 
 

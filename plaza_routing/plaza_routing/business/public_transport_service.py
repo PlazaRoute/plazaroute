@@ -11,7 +11,7 @@ def get_path_for_public_transport_connection(connection):
     result = {
         'type': 'public_transport',
         'path': [],
-        'time': connection['duration'],
+        'duration': connection['duration'],
         'number_of_legs': 0
     }
 
