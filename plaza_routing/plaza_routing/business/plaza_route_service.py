@@ -8,7 +8,7 @@ from plaza_routing.integration import geocoding_service
 from plaza_routing.integration import overpass_service
 from plaza_routing.integration import search_ch_service
 from plaza_routing.integration.routing_engine_service import RoutingEngine
-from plaza_routing.integration.routing_strategy.graphhopper_strategy import GraphhopperRoutingStrategy
+from plaza_routing.integration.routing_strategy.graphhopper_strategy import GraphHopperRoutingStrategy
 
 MAX_WALKING_DURATION = 60 * 5
 
@@ -19,7 +19,7 @@ def route(start, destination):
     destination_tuple = geocoding_service.geocode(destination)
     departure = strftime('%H:%M', gmtime())
 
-    routing_engine = RoutingEngine(GraphhopperRoutingStrategy())
+    routing_engine = RoutingEngine(GraphHopperRoutingStrategy())
 
     walking_route = routing_engine.route(start_tuple, destination_tuple)
     walking_route_duration = walking_route['duration']

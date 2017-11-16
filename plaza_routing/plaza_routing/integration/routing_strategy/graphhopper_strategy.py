@@ -7,7 +7,7 @@ from plaza_routing.integration.routing_strategy.routingstrategy import RoutingSt
 GRAPHHOPPER_SWAGGER_FILE = 'graphhopper_swagger.json'
 
 
-class GraphhopperRoutingStrategy(RoutingStrategy):
+class GraphHopperRoutingStrategy(RoutingStrategy):
 
     def __init__(self):
         swagger_file = os.path.join(os.path.dirname(__file__), GRAPHHOPPER_SWAGGER_FILE)
