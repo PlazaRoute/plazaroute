@@ -1,3 +1,4 @@
+import logging
 import overpy
 import math
 
@@ -6,6 +7,8 @@ BOUNDING_BOX_BUFFER_METERS = 1000
 INITIAL_STOP_BOUNDING_BOX_BUFFER_METERS = 100
 
 API = overpy.Overpass(url=OVERPASS_API_URL)
+
+logger = logging.getLogger('plaza_routing.overpass_service')
 
 
 def get_public_transport_stops(start_position):
@@ -54,14 +57,17 @@ def _retrieve_start_exit_stop_position(lookup_position, start_uic_ref, exit_uic_
     """
     try:
         lines = _get_public_transport_lines(lookup_position, start_uic_ref, exit_uic_ref, line)
-    except ValueError:
+    except ValueError as fallback_1:
+        logger.debug(fallback_1)
         try:
             lines = _get_public_transport_lines_fallback(lookup_position, start_uic_ref, exit_uic_ref, line)
-        except ValueError:
-            print(f'Start and exit stop position cannot be retrieved with the current OSM data '
-                  f'for the start_uic_ref {start_uic_ref}, exit_uic_ref {exit_uic_ref} and line {line}.')
-            raise ValueError(f'Start and exit stop position cannot be retrieved with the current OSM data '
-                             f'for the start_uic_ref {start_uic_ref}, exit_uic_ref {exit_uic_ref} and line {line}.')
+        except ValueError as fallback_2:
+            logger.debug(fallback_2)
+            fallback_message = f"Start and exit stop position cannot be retrieved with the current OSM data " \
+                               f"for the start_uic_ref {start_uic_ref}, exit_uic_ref {exit_uic_ref} and line {line}, " \
+                                "returning fallback coordinates"
+            logger.debug(fallback_message)
+            raise ValueError(fallback_message)
 
     return _get_public_transport_stop_node(lines)
 
@@ -211,8 +217,10 @@ def _merge_nodes_with_corresponding_relation_fallback(start_nodes, exit_nodes, r
             continue
         lines.append({'rel': relation, 'start': start_node, 'exit': exit_node})
     if not lines:
-        raise ValueError("Could not merge start and exit node to a relation based on the provided relation, "
-                         "start nodes and exit nodes, return fallback coordinate")
+        fallback_message = "Could not merge start and exit node to a relation based on the provided relation," \
+                           "start nodes and exit nodes, return fallback coordinate"
+        logger.warning(fallback_message)
+        raise ValueError(fallback_message)
     return lines
 
 

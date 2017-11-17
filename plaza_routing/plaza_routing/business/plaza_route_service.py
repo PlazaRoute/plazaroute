@@ -1,5 +1,6 @@
 from ast import literal_eval
 from time import gmtime, strftime
+import logging
 
 from plaza_routing.business import public_transport_service
 from plaza_routing.business.util import route_cost_matrix
@@ -12,9 +13,11 @@ from plaza_routing.integration.routing_strategy.graphhopper_strategy import Grap
 
 MAX_WALKING_DURATION = 60 * 5
 
+logger = logging.getLogger('plaza_routing.plaza_route_service')
+
 
 def route(start, destination):
-    print(f'route from {start} to {destination}')
+    logger.info(f'route from {start} to {destination}')
     start_tuple = literal_eval(start)
     destination_tuple = geocoding_service.geocode(destination)
     departure = strftime('%H:%M', gmtime())
@@ -25,7 +28,7 @@ def route(start, destination):
     walking_route_duration = walking_route['duration']
 
     if walking_route_duration <= MAX_WALKING_DURATION:
-        # walking is faster to even consider public transportation
+        logger.info("Walking is faster than using public transport, return walking only route")
         return _convert_walking_route_to_overall_response(walking_route)
 
     best_route = _retrieve_best_route_combination(start_tuple,
@@ -36,7 +39,8 @@ def route(start, destination):
     if not best_route or walking_route_duration < best_route['accumulated_duration']:
         # walking is still faster than taking the public transportation or
         # no connection was found for the given start and destination
-        print(f"{walking_route_duration} smaller than {best_route['accumulated_duration']}")
+        logger.info(f"{walking_route_time} smaller than {best_route['accumulated_duration']}, "
+                    "returning walking route only")
         return _convert_walking_route_to_overall_response(walking_route)
 
     return best_route
@@ -46,8 +50,9 @@ def _retrieve_best_route_combination(start_tuple, destination, destination_tuple
     temp_smallest_route_costs = 0
     temp_best_route = None
     public_transport_stops = overpass_service.get_public_transport_stops(start_tuple)
+    logger.debug(public_transport_stops)
     for public_transport_stop in public_transport_stops:
-        print(f'public transport stop: {public_transport_stop}')
+        logger.debug(f'retrieve route with start at public transport stop: {public_transport_stop}')
 
         connection = search_ch_service.get_connection(public_transport_stop, destination, departure)
 
@@ -78,7 +83,7 @@ def _retrieve_best_route_combination(start_tuple, destination, destination_tuple
 
 def _is_relevant_connection(connection):
     if connection['legs'][0]['type'] == 'walk':
-        print(f'filter connection: {connection}')
+        logger.debug(f'filter connection: {connection}')
         return False
     return True
 
