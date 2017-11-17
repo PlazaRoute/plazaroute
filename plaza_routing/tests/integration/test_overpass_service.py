@@ -4,9 +4,9 @@ from plaza_routing.integration import overpass_service
 
 
 def test_get_public_transport_stops():
-    expected_response = {'Zürich, Kreuzstrasse', 'Zürich, Opernhaus', 'Zürich, Bürkliplatz',
-                         'Zürich, Kunsthaus', 'Zürich Stadelhofen FB', 'Zürich, Bellevue',
-                         'Zürich Stadelhofen', 'Zürich, Helmhaus'}
+    expected_response = {'8503003', '8503059', '8576193', '8576195',
+                         '8576196', '8591105', '8591183', '8591239'}
+
     sechselaeutenplatz = (47.3661, 8.5458)
     stops = overpass_service.get_public_transport_stops(sechselaeutenplatz)
     assert expected_response == stops
@@ -19,11 +19,20 @@ def test_get_public_transport_stops_empty_result():
 
 
 def test_get_public_transport_stops_highway_bus_stops():
-    expected_response = {'Volketswil, Hofwisen', 'Volketswil, Chappeli', 'Volketswil, Hegnau',
-                         'Volketswil, Zimikon', 'Volketswil, In der Höh'}
+    expected_response = {'8503156', '8576139', '8588096', '8590851', '8589106'}
     zimikon = (47.38516, 8.67263)
     stops = overpass_service.get_public_transport_stops(zimikon)
     assert expected_response == stops
+
+
+def test_get_public_transport_stops_nodes_without_uic_ref():
+    """" nodes without uic_refs should be discarded, they are ususally part of a relation"""
+    expected_response = {'8503006', '8580449', '8591062', '8591063',
+                         '8591112', '8591256', '8591273', '8591332', '8591382'}
+
+    oerlikon_sternen = (47.41025, 8.54679)
+    stops = overpass_service.get_public_transport_stops(oerlikon_sternen)
+    assert stops == expected_response
 
 
 def test_get_start_exit_stop_position():
