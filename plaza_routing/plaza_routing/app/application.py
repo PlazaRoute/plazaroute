@@ -36,7 +36,7 @@ def initialize_app(flask_app):
     flask_app.register_blueprint(api_blueprint)
 
 
-def setup_logging(flask_app, verbose=False, quiet=False):
+def setup_logging(verbose=False, quiet=False):
     logger.setLevel(logging.INFO)
     console_handler = logging.StreamHandler(sys.stdout)
     formatter = logging.Formatter(
@@ -56,7 +56,7 @@ def setup_logging(flask_app, verbose=False, quiet=False):
 def main():
     app = Flask(__name__)
     initialize_app(app)
-    setup_logging(app, verbose=True)
+    setup_logging(verbose=True)
     app.run(debug=FLASK_DEBUG)
 
 
