@@ -7,27 +7,26 @@ class SpiderWebGraphProcessor:
     """ Process a plaza with a spider web graph """
     def __init__(self, spacing_m):
         self.spacing_m = spacing_m
-        self.plaza_geometry = None
-        self.entry_points = []
-        self.graph_edges = []
 
-    def create_graph_edges(self):
+    def create_graph_edges(self, plaza_geometry, entry_points):
         """ create a spiderwebgraph and connect edges to entry points """
-        if not self.plaza_geometry:
+        if not plaza_geometry:
             raise ValueError("Plaza geometry not defined for spiderwebgraph processor")
-        if not self.entry_points:
+        if not entry_points:
             raise ValueError("No entry points defined for spiderwebgraph processor")
-        self._calc_spiderwebgraph()
-        self._connect_entry_points_with_graph()
+        graph_edges = self._calc_spiderwebgraph(plaza_geometry)
+        return self._connect_entry_points_with_graph(entry_points, graph_edges)
 
-    def _calc_spiderwebgraph(self):
+    def _calc_spiderwebgraph(self, plaza_geometry):
         """ calculate spider web graph edges"""
         spacing = utils.meters_to_degrees(self.spacing_m)
-        x_left, y_bottom, x_right, y_top = self.plaza_geometry.bounds
+        x_left, y_bottom, x_right, y_top = plaza_geometry.bounds
 
         # based on https://github.com/michaelminn/mmqgis
         rows = int(ceil((y_top - y_bottom) / spacing))
         columns = int(ceil((x_right - x_left) / spacing))
+
+        graph_edges = []
 
         for column in range(0, columns + 1):
             for row in range(0, rows + 1):
@@ -44,41 +43,43 @@ class SpiderWebGraphProcessor:
 
                 # horizontal line
                 if column < columns:
-                    h_line = self._get_spiderweb_intersection_line(top_left, top_right)
+                    h_line = self._get_spiderweb_intersection_line(plaza_geometry, top_left, top_right)
                     if h_line:
-                        self.graph_edges.append(h_line)
+                        graph_edges.append(h_line)
 
                 # vertical line
                 if row < rows:
-                    v_line = self._get_spiderweb_intersection_line(top_left, bottom_left)
+                    v_line = self._get_spiderweb_intersection_line(plaza_geometry, top_left, bottom_left)
                     if v_line:
-                        self.graph_edges.append(v_line)
+                        graph_edges.append(v_line)
 
                 # diagonal line
                 if row < rows and column < columns:  # TODO correct constraint?
-                    d1_line = self._get_spiderweb_intersection_line(top_left, bottom_right)
+                    d1_line = self._get_spiderweb_intersection_line(plaza_geometry, top_left, bottom_right)
                     if d1_line:
-                        self.graph_edges.append(d1_line)
-                    d2_line = self._get_spiderweb_intersection_line(bottom_left, top_right)
+                        graph_edges.append(d1_line)
+                    d2_line = self._get_spiderweb_intersection_line(plaza_geometry, bottom_left, top_right)
                     if d2_line:
-                        self.graph_edges.append(d2_line)
+                        graph_edges.append(d2_line)
+        return graph_edges
 
-    def _get_spiderweb_intersection_line(self, start, end):
+    def _get_spiderweb_intersection_line(self, plaza_geometry, start, end):
         """ returns a line that is completely inside the plaza, if possible """
         line = LineString([start, end])
         # if not line_visible(line, plaza_geometry):
-        if not self.plaza_geometry.intersects(line):
+        if not plaza_geometry.intersects(line):
             return None
-        intersection = self.plaza_geometry.intersection(line)
+        intersection = plaza_geometry.intersection(line)
         return intersection if isinstance(intersection, LineString) else None
 
-    def _connect_entry_points_with_graph(self):
+    def _connect_entry_points_with_graph(self, entry_points, graph_edges):
         connection_lines = []
-        for entry_point in self.entry_points:
-            neighbor_line = utils.find_nearest_geometry(entry_point, self.graph_edges)
+        for entry_point in entry_points:
+            neighbor_line = utils.find_nearest_geometry(entry_point, graph_edges)
 
             target_point = min(
                 neighbor_line.coords, key=lambda c: Point(c).distance(entry_point))
             connection_line = (LineString([(entry_point.x, entry_point.y), target_point]))
             connection_lines.append(connection_line)
-        self.graph_edges.extend(connection_lines)
+        graph_edges.extend(connection_lines)
+        return graph_edges
