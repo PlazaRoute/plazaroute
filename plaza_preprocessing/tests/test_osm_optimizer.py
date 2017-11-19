@@ -1,5 +1,7 @@
 import pytest
 import utils
+import testfilemanager
+import plaza_preprocessing.osm_optimizer.osm_optimizer as osm_optimizer
 from plaza_preprocessing.osm_optimizer.visibilitygraphprocessor import VisibilityGraphProcessor
 from plaza_preprocessing.osm_optimizer.spiderwebgraphprocessor import SpiderWebGraphProcessor
 
@@ -26,6 +28,15 @@ def test_complicated_plaza(process_strategy):
     assert len(result_plaza['graph_edges']) > 20
     assert len(result_plaza['entry_points']) == 17
     assert len(result_plaza['entry_lines']) == 22
+
+
+def test_multiple_plazas(process_strategy):
+    holder = testfilemanager.import_testfile('helvetiaplatz')
+    processed_plazas = osm_optimizer.preprocess_plazas(holder, process_strategy)
+
+    assert len(processed_plazas) == 6
+    all_edges = [edge.coords for plaza in processed_plazas for edge in plaza["graph_edges"]]
+    assert len(set(all_edges)) == len(all_edges) # check for duplicates
 
 
 def test_obstructed_plaza(process_strategy):

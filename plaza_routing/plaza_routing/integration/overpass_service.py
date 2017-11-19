@@ -19,15 +19,26 @@ def get_public_transport_stops(start_position: tuple) -> Set[str]:
         [bbox:{bbox}];
         (
             node["public_transport"="stop_position"];node["highway"="bus_stop"];
+            rel["type"="public_transport"];
         );
         out body;
         """
 
     public_transport_stops = API.query(query_str)
-    if not public_transport_stops.nodes:
+
+    public_transport_stops_nodes = filter(
+        lambda node: 'uic_ref' in node.tags, public_transport_stops.nodes)
+    public_transport_stops_relations = filter(
+        lambda rel: 'uic_ref' in rel.tags, public_transport_stops.relations)
+
+    public_transport_refs = set(stop.tags['uic_ref'] for stop in public_transport_stops_nodes).union(
+        set(stop.tags['uic_ref'] for stop in public_transport_stops_relations)
+    )
+
+    if len(public_transport_refs) == 0:
         raise ValueError('no public transport stops found for the given location and range')
 
-    return set(stop.tags.get('uic_name') for stop in public_transport_stops.nodes)
+    return public_transport_refs
 
 
 def get_start_exit_stop_position(lookup_position: tuple, start_uic_ref: str, exit_uic_ref: str, line: str,

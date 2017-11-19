@@ -7,10 +7,10 @@ from shapely.geometry import Point, MultiPolygon, box
 logger = logging.getLogger('plaza_preprocessing.osm_optimizer')
 
 
-def preprocess_plazas(osm_holder):
+def preprocess_plazas(osm_holder, process_strategy):
     """ preprocess all plazas from osm_importer """
     logger.info(f"Start processing {len(osm_holder.plazas)} plazas")
-    plaza_processor = PlazaPreprocessor(osm_holder, VisibilityGraphProcessor())
+    plaza_processor = PlazaPreprocessor(osm_holder, process_strategy)
     processed_plazas = []
     for plaza in osm_holder.plazas:
         logger.info(f"Processing plaza {plaza['osm_id']}")
@@ -48,11 +48,7 @@ class PlazaPreprocessor:
             logger.debug(f"Discarding Plaza {plaza['osm_id']}: completely obstructed by obstacles")
             return None
 
-        self.graph_processor.entry_points = entry_points
-        self.graph_processor.plaza_geometry = plaza_geom_without_obstacles
-        self.graph_processor.create_graph_edges()
-
-        graph_edges = self.graph_processor.graph_edges
+        graph_edges = self.graph_processor.create_graph_edges(plaza_geom_without_obstacles, entry_points)
 
         plaza['geometry'] = plaza_geom_without_obstacles
         plaza['entry_points'] = entry_points
