@@ -2,7 +2,7 @@ import logging
 from flask_restplus import Resource, reqparse, fields
 
 from plaza_routing.api.restplus import api
-from plaza_routing.business.plaza_route_service import route
+from plaza_routing.business.plaza_route_finder import find_route
 
 logger = logging.getLogger('plaza_routing')
 ns = api.namespace('route', description='Routing operations')
@@ -10,6 +10,7 @@ ns = api.namespace('route', description='Routing operations')
 routing_arguments = reqparse.RequestParser()
 routing_arguments.add_argument('start', type=str, required=True, help='Start locaton')
 routing_arguments.add_argument('destination', type=str, required=True, help='Destination address')
+routing_arguments.add_argument('departure', type=str, required=True, help='Departure')
 
 WalkingRouteResponse = api.model('WalkingRouteResponse', {
     'type': fields.String(default='walking'),
@@ -55,5 +56,7 @@ class PlazaRouting(Resource):
         args = routing_arguments.parse_args()
         start = args.get('start')
         destination = args.get('destination')
-        logger.debug("Calling route() with start='%s', destination='%s'", start, destination)
-        return route(start, destination)
+        departure = args.get('departure')
+        logger.debug("Calling route() with start='%s', destination='%s', departure='%s'",
+                     start, destination, departure)
+        return find_route(start, destination, departure)

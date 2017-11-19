@@ -5,4 +5,3 @@ class RoutingEngine:
 
     def route(self, start, destination):
         return self._strategy.route(start, destination)
-
