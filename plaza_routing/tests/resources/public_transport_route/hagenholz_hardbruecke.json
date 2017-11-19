@@ -1,0 +1,45 @@
+{
+  "type": "public_transport",
+  "path": [
+    {
+      "name": "Zürich, Hagenholz",
+      "line_type": "bus",
+      "line": "781",
+      "destination": "Zürich Oerlikon, Bahnhof",
+      "terminal": "Zürich Oerlikon, Bahnhof",
+      "departure": "2017-11-18 14:53:00",
+      "arrival": "2017-11-18 14:57:00",
+      "start_position": [
+        47.41446,
+        8.55528
+      ],
+      "exit_position": [
+        47.4116307,
+        8.5455889
+      ],
+      "start_stop_uicref": "8591172",
+      "exit_stop_uicref": "8580449"
+    },
+    {
+      "name": "Zürich Oerlikon",
+      "line_type": "strain",
+      "line": "S7",
+      "destination": "Zürich Hardbrücke",
+      "terminal": "Zürich Stadelhofen",
+      "departure": "2017-11-18 15:03:00",
+      "arrival": "2017-11-18 15:06:00",
+      "start_position": [
+        47.4114986,
+        8.5441507
+      ],
+      "exit_position": [
+        47.3851609,
+        8.5173926
+      ],
+      "start_stop_uicref": "8503006",
+      "exit_stop_uicref": "8503020"
+    }
+  ],
+  "duration": 780,
+  "number_of_legs": 2
+}

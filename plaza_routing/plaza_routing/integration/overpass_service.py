@@ -1,3 +1,5 @@
+from typing import Set, Tuple
+import logging
 import overpy
 import math
 
@@ -7,8 +9,10 @@ INITIAL_STOP_BOUNDING_BOX_BUFFER_METERS = 100
 
 API = overpy.Overpass(url=OVERPASS_API_URL)
 
+logger = logging.getLogger('plaza_routing.overpass_service')
 
-def get_public_transport_stops(start_position):
+
+def get_public_transport_stops(start_position: tuple) -> Set[str]:
     """ retrieves all public transport stop names for a specific location in a given range """
     bbox = _parse_bounding_box(*start_position)
     query_str = f"""
@@ -37,8 +41,8 @@ def get_public_transport_stops(start_position):
     return public_transport_refs
 
 
-def get_start_exit_stop_position(lookup_position, start_uic_ref, exit_uic_ref, line,
-                                 fallback_start_position, fallback_exit_position):
+def get_start_exit_stop_position(lookup_position: tuple, start_uic_ref: str, exit_uic_ref: str, line: str,
+                                 fallback_start_position: tuple, fallback_exit_position: tuple) -> Tuple[tuple, tuple]:
     """
     Retrieves the start public transport stop position (latitude, longitude)
     for a specific uic_ref (start_uic_ref) and the corresponding exit node in the connection based on the exit_uic_ref.
@@ -58,26 +62,30 @@ def get_start_exit_stop_position(lookup_position, start_uic_ref, exit_uic_ref, l
         return fallback_start_position, fallback_exit_position
 
 
-def _retrieve_start_exit_stop_position(lookup_position, start_uic_ref, exit_uic_ref, line):
+def _retrieve_start_exit_stop_position(lookup_position: tuple, start_uic_ref: str, exit_uic_ref: str,
+                                       line: str) -> Tuple[tuple, tuple]:
     """
     Retrieves the start and exit public transport stop position with Overpass.
     Recovery Block pattern is used to deal with inconsistent OSM data.
     """
     try:
         lines = _get_public_transport_lines(lookup_position, start_uic_ref, exit_uic_ref, line)
-    except ValueError:
+    except ValueError as fallback_1:
+        logger.debug(fallback_1)
         try:
             lines = _get_public_transport_lines_fallback(lookup_position, start_uic_ref, exit_uic_ref, line)
-        except ValueError:
-            print(f'Start and exit stop position cannot be retrieved with the current OSM data '
-                  f'for the start_uic_ref {start_uic_ref}, exit_uic_ref {exit_uic_ref} and line {line}.')
-            raise ValueError(f'Start and exit stop position cannot be retrieved with the current OSM data '
-                             f'for the start_uic_ref {start_uic_ref}, exit_uic_ref {exit_uic_ref} and line {line}.')
+        except ValueError as fallback_2:
+            logger.debug(fallback_2)
+            fallback_message = f"Start and exit stop position cannot be retrieved with the current OSM data " \
+                               f"for the start_uic_ref {start_uic_ref}, exit_uic_ref {exit_uic_ref} and line {line}, " \
+                               f"returning fallback coordinates"
+            logger.debug(fallback_message)
+            raise ValueError(fallback_message)
 
     return _get_public_transport_stop_node(lines)
 
 
-def _get_public_transport_lines(start_position, start_uic_ref, exit_uic_ref, line):
+def _get_public_transport_lines(start_position: tuple, start_uic_ref: str, exit_uic_ref: str, line: str) -> list:
     """
     Retrieves all public transport lines (relations) that serve the public transport stop node
     with ref start_uic_ref. We'll get more than one one for a specific uic_ref (for each
@@ -103,7 +111,8 @@ def _get_public_transport_lines(start_position, start_uic_ref, exit_uic_ref, lin
     return _merge_nodes_with_corresponding_relation(result.nodes, result.relations, start_uic_ref)
 
 
-def _get_public_transport_lines_fallback(start_position, start_uic_ref, exit_uic_ref, line):
+def _get_public_transport_lines_fallback(start_position: tuple, start_uic_ref: str, exit_uic_ref: str,
+                                         line: str) -> list:
     """
     Same motivation as in _get_public_transport_lines().
     Some public transport stops are not mapped with an uic_ref, so we'll use the Recovery Block pattern to provide
@@ -117,7 +126,7 @@ def _get_public_transport_lines_fallback(start_position, start_uic_ref, exit_uic
     return _merge_nodes_with_corresponding_relation_fallback(start_stops, exit_stops, lines)
 
 
-def _get_start_stops_and_lines(start_position, start_uic_ref, line):
+def _get_start_stops_and_lines(start_position: tuple, start_uic_ref: str, line: str) -> Tuple[list, list]:
     """
     Returns the start public transport stops and the corresponding line that serves the stop
     based on the provided line and uic_ref.
@@ -146,7 +155,7 @@ def _get_start_stops_and_lines(start_position, start_uic_ref, line):
     return result.nodes, result.relations
 
 
-def _get_exit_stops(start_position, start_uic_ref, exit_uic_ref, line):
+def _get_exit_stops(start_position: tuple, start_uic_ref: str, exit_uic_ref: str, line: str) -> list:
     """
     Returns the exit public transport stops based on the exit_uic_ref.
     The relations for the line are loaded based on the line and the start_uic_ref.
@@ -177,7 +186,7 @@ def _get_exit_stops(start_position, start_uic_ref, exit_uic_ref, line):
     return result.nodes
 
 
-def _merge_nodes_with_corresponding_relation(nodes, relations, start_uic_ref):
+def _merge_nodes_with_corresponding_relation(nodes: list, relations: list, start_uic_ref: str) -> list:
     """
     Merges nodes to relations based on the members in the relation.
     start_uic_ref is required to differ between start and exit nodes.
@@ -203,7 +212,7 @@ def _merge_nodes_with_corresponding_relation(nodes, relations, start_uic_ref):
     return lines
 
 
-def _merge_nodes_with_corresponding_relation_fallback(start_nodes, exit_nodes, relations):
+def _merge_nodes_with_corresponding_relation_fallback(start_nodes: list, exit_nodes: list, relations: list) -> list:
     """ merges start nodes und exit nodes to relations based on the members in the relation """
     lines = []
     for relation in relations:
@@ -222,12 +231,14 @@ def _merge_nodes_with_corresponding_relation_fallback(start_nodes, exit_nodes, r
             continue
         lines.append({'rel': relation, 'start': start_node, 'exit': exit_node})
     if not lines:
-        raise ValueError("Could not merge start and exit node to a relation based on the provided relation, "
-                         "start nodes and exit nodes, return fallback coordinate")
+        fallback_message = "Could not merge start and exit node to a relation based on the provided relation," \
+                           "start nodes and exit nodes, return fallback coordinate"
+        logger.warning(fallback_message)
+        raise ValueError(fallback_message)
     return lines
 
 
-def _get_public_transport_stop_node(lines):
+def _get_public_transport_stop_node(lines: list) -> tuple:
     """
     OSM returns multiple nodes for a given uic_ref. Based on a
     start node and exit node, it's possible to retrieve the start and exit node that belong
@@ -258,7 +269,7 @@ def _get_public_transport_stop_node(lines):
                (float(exit_node.lat), float(exit_node.lon))
 
 
-def _parse_bounding_box(latitude, longitude, buffer_meters=BOUNDING_BOX_BUFFER_METERS):
+def _parse_bounding_box(latitude: float, longitude: float, buffer_meters=BOUNDING_BOX_BUFFER_METERS) -> str:
     """ calculates the bounding box for a specific location and a given buffer """
     buffer_degrees = _meters_to_degrees(buffer_meters)
 
@@ -274,7 +285,7 @@ def _parse_bounding_box(latitude, longitude, buffer_meters=BOUNDING_BOX_BUFFER_M
     return f'{south},{west},{north},{east}'
 
 
-def _meters_to_degrees(meters):
+def _meters_to_degrees(meters: int) -> float:
     """ convert meters to approximate degrees """
     # meters * 360 / (2 * PI * 6400000)
     # multiply by (1/cos(lat) for longitude)

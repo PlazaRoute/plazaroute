@@ -1,7 +1,7 @@
 import abc
 
 
-class Strategy(metaclass=abc.ABCMeta):
+class RoutingStrategy(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def route(self, start, destination):

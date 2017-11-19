@@ -4,7 +4,7 @@ GEOCODING_API_URL = 'http://nominatim.openstreetmap.org/search'
 VIEWBOX_SWITZERLAND = '5.9559,45.818,10.4921,47.8084'
 
 
-def geocode(address):
+def geocode(address: str) -> tuple:
     payload = {'q': address,
                'countrycodes': 'ch',
                'viewbox': VIEWBOX_SWITZERLAND,
