@@ -1,0 +1,45 @@
+{
+  "type": "public_transport",
+  "path": [
+    {
+      "name": "Zürich, Hallenbad Oerlikon",
+      "line_type": "bus",
+      "line": "61",
+      "destination": "Zürich Oerlikon, Bahnhof",
+      "terminal": "Zürich, Mühlacker",
+      "departure": "2017-11-18 14:43:00",
+      "arrival": "2017-11-18 14:47:00",
+      "start_position": [
+        47.4107529,
+        8.5554806
+      ],
+      "exit_position": [
+        47.4114718,
+        8.5447944
+      ],
+      "start_stop_uicref": "8591175",
+      "exit_stop_uicref": "8580449"
+    },
+    {
+      "name": "Zürich Oerlikon",
+      "line_type": "strain",
+      "line": "S6",
+      "destination": "Zürich Hardbrücke",
+      "terminal": "Zürich Stadelhofen",
+      "departure": "2017-11-18 14:51:00",
+      "arrival": "2017-11-18 14:54:00",
+      "start_position": [
+        47.41152601531714,
+        8.544113562238525
+      ],
+      "exit_position": [
+        47.385087296919714,
+        8.51768587257564
+      ],
+      "start_stop_uicref": "8503006",
+      "exit_stop_uicref": "8503020"
+    }
+  ],
+  "duration": 660,
+  "number_of_legs": 2
+}
