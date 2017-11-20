@@ -24,7 +24,5 @@ class GraphHopperRoutingStrategy(RoutingStrategy):
 
         return {'type': 'walking',
                 'duration': first_path.time / 1000,  # convert time to seconds
-                'ascend': first_path.ascend,
-                'descend': first_path.descend,
                 'path': first_path.points.coordinates
                 }
