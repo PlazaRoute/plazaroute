@@ -15,8 +15,6 @@ routing_arguments.add_argument('departure', type=str, required=True, help='Depar
 WalkingRouteResponse = api.model('WalkingRouteResponse', {
     'type': fields.String(default='walking'),
     'duration': fields.Float,
-    'ascend': fields.Float,
-    'descend': fields.Float,
     'path': fields.List(fields.List(fields.Float))
 })
 

@@ -2,8 +2,6 @@
   "start_walking_route": {
     "type": "walking",
     "duration": 255.435,
-    "ascend": 0.0,
-    "descend": 0.0,
     "path": [
       [
         8.555458,
