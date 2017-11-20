@@ -2,8 +2,6 @@
   "start_walking_route": {
     "type": "walking",
     "duration": 1.203,
-    "ascend": 0.0,
-    "descend": 0.0,
     "path": [
       [
         8.555458,
@@ -67,8 +65,6 @@
   "end_walking_route": {
     "type": "walking",
     "duration": 301.725,
-    "ascend": 0.0,
-    "descend": 0.0,
     "path": [
       [
         8.517697,
