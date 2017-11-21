@@ -31,9 +31,10 @@ class PlazaPreprocessor:
 
     def process_plaza(self, plaza):
         """ process a single plaza """
-        intersecting_lines = self._find_intersescting_lines(plaza)
 
-        entry_points = self._calc_entry_points(plaza, intersecting_lines)
+        intersecting_lines = self._find_intersescting_lines(plaza['geometry'])
+
+        entry_points = self._calc_entry_points(plaza['geometry'], intersecting_lines)
 
         if len(entry_points) < 2:
             logger.debug(f"Discarding Plaza {plaza['osm_id']} - it has fewer than 2 entry points")
@@ -59,21 +60,21 @@ class PlazaPreprocessor:
 
         return plaza
 
-    def _calc_entry_points(self, plaza, intersecting_lines):
+    def _calc_entry_points(self, plaza_geometry, intersecting_lines):
         """
         calculate points where lines intersect with the outer ring of the plaza
         """
         intersection_coords = set()
         for line in intersecting_lines:
             line_geom = line['geometry']
-            intersection = line_geom.intersection(plaza['geometry'])
+            intersection = line_geom.intersection(plaza_geometry)
             intersection_coords = intersection_coords.union(
                 utils.unpack_geometry_coordinates(intersection))
 
         intersection_points = list(map(Point, intersection_coords))
 
         entry_points = [
-            p for p in intersection_points if plaza['geometry'].touches(p)]
+            p for p in intersection_points if plaza_geometry.touches(p)]
 
         return entry_points
 
@@ -90,7 +91,7 @@ class PlazaPreprocessor:
                 })
         return entry_lines
 
-    def _find_intersescting_lines(self, plaza):
+    def _find_intersescting_lines(self, plaza_geometry):
         """ return every line that intersects with the plaza """
         # filtering is slower than checking every line
         # bbox_buffer = 5 * 10**-3  # about 500m
@@ -98,7 +99,7 @@ class PlazaPreprocessor:
         #     filter(lambda l: line_in_plaza_approx(l, plaza_geometry, buffer=bbox_buffer), lines))
         intersecting_lines = []
         for line in self.lines:
-            if plaza['geometry'].intersects(line['geometry']):
+            if plaza_geometry.intersects(line['geometry']):
                 intersecting_lines.append(line)
         return intersecting_lines
 

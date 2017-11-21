@@ -13,7 +13,8 @@ TEST_PLAZAS = {
     'zentrum_witikon': 'zentrum_witikon.osm',
     'europaallee': 'europaallee.osm',
     'kreuzplatz': 'kreuzplatz.osm',
-    'bahnhofstrasse': 'bahnhofstrasse.osm'
+    'bahnhofstrasse': 'bahnhofstrasse.osm',
+    'zuerich_hb': 'zuerich_hauptbahnhof.osm'
 }
 
 

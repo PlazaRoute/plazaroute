@@ -36,7 +36,7 @@ def test_multiple_plazas(process_strategy):
 
     assert len(processed_plazas) == 6
     all_edges = [edge.coords for plaza in processed_plazas for edge in plaza["graph_edges"]]
-    assert len(set(all_edges)) == len(all_edges) # check for duplicates
+    assert len(set(all_edges)) == len(all_edges)  # check for duplicates
 
 
 def test_obstructed_plaza(process_strategy):
@@ -65,4 +65,10 @@ def test_entry_lines(process_strategy):
 
 def test_bahnhofstrasse(process_strategy):
     result_plaza = utils.process_plaza('bahnhofstrasse', 27405455, process_strategy)
+    assert result_plaza
+
+
+def test_zuerich_hauptbahnhof(process_strategy):
+    result_plaza = utils.process_plaza('zuerich_hb', 6605179, process_strategy)
+    # one entry point is inaccurate
     assert result_plaza
