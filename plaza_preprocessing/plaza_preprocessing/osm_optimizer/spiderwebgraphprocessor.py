@@ -66,11 +66,9 @@ class SpiderWebGraphProcessor:
     def _get_spiderweb_intersection_line(self, plaza_geometry, start, end):
         """ returns a line that is completely inside the plaza, if possible """
         line = LineString([start, end])
-        # if not line_visible(line, plaza_geometry):
-        if not plaza_geometry.intersects(line):
+        if not utils.line_visible(plaza_geometry, line):
             return None
-        intersection = plaza_geometry.intersection(line)
-        return intersection if isinstance(intersection, LineString) else None
+        return line
 
     def _connect_entry_points_with_graph(self, entry_points, graph_edges):
         connection_lines = []

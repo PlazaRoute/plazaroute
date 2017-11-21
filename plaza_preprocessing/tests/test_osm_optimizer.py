@@ -61,3 +61,8 @@ def test_entry_lines(process_strategy):
     assert len(result_plaza['entry_lines']) == 3
     assert all(
         len(line['entry_points']) == 1 for line in result_plaza['entry_lines'])
+
+
+def test_bahnhofstrasse(process_strategy):
+    result_plaza = utils.process_plaza('bahnhofstrasse', 27405455, process_strategy)
+    assert result_plaza

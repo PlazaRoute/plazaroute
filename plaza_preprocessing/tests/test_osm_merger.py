@@ -34,7 +34,6 @@ def test_transform_real_plaza(process_strategy):
     plaza_transformer = plazawriter.PlazaTransformer(0, 0)
     plaza_transformer.transform_plaza(plaza)
     assert len(plaza_transformer.ways) == len(plaza['graph_edges'])
-    assert len(plaza_transformer.nodes) < len(plaza['graph_edges']) / 2
     way_id = 259200019  # footway with 2 entry points
     assert way_id in plaza_transformer.entry_node_mappings
     assert len(plaza_transformer.entry_node_mappings[way_id]) == 2

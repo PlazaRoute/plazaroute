@@ -1,7 +1,6 @@
 import logging
 from plaza_preprocessing.osm_optimizer import utils
-from plaza_preprocessing.osm_optimizer.visibilitygraphprocessor import VisibilityGraphProcessor
-from plaza_preprocessing.osm_optimizer.spiderwebgraphprocessor import SpiderWebGraphProcessor
+from plaza_preprocessing.osm_optimizer import shortest_paths
 from shapely.geometry import Point, MultiPolygon, box
 
 logger = logging.getLogger('plaza_preprocessing.osm_optimizer')
@@ -49,11 +48,14 @@ class PlazaPreprocessor:
             return None
 
         graph_edges = self.graph_processor.create_graph_edges(plaza_geom_without_obstacles, entry_points)
+        graph = shortest_paths.create_graph(graph_edges)
+
+        shortest_path_edges = shortest_paths.compute_dijkstra_shortest_paths(graph, entry_points)
 
         plaza['geometry'] = plaza_geom_without_obstacles
         plaza['entry_points'] = entry_points
         plaza['entry_lines'] = entry_lines
-        plaza['graph_edges'] = graph_edges
+        plaza['graph_edges'] = shortest_path_edges
 
         return plaza
 

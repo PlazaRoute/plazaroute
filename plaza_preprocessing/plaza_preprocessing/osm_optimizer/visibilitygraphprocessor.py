@@ -22,10 +22,6 @@ class VisibilityGraphProcessor:
             for end_id, end_coords in indexed_coords.items():
                 if (start_id > end_id):
                     line = LineString([start_coords, end_coords])
-                    if self._line_visible(plaza_geometry, line):
+                    if utils.line_visible(plaza_geometry, line):
                         graph_edges.append(line)
         return graph_edges
-
-    def _line_visible(self, plaza_geometry, line):
-        """ check if the line is "visible", i.e. unobstructed through the plaza """
-        return line.equals(plaza_geometry.intersection(line))
