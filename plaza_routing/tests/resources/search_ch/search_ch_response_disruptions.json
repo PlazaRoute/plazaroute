@@ -1,0 +1,227 @@
+{
+    "count": 1,
+    "rawtime": 1920,
+    "maxtime": 1920,
+    "connections": [
+        {
+            "from": "Zürich Hardbrücke",
+            "departure": "2017-11-15 08:09:00",
+            "to": "Volketswil, Schwerzenbachstr. 16",
+            "arrival": "2017-11-15 08:41:00",
+            "duration": 1920,
+            "disruptions": {
+                "http://fahrplan.sbb.ch/bin/help.exe/de?tpl=showmap_external&messageID=876656&mti=1&hMap=false#hfsShm": {
+                    "id": "876656",
+                    "header": "Verspätung: S 9 18928 von Uster 07:41 nach Schaffhausen 09:04.",
+                    "lead": "S 9 18928 von Uster 07:41 nach Schaffhausen 09:04.",
+                    "text": "S 9 18928 von Uster 07:41 nach Schaffhausen 09:04.<br /><br /> Grund: Ereignis an einem anderen Zug",
+                    "timerange": "15.11.2017 00:00 - 15.11.2017 10:00",
+                    "exact": true,
+                    "priority": 60
+                }
+            },
+            "legs": [
+                {
+                    "departure": "2017-11-15 08:09:00",
+                    "tripid": "T2017_18928_000011_101_50ddc27_0",
+                    "number": "S9 18928",
+                    "stopid": "8503020",
+                    "x": "681478",
+                    "y": "248811",
+                    "name": "Zürich Hardbrücke",
+                    "sbb_name": "Zürich Hardbrücke",
+                    "type": "strain",
+                    "line": "S9",
+                    "terminal": "Schaffhausen",
+                    "fgcolor": "fff",
+                    "bgcolor": "039",
+                    "*G": "S",
+                    "*L": "9",
+                    "operator": "SBB",
+                    "stops": [],
+                    "runningtime": 300,
+                    "exit": {
+                        "arrival": "2017-11-15 08:14:00",
+                        "stopid": "8503006",
+                        "x": 683432,
+                        "y": 251778,
+                        "name": "Zürich Oerlikon",
+                        "sbb_name": "Zürich Oerlikon",
+                        "waittime": 240,
+                        "track": "8"
+                    },
+                    "track": "3",
+                    "attributes": {
+                        "0_6.5_VN": "VELOS: Kein Selbstverlad"
+                    },
+                    "disruptions": {
+                        "http://fahrplan.sbb.ch/bin/help.exe/de?tpl=showmap_external&messageID=876656&mti=1&hMap=false#hfsShm": {
+                            "id": "876656",
+                            "header": "Verspätung: S 9 18928 von Uster 07:41 nach Schaffhausen 09:04.",
+                            "lead": "S 9 18928 von Uster 07:41 nach Schaffhausen 09:04.",
+                            "text": "S 9 18928 von Uster 07:41 nach Schaffhausen 09:04.<br /><br /> Grund: Ereignis an einem anderen Zug",
+                            "timerange": "15.11.2017 00:00 - 15.11.2017 10:00",
+                            "exact": true,
+                            "priority": 60
+                        }
+                    }
+                },
+                {
+                    "arrival": "2017-11-15 08:14:00",
+                    "departure": "2017-11-15 08:18:00",
+                    "tripid": "T2017_19429_000011_101_a6eead9_0",
+                    "number": "S14 19429",
+                    "stopid": "8503006",
+                    "x": 683432,
+                    "y": 251778,
+                    "name": "Zürich Oerlikon",
+                    "sbb_name": "Zürich Oerlikon",
+                    "type": "strain",
+                    "line": "S14",
+                    "terminal": "Hinwil",
+                    "waittime": 240,
+                    "normal_time": 180,
+                    "fgcolor": "fff",
+                    "bgcolor": "039",
+                    "*G": "S",
+                    "*L": "14",
+                    "operator": "SBB",
+                    "stops": [
+                        {
+                            "arrival": "2017-11-15 08:20:00",
+                            "departure": "2017-11-15 08:21:00",
+                            "name": "Wallisellen",
+                            "stopid": "8503129",
+                            "x": 687037,
+                            "y": 251962
+                        },
+                        {
+                            "arrival": "2017-11-15 08:24:00",
+                            "departure": "2017-11-15 08:24:00",
+                            "name": "Dübendorf",
+                            "stopid": "8503128",
+                            "x": 689435,
+                            "y": 250592
+                        }
+                    ],
+                    "runningtime": 540,
+                    "exit": {
+                        "arrival": "2017-11-15 08:27:00",
+                        "stopid": "8503127",
+                        "x": 692123,
+                        "y": 248888,
+                        "name": "Schwerzenbach ZH",
+                        "sbb_name": "Schwerzenbach ZH",
+                        "waittime": 0,
+                        "track": "2"
+                    },
+                    "track": "2"
+                },
+                {
+                    "arrival": "2017-11-15 08:27:00",
+                    "departure": "2017-11-15 08:27:00",
+                    "stopid": "8503127",
+                    "x": 692123,
+                    "y": 248888,
+                    "name": "Schwerzenbach ZH",
+                    "sbb_name": "Schwerzenbach ZH",
+                    "waittime": 0,
+                    "normal_time": 180,
+                    "stops": null,
+                    "runningtime": 180,
+                    "exit": {
+                        "arrival": "2017-11-15 08:30:00",
+                        "stopid": "8576127",
+                        "x": 692191,
+                        "y": 248845,
+                        "name": "Schwerzenbach ZH, Bahnhof",
+                        "sbb_name": "Schwerzenbach ZH, Bahnhof",
+                        "waittime": 120
+                    },
+                    "type": "walk"
+                },
+                {
+                    "arrival": "2017-11-15 08:30:00",
+                    "departure": "2017-11-15 08:32:00",
+                    "tripid": "T2017_07939_000773_001_0cebb29_0",
+                    "number": "BUS 7939",
+                    "stopid": "8576127",
+                    "x": 692191,
+                    "y": 248845,
+                    "name": "Schwerzenbach ZH, Bahnhof",
+                    "sbb_name": "Schwerzenbach ZH, Bahnhof",
+                    "type": "bus",
+                    "line": "725",
+                    "terminal": "Volketswil, Dorf",
+                    "waittime": 120,
+                    "*G": "BUS",
+                    "*L": "725",
+                    "operator": "VBG",
+                    "stops": [
+                        {
+                            "arrival": "2017-11-15 08:34:00",
+                            "departure": "2017-11-15 08:34:00",
+                            "name": "Volketswil, In der Höh",
+                            "stopid": "8576139",
+                            "x": 692856,
+                            "y": 248996
+                        }
+                    ],
+                    "runningtime": 120,
+                    "exit": {
+                        "arrival": "2017-11-15 08:34:00",
+                        "stopid": "8589106",
+                        "x": 693153,
+                        "y": 248993,
+                        "name": "Volketswil, Zimikon",
+                        "sbb_name": "Volketswil, Zimikon"
+                    },
+                    "track": "A",
+                    "attributes": {
+                        "1_0_NF": "Niederflureinstieg"
+                    }
+                },
+                {
+                    "arrival": "2017-11-15 08:34:00",
+                    "stopid": "8589106",
+                    "x": 693153,
+                    "y": 248993,
+                    "name": "Volketswil, Zimikon",
+                    "sbb_name": "Volketswil, Zimikon",
+                    "normal_time": 0,
+                    "stops": null,
+                    "type": "walk",
+                    "departure": "2017-11-15 08:34:00",
+                    "runningtime": 420,
+                    "exit": {
+                        "arrival": "2017-11-15 08:41:00",
+                        "isaddress": true,
+                        "name": "Volketswil, Schwerzenbachstr. 16"
+                    }
+                },
+                {
+                    "arrival": "2017-11-15 08:41:00",
+                    "isaddress": true,
+                    "name": "Volketswil, Schwerzenbachstr. 16"
+                }
+            ]
+        }
+    ],
+    "url": "https://fahrplan.search.ch/Z%C3%BCrich-Hardbr%C3%BCcke,Bahnhof..Volketswil,Schwerzenbachstr.16?time=08.09",
+    "points": [
+        {
+            "text": "Zürich Hardbrücke, Bahnhof",
+            "url": "https://map.search.ch/Z%C3%BCrich-Hardbr%C3%BCcke,Bahnhof",
+            "id": "8591060",
+            "x": "681429",
+            "y": "248793"
+        },
+        {
+            "text": "Volketswil, Schwerzenbachstr. 16",
+            "url": "https://map.search.ch/Volketswil,Schwerzenbachstr.16"
+        }
+    ],
+    "description": "Von Zürich Hardbrücke, Bahnhof nach Volketswil, Schwerzenbachstr. 16 am Mittwoch 15.11.2017",
+    "request": "route",
+    "eof": 1
+}

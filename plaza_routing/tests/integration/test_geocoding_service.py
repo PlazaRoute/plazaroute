@@ -16,4 +16,3 @@ def test_geocoding_no_coordinates_found():
 def test_geocoding_outside_viewbox():
     with pytest.raises(ValueError):
         geocoding_service.geocode('Sir Matt Busby Way, Stretford, Manchester M16 0RA')
-

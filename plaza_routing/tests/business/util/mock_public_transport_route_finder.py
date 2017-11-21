@@ -2,6 +2,7 @@ from tests.util import utils
 
 import plaza_routing.integration.search_ch_service as search_ch_service
 import plaza_routing.integration.overpass_service as overpass_service
+import plaza_routing.integration.util.search_ch_parser as search_ch_parser
 
 
 def mock_test_get_public_transport_route(monkeypatch):
@@ -16,16 +17,21 @@ def mock_test_get_public_transport_route(monkeypatch):
 
 def _mock_test_get_public_transport_route_get_connection(start, destination):
     # Test: test_get_public_transport_route_single_leg
+    response_file = None
     if start == 'Zürich, Rote Fabrik' and destination == 'Zürich, Stadtgrenze':
-        return utils.get_json_file('search_ch_response_single_leg.json')['connections'][0]
+        response_file = utils.get_file('search_ch_response_single_leg.json', 'search_ch')
 
     # Test: test_get_public_transport_route_filtered_walking_leg
     elif start == 'Zürich, Rote Fabrik' and destination == 'Zürich Enge, Bahnhof':
-        return utils.get_json_file('search_ch_response_walking_leg.json')['connections'][0]
+        response_file = utils.get_file('search_ch_response_walking_leg.json', 'search_ch')
 
     # Test: test_get_public_transport_route_filtered_multiple_leg
     elif start == 'Zürich, Seerose' and destination == 'Zürich Enge, Bahnhof':
-        return utils.get_json_file('search_ch_response_multiple_legs.json')['connections'][0]
+        response_file = utils.get_file('search_ch_response_multiple_legs.json', 'search_ch')
+
+    if response_file is None:
+        assert False
+    return search_ch_parser.parse_connections(response_file)['connections'][0]
 
 
 def _mock_test_get_public_transport_route_get_start_exit_stop_position(start_uic_ref, line):

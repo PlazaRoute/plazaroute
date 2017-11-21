@@ -1,19 +1,9 @@
 import json
 import colander
+import logging
 
 
-class ExitType(colander.SchemaType):
-    """
-    The exit attribute is not always defined and there is no other
-    solution to define a default value for a colander.MappingSchema.
-    """
-    def serialize(self, node, appstruct):
-        raise NotImplementedError()
-
-    def deserialize(self, node, cstruct):
-        if cstruct is colander.null:
-            return colander.null
-        return Exit().deserialize(cstruct)
+logger = logging.getLogger('plaza_routing.search_ch_parser')
 
 
 class Exit(colander.MappingSchema):
@@ -24,6 +14,23 @@ class Exit(colander.MappingSchema):
     y = colander.SchemaNode(colander.Int())
 
 
+class LegType(colander.SchemaType):
+    """
+    Search.ch returns walking legs (type=walk) that will be skipped with colander.drop.
+    The leg with a missing type is either the last leg or a an address with isaddress=True (if the destination that is
+    passed to search.ch is an address). Both are of no use and will be skipped.
+    """
+    def serialize(self, node, appstruct):
+        raise NotImplementedError()
+
+    def deserialize(self, node, cstruct):
+        if cstruct is colander.null:
+            return colander.drop
+        if cstruct.get('type', '') == 'walk' or cstruct.get('type', '') == '':
+            return colander.drop
+        return Leg().deserialize(cstruct)
+
+
 class Leg(colander.MappingSchema):
     departure = colander.SchemaNode(colander.String(), missing=None)
     stopid = colander.SchemaNode(colander.String())
@@ -31,13 +38,13 @@ class Leg(colander.MappingSchema):
     line = colander.SchemaNode(colander.String(), missing=None)
     line_type = colander.SchemaNode(colander.String(), name='type', missing=None)
     terminal = colander.SchemaNode(colander.String(), missing=None)
-    exit = colander.SchemaNode(ExitType(), missing=[])
+    exit = Exit()
     x = colander.SchemaNode(colander.Int())
     y = colander.SchemaNode(colander.Int())
 
 
 class Legs(colander.SequenceSchema):
-    leg = Leg()
+    leg = colander.SchemaNode(LegType())
 
 
 class Connection(colander.MappingSchema):
@@ -64,7 +71,7 @@ def parse_connections(response):
         _add_calculated_values(parsed_response['connections'])
         return parsed_response
     except colander.Invalid as e:
-        print(f'colander failed with {e.asdict()} for response {response}')
+        logger.debug(f'colander failed with {e.asdict()} for response {response}')
         raise RuntimeError(e.asdict())
 
 
