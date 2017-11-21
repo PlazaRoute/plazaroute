@@ -50,10 +50,7 @@ def _get_path_for_public_transport_connection(connection: dict) -> dict:
     }
 
     relevant_legs_counter = 0
-    for leg in legs[:-1]:
-        if not _is_relevant_leg(leg):
-            continue
-
+    for leg in legs:
         line = leg['line']
         start_uic_ref = leg['stopid']
         exit_uic_ref = leg['exit']['stopid']
@@ -100,10 +97,3 @@ def _get_stopovers(stopovers: List[dict]) -> List[List[float]]:
     for stopover in stopovers:
         path.append([coordinate_transformer.transform_ch_to_wgs(stopover['x'], stopover['y'])])
     return path
-
-
-def _is_relevant_leg(leg: dict) -> bool:
-    if leg['type'] == 'walk':
-        logger.debug(f'filter leg: {leg}')
-        return False
-    return True
