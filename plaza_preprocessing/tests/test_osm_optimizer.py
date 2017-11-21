@@ -52,7 +52,6 @@ def test_entry_points():
         assert result_plaza
         assert len(result_plaza['entry_points']) == 16
         # TODO: is 0 instead of 16
-    assert not result_plaza
 
 
 def test_entry_lines(process_strategy):
@@ -65,10 +64,15 @@ def test_entry_lines(process_strategy):
 
 def test_bahnhofstrasse(process_strategy):
     result_plaza = utils.process_plaza('bahnhofstrasse', 27405455, process_strategy)
+    # TODO: one entry point is inaccurate
     assert result_plaza
+    with pytest.raises(AssertionError):
+        assert all(e.touches(result_plaza['geometry']) for e in result_plaza['entry_points'])
 
 
-def test_zuerich_hauptbahnhof(process_strategy):
+def test_entry_points_with_cutout_polygon(process_strategy):
     result_plaza = utils.process_plaza('zuerich_hb', 6605179, process_strategy)
-    # one entry point is inaccurate
     assert result_plaza
+    # TODO: entry points should still be valid after the geometry has been cutout
+    with pytest.raises(AssertionError):
+        assert all(e.touches(result_plaza['geometry']) for e in result_plaza['entry_points'])
