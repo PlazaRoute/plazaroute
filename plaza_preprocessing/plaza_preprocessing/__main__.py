@@ -1,10 +1,10 @@
-import sys
 import logging
-from plaza_preprocessing.osm_optimizer import osm_optimizer
+import sys
+
 from plaza_preprocessing import osm_importer
 from plaza_preprocessing.osm_merger import osm_merger
-from plaza_preprocessing.osm_optimizer.visibilitygraphprocessor import VisibilityGraphProcessor
-from plaza_preprocessing.osm_optimizer.spiderwebgraphprocessor import SpiderWebGraphProcessor
+from plaza_preprocessing.osm_optimizer import osm_optimizer
+from plaza_preprocessing.osm_optimizer.graphprocessor.visibilitygraphprocessor import VisibilityGraphProcessor
 
 logger = logging.getLogger('plaza_preprocessing')
 

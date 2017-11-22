@@ -1,8 +1,10 @@
+from shapely.geometry import LineString, Polygon
+from typing import List
 from plaza_preprocessing.osm_optimizer import utils
-from shapely.geometry import LineString
+from plaza_preprocessing.osm_optimizer.graphprocessor.graphprocessor import GraphProcessor
 
 
-class VisibilityGraphProcessor:
+class VisibilityGraphProcessor(GraphProcessor):
     """ process a plaza using a visibility graph """
 
     def create_graph_edges(self, plaza_geometry, entry_points):
@@ -25,3 +27,6 @@ class VisibilityGraphProcessor:
                     if utils.line_visible(plaza_geometry, line):
                         graph_edges.append(line)
         return graph_edges
+
+    def optimize_lines(self, plaza_geometry: Polygon, lines: List[LineString], tolerance_m: float) -> List[LineString]:
+        return lines

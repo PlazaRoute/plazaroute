@@ -49,7 +49,7 @@ def compute_astar_shortest_paths(graph: nx.Graph, entry_points: List[Point]) -> 
                 lines.append(LineString(path))
     end_time = time.perf_counter()
     elapsed_time_ms = (end_time - start_time) * 1000
-    logger.debug(f"calculated paths with astar in {elapsed_time_ms:.2f} milliseconds")
+    logger.debug(f"computed shortest paths with astar in {elapsed_time_ms:.2f} milliseconds")
     return lines
 
 

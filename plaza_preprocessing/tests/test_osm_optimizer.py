@@ -1,9 +1,9 @@
-import pytest
-import utils
-import testfilemanager
 import plaza_preprocessing.osm_optimizer.osm_optimizer as osm_optimizer
-from plaza_preprocessing.osm_optimizer.visibilitygraphprocessor import VisibilityGraphProcessor
-from plaza_preprocessing.osm_optimizer.spiderwebgraphprocessor import SpiderWebGraphProcessor
+import pytest
+import testfilemanager
+import utils
+from plaza_preprocessing.osm_optimizer.graphprocessor.spiderwebgraphprocessor import SpiderWebGraphProcessor
+from plaza_preprocessing.osm_optimizer.graphprocessor.visibilitygraphprocessor import VisibilityGraphProcessor
 
 
 @pytest.fixture(params=['visibility', 'spiderweb'])
@@ -37,6 +37,18 @@ def test_multiple_plazas(process_strategy):
     assert len(processed_plazas) == 6
     all_edges = [edge.coords for plaza in processed_plazas for edge in plaza["graph_edges"]]
     assert len(set(all_edges)) == len(all_edges)  # check for duplicates
+
+
+def test_optimized_lines_inside_plaza(process_strategy):
+    holder = testfilemanager.import_testfile('bahnhofplatz_bern')
+    plaza = utils.get_plaza_by_id(holder.plazas, 5117701)
+    plaza_geometry = plaza['geometry']
+    processor = osm_optimizer.PlazaPreprocessor(holder, process_strategy)
+    result_plaza = processor.process_plaza(plaza)
+
+    assert result_plaza
+    # all optimized lines should be inside the plaza geometry
+    assert all(line.equals(plaza_geometry.intersection(line)) for line in result_plaza['graph_edges'])
 
 
 def test_obstructed_plaza(process_strategy):

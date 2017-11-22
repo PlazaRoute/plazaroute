@@ -1,14 +1,16 @@
 from math import ceil
+from shapely.geometry import Point, LineString, Polygon
+from typing import List
 from plaza_preprocessing.osm_optimizer import utils
-from shapely.geometry import Point, LineString
+from plaza_preprocessing.osm_optimizer.graphprocessor.graphprocessor import GraphProcessor
 
 
-class SpiderWebGraphProcessor:
+class SpiderWebGraphProcessor(GraphProcessor):
     """ Process a plaza with a spider web graph """
     def __init__(self, spacing_m):
         self.spacing_m = spacing_m
 
-    def create_graph_edges(self, plaza_geometry, entry_points):
+    def create_graph_edges(self, plaza_geometry: Polygon, entry_points: List[Point]) -> List[LineString]:
         """ create a spiderwebgraph and connect edges to entry points """
         if not plaza_geometry:
             raise ValueError("Plaza geometry not defined for spiderwebgraph processor")
@@ -16,6 +18,19 @@ class SpiderWebGraphProcessor:
             raise ValueError("No entry points defined for spiderwebgraph processor")
         graph_edges = self._calc_spiderwebgraph(plaza_geometry)
         return self._connect_entry_points_with_graph(entry_points, graph_edges)
+
+    def optimize_lines(self, plaza_geometry: Polygon, lines: List[LineString], tolerance_m: float) -> List[LineString]:
+        """
+        simplify lines to reduce amount of line points.
+        Optimizations that fall outside of the plaza will be discarded
+        """
+        tolerance = utils.meters_to_degrees(tolerance_m)
+        return list(map(lambda line: self._get_simplified_visible_line(plaza_geometry, line, tolerance), lines))
+
+    def _get_simplified_visible_line(self, plaza_geometry: Polygon, line: LineString, tolerance):
+        """:returns the simplified line if it's inside the plaza, the original line otherwise"""
+        simplified_line = line.simplify(tolerance, preserve_topology=False)
+        return simplified_line if utils.line_visible(plaza_geometry, simplified_line) else line
 
     def _calc_spiderwebgraph(self, plaza_geometry):
         """ calculate spider web graph edges"""

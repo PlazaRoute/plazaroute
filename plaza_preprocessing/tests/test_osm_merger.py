@@ -1,12 +1,12 @@
-import pytest
 import os.path
+import plaza_preprocessing.osm_merger.osm_merger as osm_merger
+import plaza_preprocessing.osm_merger.plazawriter as plazawriter
+import pytest
 import testfilemanager
 import utils
+from plaza_preprocessing.osm_optimizer.graphprocessor.spiderwebgraphprocessor import SpiderWebGraphProcessor
+from plaza_preprocessing.osm_optimizer.graphprocessor.visibilitygraphprocessor import VisibilityGraphProcessor
 from shapely.geometry import LineString, Point
-import plaza_preprocessing.osm_merger.plazawriter as plazawriter
-import plaza_preprocessing.osm_merger.osm_merger as osm_merger
-from plaza_preprocessing.osm_optimizer.visibilitygraphprocessor import VisibilityGraphProcessor
-from plaza_preprocessing.osm_optimizer.spiderwebgraphprocessor import SpiderWebGraphProcessor
 
 
 @pytest.fixture(params=['visibility', 'spiderweb'])

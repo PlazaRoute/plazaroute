@@ -1,12 +1,18 @@
 import logging
+from shapely.geometry import Point, MultiPolygon, Polygon, LineString, box
+from typing import List
 from plaza_preprocessing.osm_optimizer import utils
 from plaza_preprocessing.osm_optimizer import shortest_paths
-from shapely.geometry import Point, MultiPolygon, box
+from plaza_preprocessing.osm_optimizer.graphprocessor.graphprocessor import GraphProcessor
+from plaza_preprocessing.osm_importer import OSMHolder
 
 logger = logging.getLogger('plaza_preprocessing.osm_optimizer')
 
+# TODO: Make configurable
+OBSTACLE_BUFFER = 2  # buffer in meters to circumvent obstacles
 
-def preprocess_plazas(osm_holder, process_strategy):
+
+def preprocess_plazas(osm_holder: OSMHolder, process_strategy: GraphProcessor):
     """ preprocess all plazas from osm_importer """
     logger.info(f"Start processing {len(osm_holder.plazas)} plazas")
     plaza_processor = PlazaPreprocessor(osm_holder, process_strategy)
@@ -23,7 +29,7 @@ def preprocess_plazas(osm_holder, process_strategy):
 
 class PlazaPreprocessor:
 
-    def __init__(self, osm_holder, graph_processor):
+    def __init__(self, osm_holder: OSMHolder, graph_processor: GraphProcessor):
         self.lines = osm_holder.lines
         self.buildings = osm_holder.buildings
         self.points = osm_holder.points
@@ -42,23 +48,29 @@ class PlazaPreprocessor:
 
         entry_lines = self._map_entry_lines(intersecting_lines, entry_points)
 
-        plaza_geom_without_obstacles = self._calc_obstacle_geometry(plaza)
+        plaza_geom_without_obstacles = self._calc_obstacle_geometry(plaza, buffer_m=OBSTACLE_BUFFER)
 
         if not plaza_geom_without_obstacles:
             logger.debug(f"Discarding Plaza {plaza['osm_id']}: completely obstructed by obstacles")
             return None
 
-        graph_edges = self.graph_processor.create_graph_edges(plaza_geom_without_obstacles, entry_points)
-        graph = shortest_paths.create_graph(graph_edges)
-
-        shortest_path_edges = shortest_paths.compute_dijkstra_shortest_paths(graph, entry_points)
+        graph_edges = self.get_graph_edges(entry_points, plaza['geometry'], plaza_geom_without_obstacles)
 
         plaza['geometry'] = plaza_geom_without_obstacles
         plaza['entry_points'] = entry_points
         plaza['entry_lines'] = entry_lines
-        plaza['graph_edges'] = shortest_path_edges
+        plaza['graph_edges'] = graph_edges
 
         return plaza
+
+    def get_graph_edges(self, entry_points: List[Point], plaza_geom: Polygon,
+                        plaza_geom_without_obstacles: Polygon) -> List[LineString]:
+        """ create graph with shortest paths between entry points """
+        graph_edges = self.graph_processor.create_graph_edges(plaza_geom_without_obstacles, entry_points)
+        graph = shortest_paths.create_graph(graph_edges)
+        shortest_path_lines = shortest_paths.compute_astar_shortest_paths(graph, entry_points)
+        optimized_lines = self.graph_processor.optimize_lines(plaza_geom, shortest_path_lines, OBSTACLE_BUFFER)
+        return optimized_lines
 
     def _calc_entry_points(self, plaza_geometry, intersecting_lines):
         """
@@ -103,7 +115,7 @@ class PlazaPreprocessor:
                 intersecting_lines.append(line)
         return intersecting_lines
 
-    def _calc_obstacle_geometry(self, plaza):
+    def _calc_obstacle_geometry(self, plaza, buffer_m):
         """ cuts out holes for obstacles on the plaza geometry """
         intersecting_buildings = self._find_intersecting_buildings(plaza)
 
@@ -113,7 +125,7 @@ class PlazaPreprocessor:
 
         points_on_plaza = self._get_points_inside_plaza(plaza)
         point_obstacles = list(
-            map(lambda p: self._create_point_obstacle(p, buffer=2), points_on_plaza))
+            map(lambda p: self._create_point_obstacle(p, buffer_m), points_on_plaza))
 
         geometry_without_obstacles = geometry_without_buildings
         for point_obstacle in point_obstacles:
@@ -136,9 +148,9 @@ class PlazaPreprocessor:
         """ finds all points that are on the plaza geometry """
         return list(filter(plaza['geometry'].intersects, self.points))
 
-    def _create_point_obstacle(self, point, buffer=5):
+    def _create_point_obstacle(self, point, buffer_m):
         """ create a polygon around a point with a buffer in meters """
-        buffer_deg = utils.meters_to_degrees(buffer)
+        buffer_deg = utils.meters_to_degrees(buffer_m)
         min_x = point.x - buffer_deg
         min_y = point.y - buffer_deg
         max_x = point.x + buffer_deg
