@@ -1,11 +1,11 @@
 import os.path
-import plaza_preprocessing.osm_merger.osm_merger as osm_merger
-import plaza_preprocessing.osm_merger.plazawriter as plazawriter
 import pytest
 import testfilemanager
 import utils
-from plaza_preprocessing.osm_optimizer.graphprocessor.spiderwebgraphprocessor import SpiderWebGraphProcessor
-from plaza_preprocessing.osm_optimizer.graphprocessor.visibilitygraphprocessor import VisibilityGraphProcessor
+import plaza_preprocessing.merger.merger as merger
+import plaza_preprocessing.merger.plazatransformer as plazatransformer
+from plaza_preprocessing.optimizer.graphprocessor.spiderwebgraph import SpiderWebGraphProcessor
+from plaza_preprocessing.optimizer.graphprocessor.visibilitygraph import VisibilityGraphProcessor
 from shapely.geometry import LineString, Point
 
 
@@ -18,7 +18,7 @@ def process_strategy(request):
 
 
 def test_transform_plaza():
-    plaza_transformer = plazawriter.PlazaTransformer(0, 0)
+    plaza_transformer = plazatransformer.PlazaTransformer(0, 0)
     plaza = create_test_plaza()
     plaza_transformer.transform_plaza(plaza)
     assert len(plaza_transformer.nodes) == 4
@@ -31,7 +31,7 @@ def test_transform_real_plaza(process_strategy):
     plaza = utils.process_plaza('helvetiaplatz', 4533221, process_strategy)
     assert plaza
 
-    plaza_transformer = plazawriter.PlazaTransformer(0, 0)
+    plaza_transformer = plazatransformer.PlazaTransformer(0, 0)
     plaza_transformer.transform_plaza(plaza)
     assert len(plaza_transformer.ways) == len(plaza['graph_edges'])
     way_id = 259200019  # footway with 2 entry points
@@ -44,7 +44,7 @@ def test_write_to_file():
     node_file = 'test_nodes.osm'
     way_file = 'test_ways.osm'
     try:
-        plazawriter.transform_plazas([plaza], node_file, way_file)
+        plazatransformer.transform_plazas([plaza], node_file, way_file)
         assert os.path.exists(node_file)
         assert os.path.exists(way_file)
     finally:
@@ -60,7 +60,7 @@ def test_write_to_file_real_plaza(process_strategy):
     node_file = 'test_nodes.osm'
     way_file = 'test_ways.osm'
     try:
-        plazawriter.transform_plazas([plaza], node_file, way_file)
+        plazatransformer.transform_plazas([plaza], node_file, way_file)
         assert os.path.exists(node_file)
         assert os.path.exists(way_file)
     finally:
@@ -75,7 +75,7 @@ def test_merge_plaza_graphs(process_strategy):
 
     merged_filename = 'testfile-merged.osm'
     try:
-        osm_merger.merge_plaza_graphs(
+        merger.merge_plaza_graphs(
             [plaza], testfilemanager.get_testfile_name('helvetiaplatz'),
             merged_filename)
         assert os.path.exists(merged_filename)
@@ -91,7 +91,7 @@ def test_merge_simple_plaza(process_strategy):
 
     merged_filename = 'testfile-merged.osm'
     try:
-        osm_merger.merge_plaza_graphs(
+        merger.merge_plaza_graphs(
             [plaza], testfilemanager.get_testfile_name('helvetiaplatz'),
             merged_filename)
         assert os.path.exists(merged_filename)
@@ -107,7 +107,7 @@ def test_find_exact_insert_position():
         {'id': 3, 'coords': (2, 2)},
         {'id': 4, 'coords': (0, 2)},
     ]
-    pos = osm_merger._find_exact_insert_position(entry_point, way_nodes)
+    pos = merger._find_exact_insert_position(entry_point, way_nodes)
     assert pos == 2
 
 
@@ -119,7 +119,7 @@ def test_find_interpolated_insert_position():
         {'id': 3, 'coords': (3, 2)},
         {'id': 4, 'coords': (1, 2)},
     ]
-    pos = osm_merger._find_interpolated_insert_position(
+    pos = merger._find_interpolated_insert_position(
         entry_point, way_nodes)
     assert pos == 2
 
@@ -159,7 +159,7 @@ def test_insert_entry_nodes():
             ]
         }
     }
-    osm_merger._insert_entry_nodes(entry_ways, entry_node_mappings)
+    merger._insert_entry_nodes(entry_ways, entry_node_mappings)
     assert entry_ways == entry_ways_expected
 
 

@@ -1,11 +1,11 @@
 import testfilemanager
-from plaza_preprocessing.osm_optimizer import osm_optimizer
+from plaza_preprocessing.optimizer import optimizer
 
 
 def process_plaza(testfile, plaza_id, process_strategy):
     holder = testfilemanager.import_testfile(testfile)
     plaza = get_plaza_by_id(holder.plazas, plaza_id)
-    processor = osm_optimizer.PlazaPreprocessor(holder, process_strategy)
+    processor = optimizer.PlazaPreprocessor(holder, process_strategy)
     return processor.process_plaza(plaza)
 
 

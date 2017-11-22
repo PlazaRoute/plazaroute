@@ -1,7 +1,7 @@
 from shapely.geometry import LineString, Polygon
 from typing import List
-from plaza_preprocessing.osm_optimizer import utils
-from plaza_preprocessing.osm_optimizer.graphprocessor.graphprocessor import GraphProcessor
+from plaza_preprocessing.optimizer import utils
+from plaza_preprocessing.optimizer.graphprocessor.graphprocessor import GraphProcessor
 
 
 class VisibilityGraphProcessor(GraphProcessor):

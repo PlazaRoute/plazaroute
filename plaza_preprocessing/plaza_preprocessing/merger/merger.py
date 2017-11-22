@@ -5,10 +5,10 @@ from datetime import datetime
 from osmium import SimpleHandler, SimpleWriter
 from osmium.osm.mutable import Way
 from shapely.geometry import Point, LineString
-import plaza_preprocessing.osm_merger.plazawriter as plazawriter
-import plaza_preprocessing.osm_merger.osmosishelper as osmosishelper
+import plaza_preprocessing.merger.plazatransformer as plazatransformer
+import plaza_preprocessing.merger.osmosishelper as osmosishelper
 
-logger = logging.getLogger('plaza_preprocessing.osm_merger')
+logger = logging.getLogger('plaza_preprocessing.merger')
 
 
 class WayExtractor(SimpleHandler):
@@ -38,7 +38,7 @@ def merge_plaza_graphs(plazas, osm_file, merged_file):
     plaza_node_file = 'plaza_nodes.pbf'
     modified_ways_file = 'modified_ways.pbf'
     try:
-        entry_node_mappings = plazawriter.transform_plazas(
+        entry_node_mappings = plazatransformer.transform_plazas(
             plazas, plaza_node_file, plaza_way_file)
 
         plaza_ways = _extract_plaza_ways(entry_node_mappings, osm_file)

@@ -1,12 +1,12 @@
 import logging
 from shapely.geometry import Point, MultiPolygon, Polygon, LineString, box
 from typing import List
-from plaza_preprocessing.osm_optimizer import utils
-from plaza_preprocessing.osm_optimizer import shortest_paths
-from plaza_preprocessing.osm_optimizer.graphprocessor.graphprocessor import GraphProcessor
-from plaza_preprocessing.osm_importer import OSMHolder
+from plaza_preprocessing.optimizer import utils
+from plaza_preprocessing.optimizer import shortest_paths
+from plaza_preprocessing.optimizer.graphprocessor.graphprocessor import GraphProcessor
+from plaza_preprocessing.importer.osmholder import OSMHolder
 
-logger = logging.getLogger('plaza_preprocessing.osm_optimizer')
+logger = logging.getLogger('plaza_preprocessing.optimizer')
 
 # TODO: Make configurable
 OBSTACLE_BUFFER = 2  # buffer in meters to circumvent obstacles

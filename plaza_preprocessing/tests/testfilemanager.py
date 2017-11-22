@@ -1,5 +1,5 @@
 import os.path
-from plaza_preprocessing import osm_importer
+from plaza_preprocessing.importer import importer
 
 TESTFILEPATH = os.path.join(os.path.dirname(__file__), 'testfiles')
 
@@ -24,4 +24,4 @@ def get_testfile_name(name):
 
 def import_testfile(name):
     filename = get_testfile_name(name)
-    return osm_importer.import_osm(filename)
+    return importer.import_osm(filename)
