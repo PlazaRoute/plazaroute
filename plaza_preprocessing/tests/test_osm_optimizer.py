@@ -57,6 +57,12 @@ def test_obstructed_plaza(process_strategy):
     assert not result_plaza  # plaza should be discarded
 
 
+def test_almost_obstructed_plaza(process_strategy):
+    """ this plaza is almost completely obstructed, but a tiny area remains"""
+    result_plaza = utils.process_plaza('zuerich_hb', 6619147, process_strategy)
+    assert not result_plaza  # plaza should be discarded
+
+
 def test_entry_points():
     """ Entry points on Kreuzplatz seem to be wrong """
     result_plaza = utils.process_plaza('kreuzplatz', 5541230, process_strategy)

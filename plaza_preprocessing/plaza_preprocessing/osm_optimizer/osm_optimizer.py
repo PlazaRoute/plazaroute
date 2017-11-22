@@ -56,6 +56,10 @@ class PlazaPreprocessor:
 
         graph_edges = self.get_graph_edges(entry_points, plaza['geometry'], plaza_geom_without_obstacles)
 
+        if not graph_edges:
+            logger.debug(f"Discarding Plaza {plaza['osm_id']}: no graph could be constructed")
+            return None
+
         plaza['geometry'] = plaza_geom_without_obstacles
         plaza['entry_points'] = entry_points
         plaza['entry_lines'] = entry_lines
@@ -135,8 +139,12 @@ class PlazaPreprocessor:
             logger.debug(
                 f"Plaza {plaza['osm_id']}: Multipolygon after cut out, discarding smaller polygon")
             # take the largest of the polygons
-            geometry_without_obstacles = max(
+            largest_geometry_without_obstacles = max(
                 geometry_without_obstacles, key=lambda p: p.area)
+            # if cut out is less than 5% the area of the original, it's discarded
+            if largest_geometry_without_obstacles.area < plaza['geometry'].area * 0.05:
+                return None
+            return largest_geometry_without_obstacles
 
         return geometry_without_obstacles
 

@@ -17,6 +17,8 @@ class SpiderWebGraphProcessor(GraphProcessor):
         if not entry_points:
             raise ValueError("No entry points defined for spiderwebgraph processor")
         graph_edges = self._calc_spiderwebgraph(plaza_geometry)
+        if not graph_edges:  # no graph edges could be constructed
+            return []
         return self._connect_entry_points_with_graph(entry_points, graph_edges)
 
     def optimize_lines(self, plaza_geometry: Polygon, lines: List[LineString], tolerance_m: float) -> List[LineString]:
