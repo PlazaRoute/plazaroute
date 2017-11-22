@@ -4,7 +4,7 @@ from osmium._osmium import InvalidLocationError
 import shapely.wkb as wkblib
 from plaza_preprocessing.importer import osmholder
 
-logger = logging.getLogger('plaza_preprocessing.osm_importer')
+logger = logging.getLogger('plaza_preprocessing.importer')
 WKBFAB = osmium.geom.WKBFactory()
 
 

@@ -1,6 +1,6 @@
 import logging
-from shapely.geometry import Point, MultiPolygon, Polygon, LineString, box
 from typing import List
+from shapely.geometry import Point, MultiPolygon, Polygon, LineString, box
 from plaza_preprocessing.optimizer import utils
 from plaza_preprocessing.optimizer import shortest_paths
 from plaza_preprocessing.optimizer.graphprocessor.graphprocessor import GraphProcessor

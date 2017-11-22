@@ -1,6 +1,6 @@
 from math import ceil
-from shapely.geometry import Point, LineString, Polygon
 from typing import List
+from shapely.geometry import Point, LineString, Polygon
 from plaza_preprocessing.optimizer import utils
 from plaza_preprocessing.optimizer.graphprocessor.graphprocessor import GraphProcessor
 
