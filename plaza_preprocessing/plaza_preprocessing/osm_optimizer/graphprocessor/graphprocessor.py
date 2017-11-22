@@ -16,9 +16,11 @@ class GraphProcessor(metaclass=abc.ABCMeta):
     def optimize_lines(self, plaza_geometry: Polygon, lines: List[LineString], tolerance_m: float) -> List[LineString]:
         """
         optimize or simplify a list of shortest paths
+
         :param plaza_geometry: The geometry which the optimized lines must be inside of
         :param lines: a list of lines to optimize
-        :param tolerance_m: new line will be inside this tolerance (in meters). Should be the same as obstacle buffer.
+        :param tolerance_m: new line will be inside this distance (in meters) from the original line.
+                            Should be the same as obstacle buffer.
         :return: List of optimized LineStrings
         """
         pass

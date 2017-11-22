@@ -28,7 +28,7 @@ class SpiderWebGraphProcessor(GraphProcessor):
         return list(map(lambda line: self._get_simplified_visible_line(plaza_geometry, line, tolerance), lines))
 
     def _get_simplified_visible_line(self, plaza_geometry: Polygon, line: LineString, tolerance):
-        """:returns the simplified line if it's inside the plaza, the original line otherwise"""
+        """ returns the simplified line if it's inside the plaza, the original line otherwise"""
         simplified_line = line.simplify(tolerance, preserve_topology=False)
         return simplified_line if utils.line_visible(plaza_geometry, simplified_line) else line
 
