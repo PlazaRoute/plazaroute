@@ -22,11 +22,8 @@ class VisibilityGraphProcessor(GraphProcessor):
         graph_edges = []
         for start_id, start_coords in indexed_coords.items():
             for end_id, end_coords in indexed_coords.items():
-                if (start_id > end_id):
+                if start_id > end_id:
                     line = LineString([start_coords, end_coords])
                     if utils.line_visible(plaza_geometry, line):
                         graph_edges.append(line)
         return graph_edges
-
-    def optimize_lines(self, plaza_geometry: Polygon, lines: List[LineString], tolerance_m: float) -> List[LineString]:
-        return lines

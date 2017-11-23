@@ -72,6 +72,7 @@ def _extract_lines_between_entry_points(shortest_paths: Dict, entry_coords: List
 
 
 def _distance_between_nodes(node_1, node_2):
+    """calculate the euclidean distance of two points using pythagoras"""
     x1, y1 = node_1
     x2, y2 = node_2
     return ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 0.5
