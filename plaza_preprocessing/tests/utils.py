@@ -6,7 +6,7 @@ def process_plaza(testfile, plaza_id, process_strategy):
     holder = testfilemanager.import_testfile(testfile)
     plaza = get_plaza_by_id(holder.plazas, plaza_id)
     processor = osm_optimizer.PlazaPreprocessor(holder, process_strategy)
-    return processor.process_plaza(plaza)
+    return processor._process_plaza(plaza)
 
 
 def get_plaza_by_id(plazas, osm_id):

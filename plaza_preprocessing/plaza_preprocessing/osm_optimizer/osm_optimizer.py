@@ -16,12 +16,7 @@ def preprocess_plazas(osm_holder: OSMHolder, process_strategy: GraphProcessor):
     """ preprocess all plazas from osm_importer """
     logger.info(f"Start processing {len(osm_holder.plazas)} plazas")
     plaza_processor = PlazaPreprocessor(osm_holder, process_strategy)
-    processed_plazas = []
-    for plaza in osm_holder.plazas:
-        logger.info(f"Processing plaza {plaza['osm_id']}")
-        processed_plaza = plaza_processor.process_plaza(plaza)
-        if processed_plaza is not None:
-            processed_plazas.append(processed_plaza)
+    processed_plazas = plaza_processor.process_plazas()
 
     logger.info(f"Finished processing {len(processed_plazas)} plazas (rest were discarded)")
     return processed_plazas
@@ -30,12 +25,24 @@ def preprocess_plazas(osm_holder: OSMHolder, process_strategy: GraphProcessor):
 class PlazaPreprocessor:
 
     def __init__(self, osm_holder: OSMHolder, graph_processor: GraphProcessor):
+        self.plazas = osm_holder.plazas
         self.lines = osm_holder.lines
         self.buildings = osm_holder.buildings
         self.points = osm_holder.points
         self.graph_processor = graph_processor
 
-    def process_plaza(self, plaza):
+    def process_plazas(self):
+        """ process all plazas in the osm holder"""
+        processed_plazas = []
+        for plaza in self.plazas:
+            logger.info(f"Processing plaza {plaza['osm_id']}")
+            processed_plaza = self._process_plaza(plaza)
+            if processed_plaza is not None:
+                processed_plazas.append(processed_plaza)
+
+        return processed_plazas
+
+    def _process_plaza(self, plaza):
         """ process a single plaza """
 
         intersecting_lines = self._find_intersescting_lines(plaza['geometry'])

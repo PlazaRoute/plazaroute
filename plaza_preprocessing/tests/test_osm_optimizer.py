@@ -44,7 +44,7 @@ def test_optimized_lines_inside_plaza(process_strategy):
     plaza = utils.get_plaza_by_id(holder.plazas, 5117701)
     plaza_geometry = plaza['geometry']
     processor = osm_optimizer.PlazaPreprocessor(holder, process_strategy)
-    result_plaza = processor.process_plaza(plaza)
+    result_plaza = processor._process_plaza(plaza)
 
     assert result_plaza
     # all optimized lines should be inside the plaza geometry

@@ -12,7 +12,6 @@ class GraphProcessor(metaclass=abc.ABCMeta):
         """
         pass
 
-    @abc.abstractmethod
     def optimize_lines(self, plaza_geometry: Polygon, lines: List[LineString], tolerance_m: float) -> List[LineString]:
         """
         optimize or simplify a list of shortest paths
@@ -23,4 +22,4 @@ class GraphProcessor(metaclass=abc.ABCMeta):
                             Should be the same as obstacle buffer.
         :return: List of optimized LineStrings
         """
-        pass
+        return lines
