@@ -4,7 +4,7 @@
 #
 version: 2
 jobs:
-  build:
+  test:
     docker:
       - image: excap/plazaroute-ci
 
@@ -66,3 +66,9 @@ jobs:
             make html
             cd ~/repo/plaza_routing/docs
             make html
+workflows:
+  version: 2
+  test_and_doc:
+    jobs:
+      - test
+      - doc
