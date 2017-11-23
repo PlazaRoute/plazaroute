@@ -12,7 +12,9 @@ TEST_PLAZAS = {
     'zurich-city': 'stadt-zuerich.pbf',
     'zentrum_witikon': 'zentrum_witikon.osm',
     'europaallee': 'europaallee.osm',
-    'kreuzplatz': 'kreuzplatz.osm'
+    'kreuzplatz': 'kreuzplatz.osm',
+    'bahnhofstrasse': 'bahnhofstrasse.osm',
+    'zuerich_hb': 'zuerich_hauptbahnhof.osm'
 }
 
 

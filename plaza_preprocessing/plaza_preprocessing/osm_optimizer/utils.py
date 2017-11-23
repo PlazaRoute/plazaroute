@@ -55,3 +55,8 @@ def get_polygon_coords(polygon):
 def find_nearest_geometry(obj, geometries):
     """ return the geometry that is nearest to the object """
     return min(geometries, key=lambda g: g.distance(obj))
+
+
+def line_visible(plaza_geometry, line):
+    """ check if the line is "visible", i.e. unobstructed through the plaza """
+    return line.equals(plaza_geometry.intersection(line))

@@ -1,3 +1,4 @@
 osmium==2.13.0
 Shapely==1.6.2
 geojson==2.3.0
+networkx==2.0

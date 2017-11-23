@@ -1,10 +1,10 @@
-import sys
 import logging
-from plaza_preprocessing.osm_optimizer import osm_optimizer
+import sys
+
 from plaza_preprocessing import osm_importer
 from plaza_preprocessing.osm_merger import osm_merger
-from plaza_preprocessing.osm_optimizer.visibilitygraphprocessor import VisibilityGraphProcessor
-from plaza_preprocessing.osm_optimizer.spiderwebgraphprocessor import SpiderWebGraphProcessor
+from plaza_preprocessing.osm_optimizer import osm_optimizer, shortest_paths
+from plaza_preprocessing.osm_optimizer.graphprocessor.visibilitygraphprocessor import VisibilityGraphProcessor
 
 logger = logging.getLogger('plaza_preprocessing')
 
@@ -27,8 +27,10 @@ def setup_logging(verbose=False, quiet=False):
 
 
 def preprocess_osm(osm_filename, out_file):
+    # TODO: Make configurable
+    shortest_path_strategy = shortest_paths.compute_astar_shortest_paths
     osm_holder = osm_importer.import_osm(osm_filename)
-    processed_plazas = osm_optimizer.preprocess_plazas(osm_holder, VisibilityGraphProcessor())
+    processed_plazas = osm_optimizer.preprocess_plazas(osm_holder, VisibilityGraphProcessor(), shortest_path_strategy)
     osm_merger.merge_plaza_graphs(processed_plazas, osm_filename, out_file)
 
 
