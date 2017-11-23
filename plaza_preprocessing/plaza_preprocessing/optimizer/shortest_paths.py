@@ -4,7 +4,7 @@ import networkx as nx
 from shapely.geometry import LineString, Point
 from typing import List, Tuple, Set, Dict
 
-logger = logging.getLogger('plaza_preprocessing.osm_optimizer')
+logger = logging.getLogger('plaza_preprocessing.optimizer')
 
 
 def create_graph(graph_edges: List[LineString]) -> nx.Graph:

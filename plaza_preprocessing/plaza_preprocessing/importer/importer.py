@@ -2,8 +2,9 @@ import logging
 import osmium
 from osmium._osmium import InvalidLocationError
 import shapely.wkb as wkblib
+from plaza_preprocessing.importer import osmholder
 
-logger = logging.getLogger('plaza_preprocessing.osm_importer')
+logger = logging.getLogger('plaza_preprocessing.importer')
 WKBFAB = osmium.geom.WKBFactory()
 
 
@@ -22,15 +23,7 @@ def import_osm(filename):
 
     if handler.invalid_count > 0:
         logger.warning(f'encountered {handler.invalid_count} invalid objects (may be because of boundaries)')
-    return OSMHolder(handler.plazas, handler.buildings, handler.lines, handler.points)
-
-
-class OSMHolder:
-    def __init__(self, plazas, buildings, lines, points):
-        self.plazas = plazas
-        self.buildings = buildings
-        self.lines = lines
-        self.points = points
+    return osmholder.OSMHolder(handler.plazas, handler.buildings, handler.lines, handler.points)
 
 
 class _PlazaHandler(osmium.SimpleHandler):

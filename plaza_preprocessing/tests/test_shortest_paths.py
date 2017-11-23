@@ -1,5 +1,5 @@
 from shapely.geometry import LineString, Point
-from plaza_preprocessing.osm_optimizer import shortest_paths
+from plaza_preprocessing.optimizer import shortest_paths
 
 
 def test_create_graph_simple_edges():

@@ -1,5 +1,5 @@
 import pytest
-from plaza_preprocessing.osm_optimizer import utils
+from plaza_preprocessing.optimizer import utils
 
 
 def test_bounding_boxes_overlap():

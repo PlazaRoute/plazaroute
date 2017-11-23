@@ -1,10 +1,10 @@
-import plaza_preprocessing.osm_optimizer.osm_optimizer as osm_optimizer
 import pytest
 import testfilemanager
 import utils
-from plaza_preprocessing.osm_optimizer import shortest_paths
-from plaza_preprocessing.osm_optimizer.graphprocessor.spiderwebgraphprocessor import SpiderWebGraphProcessor
-from plaza_preprocessing.osm_optimizer.graphprocessor.visibilitygraphprocessor import VisibilityGraphProcessor
+import plaza_preprocessing.optimizer.optimizer as optimizer
+from plaza_preprocessing.optimizer import shortest_paths
+from plaza_preprocessing.optimizer.graphprocessor.spiderwebgraph import SpiderWebGraphProcessor
+from plaza_preprocessing.optimizer.graphprocessor.visibilitygraph import VisibilityGraphProcessor
 
 
 @pytest.fixture(params=['visibility', 'spiderweb'])
@@ -41,7 +41,7 @@ def test_complicated_plaza(process_strategy, shortest_path_strategy):
 
 def test_multiple_plazas(process_strategy, shortest_path_strategy):
     holder = testfilemanager.import_testfile('helvetiaplatz')
-    processed_plazas = osm_optimizer.preprocess_plazas(holder, process_strategy, shortest_path_strategy)
+    processed_plazas = optimizer.preprocess_plazas(holder, process_strategy, shortest_path_strategy)
 
     assert len(processed_plazas) == 6
     all_edges = [edge.coords for plaza in processed_plazas for edge in plaza["graph_edges"]]
@@ -52,7 +52,8 @@ def test_optimized_lines_inside_plaza(process_strategy, shortest_path_strategy):
     holder = testfilemanager.import_testfile('bahnhofplatz_bern')
     plaza = utils.get_plaza_by_id(holder.plazas, 5117701)
     plaza_geometry = plaza['geometry']
-    processor = osm_optimizer.PlazaPreprocessor(holder, process_strategy, shortest_path_strategy)
+
+    processor = optimizer.PlazaPreprocessor(holder, process_strategy, shortest_path_strategy)
     result_plaza = processor._process_plaza(plaza)
 
     assert result_plaza
