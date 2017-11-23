@@ -42,4 +42,27 @@ jobs:
             pytest plaza_routing
             pip install --editable plaza_preprocessing/
             pytest plaza_preprocessing
-          
+
+  doc:
+    docker:
+      - image: circleci/python:3.6.1
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+      - run:
+          name: install dependencies
+          command: pip install sphinx sphinx-autodoc-typehints
+      - run:
+          name: generate apidoc
+          command: |
+            sphinx-apidoc -o plaza_preprocessing/docs -f plaza_preprocessing/plaza_preprocessing
+            sphinx-apidoc -o plaza_routing/docs -f plaza_routing/plaza_routing
+      - run:
+          name: build sphinx doc
+          command: |
+            cd ~/repo/plaza_preprocessing/docs
+            make html
+            cd ~/repo/plaza_routing/docs
+            make html

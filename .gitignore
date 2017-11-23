@@ -110,3 +110,10 @@ venv.bak/
 
 # PyCharm
 .idea/
+
+# sphinx
+plaza_preprocessing/docs/plaza_preprocessing*
+plaza_routing/docs/plaza_routing*
+modules.rst
+_build
+
