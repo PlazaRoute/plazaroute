@@ -81,10 +81,16 @@ jobs:
             . venv/bin/activate
             cd ~/repo/docs
             make html
-            rsync -a ~/repo/docs/_build/html/ ~/sphinx-build
+            cp -r ~/repo/docs/_build/html ~/sphinx-build
 workflows:
   version: 2
   test_and_doc:
     jobs:
-      - test
-      - doc
+      - test:
+          branches:
+            ignore:
+              - gh-pages
+      - doc:
+        branches:
+            ignore:
+              - gh-pages
