@@ -91,6 +91,7 @@ jobs:
             git checkout --orphan gh-pages
             git rm -rf .
             cp -a ~/sphinx-build/. .
+            git add .
             git commit -m "circle ci sphinx build"
             git push --force -u origin gh-pages
 workflows:
