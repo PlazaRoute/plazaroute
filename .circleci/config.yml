@@ -82,6 +82,15 @@ jobs:
             cd ~/repo/docs
             make html
             cp -r ~/repo/docs/_build/html ~/sphinx-build
+      - run:
+          name: deploy to gh-pages
+          command: |
+            cd ~/repo
+            git checkout --orphan gh-pages
+            git rm -rf .
+            cp -a ~/sphinx-build/. .
+            git commit -m "circle ci sphinx build"
+            git push --force -u origin gh-pages
 workflows:
   version: 2
   test_and_doc:
