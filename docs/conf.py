@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# plaza_routing documentation build configuration file, created by
-# sphinx-quickstart on Thu Nov 23 11:19:12 2017.
+# PlazaRoute documentation build configuration file, created by
+# sphinx-quickstart on Fri Nov 24 12:26:53 2017.
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -33,7 +33,6 @@
 # ones.
 extensions = ['sphinx.ext.autodoc',
     'sphinx.ext.intersphinx',
-    'sphinx.ext.todo',
     'sphinx.ext.mathjax',
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
@@ -52,7 +51,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'plaza_routing'
+project = 'PlazaRoute'
 copyright = '2017, Jonas Matter, Robin Suter'
 author = 'Jonas Matter, Robin Suter'
 
@@ -81,7 +80,7 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 pygments_style = 'sphinx'
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
-todo_include_todos = True
+todo_include_todos = False
 
 
 # -- Options for HTML output ----------------------------------------------
@@ -118,7 +117,7 @@ html_sidebars = {
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'plaza_routingdoc'
+htmlhelp_basename = 'PlazaRoutedoc'
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -145,7 +144,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'plaza_routing.tex', 'plaza\\_routing Documentation',
+    (master_doc, 'PlazaRoute.tex', 'PlazaRoute Documentation',
      'Jonas Matter, Robin Suter', 'manual'),
 ]
 
@@ -155,7 +154,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'plaza_routing', 'plaza_routing Documentation',
+    (master_doc, 'plazaroute', 'PlazaRoute Documentation',
      [author], 1)
 ]
 
@@ -166,8 +165,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'plaza_routing', 'plaza_routing Documentation',
-     author, 'plaza_routing', 'One line description of project.',
+    (master_doc, 'PlazaRoute', 'PlazaRoute Documentation',
+     author, 'PlazaRoute', 'One line description of project.',
      'Miscellaneous'),
 ]
 

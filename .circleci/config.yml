@@ -63,7 +63,8 @@ jobs:
             pip install -r plaza_preprocessing/requirements-dev.txt
             pip install -r plaza_routing/requirements.txt
             pip install -r plaza_routing/requirements-dev.txt
-            pip install plaza_preprocessing/ plaza_routing/
+            pip install --editable plaza_preprocessing/
+            pip install --editable plaza_routing/
       - save_cache:
           paths:
             - ./venv
@@ -72,16 +73,15 @@ jobs:
           name: generate apidoc
           command: |
             . venv/bin/activate
-            sphinx-apidoc -o plaza_preprocessing/docs -f plaza_preprocessing/plaza_preprocessing
-            sphinx-apidoc -o plaza_routing/docs -f plaza_routing/plaza_routing
+            sphinx-apidoc -o docs/plaza_preprocessing -f plaza_preprocessing/plaza_preprocessing
+            sphinx-apidoc -o docs/plaza_routing -f plaza_routing/plaza_routing
       - run:
           name: build sphinx doc
           command: |
             . venv/bin/activate
-            cd ~/repo/plaza_preprocessing/docs
+            cd ~/repo/docs
             make html
-            cd ~/repo/plaza_routing/docs
-            make html
+            rsync -a ~/repo/docs/_build/html/ ~/sphinx-build
 workflows:
   version: 2
   test_and_doc:

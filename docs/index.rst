@@ -1,16 +1,18 @@
-.. plaza_routing documentation master file, created by
-   sphinx-quickstart on Thu Nov 23 11:19:12 2017.
+.. PlazaRoute documentation master file, created by
+   sphinx-quickstart on Fri Nov 24 12:26:53 2017.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to plaza_routing's documentation!
-=========================================
+Welcome to PlazaRoute's documentation!
+======================================
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-   modules
+   plaza_routing/modules
+   plaza_preprocessing/modules
+
 
 
 Indices and tables
