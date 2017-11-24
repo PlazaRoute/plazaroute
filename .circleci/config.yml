@@ -96,10 +96,10 @@ workflows:
   test_and_doc:
     jobs:
       - test:
-          branches:
-            ignore:
-              - gh-pages
+          filters:
+            branches:
+              ignore: gh-pages
       - doc:
-        branches:
-            ignore:
-              - gh-pages
+          filters:
+            branches:
+              ignore: gh-pages
