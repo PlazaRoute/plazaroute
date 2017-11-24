@@ -53,15 +53,20 @@ jobs:
       - checkout
       - run:
           name: install dependencies
-          command: pip install sphinx sphinx-autodoc-typehints
+          command: |
+            virtualenv venv
+            . venv/bin/activate
+            pip install sphinx sphinx-autodoc-typehints
       - run:
           name: generate apidoc
           command: |
+            . venv/bin/activate
             sphinx-apidoc -o plaza_preprocessing/docs -f plaza_preprocessing/plaza_preprocessing
             sphinx-apidoc -o plaza_routing/docs -f plaza_routing/plaza_routing
       - run:
           name: build sphinx doc
           command: |
+            . venv/bin/activate
             cd ~/repo/plaza_preprocessing/docs
             make html
             cd ~/repo/plaza_routing/docs
