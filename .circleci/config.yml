@@ -103,7 +103,7 @@ workflows:
   test_and_doc:
     jobs:
       - test
-      - doc
+      - doc:
         filters:
            branches:
              only: master
