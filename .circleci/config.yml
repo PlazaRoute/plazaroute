@@ -82,6 +82,9 @@ jobs:
             cd ~/repo/docs
             make html
             cp -r ~/repo/docs/_build/html ~/sphinx-build
+      - add_ssh_keys:
+          fingerprints:
+            - "cc:48:69:7b:d3:48:ae:f8:74:fb:a3:6a:17:e4:b3:29"
       - run:
           name: deploy to gh-pages
           command: |
@@ -90,6 +93,7 @@ jobs:
             git config --global user.name "$GH_NAME" > /dev/null 2>&1
             git checkout --orphan gh-pages
             git rm -rf .
+            rm -rf venv/
             cp -a ~/sphinx-build/. .
             git add .
             git commit -m "circle ci sphinx build"
