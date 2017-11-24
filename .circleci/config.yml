@@ -96,17 +96,14 @@ jobs:
             rm -rf venv/
             cp -a ~/sphinx-build/. .
             git add .
-            git commit -m "circle ci sphinx build"
+            git commit -m "circle ci sphinx build [ci skip]"
             git push --force -u origin gh-pages
 workflows:
   version: 2
   test_and_doc:
     jobs:
-      - test:
-          filters:
-            branches:
-              ignore: gh-pages
-      - doc:
-          filters:
-            branches:
-              only: master
+      - test
+      - doc
+        # filters:
+        #    branches:
+        #      only: master
