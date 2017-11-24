@@ -86,6 +86,8 @@ jobs:
           name: deploy to gh-pages
           command: |
             cd ~/repo
+            git config --global user.email "$GH_EMAIL" > /dev/null 2>&1
+            git config --global user.name "$GH_NAME" > /dev/null 2>&1
             git checkout --orphan gh-pages
             git rm -rf .
             cp -a ~/sphinx-build/. .
