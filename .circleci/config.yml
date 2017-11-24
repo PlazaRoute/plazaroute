@@ -56,7 +56,10 @@ jobs:
           command: |
             python3 -m venv venv
             . venv/bin/activate
-            pip install sphinx sphinx-autodoc-typehints
+            pip install -r plaza_preprocessing/requirements.txt
+            pip install -r plaza_preprocessing/requirements-dev.txt
+            pip install -r plaza_routing/requirements.txt
+            pip install -r plaza_routing/requirements-dev.txt
             pip install plaza_preprocessing/ plaza_routing/
       - run:
           name: generate apidoc
