@@ -109,4 +109,4 @@ workflows:
       - doc:
           filters:
             branches:
-              ignore: gh-pages
+              only: master
