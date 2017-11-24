@@ -104,6 +104,6 @@ workflows:
     jobs:
       - test
       - doc:
-        filters:
-           branches:
-             only: master
+          filters:
+             branches:
+               only: master
