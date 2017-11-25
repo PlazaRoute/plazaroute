@@ -84,7 +84,8 @@ def _generate_path(leg: dict, start_position: tuple, exit_position: tuple) -> di
             'start_position': [*start_position],
             'exit_position': [*exit_position],
             'start_stop_uicref': leg['stopid'],
-            'exit_stop_uicref': leg['exit']['stopid']
+            'exit_stop_uicref': leg['exit']['stopid'],
+            'stopovers': _get_stopovers(leg['stops'])
             }
 
 
@@ -95,5 +96,5 @@ def _get_stopovers(stopovers: List[dict]) -> List[List[float]]:
     """
     path = []
     for stopover in stopovers:
-        path.append([coordinate_transformer.transform_ch_to_wgs(stopover['x'], stopover['y'])])
+        path.append([*coordinate_transformer.transform_ch_to_wgs(stopover['x'], stopover['y'])])
     return path
