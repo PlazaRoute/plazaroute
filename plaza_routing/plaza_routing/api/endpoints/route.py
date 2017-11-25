@@ -27,10 +27,11 @@ PublicTransportPathResponse = api.model('PublicTransportPathResponse', {
     'departure': fields.DateTime(),
     'arrival': fields.DateTime(),
     'start_position': fields.List(fields.Float),
-    'exit_position': fields.List(fields.Float)
+    'exit_position': fields.List(fields.Float),
+    'stopovers': fields.List(fields.List(fields.Float))
 })
 
-PublicTransportRouteResponse = api.model('PublicTransportRouteResponse', {
+PublicTransportConnectionResponse = api.model('PublicTransportConnectionResponse', {
     'type': fields.String(default='public_transport'),
     'duration': fields.Float,
     'number_of_legs': fields.Integer,
@@ -39,7 +40,7 @@ PublicTransportRouteResponse = api.model('PublicTransportRouteResponse', {
 
 RoutingResponse = api.model('RoutingResponse', {
     'start_walking_route': fields.Nested(WalkingRouteResponse),
-    'public_transport_route': fields.Nested(PublicTransportRouteResponse),
+    'public_transport_connection': fields.Nested(PublicTransportConnectionResponse),
     'end_walking_route': fields.Nested(WalkingRouteResponse),
     'accumulated_duration': fields.Float
 })
