@@ -31,6 +31,10 @@ class LegType(colander.SchemaType):
         return Leg().deserialize(cstruct)
 
 
+class Stopovers(colander.SequenceSchema):
+    stop = Exit()
+
+
 class Leg(colander.MappingSchema):
     departure = colander.SchemaNode(colander.String(), missing=None)
     stopid = colander.SchemaNode(colander.String())
@@ -41,6 +45,7 @@ class Leg(colander.MappingSchema):
     exit = Exit()
     x = colander.SchemaNode(colander.Int())
     y = colander.SchemaNode(colander.Int())
+    stops = Stopovers()
 
 
 class Legs(colander.SequenceSchema):
@@ -52,7 +57,7 @@ class Connection(colander.MappingSchema):
     departure = colander.SchemaNode(colander.String())
     to = colander.SchemaNode(colander.String())
     arrival = colander.SchemaNode(colander.String())
-    duration = colander.SchemaNode(colander.Int())
+    duration = colander.SchemaNode(colander.Float())
     legs = Legs()
 
 
