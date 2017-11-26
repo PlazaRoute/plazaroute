@@ -7,20 +7,20 @@ def test_get_public_transport_stops():
     expected_response = {'8503003', '8503059', '8576193', '8576195',
                          '8576196', '8591105', '8591183', '8591239'}
 
-    sechselaeutenplatz = (47.3661, 8.5458)
+    sechselaeutenplatz = (8.5458, 47.3661)
     stops = overpass_service.get_public_transport_stops(sechselaeutenplatz)
     assert expected_response == stops
 
 
 def test_get_public_transport_stops_empty_result():
-    obersee = (47.2100, 8.8249)
+    obersee = (8.8249, 47.2100)
     with pytest.raises(ValueError):
         overpass_service.get_public_transport_stops(obersee)
 
 
 def test_get_public_transport_stops_highway_bus_stops():
     expected_response = {'8503156', '8576139', '8588096', '8590851', '8589106'}
-    zimikon = (47.38516, 8.67263)
+    zimikon = (8.67263, 47.38516)
     stops = overpass_service.get_public_transport_stops(zimikon)
     assert expected_response == stops
 
@@ -30,7 +30,7 @@ def test_get_public_transport_stops_nodes_without_uic_ref():
     expected_response = {'8503006', '8580449', '8591062', '8591063',
                          '8591112', '8591256', '8591273', '8591332', '8591382'}
 
-    oerlikon_sternen = (47.41025, 8.54679)
+    oerlikon_sternen = (8.54679, 47.41025)
     stops = overpass_service.get_public_transport_stops(oerlikon_sternen)
     assert stops == expected_response
 
@@ -39,12 +39,12 @@ def test_get_start_exit_stop_position():
     """
     To get from Zürich, Messe/Hallenstadion to Zürich, Sternen Oerlikon you have to take
     the bus with the number 94 that travels from Zentrum Glatt to Zürich, Bahnhof Oerlikon
-    at a specific start public transport stop (node with id 701735028 and (47,4106724, 8,5520512)).
+    at a specific start public transport stop (node with id 701735028 and (8,5520512, 47,4106724)).
 
     Public transport stops at Zürich, Messe/Hallenstadion have the uic_ref 8591273.
     Public transport stops at Zürich, Sternen Oerlikon have the uic_ref 8591382.
     """
-    current_location = (47.41077, 8.55240)
+    current_location = (8.55240, 47.41077)
     fallback_start_position = (1, 1)  # irrelevant and will not be used
     fallback_exit_position = (1, 1)  # irrelevant and will not be used
     start_stop_uicref = '8591273'
@@ -56,8 +56,8 @@ def test_get_start_exit_stop_position():
                                                       bus_number,
                                                       fallback_start_position,
                                                       fallback_exit_position)
-    assert (47.4106724, 8.5520512) == start_position
-    assert (47.4102250, 8.5467743) == exit_position
+    assert (8.5520512, 47.4106724) == start_position
+    assert (8.5467743, 47.4102250) == exit_position
 
 
 def test_get_start_exit_stop_position_other_direction():
@@ -70,7 +70,7 @@ def test_get_start_exit_stop_position_other_direction():
     Public transport stops at Zürich, Messe/Hallenstadion have the uic_ref 8591273.
     Public transport stops at Zürich, Hallenbad Oerlikon have the uic_ref 8591175.
     """
-    current_location = (47.41077, 8.55240)
+    current_location = (8.55240, 47.41077)
     fallback_start_position = (1, 1)
     fallback_exit_position = (1, 1)
     start_stop_uicref = '8591273'
@@ -82,8 +82,8 @@ def test_get_start_exit_stop_position_other_direction():
                                                       bus_number,
                                                       fallback_start_position,
                                                       fallback_exit_position)
-    assert (47.4107102, 8.5528703) == start_position
-    assert (47.4107647, 8.5562254) == exit_position
+    assert (8.5528703, 47.4107102) == start_position
+    assert (8.5562254, 47.4107647) == exit_position
 
 
 def test_get_start_exit_stop_position_end_terminal():
@@ -94,7 +94,7 @@ def test_get_start_exit_stop_position_end_terminal():
     Public transport stops at Zürich, Sternen Oerlikon have the uic_ref 8591382.
     Public transport stops at Zürich, Bahnhof Oerlikon have the uic_ref 8580449.
     """
-    current_location = (47.41025, 8.54679)
+    current_location = (8.54679, 47.41025)
     fallback_start_position = (1, 1)
     fallback_exit_position = (1, 1)
     start_stop_uicref = '8591382'
@@ -106,8 +106,8 @@ def test_get_start_exit_stop_position_end_terminal():
                                                       bus_number,
                                                       fallback_start_position,
                                                       fallback_exit_position)
-    assert (47.4102250, 8.5467743) == start_position
-    assert (47.4114541, 8.5447442) == exit_position
+    assert (8.5467743, 47.4102250) == start_position
+    assert (8.5447442, 47.4114541) == exit_position
 
 
 def test_get_start_exit_stop_position_start_terminal():
@@ -118,7 +118,7 @@ def test_get_start_exit_stop_position_start_terminal():
     Public transport stops at Zürich, Bahnhof Oerlikon have the uic_ref 8580449.
     Public transport stops at Zürich, Sternen Oerlikon have the uic_ref 8591382.
     """
-    current_location = (47.41142, 8.54466)
+    current_location = (8.54466, 47.41142)
     fallback_start_position = (1, 1)
     fallback_exit_position = (1, 1)
     start_stop_uicref = '8580449'
@@ -130,8 +130,8 @@ def test_get_start_exit_stop_position_start_terminal():
                                                       bus_number,
                                                       fallback_start_position,
                                                       fallback_exit_position)
-    assert (47.4114541, 8.5447442) == start_position
-    assert (47.4102351, 8.5468917) == exit_position
+    assert (8.5447442, 47.4114541) == start_position
+    assert (8.5468917, 47.4102351) == exit_position
 
 
 def test_get_start_exit_stop_position_fallback():
@@ -141,7 +141,7 @@ def test_get_start_exit_stop_position_fallback():
     Both stops do not provide an uic_ref so the fallback method will be used
     to determine the start and exit public transport stop position.
     """
-    current_location = (47.34252, 8.53608)
+    current_location = (8.53608, 47.34252)
     fallback_start_position = (1, 1)
     fallback_exit_position = (1, 1)
     start_stop_uicref = '8587347'
@@ -153,8 +153,8 @@ def test_get_start_exit_stop_position_fallback():
                                                       bus_number,
                                                       fallback_start_position,
                                                       fallback_exit_position)
-    assert (47.3424624, 8.5362646) == start_position
-    assert (47.3385962, 8.5383397) == exit_position
+    assert (8.5362646, 47.3424624) == start_position
+    assert (8.5383397, 47.3385962) == exit_position
 
 
 def test_get_start_exit_stop_position_corrupt_relation():
@@ -169,9 +169,9 @@ def test_get_start_exit_stop_position_corrupt_relation():
     Public transport stops at Zürich, Bahnhof Oerlikon have the uic_ref 8503006.
     Public transport stops at Zürich, Hardbrücke have the uic_ref 8503020.
     """
-    current_location = (47.41012, 8.54644)
-    fallback_start_position = (47.41152601531714, 8.544113562238525)
-    fallback_exit_position = (47.385087296919714, 8.51768587257564)
+    current_location = (8.54644, 47.41012)
+    fallback_start_position = (8.544113562238525, 47.41152601531714)
+    fallback_exit_position = (8.51768587257564, 47.385087296919714)
     start_stop_uicref = '8503006'
     exit_stop_uicref = '8503020'
     train_number = 'S6'
@@ -181,8 +181,8 @@ def test_get_start_exit_stop_position_corrupt_relation():
                                                       train_number,
                                                       fallback_start_position,
                                                       fallback_exit_position)
-    assert (47.41152601531714, 8.544113562238525) == start_position
-    assert (47.385087296919714, 8.51768587257564) == exit_position
+    assert (8.544113562238525, 47.41152601531714) == start_position
+    assert (8.51768587257564, 47.385087296919714) == exit_position
 
 
 def test_get_start_exit_stop_position_relation_without_uic_ref():
@@ -192,9 +192,9 @@ def test_get_start_exit_stop_position_relation_without_uic_ref():
     does not exist one with it. Thus the last option is chosen and the fallback positions will be
     returned.
     """
-    current_location = (47.33937, 8.53810)
-    fallback_start_position = (47.338911019762165, 8.53813643293702)
-    fallback_exit_position = (47.36338051530903, 8.535039877782896)
+    current_location = (8.53810, 47.33937)
+    fallback_start_position = (8.53813643293702, 47.338911019762165)
+    fallback_exit_position = (8.535039877782896, 47.36338051530903)
     start_stop_uicref = '8591357'
     exit_stop_uicref = '8591317'
     bus_number = '161'
@@ -204,13 +204,13 @@ def test_get_start_exit_stop_position_relation_without_uic_ref():
                                                       bus_number,
                                                       fallback_start_position,
                                                       fallback_exit_position)
-    assert (47.338911019762165, 8.53813643293702) == start_position
-    assert (47.36338051530903, 8.535039877782896) == exit_position
+    assert (8.53813643293702, 47.338911019762165) == start_position
+    assert (8.535039877782896, 47.36338051530903) == exit_position
 
 
 def test_get_start_exit_stop_position_empty_result():
     """ an empty result set is returned by the Overpass queries based on provided parameters """
-    current_location = (47.36343, 8.53531)
+    current_location = (8.53531, 47.36343)
     fallback_start_position = (1, 1)
     fallback_exit_position = (1, 1)
     start_stop_uicref = '8591317'
@@ -231,7 +231,7 @@ def test_get_start_exit_stop_position_multiple_relations_for_line():
     Tram 5 has multiple lines with different terminals that serve the stop Zürich, Rentenanstalt
     to Zürich, Bahnhof Enge. All lines are a possible option and all start from the same stop.
     """
-    current_location = (47.36331, 8.53528)
+    current_location = (8.53528, 47.36331)
     fallback_start_position = (1, 1)
     fallback_exit_position = (1, 1)
     start_stop_uicref = '8591317'
@@ -243,8 +243,8 @@ def test_get_start_exit_stop_position_multiple_relations_for_line():
                                                       tram_number,
                                                       fallback_start_position,
                                                       fallback_exit_position)
-    assert (47.3634496, 8.5345504) == start_position
-    assert (47.3640971, 8.5314535) == exit_position
+    assert (8.5345504, 47.3634496) == start_position
+    assert (8.5314535, 47.3640971) == exit_position
 
 
 def test_get_start_exit_stop_position_multiple_relations_for_line_one_option():
@@ -253,7 +253,7 @@ def test_get_start_exit_stop_position_multiple_relations_for_line_one_option():
     to Zürich, Bahnhof Enge. But to get from Zürich, Rentenanstalt to Bahnhof Enge/Bederstrasse
     just on line is a possible option.
     """
-    current_location = (47.36331, 8.53528)
+    current_location = (8.53528, 47.36331)
     fallback_start_position = (1, 1)
     fallback_exit_position = (1, 1)
     start_stop_uicref = '8591317'
@@ -265,5 +265,5 @@ def test_get_start_exit_stop_position_multiple_relations_for_line_one_option():
                                                       tram_number,
                                                       fallback_start_position,
                                                       fallback_exit_position)
-    assert (47.3634496, 8.5345504) == start_position
-    assert (47.3645340, 8.5302541) == exit_position
+    assert (8.5345504, 47.3634496) == start_position
+    assert (8.5302541, 47.3645340) == exit_position

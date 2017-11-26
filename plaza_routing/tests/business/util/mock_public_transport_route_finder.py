@@ -37,14 +37,14 @@ def _mock_test_get_public_transport_route_get_connection(start, destination):
 def _mock_test_get_public_transport_route_get_start_exit_stop_position(start_uic_ref, line):
     # Test: test_get_public_transport_route_single_leg
     if start_uic_ref == '8587347' and line == '161':
-        return (47.3424624, 8.5362646), (47.3349277, 8.5416616)
+        return (8.5362646, 47.3424624), (8.5416616, 47.3349277)
 
     # Test: test_get_public_transport_route_filtered_walking_leg
     elif start_uic_ref == '8591304' and line == '7':
-        return (47.3448353, 8.5333468), (47.3643805, 8.5314319)
+        return (8.5333468, 47.3448353), (8.5314319, 47.3643805)
 
     # Test: test_get_public_transport_route_filtered_multiple_leg
     elif start_uic_ref == '8591357' and line == '161':
-        return (47.338911019762165, 8.53813643293702), (47.36338051530903, 8.535039877782896)
+        return (8.53813643293702, 47.338911019762165), (8.535039877782896, 47.36338051530903)
     elif start_uic_ref == '8591317' and line == '5':
-        return (47.3634496, 8.5345504), (47.3640971, 8.5314535)
+        return (8.5345504, 47.3634496), (8.5314535, 47.3640971)

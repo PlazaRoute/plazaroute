@@ -5,7 +5,7 @@ from plaza_routing.integration import geocoding_service
 
 def test_geocoding():
     result = geocoding_service.geocode('Oberseestrasse 10, Rapperswil-Jona')
-    assert (47.2229673, 8.816392) == result
+    assert (8.816392, 47.2229673) == result
 
 
 def test_geocoding_no_coordinates_found():

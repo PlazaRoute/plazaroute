@@ -31,4 +31,4 @@ def test_get_connection_same_start_and_destination():
         search_ch_service.get_connection('Zürich, Hallenstadionn',
                                          'Zürich, Messe/Hallenstadion',
                                          '07:00')
-    # TODO should we handle this case with a deticated validation before we pass the response to the parser
+    # TODO should we handle this case with a dedicated validation before we pass the response to the parser
