@@ -19,7 +19,8 @@ def test_get_public_transport_route_single_leg(monkeypatch):
             'start_position': [47.3424624, 8.5362646],
             'exit_position': [47.3349277, 8.5416616],
             'start_stop_uicref': '8587347',
-            'exit_stop_uicref': '8591378'
+            'exit_stop_uicref': '8591378',
+            'stopovers': [[47.338911019762165, 8.53813643293702]]
         }],
         'duration': 180,
         'number_of_legs': 1
@@ -45,7 +46,9 @@ def test_get_public_transport_route_filtered_walking_leg(monkeypatch):
             'start_position': [47.3448353, 8.5333468],
             'exit_position': [47.3643805, 8.5314319],
             'start_stop_uicref': '8591304',
-            'exit_stop_uicref': '8591058'
+            'exit_stop_uicref': '8591058',
+            'stopovers': [[47.3470293465808, 8.532917131553525], [47.35146391904956, 8.531975688485307],
+                          [47.35613015465174, 8.53221694130198], [47.36071496835658, 8.531556360868755]]
         }],
         'duration': 840,
         'number_of_legs': 1
@@ -73,7 +76,10 @@ def test_get_public_transport_route_filtered_multiple_leg(monkeypatch):
             'start_position': [47.338911019762165, 8.53813643293702],
             'exit_position': [47.36338051530903, 8.535039877782896],
             'start_stop_uicref': '8591357',
-            'exit_stop_uicref': '8591317'
+            'exit_stop_uicref': '8591317',
+            'stopovers': [[47.34272717279221, 8.536018254050866], [47.347582510434506, 8.53434462886726],
+                          [47.35098380529947, 8.534229187336443], [47.354923072728766, 8.534296858420255],
+                          [47.35987691121706, 8.53551062114295]]
         },
         {
             'name': 'Zürich, Rentenanstalt',
@@ -86,7 +92,8 @@ def test_get_public_transport_route_filtered_multiple_leg(monkeypatch):
             'start_position': [47.3634496, 8.5345504],
             'exit_position': [47.3640971, 8.5314535],
             'start_stop_uicref': '8591317',
-            'exit_stop_uicref': '8591058'
+            'exit_stop_uicref': '8591058',
+            'stopovers': []
         }]
     }
 
