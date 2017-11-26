@@ -4,7 +4,7 @@
 #
 version: 2
 jobs:
-  build:
+  test:
     docker:
       - image: excap/plazaroute-ci
 
@@ -42,4 +42,68 @@ jobs:
             pytest plaza_routing
             pip install --editable plaza_preprocessing/
             pytest plaza_preprocessing
-          
+
+  doc:
+    docker:
+      - image: excap/plazaroute-ci
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - plazaroute-deps-{{ checksum "plaza_routing/requirements.txt" }}{{ checksum "plaza_preprocessing/requirements.txt" }}{{ checksum "plaza_routing/requirements-dev.txt" }}{{ checksum "plaza_preprocessing/requirements-dev.txt" }}
+      - run:
+          name: install dependencies
+          command: |
+            virtualenv venv
+            . venv/bin/activate
+            pip install -r plaza_preprocessing/requirements.txt
+            pip install -r plaza_preprocessing/requirements-dev.txt
+            pip install -r plaza_routing/requirements.txt
+            pip install -r plaza_routing/requirements-dev.txt
+            pip install --editable plaza_preprocessing/
+            pip install --editable plaza_routing/
+      - save_cache:
+          paths:
+            - ./venv
+          key: plazaroute-deps-{{ checksum "plaza_routing/requirements.txt" }}{{ checksum "plaza_preprocessing/requirements.txt" }}{{ checksum "plaza_routing/requirements-dev.txt" }}{{ checksum "plaza_preprocessing/requirements-dev.txt" }}
+      - run:
+          name: generate apidoc
+          command: |
+            . venv/bin/activate
+            sphinx-apidoc -o docs/plaza_preprocessing -f plaza_preprocessing/plaza_preprocessing
+            sphinx-apidoc -o docs/plaza_routing -f plaza_routing/plaza_routing
+      - run:
+          name: build sphinx doc
+          command: |
+            . venv/bin/activate
+            cd ~/repo/docs
+            make html
+            cp -r ~/repo/docs/_build/html ~/sphinx-build
+      - add_ssh_keys:
+          fingerprints:
+            - "cc:48:69:7b:d3:48:ae:f8:74:fb:a3:6a:17:e4:b3:29"
+      - run:
+          name: deploy to gh-pages
+          command: |
+            cd ~/repo
+            git config --global user.email "$GH_EMAIL" > /dev/null 2>&1
+            git config --global user.name "$GH_NAME" > /dev/null 2>&1
+            git checkout --orphan gh-pages
+            git rm -rf .
+            rm -rf venv/
+            cp -a ~/sphinx-build/. .
+            git add .
+            git commit -m "circle ci sphinx build [ci skip]"
+            git push --force -u origin gh-pages
+workflows:
+  version: 2
+  test_and_doc:
+    jobs:
+      - test
+      - doc:
+          filters:
+             branches:
+               only: master
