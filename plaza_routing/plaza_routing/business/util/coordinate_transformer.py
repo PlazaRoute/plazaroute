@@ -1,6 +1,6 @@
 
 def transform_ch_to_wgs(x, y):
-    return _transform_ch_to_wgs_lat(x, y), _transform_ch_to_wgs_lng(x, y)
+    return _transform_ch_to_wgs_lng(x, y), _transform_ch_to_wgs_lat(x, y)
 
 
 def _transform_ch_to_wgs_lat(y, x):

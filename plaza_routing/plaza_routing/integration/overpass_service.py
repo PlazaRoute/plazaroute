@@ -265,11 +265,11 @@ def _get_public_transport_stop_node(lines: list) -> tuple:
     if start_node_modify_counter > 1 or not start_node or not exit_node:
         raise ValueError("Could not retrieve start and exit node because of an incorrect order in the relation")
     else:
-        return (float(start_node.lat), float(start_node.lon)), \
-               (float(exit_node.lat), float(exit_node.lon))
+        return (float(start_node.lon), float(start_node.lat)), \
+               (float(exit_node.lon), float(exit_node.lat))
 
 
-def _parse_bounding_box(latitude: float, longitude: float, buffer_meters=BOUNDING_BOX_BUFFER_METERS) -> str:
+def _parse_bounding_box(longitude: float, latitude: float, buffer_meters=BOUNDING_BOX_BUFFER_METERS) -> str:
     """ calculates the bounding box for a specific location and a given buffer """
     buffer_degrees = _meters_to_degrees(buffer_meters)
 

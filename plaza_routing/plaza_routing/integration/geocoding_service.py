@@ -17,4 +17,4 @@ def geocode(address: str) -> tuple:
     if not result:
         raise ValueError(f'no coordinates found for the given address {address}')
 
-    return float(result[0]['lat']), float(result[0]['lon'])
+    return float(result[0]['lon']), float(result[0]['lat'])
