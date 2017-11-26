@@ -39,38 +39,38 @@ def _mock_test_find_route_get_walking_route(start, destination):
 
     # overall walking route from 8.55546, 47.41071 to Zürich, Hardbrücke
     if start == (8.55546, 47.41071) and destination == (8.51976218438478, 47.38790425):
-        file_name = '47_41071_8_55546_to_47_38790425_8_51976218438478.json'
+        file_name = '8_55546_47_41071_to_8_51976218438478_47_38790425.json'
 
     # start walking route from 8.55546, 47.41071 to the following public transport stops
     if start == (8.55546, 47.41071):
         # Zürich, Messe/Hallenstadion
         if destination == (8.5520512, 47.4106724):
-            file_name = '47_41071_8_55546_to_messe_hallenstadion.json'
+            file_name = '8_55546_47_41071_to_messe_hallenstadion.json'
         # Zürich, Hallenbad Oerlikon
         elif destination == (8.5554806, 47.4107529):
-            file_name = '47_41071_8_55546_to_hallenbad_oerlikon.json'
+            file_name = '8_55546_47_41071_to_hallenbad_oerlikon.json'
         # Zürich, Riedgraben
         elif destination == (8.5592585, 47.4108265):
-            file_name = '47_41071_8_55546_to_riedgraben.json'
+            file_name = '8_55546_47_41071_to_riedgraben.json'
         # Zürich, Riedbach
         elif destination == (8.5584518, 47.414522):
-            file_name = '47_41071_8_55546_to_riedbach.json'
+            file_name = '8_55546_47_41071_to_riedbach.json'
         # Zürich, Leutschenbach
         elif destination == (8.5511875, 47.4145557):
-            file_name = '47_41071_8_55546_to_leutschenbach.json'
+            file_name = '8_55546_47_41071_to_leutschenbach.json'
         # Zürich, Hagenholz
         elif destination == (8.55528, 47.41446):
-            file_name = '47_41071_8_55546_to_hagenholz.json'
+            file_name = '8_55546_47_41071_to_hagenholz.json'
 
     # end walking leg from Zürich, Hardbrücke on different tracks to 8.51976218438478, 47.38790425
     if destination == (8.51976218438478, 47.38790425):
         # arriving from Zürich, Hallenbad Oerlikon, Zürich, Leutschenbach,
         # Zürich, Messe/Hallenstadion and Zürich, Riedgraben on track 2
         if start == (8.51768587257564, 47.385087296919714):
-            file_name = 'hardbruecke_track2_to_47_38790425_8_51976218438478.json'
+            file_name = 'hardbruecke_track2_to_8_51976218438478_47_38790425.json'
         # arriving from Zürich, Riedbach, Zürich, Hagenholz on track 3
         elif start == (8.5173926, 47.3851609):
-            file_name = 'hardbruecke_track3_to_47_38790425_8_51976218438478.json'
+            file_name = 'hardbruecke_track3_to_8_51976218438478_47_38790425.json'
 
     return utils.get_json_file(file_name, 'walking_route')
 
@@ -80,7 +80,7 @@ def _mock_test_find_route_only_walking_get_walking_route(start, destination):
     if start == (8.55546, 47.41071):
         #  Zürich, Messe/Hallenstadion
         if destination == (8.5510247, 47.4109266):
-            file_name = '47_41071_8_55546_to_messe_hallenstadion_only_walking.json'
+            file_name = '8_55546_47_41071_to_messe_hallenstadion_only_walking.json'
 
     return utils.get_json_file(file_name, 'walking_route')
 
