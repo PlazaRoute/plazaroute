@@ -97,5 +97,5 @@ def _convert_walking_route_to_overall_response(walking_route: dict) -> dict:
 if __name__ == "__main__":
     import time
     start_time = time.time()
-    print(find_route('47.41071, 8.55546', 'Zürich, Hardbrücke', '14:42'))
+    print(find_route('8.55546, 47.41071', 'Zürich, Hardbrücke', '14:42'))
     print(time.time() - start_time)
