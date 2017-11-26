@@ -15,7 +15,7 @@ class GraphHopperRoutingStrategy(RoutingStrategy):
 
     def route(self, start, destination):
         response = self._client.Routing.get_route(
-            point=[f'{start[0]},{start[1]}', f'{destination[0]},{destination[1]}'],
+            point=[f'{start[1]},{start[0]}', f'{destination[1]},{destination[0]}'],
             vehicle='foot',
             points_encoded=False,
             instructions=False,
