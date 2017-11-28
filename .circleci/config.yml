@@ -6,7 +6,7 @@ version: 2
 jobs:
   test:
     docker:
-      - image: excap/plazaroute-ci
+      - image: excape/plazaroute-ci
 
     working_directory: ~/repo
 
