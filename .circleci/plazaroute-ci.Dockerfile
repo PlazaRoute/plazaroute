@@ -9,8 +9,8 @@ RUN apt-get install -y git ssh tar gzip ca-certificates
 # install osmosis
 RUN apt-get install -y osmosis
 
-# install python 3.6 and requirements for osmium
-RUN apt-get install -y build-essential libboost-python-dev libexpat1-dev zlib1g-dev libbz2-dev python3.6 python3.6-dev python3-venv wget
+# install python 3.6 and requirements for osmium and rtree
+RUN apt-get install -y build-essential libboost-python-dev libexpat1-dev zlib1g-dev libbz2-dev libspatialindex-dev python3.6 python3.6-dev python3-venv wget
 
 # install pip3
 RUN wget https://bootstrap.pypa.io/get-pip.py

@@ -175,7 +175,7 @@ class PlazaPreprocessor:
 
     def _create_spatial_index(self, geometries):
         """ create rtree index for fast intersection checking """
-        logger.debug(f"creating spacial index for {len(geometries)} geometries")
+        logger.debug(f"creating spatial index for {len(geometries)} geometries")
         idx = rtree.index.Index()
         for i, geometry in enumerate(geometries):
             idx.insert(i, geometry.bounds)
