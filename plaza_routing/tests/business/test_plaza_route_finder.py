@@ -22,3 +22,13 @@ def test_find_route_only_walking(monkeypatch):
     expected_response = utils.get_json_file('find_route_only_walking_expected_result.json')
     assert expected_response == plaza_route_finder.find_route('8.55546, 47.41071', 'Zürich, Messe/Hallenstadion',
                                                               '14:42')
+
+
+def test_calc_public_transport_departure(monkeypatch):
+    """
+    It takes 609 seconds to get from 8.55546, 47.41071 to 8.55528, 47.41446,
+    thus 609 seconds will be added to the provided departure time.
+    """
+    mock.mock_test_find_route(monkeypatch)
+    departure = plaza_route_finder._calc_public_transport_departure('14:42', (8.55546, 47.41071), (8.55528, 47.41446))
+    assert '14:52' == departure

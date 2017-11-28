@@ -4,8 +4,14 @@ from plaza_routing.integration import overpass_service
 
 
 def test_get_public_transport_stops():
-    expected_response = {'8503003', '8503059', '8576193', '8576195',
-                         '8576196', '8591105', '8591183', '8591239'}
+    expected_response = {'8503003': (8.548905, 47.3667641),
+                         '8503059': (8.5476516, 47.366096),
+                         '8576193': (8.5452709, 47.3668796),
+                         '8576195': (8.5475966, 47.3654462),
+                         '8576196': (8.5497919, 47.3631108),
+                         '8591105': (8.5410387, 47.36671),
+                         '8591183': (8.543454, 47.3697527),
+                         '8591239': (8.5488279, 47.3704886)}
 
     sechselaeutenplatz = (8.5458, 47.3661)
     stops = overpass_service.get_public_transport_stops(sechselaeutenplatz)
@@ -19,7 +25,11 @@ def test_get_public_transport_stops_empty_result():
 
 
 def test_get_public_transport_stops_highway_bus_stops():
-    expected_response = {'8503156', '8576139', '8588096', '8590851', '8589106'}
+    expected_response = {'8503156': (8.6763104, 47.3885244),
+                         '8576139': (8.6693169, 47.385078),
+                         '8588096': (8.6729401, 47.3810815),
+                         '8590851': (8.6750212, 47.3894071),
+                         '8589106': (8.672184, 47.3850302)}
     zimikon = (8.67263, 47.38516)
     stops = overpass_service.get_public_transport_stops(zimikon)
     assert expected_response == stops
@@ -27,8 +37,15 @@ def test_get_public_transport_stops_highway_bus_stops():
 
 def test_get_public_transport_stops_nodes_without_uic_ref():
     """" nodes without uic_refs should be discarded, they are ususally part of a relation"""
-    expected_response = {'8503006', '8580449', '8591062', '8591063',
-                         '8591112', '8591256', '8591273', '8591332', '8591382'}
+    expected_response = {'8503006': (8.5443229, 47.411993),
+                         '8580449': (8.5451866, 47.4112813),
+                         '8591062': (8.5436738, 47.4122603),
+                         '8591063': (8.5460144, 47.4134202),
+                         '8591112': (8.5491924, 47.4073923),
+                         '8591256': (8.5513423, 47.4145863),
+                         '8591273': (8.5514849, 47.4109665),
+                         '8591332': (8.5483044, 47.4062742),
+                         '8591382': (8.5465421, 47.4098956)}
 
     oerlikon_sternen = (8.54679, 47.41025)
     stops = overpass_service.get_public_transport_stops(oerlikon_sternen)
@@ -153,8 +170,8 @@ def test_get_start_exit_stop_position_fallback():
                                                       bus_number,
                                                       fallback_start_position,
                                                       fallback_exit_position)
-    assert (8.5362646, 47.3424624) == start_position
-    assert (8.5383397, 47.3385962) == exit_position
+    assert (8.5363033, 47.3424100) == start_position
+    assert (8.5383420, 47.3385681) == exit_position
 
 
 def test_get_start_exit_stop_position_corrupt_relation():
@@ -181,8 +198,8 @@ def test_get_start_exit_stop_position_corrupt_relation():
                                                       train_number,
                                                       fallback_start_position,
                                                       fallback_exit_position)
-    assert (8.544113562238525, 47.41152601531714) == start_position
-    assert (8.51768587257564, 47.385087296919714) == exit_position
+    assert fallback_start_position == start_position
+    assert fallback_exit_position == exit_position
 
 
 def test_get_start_exit_stop_position_relation_without_uic_ref():
@@ -204,8 +221,8 @@ def test_get_start_exit_stop_position_relation_without_uic_ref():
                                                       bus_number,
                                                       fallback_start_position,
                                                       fallback_exit_position)
-    assert (8.659549027875455, 47.383981347638574) == start_position
-    assert (8.668385753719784, 47.38524594245153) == exit_position
+    assert fallback_start_position == start_position
+    assert fallback_exit_position == exit_position
 
 
 def test_get_start_exit_stop_position_empty_result():
@@ -222,8 +239,8 @@ def test_get_start_exit_stop_position_empty_result():
                                                       tram_number,
                                                       fallback_start_position,
                                                       fallback_exit_position)
-    assert (1, 1) == start_position
-    assert (1, 1) == exit_position
+    assert fallback_start_position == start_position
+    assert fallback_exit_position == exit_position
 
 
 def test_get_start_exit_stop_position_multiple_relations_for_line():
