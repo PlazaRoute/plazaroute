@@ -187,25 +187,25 @@ def test_get_start_exit_stop_position_corrupt_relation():
 
 def test_get_start_exit_stop_position_relation_without_uic_ref():
     """
-    Start node does not have an uic_ref, the exit node however holds an uic_ref. The first retrieval method fill fail
+    Start node has an uic_ref, the exit node however does not hold one. The first retrieval method fill fail
     because of this. For the exit node it is not possible to retrieve relations based on the exit_uic_ref because there
-    does not exist one with it. Thus the last option is chosen and the fallback positions will be
+    does not exist a relation with it. Thus the last option is chosen and the fallback positions will be
     returned.
     """
-    current_location = (8.53810, 47.33937)
-    fallback_start_position = (8.53813643293702, 47.338911019762165)
-    fallback_exit_position = (8.535039877782896, 47.36338051530903)
-    start_stop_uicref = '8591357'
-    exit_stop_uicref = '8591317'
-    bus_number = '161'
+    current_location = (8.66724, 47.38510)
+    fallback_start_position = (8.659549027875455, 47.383981347638574)
+    fallback_exit_position = (8.668385753719784, 47.38524594245153)
+    start_stop_uicref = '8576139'
+    exit_stop_uicref = '8576127'
+    bus_number = '720'
     start_position, exit_position = \
         overpass_service.get_start_exit_stop_position(current_location,
                                                       start_stop_uicref, exit_stop_uicref,
                                                       bus_number,
                                                       fallback_start_position,
                                                       fallback_exit_position)
-    assert (8.53813643293702, 47.338911019762165) == start_position
-    assert (8.535039877782896, 47.36338051530903) == exit_position
+    assert (8.659549027875455, 47.383981347638574) == start_position
+    assert (8.668385753719784, 47.38524594245153) == exit_position
 
 
 def test_get_start_exit_stop_position_empty_result():
