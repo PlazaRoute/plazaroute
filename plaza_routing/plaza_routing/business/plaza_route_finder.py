@@ -1,5 +1,6 @@
 from ast import literal_eval
 from typing import List
+from datetime import datetime, timedelta
 import logging
 
 from plaza_routing.business import walking_route_finder
@@ -44,11 +45,14 @@ def _get_route_combinations(start: tuple, destination_address: str, departure) -
 
     routes = []
     logger.debug(public_transport_stops)
-    for public_transport_stop in public_transport_stops:
-        logger.debug(f'retrieve route with start at public transport stop: {public_transport_stop}')
-        public_transport_route = public_transport_route_finder.get_public_transport_route(public_transport_stop,
+    for public_transport_stop_uic_ref, public_transport_stop_position in public_transport_stops.items():
+        logger.debug(f'retrieve route with start at public transport stop: {public_transport_stop_uic_ref}')
+
+        public_transport_departure = _calc_public_transport_departure(departure, start, public_transport_stop_position)
+
+        public_transport_route = public_transport_route_finder.get_public_transport_route(public_transport_stop_uic_ref,
                                                                                           destination_address,
-                                                                                          departure)
+                                                                                          public_transport_departure)
         public_transport_route_start = \
             public_transport_route_finder.get_start_position(public_transport_route)
         start_walking_route = walking_route_finder.get_walking_route(start, public_transport_route_start)
@@ -92,6 +96,19 @@ def _convert_walking_route_to_overall_response(walking_route: dict) -> dict:
         'end_walking_route': {},
         'accumulated_duration': walking_route['duration']
     }
+
+
+def _calc_public_transport_departure(departure: str, start: tuple, destination: tuple) -> str:
+    """
+    Adds the duration that it takes to get from start to destination to the provided departure time.
+    The destination should be a public transport stop to make sure that the pedestrian has enough time to catch
+    the public transport.
+    """
+    walking_route = walking_route_finder.get_walking_route(start, destination)
+
+    initial_departure = datetime.strptime(departure, '%H:%M')
+    public_transport_departure = initial_departure + timedelta(seconds=walking_route['duration'])
+    return '{:%H:%M}'.format(public_transport_departure)
 
 
 if __name__ == "__main__":
