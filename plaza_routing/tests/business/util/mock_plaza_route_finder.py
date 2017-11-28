@@ -42,24 +42,26 @@ def _mock_test_find_route_get_walking_route(start, destination):
         file_name = '8_55546_47_41071_to_8_51976218438478_47_38790425.json'
 
     # start walking route from 8.55546, 47.41071 to the following public transport stops
+    # the second destination is the one provided in get_public_transport_stops
+    # that is used to calculate the public transport departure
     if start == (8.55546, 47.41071):
         # Zürich, Messe/Hallenstadion
-        if destination == (8.5520512, 47.4106724):
+        if destination == (8.5520512, 47.4106724) or destination == (8.5514849, 47.4109665):
             file_name = '8_55546_47_41071_to_messe_hallenstadion.json'
         # Zürich, Hallenbad Oerlikon
-        elif destination == (8.5554806, 47.4107529):
+        elif destination == (8.5554806, 47.4107529) or destination == (8.5554806, 47.4107529):
             file_name = '8_55546_47_41071_to_hallenbad_oerlikon.json'
         # Zürich, Riedgraben
-        elif destination == (8.5592585, 47.4108265):
+        elif destination == (8.5592585, 47.4108265) or destination == (8.5583961, 47.4108071):
             file_name = '8_55546_47_41071_to_riedgraben.json'
         # Zürich, Riedbach
-        elif destination == (8.5584518, 47.414522):
+        elif destination == (8.5584518, 47.414522) or destination == (8.5584518, 47.414522):
             file_name = '8_55546_47_41071_to_riedbach.json'
         # Zürich, Leutschenbach
-        elif destination == (8.5511875, 47.4145557):
+        elif destination == (8.5511875, 47.4145557) or destination == (8.5513423, 47.4145863):
             file_name = '8_55546_47_41071_to_leutschenbach.json'
         # Zürich, Hagenholz
-        elif destination == (8.55528, 47.41446):
+        elif destination == (8.55528, 47.41446) or destination == (8.55528, 47.41446):
             file_name = '8_55546_47_41071_to_hagenholz.json'
 
     # end walking leg from Zürich, Hardbrücke on different tracks to 8.51976218438478, 47.38790425
@@ -87,26 +89,29 @@ def _mock_test_find_route_only_walking_get_walking_route(start, destination):
 
 def _mock_test_find_route_get_public_transport_stops(start):
     if start == (8.55546, 47.41071):
-        return {'Zürich, Messe/Hallenstadion', 'Zürich, Hallenbad Oerlikon',
-                'Zürich, Riedgraben', 'Zürich, Riedbach',
-                'Zürich, Leutschenbach', 'Zürich, Hagenholz'}
+        return {'8591318': (8.5584518, 47.414522),      # Zürich, Riedbach
+                '8591256': (8.5513423, 47.4145863),     # Zürich, Leutschenbach
+                '8591319': (8.5583961, 47.4108071),     # Zürich, Riedgraben
+                '8591273': (8.5514849, 47.4109665),     # Zürich, Messe/Hallenstadion
+                '8591172': (8.55528, 47.41446),         # Zürich, Hagenholz
+                '8591175': (8.5554806, 47.4107529)}     # Zürich, Hallenbad Oerlikon
     assert False
 
 
 def _mock_test_find_route_get_public_transport_route(public_transport_stop):
     file_name = ''
 
-    if public_transport_stop == 'Zürich, Messe/Hallenstadion':
+    if public_transport_stop == '8591273':  # Zürich, Messe/Hallenstadion
         file_name = 'messe_hallenstadion_hardbruecke.json'
-    elif public_transport_stop == 'Zürich, Hallenbad Oerlikon':
+    elif public_transport_stop == '8591175':  # Zürich, Hallenbad Oerlikon
         file_name = 'hallenbad_oerlikon_hardbruecke.json'
-    elif public_transport_stop == 'Zürich, Riedgraben':
+    elif public_transport_stop == '8591319':  # Zürich, Riedgraben
         file_name = 'riedgraben_hardbruecke.json'
-    elif public_transport_stop == 'Zürich, Riedbach':
+    elif public_transport_stop == '8591318':  # Zürich, Riedbach
         file_name = 'riedbach_hardbruecke.json'
-    elif public_transport_stop == 'Zürich, Leutschenbach':
+    elif public_transport_stop == '8591256':  # Zürich, Leutschenbach
         file_name = 'leutschenbach_hardbruecke.json'
-    elif public_transport_stop == 'Zürich, Hagenholz':
+    elif public_transport_stop == '8591172':  # Zürich, Hagenholz
         file_name = 'hagenholz_hardbruecke.json'
 
     return utils.get_json_file(file_name, 'public_transport_route')

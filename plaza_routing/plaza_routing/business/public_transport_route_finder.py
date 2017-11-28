@@ -1,4 +1,4 @@
-from typing import Set, List
+from typing import List
 import logging
 
 from plaza_routing.business.util import coordinate_transformer
@@ -9,7 +9,7 @@ from plaza_routing.integration import search_ch_service
 logger = logging.getLogger('plaza_routing.public_transport_route_finder')
 
 
-def get_public_transport_stops(start: tuple) -> Set[str]:
+def get_public_transport_stops(start: tuple) -> dict:
     return overpass_service.get_public_transport_stops(start)
 
 

@@ -1,4 +1,4 @@
-from typing import Set, Tuple
+from typing import Tuple
 import logging
 import overpy
 import math
@@ -12,28 +12,30 @@ API = overpy.Overpass(url=OVERPASS_API_URL)
 logger = logging.getLogger('plaza_routing.overpass_service')
 
 
-def get_public_transport_stops(start_position: tuple) -> Set[str]:
-    """ retrieves all public transport stop names for a specific location in a given range """
+def get_public_transport_stops(start_position: tuple) -> dict:
+    """ retrieves all public transport stops for a specific location in a given range """
     bbox = _parse_bounding_box(*start_position)
     query_str = f"""
         [bbox:{bbox}];
-        (
-            node["public_transport"="stop_position"];node["highway"="bus_stop"];
-            rel["type"="public_transport"];
-        );
+        node["public_transport"="stop_position"];node["highway"="bus_stop"];
         out body;
+        rel["type"="public_transport"];
+        out center;
         """
 
     public_transport_stops = API.query(query_str)
 
-    public_transport_stops_nodes = filter(
+    filtered_public_transport_stops_nodes = filter(
         lambda node: 'uic_ref' in node.tags, public_transport_stops.nodes)
-    public_transport_stops_relations = filter(
+    filtered_public_transport_stops_relations = filter(
         lambda rel: 'uic_ref' in rel.tags, public_transport_stops.relations)
 
-    public_transport_refs = set(stop.tags['uic_ref'] for stop in public_transport_stops_nodes).union(
-        set(stop.tags['uic_ref'] for stop in public_transport_stops_relations)
-    )
+    public_transport_stop_nodes = {stop.tags['uic_ref']: (float(stop.lon), float(stop.lat))
+                                   for stop in filtered_public_transport_stops_nodes}
+    public_transport_stop_rels = {stop.tags['uic_ref']: (float(stop.center_lon), float(stop.center_lat))
+                                  for stop in filtered_public_transport_stops_relations}
+
+    public_transport_refs = {**public_transport_stop_nodes, **public_transport_stop_rels}
 
     if len(public_transport_refs) == 0:
         raise ValueError('no public transport stops found for the given location and range')
