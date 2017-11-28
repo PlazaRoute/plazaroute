@@ -170,8 +170,8 @@ def test_get_start_exit_stop_position_fallback():
                                                       bus_number,
                                                       fallback_start_position,
                                                       fallback_exit_position)
-    assert (8.5362646, 47.3424624) == start_position
-    assert (8.5383397, 47.3385962) == exit_position
+    assert (8.5363033, 47.3424100) == start_position
+    assert (8.5383420, 47.3385681) == exit_position
 
 
 def test_get_start_exit_stop_position_corrupt_relation():
@@ -198,8 +198,8 @@ def test_get_start_exit_stop_position_corrupt_relation():
                                                       train_number,
                                                       fallback_start_position,
                                                       fallback_exit_position)
-    assert (8.544113562238525, 47.41152601531714) == start_position
-    assert (8.51768587257564, 47.385087296919714) == exit_position
+    assert fallback_start_position == start_position
+    assert fallback_exit_position == exit_position
 
 
 def test_get_start_exit_stop_position_relation_without_uic_ref():
@@ -221,8 +221,8 @@ def test_get_start_exit_stop_position_relation_without_uic_ref():
                                                       bus_number,
                                                       fallback_start_position,
                                                       fallback_exit_position)
-    assert (8.659549027875455, 47.383981347638574) == start_position
-    assert (8.668385753719784, 47.38524594245153) == exit_position
+    assert fallback_start_position == start_position
+    assert fallback_exit_position == exit_position
 
 
 def test_get_start_exit_stop_position_empty_result():
@@ -239,8 +239,8 @@ def test_get_start_exit_stop_position_empty_result():
                                                       tram_number,
                                                       fallback_start_position,
                                                       fallback_exit_position)
-    assert (1, 1) == start_position
-    assert (1, 1) == exit_position
+    assert fallback_start_position == start_position
+    assert fallback_exit_position == exit_position
 
 
 def test_get_start_exit_stop_position_multiple_relations_for_line():
