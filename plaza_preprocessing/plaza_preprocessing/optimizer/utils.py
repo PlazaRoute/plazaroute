@@ -53,6 +53,7 @@ def line_visible(plaza_geometry, line):
     """ check if the line is "visible", i.e. unobstructed through the plaza """
     return line.equals(plaza_geometry.intersection(line))
 
+
 def timing(f):
     """ decorator function to measure runtime of a function """
     def wrap(*args):
