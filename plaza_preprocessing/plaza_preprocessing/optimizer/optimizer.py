@@ -1,5 +1,6 @@
 import logging
 from typing import List
+import rtree
 from shapely.geometry import Point, MultiPolygon, Polygon, LineString, box
 from plaza_preprocessing.optimizer import utils
 from plaza_preprocessing.optimizer import shortest_paths
@@ -32,6 +33,11 @@ class PlazaPreprocessor:
         self.graph_processor = graph_processor
         self.shortest_path_strategy = shortest_path_strategy
 
+        line_geometries = [line['geometry'] for line in self.lines]
+        self.line_index = self._create_spatial_index(line_geometries)
+        self.building_index = self._create_spatial_index(self.buildings)
+        self.point_index = self._create_spatial_index(self.points)
+
     def process_plazas(self):
         """ process all plazas in the osm holder"""
         processed_plazas = []
@@ -46,7 +52,7 @@ class PlazaPreprocessor:
     def _process_plaza(self, plaza):
         """ process a single plaza """
 
-        intersecting_lines = self._find_intersescting_lines(plaza['geometry'])
+        intersecting_lines = self._find_intersecting_lines(plaza['geometry'])
 
         entry_points = self._calc_entry_points(plaza['geometry'], intersecting_lines)
 
@@ -115,27 +121,26 @@ class PlazaPreprocessor:
                 })
         return entry_lines
 
-    def _find_intersescting_lines(self, plaza_geometry):
+    def _find_intersecting_lines(self, plaza_geometry):
         """ return every line that intersects with the plaza """
-        # filtering is slower than checking every line
-        # bbox_buffer = 5 * 10**-3  # about 500m
-        # lines_in_approx = list(
-        #     filter(lambda l: line_in_plaza_approx(l, plaza_geometry, buffer=bbox_buffer), lines))
         intersecting_lines = []
-        for line in self.lines:
+        potential_matches = self._search_index(
+            self.line_index, plaza_geometry.bounds, self.lines)
+        for line in potential_matches:
             if plaza_geometry.intersects(line['geometry']):
                 intersecting_lines.append(line)
+
         return intersecting_lines
 
     def _calc_obstacle_geometry(self, plaza, buffer_m):
         """ cuts out holes for obstacles on the plaza geometry """
-        intersecting_buildings = self._find_intersecting_buildings(plaza)
+        intersecting_buildings = self._find_intersecting_buildings(plaza['geometry'])
 
         geometry_without_buildings = plaza['geometry']
         for building in intersecting_buildings:
             geometry_without_buildings = geometry_without_buildings.difference(building)
 
-        points_on_plaza = self._get_points_inside_plaza(plaza)
+        points_on_plaza = self._get_points_inside_plaza(plaza['geometry'])
         point_obstacles = list(
             map(lambda p: self._create_point_obstacle(p, buffer_m), points_on_plaza))
 
@@ -156,13 +161,33 @@ class PlazaPreprocessor:
 
         return geometry_without_obstacles
 
-    def _find_intersecting_buildings(self, plaza):
+    def _find_intersecting_buildings(self, plaza_geometry):
         """ finds all buildings on the plaza that have not been cut out"""
-        return list(filter(plaza['geometry'].intersects, self.buildings))
+        potential_matches = self._search_index(
+            self.building_index, plaza_geometry.bounds, self.buildings)
+        return list(filter(plaza_geometry.intersects, potential_matches))
 
-    def _get_points_inside_plaza(self, plaza):
+    def _get_points_inside_plaza(self, plaza_geometry):
         """ finds all points that are on the plaza geometry """
-        return list(filter(plaza['geometry'].intersects, self.points))
+        potential_matches = self._search_index(
+            self.point_index, plaza_geometry.bounds, self.points)
+        return list(filter(plaza_geometry.intersects, potential_matches))
+
+    def _create_spatial_index(self, geometries):
+        """ create rtree index for fast intersection checking """
+        logger.debug(f"creating spacial index for {len(geometries)} geometries")
+        idx = rtree.index.Index()
+        for i, geometry in enumerate(geometries):
+            idx.insert(i, geometry.bounds)
+        return idx
+
+    def _search_index(self, index, bounds, geometries):
+        """
+        search rtree index and return geometries that potentially
+        intersect with the bounds
+        """
+        potential_matches_indices = index.intersection(bounds)
+        return map(lambda i: geometries[i], potential_matches_indices)
 
     def _create_point_obstacle(self, point, buffer_m):
         """ create a polygon around a point with a buffer in meters """
@@ -172,21 +197,3 @@ class PlazaPreprocessor:
         max_x = point.x + buffer_deg
         max_y = point.y + buffer_deg
         return box(min_x, min_y, max_x, max_y)
-
-    def _line_in_plaza_approx(self, line, plaza_geometry, buffer=0):
-        """
-        determines if a line's bounding box is in the bounding box of the plaza,
-        with optional buffer in degrees (enlarged bounding box)
-        """
-        min_x1, min_y1, max_x1, max_y1 = plaza_geometry.bounds
-        line_bbox = line.bounds
-        min_x1 -= buffer / 2
-        min_y1 -= buffer / 2
-        max_x1 += buffer / 2
-        max_y1 += buffer / 2
-        return utils.bounding_boxes_overlap(min_x1, min_y1, max_x1, max_y1, *line_bbox)
-
-    def _point_in_plaza_bbox(self, point, plaza_geometry):
-        """ determines whether a point is inside the bounding box of the plaza """
-        min_x, min_y, max_x, max_y = plaza_geometry.bounds
-        return utils.point_in_bounding_box(point, min_x, min_y, max_x, max_y)
