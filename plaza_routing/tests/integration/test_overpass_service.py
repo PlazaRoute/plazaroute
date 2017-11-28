@@ -243,7 +243,7 @@ def test_get_start_exit_stop_position_multiple_relations_for_line():
                                                       tram_number,
                                                       fallback_start_position,
                                                       fallback_exit_position)
-    assert (8.5345504, 47.3634496) == start_position
+    assert (8.5345459, 47.3634506) == start_position
     assert (8.5314535, 47.3640971) == exit_position
 
 
@@ -265,5 +265,5 @@ def test_get_start_exit_stop_position_multiple_relations_for_line_one_option():
                                                       tram_number,
                                                       fallback_start_position,
                                                       fallback_exit_position)
-    assert (8.5345504, 47.3634496) == start_position
+    assert (8.5345459, 47.3634506) == start_position
     assert (8.5302541, 47.3645340) == exit_position
