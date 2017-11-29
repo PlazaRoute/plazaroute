@@ -77,6 +77,7 @@ def _generate_path(leg: dict, start_position: tuple, exit_position: tuple) -> di
             'name': leg['name'],
             'line_type': leg['type'],
             'line': leg['line'],
+            'track': leg['track'],
             'destination': leg['exit']['name'],
             'terminal': leg['terminal'],
             'departure': leg['departure'],

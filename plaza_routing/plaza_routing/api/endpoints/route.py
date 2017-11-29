@@ -22,6 +22,7 @@ PublicTransportPathResponse = api.model('PublicTransportPathResponse', {
     'name': fields.String(),
     'line_type': fields.String(),
     'line': fields.String(),
+    'track': fields.String(),
     'destination': fields.String(),
     'terminal': fields.String(),
     'departure': fields.DateTime(),
