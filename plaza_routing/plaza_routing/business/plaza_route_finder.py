@@ -6,6 +6,7 @@ import logging
 from plaza_routing.business import walking_route_finder
 from plaza_routing.business import public_transport_route_finder
 from plaza_routing.business.util import route_cost_matrix
+from plaza_routing.business.util import validator
 
 from plaza_routing.integration import geocoding_service
 
@@ -14,11 +15,12 @@ MAX_WALKING_DURATION = 60 * 5
 logger = logging.getLogger('plaza_routing.plaza_route_finder')
 
 
-def find_route(start: str, destination_address: str, departure) -> dict:
-    logger.info(f'route from {start} to {destination_address}')
+def find_route(start: str, destination: str, departure: str) -> dict:
+    logger.info(f'route from {start} to {destination}')
 
-    start = literal_eval(start)
-    destination = geocoding_service.geocode(destination_address)
+    start = _parse_location(start)
+    destination = _parse_location(destination)
+    departure = _parse_departure(departure)
 
     overall_walking_route = walking_route_finder.get_walking_route(start, destination)
 
@@ -26,7 +28,7 @@ def find_route(start: str, destination_address: str, departure) -> dict:
         logger.info("Walking is faster than using public transport, return walking only route")
         return _convert_walking_route_to_overall_response(overall_walking_route)
 
-    route_combinations = _get_route_combinations(start, destination_address, departure)
+    route_combinations = _get_route_combinations(start, destination, departure)
     best_route_combination = _get_best_route_combination(route_combinations)
 
     if not best_route_combination or overall_walking_route['duration'] < best_route_combination['accumulated_duration']:
@@ -37,21 +39,19 @@ def find_route(start: str, destination_address: str, departure) -> dict:
     return best_route_combination
 
 
-def _get_route_combinations(start: tuple, destination_address: str, departure) -> List[dict]:
+def _get_route_combinations(start: tuple, destination: tuple, departure: str) -> List[dict]:
     """ retrieves all possible routes for a specific start and destination address """
-    destination = geocoding_service.geocode(destination_address)
 
     public_transport_stops = public_transport_route_finder.get_public_transport_stops(start)
 
     routes = []
-    logger.debug(public_transport_stops)
     for public_transport_stop_uic_ref, public_transport_stop_position in public_transport_stops.items():
         logger.debug(f'retrieve route with start at public transport stop: {public_transport_stop_uic_ref}')
 
         public_transport_departure = _calc_public_transport_departure(departure, start, public_transport_stop_position)
 
         public_transport_route = public_transport_route_finder.get_public_transport_route(public_transport_stop_uic_ref,
-                                                                                          destination_address,
+                                                                                          destination,
                                                                                           public_transport_departure)
         public_transport_route_start = \
             public_transport_route_finder.get_start_position(public_transport_route)
@@ -109,6 +109,26 @@ def _calc_public_transport_departure(departure: str, start: tuple, destination: 
     initial_departure = datetime.strptime(departure, '%H:%M')
     public_transport_departure = initial_departure + timedelta(seconds=walking_route['duration'])
     return '{:%H:%M}'.format(public_transport_departure)
+
+
+def _parse_location(location: str) -> tuple:
+    """ validates and returns the provided location (address or coordinate string) as a coordinate tuple """
+    if validator.is_address(location):
+        return geocoding_service.geocode(location)
+    elif validator.is_valid_coordinate(location):
+        return literal_eval(location)
+    else:
+        raise ValueError(f'invalid coordinate or location {location}')
+
+
+def _parse_departure(departure: str) -> str:
+    """
+    If the provided departure is missing or invalid, the current time will be returned.
+    Otherwise the passed departure will simply be returned.
+    """
+    if not departure or not validator.is_valid_departure(departure):
+        return '{:%H:%M}'.format(datetime.now())
+    return departure
 
 
 if __name__ == "__main__":
