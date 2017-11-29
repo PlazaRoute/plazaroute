@@ -8,9 +8,9 @@ logger = logging.getLogger('plaza_routing')
 ns = api.namespace('route', description='Routing operations')
 
 routing_arguments = reqparse.RequestParser()
-routing_arguments.add_argument('start', type=str, required=True, help='Start locaton')
-routing_arguments.add_argument('destination', type=str, required=True, help='Destination address')
-routing_arguments.add_argument('departure', type=str, required=True, help='Departure')
+routing_arguments.add_argument('start', type=str, required=True, help='Start location or address')
+routing_arguments.add_argument('destination', type=str, required=True, help='Destination location or address')
+routing_arguments.add_argument('departure', type=str, help='Departure')
 
 WalkingRouteResponse = api.model('WalkingRouteResponse', {
     'type': fields.String(default='walking'),
