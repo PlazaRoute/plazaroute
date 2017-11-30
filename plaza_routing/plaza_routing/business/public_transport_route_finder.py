@@ -13,8 +13,8 @@ def get_public_transport_stops(start: tuple) -> dict:
     return overpass_service.get_public_transport_stops(start)
 
 
-def get_public_transport_route(start: str, destination: str, departure: str) -> dict:
-    connection = search_ch_service.get_connection(start, destination, departure)
+def get_public_transport_route(start_uic_ref: str, destination: tuple, departure: str) -> dict:
+    connection = search_ch_service.get_connection(start_uic_ref, _tuple_to_str(destination), departure)
     return _get_path_for_public_transport_connection(connection)
 
 
@@ -77,6 +77,7 @@ def _generate_path(leg: dict, start_position: tuple, exit_position: tuple) -> di
             'name': leg['name'],
             'line_type': leg['type'],
             'line': leg['line'],
+            'track': leg['track'],
             'destination': leg['exit']['name'],
             'terminal': leg['terminal'],
             'departure': leg['departure'],
@@ -98,3 +99,8 @@ def _get_stopovers(stopovers: List[dict]) -> List[List[float]]:
     for stopover in stopovers:
         path.append([*coordinate_transformer.transform_ch_to_wgs(stopover['x'], stopover['y'])])
     return path
+
+
+def _tuple_to_str(value: tuple) -> str:
+    """ returns a tuple as a string without parentheses """
+    return ','.join(map(str, value))

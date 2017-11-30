@@ -16,17 +16,20 @@ def mock_test_get_public_transport_route(monkeypatch):
 
 
 def _mock_test_get_public_transport_route_get_connection(start, destination):
-    # Test: test_get_public_transport_route_single_leg
     response_file = None
-    if start == 'Zürich, Rote Fabrik' and destination == 'Zürich, Stadtgrenze':
+    # Test: test_get_public_transport_route_single_leg
+    # Zürich, Rote Fabrik to Zürich, Stadtgrenze
+    if start == '8587347' and destination == '8.5411959,47.3353129':
         response_file = utils.get_file('search_ch_response_single_leg.json', 'search_ch')
 
     # Test: test_get_public_transport_route_filtered_walking_leg
-    elif start == 'Zürich, Rote Fabrik' and destination == 'Zürich Enge, Bahnhof':
+    # Zürich, Rote Fabrik to Zürich Enge, Bahnhof
+    elif start == '8587347' and destination == '8.5307605,47.3641833':
         response_file = utils.get_file('search_ch_response_walking_leg.json', 'search_ch')
 
     # Test: test_get_public_transport_route_filtered_multiple_leg
-    elif start == 'Zürich, Seerose' and destination == 'Zürich Enge, Bahnhof':
+    # Zürich, Seerose to Zürich Enge, Bahnhof
+    elif start == '8591357' and destination == '8.5307605,47.3641833':
         response_file = utils.get_file('search_ch_response_multiple_legs.json', 'search_ch')
 
     if response_file is None:
