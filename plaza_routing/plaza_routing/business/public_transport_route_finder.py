@@ -18,19 +18,23 @@ def get_public_transport_route(start: str, destination: str, departure: str) -> 
     return _get_path_for_public_transport_connection(connection)
 
 
-def get_start_position(public_transport_route: dict) -> tuple:
+def get_start_position(public_transport_route: dict, detailed: bool) -> tuple:
     first_leg = public_transport_route['path'][0]
-    return _get_start_exit_stop_position(first_leg)[0]
+    return _get_start_exit_stop_position(first_leg, detailed)[0]
 
 
-def get_destination_position(public_transport_route: dict) -> tuple:
+def get_destination_position(public_transport_route: dict, detailed: bool) -> tuple:
     last_leg = public_transport_route['path'][-1]
-    return _get_start_exit_stop_position(last_leg)[1]
+    return _get_start_exit_stop_position(last_leg, detailed)[1]
 
 
-def _get_start_exit_stop_position(leg: dict) -> tuple:
+def _get_start_exit_stop_position(leg: dict, detailed: bool) -> tuple:
     fallback_start_position = tuple(leg['start_position'])
     fallback_exit_position = tuple(leg['exit_position'])
+
+    if not detailed:
+        return fallback_start_position, fallback_exit_position
+
     return overpass_service.get_start_exit_stop_position(fallback_start_position,
                                                          leg['start_stop_uicref'],
                                                          leg['exit_stop_uicref'],

@@ -14,7 +14,7 @@ MAX_WALKING_DURATION = 60 * 5
 logger = logging.getLogger('plaza_routing.plaza_route_finder')
 
 
-def find_route(start: str, destination_address: str, departure) -> dict:
+def find_route(start: str, destination_address: str, departure, detailed: bool) -> dict:
     logger.info(f'route from {start} to {destination_address}')
 
     start = literal_eval(start)
@@ -26,7 +26,7 @@ def find_route(start: str, destination_address: str, departure) -> dict:
         logger.info("Walking is faster than using public transport, return walking only route")
         return _convert_walking_route_to_overall_response(overall_walking_route)
 
-    route_combinations = _get_route_combinations(start, destination_address, departure)
+    route_combinations = _get_route_combinations(start, destination_address, departure, detailed)
     best_route_combination = _get_best_route_combination(route_combinations)
 
     if not best_route_combination or overall_walking_route['duration'] < best_route_combination['accumulated_duration']:
@@ -37,7 +37,7 @@ def find_route(start: str, destination_address: str, departure) -> dict:
     return best_route_combination
 
 
-def _get_route_combinations(start: tuple, destination_address: str, departure) -> List[dict]:
+def _get_route_combinations(start: tuple, destination_address: str, departure, detailed: bool) -> List[dict]:
     """ retrieves all possible routes for a specific start and destination address """
     destination = geocoding_service.geocode(destination_address)
 
@@ -54,11 +54,11 @@ def _get_route_combinations(start: tuple, destination_address: str, departure) -
                                                                                           destination_address,
                                                                                           public_transport_departure)
         public_transport_route_start = \
-            public_transport_route_finder.get_start_position(public_transport_route)
+            public_transport_route_finder.get_start_position(public_transport_route, detailed)
         start_walking_route = walking_route_finder.get_walking_route(start, public_transport_route_start)
 
         public_transport_route_destination = \
-            public_transport_route_finder.get_destination_position(public_transport_route)
+            public_transport_route_finder.get_destination_position(public_transport_route, detailed)
         end_walking_route = walking_route_finder.get_walking_route(public_transport_route_destination, destination)
 
         accumulated_duration = \

@@ -9,7 +9,8 @@ def test_find_route(monkeypatch):
     mock.mock_test_find_route(monkeypatch)
 
     expected_response = utils.get_json_file('find_route_expected_result.json')
-    assert expected_response == plaza_route_finder.find_route('8.55546, 47.41071', 'Zürich, Hardbrücke', '14:42')
+    assert expected_response == plaza_route_finder.find_route('8.55546, 47.41071', 'Zürich, Hardbrücke',
+                                                              '14:42', True)
 
 
 def test_find_route_only_walking(monkeypatch):
@@ -21,7 +22,7 @@ def test_find_route_only_walking(monkeypatch):
 
     expected_response = utils.get_json_file('find_route_only_walking_expected_result.json')
     assert expected_response == plaza_route_finder.find_route('8.55546, 47.41071', 'Zürich, Messe/Hallenstadion',
-                                                              '14:42')
+                                                              '14:42', True)
 
 
 def test_calc_public_transport_departure(monkeypatch):

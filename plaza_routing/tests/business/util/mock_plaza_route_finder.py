@@ -19,10 +19,10 @@ def mock_test_find_route(monkeypatch):
                         lambda start, destination, departure:
                         _mock_test_find_route_get_public_transport_route(start))
     monkeypatch.setattr(public_transport_route_finder, 'get_start_position',
-                        lambda public_transport_route:
+                        lambda public_transport_route, detailed:
                         _mock_test_find_route_get_start_position(public_transport_route))
     monkeypatch.setattr(public_transport_route_finder, 'get_destination_position',
-                        lambda public_transport_route:
+                        lambda public_transport_route, detailed:
                         _mock_test_find_route_get_destination_position(public_transport_route))
 
 

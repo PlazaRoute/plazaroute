@@ -11,6 +11,8 @@ routing_arguments = reqparse.RequestParser()
 routing_arguments.add_argument('start', type=str, required=True, help='Start locaton')
 routing_arguments.add_argument('destination', type=str, required=True, help='Destination address')
 routing_arguments.add_argument('departure', type=str, required=True, help='Departure')
+routing_arguments.add_argument('detailed', type=bool, required=False, default=False, help='')
+
 
 WalkingRouteResponse = api.model('WalkingRouteResponse', {
     'type': fields.String(default='walking'),
@@ -56,6 +58,7 @@ class PlazaRouting(Resource):
         start = args.get('start')
         destination = args.get('destination')
         departure = args.get('departure')
-        logger.debug("Calling route() with start='%s', destination='%s', departure='%s'",
-                     start, destination, departure)
-        return find_route(start, destination, departure)
+        detailed = args.get('detailed')
+        logger.debug("Calling route() with start='%s', destination='%s', departure='%s', detailed='%s'",
+                     start, destination, departure, detailed)
+        return find_route(start, destination, departure, detailed)
