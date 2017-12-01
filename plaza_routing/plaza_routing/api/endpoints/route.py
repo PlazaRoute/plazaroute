@@ -1,5 +1,5 @@
 import logging
-from flask_restplus import Resource, reqparse, fields
+from flask_restplus import Resource, reqparse, fields, inputs
 
 from plaza_routing.api.restplus import api
 from plaza_routing.business.plaza_route_finder import find_route
@@ -8,10 +8,11 @@ logger = logging.getLogger('plaza_routing')
 ns = api.namespace('route', description='Routing operations')
 
 routing_arguments = reqparse.RequestParser()
-routing_arguments.add_argument('start', type=str, required=True, help='Start locaton')
-routing_arguments.add_argument('destination', type=str, required=True, help='Destination address')
-routing_arguments.add_argument('departure', type=str, help='Departure')
-routing_arguments.add_argument('detailed', type=bool, default=False, help='')
+routing_arguments.add_argument('start', type=str, required=True, help='Start location or address')
+routing_arguments.add_argument('destination', type=str, required=True, help='Destination location or address')
+routing_arguments.add_argument('departure', type=str, help='Departure {HH:mm}')
+routing_arguments.add_argument('precise_public_transport_stops', type=inputs.boolean, default=False,
+                               help='Use precise locations for public transport stops (slower)')
 
 
 WalkingRouteResponse = api.model('WalkingRouteResponse', {
@@ -59,7 +60,8 @@ class PlazaRouting(Resource):
         start = args.get('start')
         destination = args.get('destination')
         departure = args.get('departure')
-        detailed = args.get('detailed')
-        logger.debug("Calling route() with start='%s', destination='%s', departure='%s', detailed='%s'",
-                     start, destination, departure, detailed)
-        return find_route(start, destination, departure, detailed)
+        precise_public_transport_stops = args.get('precise_public_transport_stops')
+        logger.debug("Calling route() with start='%s', destination='%s', departure='%s', "
+                     "precise_public_transport_stops='%s'",
+                     start, destination, departure, precise_public_transport_stops)
+        return find_route(start, destination, departure, precise_public_transport_stops)
