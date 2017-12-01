@@ -10,8 +10,8 @@ ns = api.namespace('route', description='Routing operations')
 routing_arguments = reqparse.RequestParser()
 routing_arguments.add_argument('start', type=str, required=True, help='Start locaton')
 routing_arguments.add_argument('destination', type=str, required=True, help='Destination address')
-routing_arguments.add_argument('departure', type=str, required=True, help='Departure')
-routing_arguments.add_argument('detailed', type=bool, required=False, default=False, help='')
+routing_arguments.add_argument('departure', type=str, help='Departure')
+routing_arguments.add_argument('detailed', type=bool, default=False, help='')
 
 
 WalkingRouteResponse = api.model('WalkingRouteResponse', {
@@ -24,6 +24,7 @@ PublicTransportPathResponse = api.model('PublicTransportPathResponse', {
     'name': fields.String(),
     'line_type': fields.String(),
     'line': fields.String(),
+    'track': fields.String(),
     'destination': fields.String(),
     'terminal': fields.String(),
     'departure': fields.DateTime(),
