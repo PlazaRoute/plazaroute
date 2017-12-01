@@ -29,6 +29,10 @@ def find_route(start: str, destination: str, departure: str, precise_public_tran
         return _convert_walking_route_to_overall_response(overall_walking_route)
 
     route_combinations = _get_route_combinations(start, destination, departure, precise_public_transport_stops)
+    if not route_combinations:
+        logger.info("No public transport route was returned because the path consists only of walking legs")
+        return _convert_walking_route_to_overall_response(overall_walking_route)
+
     best_route_combination = _get_best_route_combination(route_combinations)
 
     if not best_route_combination or overall_walking_route['duration'] < best_route_combination['accumulated_duration']:
@@ -54,6 +58,9 @@ def _get_route_combinations(start: tuple, destination: tuple,
         public_transport_route = public_transport_route_finder.get_public_transport_route(public_transport_stop_uic_ref,
                                                                                           destination,
                                                                                           public_transport_departure)
+        if not public_transport_route['path']:
+            continue  # skip empty paths, this happens if the path only consists of walking legs
+
         public_transport_route_start = \
             public_transport_route_finder.get_start_position(public_transport_route,
                                                              precise_public_transport_stops)
