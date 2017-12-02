@@ -11,6 +11,8 @@ from plaza_routing.business.util import validator
 from plaza_routing.integration import geocoding_service
 
 MAX_WALKING_DURATION = 60 * 5
+PUBLIC_TRANSPORT_ROUTE_DURATION_FORMAT = '%Y-%m-%d %H:%M:%S'
+DEPARTURE_FORMAT = '%H:%M'
 
 logger = logging.getLogger('plaza_routing.plaza_route_finder')
 
@@ -35,9 +37,7 @@ def find_route(start: str, destination: str, departure: str, precise_public_tran
 
     best_route_combination = _get_best_route_combination(route_combinations)
 
-    if not best_route_combination or overall_walking_route['duration'] < best_route_combination['accumulated_duration']:
-        logger.info(f"{overall_walking_route['duration']} smaller than "
-                    f"{best_route_combination['accumulated_duration']}, returning walking route only")
+    if _is_walking_faster_than_route_combination(overall_walking_route, best_route_combination, departure):
         return _convert_walking_route_to_overall_response(overall_walking_route)
 
     return best_route_combination
@@ -116,9 +116,27 @@ def _calc_public_transport_departure(departure: str, start: tuple, destination: 
     """
     walking_route = walking_route_finder.get_walking_route(start, destination)
 
-    initial_departure = datetime.strptime(departure, '%H:%M')
+    initial_departure = datetime.strptime(departure, DEPARTURE_FORMAT)
     public_transport_departure = initial_departure + timedelta(seconds=walking_route['duration'])
     return '{:%H:%M}'.format(public_transport_departure)
+
+
+def _calc_waiting_time(departure: str, public_transport_route: dict) -> float:
+    """ calculates the waiting based on the initial departure and the first public transport connection """
+    public_transport_departure = public_transport_route['path'][0]['departure']
+    diff = datetime.strptime(public_transport_departure, PUBLIC_TRANSPORT_ROUTE_DURATION_FORMAT) - \
+           datetime.strptime(departure, DEPARTURE_FORMAT)
+    return diff.seconds
+
+
+def _is_walking_faster_than_route_combination(walking_route: dict, route_combination: dict, departure: str) -> bool:
+    """ check if walking is faster than waiting for and taking the public transport """
+    waiting_time = _calc_waiting_time(departure, route_combination['public_transport_connection'])
+    if not route_combination or walking_route['duration'] < route_combination['accumulated_duration'] + waiting_time:
+        logger.info(f"{walking_route['duration']} smaller than "
+                    f"{route_combination['accumulated_duration']} + {waiting_time}, returning walking route only")
+        return True
+    return False
 
 
 def _parse_location(location: str) -> tuple:
