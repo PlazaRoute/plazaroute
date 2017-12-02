@@ -134,8 +134,9 @@ def _is_walking_faster_than_route_combination(walking_route: dict, route_combina
     """ check if walking is faster than waiting for and taking the public transport """
     waiting_time = _calc_waiting_time(departure, route_combination['public_transport_connection'])
     if not route_combination or walking_route['duration'] < route_combination['accumulated_duration'] + waiting_time:
-        logger.info(f"{walking_route['duration']} smaller than "
-                    f"{route_combination['accumulated_duration']} + {waiting_time}, returning walking route only")
+        logger.info(f"walking route ({walking_route['duration']:.1f}) faster than "
+                    f"public transport and waiting time combined ({route_combination['accumulated_duration']:.1f} + "
+                    f"{waiting_time:.1f}), returning walking route only")
         return True
     return False
 
