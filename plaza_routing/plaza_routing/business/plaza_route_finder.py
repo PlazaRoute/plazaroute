@@ -11,11 +11,13 @@ from plaza_routing.business.util import validator
 from plaza_routing.integration import geocoding_service
 
 MAX_WALKING_DURATION = 60 * 5
+PUBLIC_TRANSPORT_ROUTE_DURATION_FORMAT = '%Y-%m-%d %H:%M:%S'
+DEPARTURE_FORMAT = '%H:%M'
 
 logger = logging.getLogger('plaza_routing.plaza_route_finder')
 
 
-def find_route(start: str, destination: str, departure: str) -> dict:
+def find_route(start: str, destination: str, departure: str, precise_public_transport_stops: bool) -> dict:
     logger.info(f'route from {start} to {destination}')
 
     start = _parse_location(start)
@@ -28,18 +30,21 @@ def find_route(start: str, destination: str, departure: str) -> dict:
         logger.info("Walking is faster than using public transport, return walking only route")
         return _convert_walking_route_to_overall_response(overall_walking_route)
 
-    route_combinations = _get_route_combinations(start, destination, departure)
+    route_combinations = _get_route_combinations(start, destination, departure, precise_public_transport_stops)
+    if not route_combinations:
+        logger.info("No public transport route was returned because the path consists only of walking legs")
+        return _convert_walking_route_to_overall_response(overall_walking_route)
+
     best_route_combination = _get_best_route_combination(route_combinations)
 
-    if not best_route_combination or overall_walking_route['duration'] < best_route_combination['accumulated_duration']:
-        logger.info(f"{overall_walking_route['duration']} smaller than "
-                    f"{best_route_combination['accumulated_duration']}, returning walking route only")
+    if _is_walking_faster_than_route_combination(overall_walking_route, best_route_combination, departure):
         return _convert_walking_route_to_overall_response(overall_walking_route)
 
     return best_route_combination
 
 
-def _get_route_combinations(start: tuple, destination: tuple, departure: str) -> List[dict]:
+def _get_route_combinations(start: tuple, destination: tuple,
+                            departure: str, precise_public_transport_stops: bool) -> List[dict]:
     """ retrieves all possible routes for a specific start and destination address """
 
     public_transport_stops = public_transport_route_finder.get_public_transport_stops(start)
@@ -52,13 +57,19 @@ def _get_route_combinations(start: tuple, destination: tuple, departure: str) ->
 
         public_transport_route = public_transport_route_finder.get_public_transport_route(public_transport_stop_uic_ref,
                                                                                           destination,
-                                                                                          public_transport_departure)
+                                                                                          public_transport_departure,
+                                                                                          precise_public_transport_stops)
+        if not public_transport_route['path']:
+            continue  # skip empty paths, this happens if the path only consists of walking legs
+
         public_transport_route_start = \
-            public_transport_route_finder.get_start_position(public_transport_route)
+            public_transport_route_finder.get_start_position(public_transport_route,
+                                                             precise_public_transport_stops)
         start_walking_route = walking_route_finder.get_walking_route(start, public_transport_route_start)
 
         public_transport_route_destination = \
-            public_transport_route_finder.get_destination_position(public_transport_route)
+            public_transport_route_finder.get_destination_position(public_transport_route,
+                                                                   precise_public_transport_stops)
         end_walking_route = walking_route_finder.get_walking_route(public_transport_route_destination, destination)
 
         accumulated_duration = \
@@ -106,9 +117,28 @@ def _calc_public_transport_departure(departure: str, start: tuple, destination: 
     """
     walking_route = walking_route_finder.get_walking_route(start, destination)
 
-    initial_departure = datetime.strptime(departure, '%H:%M')
+    initial_departure = datetime.strptime(departure, DEPARTURE_FORMAT)
     public_transport_departure = initial_departure + timedelta(seconds=walking_route['duration'])
     return '{:%H:%M}'.format(public_transport_departure)
+
+
+def _calc_waiting_time(departure: str, public_transport_route: dict) -> float:
+    """ calculates the waiting based on the initial departure and the first public transport connection """
+    public_transport_departure = public_transport_route['path'][0]['departure']
+    diff = datetime.strptime(public_transport_departure, PUBLIC_TRANSPORT_ROUTE_DURATION_FORMAT) - \
+           datetime.strptime(departure, DEPARTURE_FORMAT)
+    return diff.seconds
+
+
+def _is_walking_faster_than_route_combination(walking_route: dict, route_combination: dict, departure: str) -> bool:
+    """ check if walking is faster than waiting for and taking the public transport """
+    waiting_time = _calc_waiting_time(departure, route_combination['public_transport_connection'])
+    if not route_combination or walking_route['duration'] < route_combination['accumulated_duration'] + waiting_time:
+        logger.info(f"walking route ({walking_route['duration']:.1f}) faster than "
+                    f"public transport and waiting time combined ({route_combination['accumulated_duration']:.1f} + "
+                    f"{waiting_time:.1f}), returning walking route only")
+        return True
+    return False
 
 
 def _parse_location(location: str) -> tuple:
@@ -134,5 +164,5 @@ def _parse_departure(departure: str) -> str:
 if __name__ == "__main__":
     import time
     start_time = time.time()
-    print(find_route('8.55546, 47.41071', 'Zürich, Hardbrücke', '14:42'))
+    print(find_route('8.55546, 47.41071', 'Zürich, Hardbrücke', '14:42', True))
     print(time.time() - start_time)
