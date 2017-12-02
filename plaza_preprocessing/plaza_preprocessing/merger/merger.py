@@ -1,5 +1,6 @@
 from sys import maxsize
-from os import remove
+from os import path
+import tempfile
 import logging
 from datetime import datetime
 from osmium import SimpleHandler, SimpleWriter
@@ -33,11 +34,12 @@ def merge_plaza_graphs(plazas, osm_file, merged_file):
     merge graph edges of plazas back into the original OSM file
     """
     logger.info(f"Merging {len(plazas)} processed plazas back into {osm_file}")
-    # TODO: Proper temp file
-    plaza_way_file = 'plaza_ways.pbf'
-    plaza_node_file = 'plaza_nodes.pbf'
-    modified_ways_file = 'modified_ways.pbf'
-    try:
+
+    with tempfile.TemporaryDirectory() as tempdir:
+        plaza_way_file = path.join(tempdir, 'plaza_ways.pbf')
+        plaza_node_file = path.join(tempdir, 'plaza_nodes.pbf')
+        modified_ways_file = path.join(tempdir, 'modified_ways.pbf')
+
         entry_node_mappings = plazatransformer.transform_plazas(
             plazas, plaza_node_file, plaza_way_file)
 
@@ -49,11 +51,7 @@ def merge_plaza_graphs(plazas, osm_file, merged_file):
         osmosishelper.merge_osm_files(
             merged_file, osm_file, plaza_way_file, plaza_node_file, modified_ways_file)
 
-        logger.info(f"Merged OSM file written to {merged_file}")
-    finally:
-        remove(plaza_way_file)
-        remove(plaza_node_file)
-        remove(modified_ways_file)
+    logger.info(f"Merged OSM file written to {merged_file}")
 
 
 def _insert_entry_nodes(plaza_ways, entry_node_mappings):
@@ -77,7 +75,6 @@ def _write_modified_ways(plaza_ways, filename):
         node_refs = [node['id'] for node in way['nodes']]
         osm_way = Way(nodes=node_refs)
         osm_way.id = way_id
-        # TODO: write same tags as original way
         osm_way.tags = way['tags']
         # increase version number to overwrite original way
         osm_way.version = way['version'] + 1
