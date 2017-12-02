@@ -16,7 +16,7 @@ def mock_test_find_route(monkeypatch):
                         lambda start:
                         _mock_test_find_route_get_public_transport_stops(start))
     monkeypatch.setattr(public_transport_route_finder, 'get_public_transport_route',
-                        lambda start, destination, departure:
+                        lambda start, destination, departure, precise_public_transport_stops:
                         _mock_test_find_route_get_public_transport_route(start))
     monkeypatch.setattr(public_transport_route_finder, 'get_start_position',
                         lambda public_transport_route, precise_public_transport_stops:
@@ -158,5 +158,5 @@ def mock_test_find_route_walking_faster(monkeypatch):
     monkeypatch.setattr(public_transport_route_finder, 'get_public_transport_stops',
                         lambda start: {'8503003': (8.5483858, 47.3665643)})
     monkeypatch.setattr(public_transport_route_finder, 'get_public_transport_route',
-                        lambda start, destination, departure:
+                        lambda start, destination, departure, precise_public_transport_stops:
                         utils.get_json_file('bellevue_kreuzplatz.json', 'public_transport_route'))

@@ -26,8 +26,8 @@ def test_get_public_transport_route_single_leg(monkeypatch):
         'duration': 180,
         'number_of_legs': 1
     }
-    actual_response = public_transport_route_finder.get_public_transport_route('8587347',
-                                                                               (8.5411959, 47.3353129), '13:35')
+    actual_response = public_transport_route_finder.get_public_transport_route('8587347', (8.5411959, 47.3353129),
+                                                                               '13:35', True)
     assert expected_response == actual_response
 
 
@@ -55,8 +55,8 @@ def test_get_public_transport_route_filtered_walking_leg(monkeypatch):
         'duration': 840,
         'number_of_legs': 1
     }
-    actual_response = public_transport_route_finder.get_public_transport_route('8587347',
-                                                                               (8.5307605, 47.3641833), '13:40')
+    actual_response = public_transport_route_finder.get_public_transport_route('8587347', (8.5307605, 47.3641833),
+                                                                               '13:40', True)
     assert expected_response == actual_response
 
 
@@ -101,6 +101,6 @@ def test_get_public_transport_route_filtered_multiple_leg(monkeypatch):
         }]
     }
 
-    actual_response = public_transport_route_finder.get_public_transport_route('8591357',
-                                                                               (8.5307605, 47.3641833), '14:07')
+    actual_response = public_transport_route_finder.get_public_transport_route('8591357', (8.5307605, 47.3641833),
+                                                                               '14:07', True)
     assert expected_response == actual_response

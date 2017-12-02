@@ -13,9 +13,10 @@ def get_public_transport_stops(start: tuple) -> dict:
     return overpass_service.get_public_transport_stops(start)
 
 
-def get_public_transport_route(start_uic_ref: str, destination: tuple, departure: str) -> dict:
+def get_public_transport_route(start_uic_ref: str, destination: tuple, departure: str,
+                               precise_public_transport_stops: bool) -> dict:
     connection = search_ch_service.get_connection(start_uic_ref, _tuple_to_str(destination), departure)
-    return _get_path_for_public_transport_connection(connection)
+    return _get_path_for_public_transport_connection(connection, precise_public_transport_stops)
 
 
 def get_start_position(public_transport_route: dict, precise_public_transport_stops: bool) -> tuple:
@@ -32,18 +33,18 @@ def _get_start_exit_stop_position(leg: dict, precise_public_transport_stops: boo
     fallback_start_position = tuple(leg['start_position'])
     fallback_exit_position = tuple(leg['exit_position'])
 
-    if not precise_public_transport_stops:
-        return fallback_start_position, fallback_exit_position
+    if precise_public_transport_stops:
+        return overpass_service.get_start_exit_stop_position(fallback_start_position,
+                                                             leg['start_stop_uicref'],
+                                                             leg['exit_stop_uicref'],
+                                                             leg['line'],
+                                                             fallback_start_position,
+                                                             fallback_exit_position)
 
-    return overpass_service.get_start_exit_stop_position(fallback_start_position,
-                                                         leg['start_stop_uicref'],
-                                                         leg['exit_stop_uicref'],
-                                                         leg['line'],
-                                                         fallback_start_position,
-                                                         fallback_exit_position)
+    return fallback_start_position, fallback_exit_position
 
 
-def _get_path_for_public_transport_connection(connection: dict) -> dict:
+def _get_path_for_public_transport_connection(connection: dict, precise_public_transport_stops: bool) -> dict:
     """ retrieves the start position for each leg in the provided connection and produces an routable response """
     legs = connection['legs']
     result = {
@@ -62,12 +63,16 @@ def _get_path_for_public_transport_connection(connection: dict) -> dict:
         fallback_start_position = coordinate_transformer.transform_ch_to_wgs(leg['x'], leg['y'])
         fallback_exit_position = coordinate_transformer.transform_ch_to_wgs(leg['exit']['x'], leg['exit']['y'])
 
-        lookup_position = fallback_start_position
-        start_position, exit_position = overpass_service.get_start_exit_stop_position(lookup_position,
-                                                                                      start_uic_ref, exit_uic_ref,
-                                                                                      line,
-                                                                                      fallback_start_position,
-                                                                                      fallback_exit_position)
+        if precise_public_transport_stops:
+            lookup_position = fallback_start_position
+            start_position, exit_position = overpass_service.get_start_exit_stop_position(lookup_position,
+                                                                                          start_uic_ref, exit_uic_ref,
+                                                                                          line,
+                                                                                          fallback_start_position,
+                                                                                          fallback_exit_position)
+        else:
+            start_position = fallback_start_position
+            exit_position = fallback_exit_position
 
         result['path'].append(_generate_path(leg, start_position, exit_position))
         relevant_legs_counter += 1

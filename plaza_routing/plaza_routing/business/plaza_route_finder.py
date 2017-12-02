@@ -57,7 +57,8 @@ def _get_route_combinations(start: tuple, destination: tuple,
 
         public_transport_route = public_transport_route_finder.get_public_transport_route(public_transport_stop_uic_ref,
                                                                                           destination,
-                                                                                          public_transport_departure)
+                                                                                          public_transport_departure,
+                                                                                          precise_public_transport_stops)
         if not public_transport_route['path']:
             continue  # skip empty paths, this happens if the path only consists of walking legs
 
