@@ -147,3 +147,16 @@ def _mock_test_find_route_get_destination_position(public_transport_route):
     elif public_transport_route['path'][0]['name'] == 'Zürich, Hagenholz':
         return 8.5173926, 47.3851609
     assert False
+
+
+def mock_test_find_route_walking_faster(monkeypatch):
+    monkeypatch.setattr(geocoding_service, 'geocode',
+                        lambda destination_address: (8.54556659082, 47.3659258552))
+    monkeypatch.setattr(walking_route_finder, 'get_walking_route',
+                        lambda start, destination:
+                        utils.get_json_file('8_54556659082_47_3659258552_to_kreuzplatz.json', 'walking_route'))
+    monkeypatch.setattr(public_transport_route_finder, 'get_public_transport_stops',
+                        lambda start: {'8503003': (8.5483858, 47.3665643)})
+    monkeypatch.setattr(public_transport_route_finder, 'get_public_transport_route',
+                        lambda start, destination, departure:
+                        utils.get_json_file('bellevue_kreuzplatz.json', 'public_transport_route'))

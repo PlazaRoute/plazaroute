@@ -33,3 +33,14 @@ def test_calc_public_transport_departure(monkeypatch):
     mock.mock_test_find_route(monkeypatch)
     departure = plaza_route_finder._calc_public_transport_departure('14:42', (8.55546, 47.41071), (8.55528, 47.41446))
     assert '14:52' == departure
+
+
+def test_find_route_walking_faster(monkeypatch):
+    """
+    Tests the route from 8.54556659082, 47.3659258552 to Zürich, Kreuzplatz.
+    The destination is not in walking distance but walking is faster than waiting for and taking the public transport.
+    """
+    mock.mock_test_find_route_walking_faster(monkeypatch)
+    expected_response = utils.get_json_file('find_route_walking_faster_result.json')
+    assert expected_response == plaza_route_finder.find_route('8.54556659082, 47.3659258552', 'Zürich, Kreuzplatz',
+                                                              '14:42', False)

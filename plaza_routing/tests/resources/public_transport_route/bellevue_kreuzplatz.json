@@ -1,0 +1,33 @@
+{
+  "type": "public_transport",
+  "path": [
+    {
+      "name": "Zürich, Bellevue",
+      "line_type": "tram",
+      "line": "11",
+      "track": "",
+      "destination": "Zürich Kreuzplatz",
+      "terminal": "Zürich, Rehalp",
+      "departure": "2017-12-02 11:17:00",
+      "arrival": "2017-12-02 11:21:00",
+      "start_position": [
+        8.5452881,
+        47.3668704
+      ],
+      "exit_position": [
+        8.5542488,
+        47.3647797
+      ],
+      "start_stop_uicref": "8576193",
+      "exit_stop_uicref": "8530813",
+      "stopovers": [
+        [
+          8.548128822783475,
+          47.36634989006753
+        ]
+      ]
+    }
+  ],
+  "duration": 420.0,
+  "number_of_legs": 1
+}
