@@ -17,8 +17,8 @@ def test_get_public_transport_route_single_leg(monkeypatch):
             'terminal': 'Kilchberg ZH, Kirche',
             'departure': '2017-11-12 13:35:00',
             'arrival': '2017-11-12 13:38:00',
-            'start_position': [8.5362646, 47.3424624],
-            'exit_position': [8.5416616, 47.3349277],
+            'start_position': [8.536018254050866, 47.34272717279221],
+            'exit_position': [8.541470480777495, 47.33503823573056],
             'start_stop_uicref': '8587347',
             'exit_stop_uicref': '8591378',
             'stopovers': [[8.53813643293702, 47.338911019762165]]
@@ -27,7 +27,7 @@ def test_get_public_transport_route_single_leg(monkeypatch):
         'number_of_legs': 1
     }
     actual_response = public_transport_route_finder.get_public_transport_route('8587347', (8.5411959, 47.3353129),
-                                                                               '13:35', True)
+                                                                               '13:35')
     assert expected_response == actual_response
 
 
@@ -45,8 +45,8 @@ def test_get_public_transport_route_filtered_walking_leg(monkeypatch):
             'terminal': 'Stettbach, Bahnhof',
             'departure': '2017-11-12 13:50:00',
             'arrival': '2017-11-12 13:56:00',
-            'start_position': [8.5333468, 47.3448353],
-            'exit_position': [8.5314319, 47.3643805],
+            'start_position': [8.532957182471279, 47.34446532240397],
+            'exit_position': [8.531573261985752, 47.36412398805734],
             'start_stop_uicref': '8591304',
             'exit_stop_uicref': '8591058',
             'stopovers': [[8.532917131553525, 47.3470293465808], [8.531975688485307, 47.35146391904956],
@@ -56,7 +56,7 @@ def test_get_public_transport_route_filtered_walking_leg(monkeypatch):
         'number_of_legs': 1
     }
     actual_response = public_transport_route_finder.get_public_transport_route('8587347', (8.5307605, 47.3641833),
-                                                                               '13:40', True)
+                                                                               '13:40')
     assert expected_response == actual_response
 
 
@@ -93,8 +93,8 @@ def test_get_public_transport_route_filtered_multiple_leg(monkeypatch):
             'terminal': 'Zürich Enge, Bahnhof',
             'departure': '2017-11-12 14:19:00',
             'arrival': '2017-11-12 14:21:00',
-            'start_position': [8.5345504, 47.3634496],
-            'exit_position': [8.5314535, 47.3640971],
+            'start_position': [8.535039877782896, 47.36338051530903],
+            'exit_position': [8.531573261985752, 47.36412398805734],
             'start_stop_uicref': '8591317',
             'exit_stop_uicref': '8591058',
             'stopovers': []
@@ -102,5 +102,5 @@ def test_get_public_transport_route_filtered_multiple_leg(monkeypatch):
     }
 
     actual_response = public_transport_route_finder.get_public_transport_route('8591357', (8.5307605, 47.3641833),
-                                                                               '14:07', True)
+                                                                               '14:07')
     assert expected_response == actual_response

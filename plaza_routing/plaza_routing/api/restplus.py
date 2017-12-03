@@ -15,5 +15,3 @@ def default_error_handler(e):
     logger.error(message)
     if not FLASK_DEBUG:
         return {'message': message}, 500
-
-

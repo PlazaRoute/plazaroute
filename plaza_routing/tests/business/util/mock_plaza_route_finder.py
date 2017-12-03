@@ -16,14 +16,8 @@ def mock_test_find_route(monkeypatch):
                         lambda start:
                         _mock_test_find_route_get_public_transport_stops(start))
     monkeypatch.setattr(public_transport_route_finder, 'get_public_transport_route',
-                        lambda start, destination, departure, precise_public_transport_stops:
+                        lambda start, destination, departure:
                         _mock_test_find_route_get_public_transport_route(start))
-    monkeypatch.setattr(public_transport_route_finder, 'get_start_position',
-                        lambda public_transport_route, precise_public_transport_stops:
-                        _mock_test_find_route_get_start_position(public_transport_route))
-    monkeypatch.setattr(public_transport_route_finder, 'get_destination_position',
-                        lambda public_transport_route, precise_public_transport_stops:
-                        _mock_test_find_route_get_destination_position(public_transport_route))
 
 
 def mock_test_find_route_only_walking(monkeypatch):
@@ -117,38 +111,6 @@ def _mock_test_find_route_get_public_transport_route(public_transport_stop):
     return utils.get_json_file(file_name, 'public_transport_route')
 
 
-def _mock_test_find_route_get_start_position(public_transport_route):
-    if public_transport_route['path'][0]['name'] == 'Zürich, Messe/Hallenstadion':
-        return 8.5520512, 47.4106724
-    elif public_transport_route['path'][0]['name'] == 'Zürich, Hallenbad Oerlikon':
-        return 8.5554806, 47.4107529
-    elif public_transport_route['path'][0]['name'] == 'Zürich, Riedgraben':
-        return 8.5592585, 47.4108265
-    elif public_transport_route['path'][0]['name'] == 'Zürich, Riedbach':
-        return 8.5584518, 47.414522
-    elif public_transport_route['path'][0]['name'] == 'Zürich, Leutschenbach':
-        return 8.5511875, 47.4145557
-    elif public_transport_route['path'][0]['name'] == 'Zürich, Hagenholz':
-        return 8.55528, 47.41446
-    assert False
-
-
-def _mock_test_find_route_get_destination_position(public_transport_route):
-    if public_transport_route['path'][0]['name'] == 'Zürich, Messe/Hallenstadion':
-        return 8.51768587257564, 47.385087296919714
-    elif public_transport_route['path'][0]['name'] == 'Zürich, Hallenbad Oerlikon':
-        return 8.51768587257564, 47.385087296919714
-    elif public_transport_route['path'][0]['name'] == 'Zürich, Riedgraben':
-        return 8.51768587257564, 47.385087296919714
-    elif public_transport_route['path'][0]['name'] == 'Zürich, Riedbach':
-        return 8.5173926, 47.3851609
-    elif public_transport_route['path'][0]['name'] == 'Zürich, Leutschenbach':
-        return 8.51768587257564, 47.385087296919714
-    elif public_transport_route['path'][0]['name'] == 'Zürich, Hagenholz':
-        return 8.5173926, 47.3851609
-    assert False
-
-
 def mock_test_find_route_walking_faster(monkeypatch):
     monkeypatch.setattr(geocoding_service, 'geocode',
                         lambda destination_address: (8.54556659082, 47.3659258552))
@@ -158,5 +120,5 @@ def mock_test_find_route_walking_faster(monkeypatch):
     monkeypatch.setattr(public_transport_route_finder, 'get_public_transport_stops',
                         lambda start: {'8503003': (8.5483858, 47.3665643)})
     monkeypatch.setattr(public_transport_route_finder, 'get_public_transport_route',
-                        lambda start, destination, departure, precise_public_transport_stops:
+                        lambda start, destination, departure:
                         utils.get_json_file('bellevue_kreuzplatz.json', 'public_transport_route'))
