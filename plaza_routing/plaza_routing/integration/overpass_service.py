@@ -43,10 +43,10 @@ def get_public_transport_stops(start_position: tuple) -> dict:
     return public_transport_refs
 
 
-def get_start_exit_stop_position(lookup_position: tuple, start_uic_ref: str, exit_uic_ref: str, line: str,
-                                 fallback_start_position: tuple, fallback_exit_position: tuple) -> Tuple[tuple, tuple]:
+def get_connection_coordinates(lookup_position: tuple, start_uic_ref: str, exit_uic_ref: str, line: str,
+                               fallback_start_position: tuple, fallback_exit_position: tuple) -> Tuple[tuple, tuple]:
     """
-    Retrieves the start public transport stop position (latitude, longitude)
+    Retrieves the start public transport stop position (longitude, latitude)
     for a specific uic_ref (start_uic_ref) and the corresponding exit node in the connection based on the exit_uic_ref.
     Both will be returned as tuple.
 

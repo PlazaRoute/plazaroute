@@ -68,11 +68,11 @@ def test_get_start_exit_stop_position():
     exit_stop_uicref = '8591382'
     bus_number = '94'
     start_position, exit_position = \
-        overpass_service.get_start_exit_stop_position(current_location,
-                                                      start_stop_uicref, exit_stop_uicref,
-                                                      bus_number,
-                                                      fallback_start_position,
-                                                      fallback_exit_position)
+        overpass_service.get_connection_coordinates(current_location,
+                                                    start_stop_uicref, exit_stop_uicref,
+                                                    bus_number,
+                                                    fallback_start_position,
+                                                    fallback_exit_position)
     assert (8.5520512, 47.4106724) == start_position
     assert (8.5467743, 47.4102250) == exit_position
 
@@ -94,11 +94,11 @@ def test_get_start_exit_stop_position_other_direction():
     exit_stop_uicref = '8591175'
     bus_number = '94'
     start_position, exit_position = \
-        overpass_service.get_start_exit_stop_position(current_location,
-                                                      start_stop_uicref, exit_stop_uicref,
-                                                      bus_number,
-                                                      fallback_start_position,
-                                                      fallback_exit_position)
+        overpass_service.get_connection_coordinates(current_location,
+                                                    start_stop_uicref, exit_stop_uicref,
+                                                    bus_number,
+                                                    fallback_start_position,
+                                                    fallback_exit_position)
     assert (8.5528703, 47.4107102) == start_position
     assert (8.5562254, 47.4107647) == exit_position
 
@@ -118,11 +118,11 @@ def test_get_start_exit_stop_position_end_terminal():
     exit_stop_uicref = '8580449'
     bus_number = '94'
     start_position, exit_position = \
-        overpass_service.get_start_exit_stop_position(current_location,
-                                                      start_stop_uicref, exit_stop_uicref,
-                                                      bus_number,
-                                                      fallback_start_position,
-                                                      fallback_exit_position)
+        overpass_service.get_connection_coordinates(current_location,
+                                                    start_stop_uicref, exit_stop_uicref,
+                                                    bus_number,
+                                                    fallback_start_position,
+                                                    fallback_exit_position)
     assert (8.5467743, 47.4102250) == start_position
     assert (8.5447442, 47.4114541) == exit_position
 
@@ -142,11 +142,11 @@ def test_get_start_exit_stop_position_start_terminal():
     exit_stop_uicref = '8591382'
     bus_number = '94'
     start_position, exit_position = \
-        overpass_service.get_start_exit_stop_position(current_location,
-                                                      start_stop_uicref, exit_stop_uicref,
-                                                      bus_number,
-                                                      fallback_start_position,
-                                                      fallback_exit_position)
+        overpass_service.get_connection_coordinates(current_location,
+                                                    start_stop_uicref, exit_stop_uicref,
+                                                    bus_number,
+                                                    fallback_start_position,
+                                                    fallback_exit_position)
     assert (8.5447442, 47.4114541) == start_position
     assert (8.5468917, 47.4102351) == exit_position
 
@@ -165,11 +165,11 @@ def test_get_start_exit_stop_position_fallback():
     exit_stop_uicref = '8591357'
     bus_number = '161'
     start_position, exit_position = \
-        overpass_service.get_start_exit_stop_position(current_location,
-                                                      start_stop_uicref, exit_stop_uicref,
-                                                      bus_number,
-                                                      fallback_start_position,
-                                                      fallback_exit_position)
+        overpass_service.get_connection_coordinates(current_location,
+                                                    start_stop_uicref, exit_stop_uicref,
+                                                    bus_number,
+                                                    fallback_start_position,
+                                                    fallback_exit_position)
     assert (8.5363033, 47.3424100) == start_position
     assert (8.5383420, 47.3385681) == exit_position
 
@@ -193,11 +193,11 @@ def test_get_start_exit_stop_position_corrupt_relation():
     exit_stop_uicref = '8503020'
     train_number = 'S6'
     start_position, exit_position = \
-        overpass_service.get_start_exit_stop_position(current_location,
-                                                      start_stop_uicref, exit_stop_uicref,
-                                                      train_number,
-                                                      fallback_start_position,
-                                                      fallback_exit_position)
+        overpass_service.get_connection_coordinates(current_location,
+                                                    start_stop_uicref, exit_stop_uicref,
+                                                    train_number,
+                                                    fallback_start_position,
+                                                    fallback_exit_position)
     assert fallback_start_position == start_position
     assert fallback_exit_position == exit_position
 
@@ -216,11 +216,11 @@ def test_get_start_exit_stop_position_relation_without_uic_ref():
     exit_stop_uicref = '8576127'
     bus_number = '720'
     start_position, exit_position = \
-        overpass_service.get_start_exit_stop_position(current_location,
-                                                      start_stop_uicref, exit_stop_uicref,
-                                                      bus_number,
-                                                      fallback_start_position,
-                                                      fallback_exit_position)
+        overpass_service.get_connection_coordinates(current_location,
+                                                    start_stop_uicref, exit_stop_uicref,
+                                                    bus_number,
+                                                    fallback_start_position,
+                                                    fallback_exit_position)
     assert fallback_start_position == start_position
     assert fallback_exit_position == exit_position
 
@@ -234,11 +234,11 @@ def test_get_start_exit_stop_position_empty_result():
     exit_stop_uicref = '8591058'
     tram_number = '23'
     start_position, exit_position = \
-        overpass_service.get_start_exit_stop_position(current_location,
-                                                      start_stop_uicref, exit_stop_uicref,
-                                                      tram_number,
-                                                      fallback_start_position,
-                                                      fallback_exit_position)
+        overpass_service.get_connection_coordinates(current_location,
+                                                    start_stop_uicref, exit_stop_uicref,
+                                                    tram_number,
+                                                    fallback_start_position,
+                                                    fallback_exit_position)
     assert fallback_start_position == start_position
     assert fallback_exit_position == exit_position
 
@@ -255,11 +255,11 @@ def test_get_start_exit_stop_position_multiple_relations_for_line():
     exit_stop_uicref = '8591058'
     tram_number = '5'
     start_position, exit_position = \
-        overpass_service.get_start_exit_stop_position(current_location,
-                                                      start_stop_uicref, exit_stop_uicref,
-                                                      tram_number,
-                                                      fallback_start_position,
-                                                      fallback_exit_position)
+        overpass_service.get_connection_coordinates(current_location,
+                                                    start_stop_uicref, exit_stop_uicref,
+                                                    tram_number,
+                                                    fallback_start_position,
+                                                    fallback_exit_position)
     assert (8.5345459, 47.3634506) == start_position
     assert (8.5314535, 47.3640971) == exit_position
 
@@ -277,10 +277,10 @@ def test_get_start_exit_stop_position_multiple_relations_for_line_one_option():
     exit_stop_uicref = '8591059'
     tram_number = '5'
     start_position, exit_position = \
-        overpass_service.get_start_exit_stop_position(current_location,
-                                                      start_stop_uicref, exit_stop_uicref,
-                                                      tram_number,
-                                                      fallback_start_position,
-                                                      fallback_exit_position)
+        overpass_service.get_connection_coordinates(current_location,
+                                                    start_stop_uicref, exit_stop_uicref,
+                                                    tram_number,
+                                                    fallback_start_position,
+                                                    fallback_exit_position)
     assert (8.5345459, 47.3634506) == start_position
     assert (8.5302541, 47.3645340) == exit_position

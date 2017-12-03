@@ -9,10 +9,10 @@ def mock_test_get_public_transport_route(monkeypatch):
     monkeypatch.setattr(search_ch_service, 'get_connection',
                         lambda start, destination, departure:
                         _mock_test_get_public_transport_route_get_connection(start, destination))
-    monkeypatch.setattr(overpass_service, 'get_start_exit_stop_position',
+    monkeypatch.setattr(overpass_service, 'get_connection_coordinates',
                         lambda lookup_position, start_uic_ref, exit_uic_ref, line,
                         fallback_start_position, fallback_exit_position:
-                        _mock_test_get_public_transport_route_get_start_exit_stop_position(start_uic_ref, line))
+                        _mock_test_get_public_transport_route_get_connection_coordinates(start_uic_ref, line))
 
 
 def _mock_test_get_public_transport_route_get_connection(start, destination):
@@ -37,7 +37,7 @@ def _mock_test_get_public_transport_route_get_connection(start, destination):
     return search_ch_parser.parse_connections(response_file)['connections'][0]
 
 
-def _mock_test_get_public_transport_route_get_start_exit_stop_position(start_uic_ref, line):
+def _mock_test_get_public_transport_route_get_connection_coordinates(start_uic_ref, line):
     # Test: test_get_public_transport_route_single_leg
     if start_uic_ref == '8587347' and line == '161':
         return (8.5362646, 47.3424624), (8.5416616, 47.3349277)

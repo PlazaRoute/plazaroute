@@ -25,12 +25,12 @@ def optimize_public_transport_connection(public_transport_connection: dict) -> d
         fallback_exit_position = tuple(leg['exit_position'])
 
         lookup_position = fallback_start_position
-        start_position, exit_position = overpass_service.get_start_exit_stop_position(lookup_position,
-                                                                                      leg['start_stop_uicref'],
-                                                                                      leg['exit_stop_uicref'],
-                                                                                      leg['line'],
-                                                                                      fallback_start_position,
-                                                                                      fallback_exit_position)
+        start_position, exit_position = overpass_service.get_connection_coordinates(lookup_position,
+                                                                                    leg['start_stop_uicref'],
+                                                                                    leg['exit_stop_uicref'],
+                                                                                    leg['line'],
+                                                                                    fallback_start_position,
+                                                                                    fallback_exit_position)
         leg['start_position'] = [*start_position]
         leg['exit_position'] = [*exit_position]
     return public_transport_connection
