@@ -30,7 +30,7 @@ def find_route(start: str, destination: str, departure: str, precise_public_tran
         logger.info("Walking is faster than using public transport, return walking only route")
         return _convert_walking_route_to_overall_response(overall_walking_route)
 
-    route_combinations = _get_route_combinations(start, destination, departure, precise_public_transport_stops)
+    route_combinations = _get_route_combinations(start, destination, departure)
     if not route_combinations:
         logger.info("No public transport route was returned because the path consists only of walking legs")
         return _convert_walking_route_to_overall_response(overall_walking_route)
@@ -40,13 +40,14 @@ def find_route(start: str, destination: str, departure: str, precise_public_tran
     if _is_walking_faster_than_route_combination(overall_walking_route, best_route_combination, departure):
         return _convert_walking_route_to_overall_response(overall_walking_route)
 
+    if precise_public_transport_stops:
+        best_route_combination = _optimize_route_combination(best_route_combination, start, destination)
+
     return best_route_combination
 
 
-def _get_route_combinations(start: tuple, destination: tuple,
-                            departure: str, precise_public_transport_stops: bool) -> List[dict]:
+def _get_route_combinations(start: tuple, destination: tuple, departure: str) -> List[dict]:
     """ retrieves all possible routes for a specific start and destination address """
-
     public_transport_stops = public_transport_route_finder.get_public_transport_stops(start)
 
     routes = []
@@ -57,31 +58,17 @@ def _get_route_combinations(start: tuple, destination: tuple,
 
         public_transport_route = public_transport_route_finder.get_public_transport_route(public_transport_stop_uic_ref,
                                                                                           destination,
-                                                                                          public_transport_departure,
-                                                                                          precise_public_transport_stops)
+                                                                                          public_transport_departure)
         if not public_transport_route['path']:
             continue  # skip empty paths, this happens if the path only consists of walking legs
 
-        public_transport_route_start = \
-            public_transport_route_finder.get_start_position(public_transport_route,
-                                                             precise_public_transport_stops)
+        public_transport_route_start = tuple(public_transport_route['path'][0]['start_position'])
         start_walking_route = walking_route_finder.get_walking_route(start, public_transport_route_start)
 
-        public_transport_route_destination = \
-            public_transport_route_finder.get_destination_position(public_transport_route,
-                                                                   precise_public_transport_stops)
+        public_transport_route_destination = tuple(public_transport_route['path'][-1]['exit_position'])
         end_walking_route = walking_route_finder.get_walking_route(public_transport_route_destination, destination)
 
-        accumulated_duration = \
-            start_walking_route['duration'] + public_transport_route['duration'] + end_walking_route['duration']
-
-        routes.append({
-            'start_walking_route': start_walking_route,
-            'public_transport_connection': public_transport_route,
-            'end_walking_route': end_walking_route,
-            'accumulated_duration': accumulated_duration
-
-        })
+        routes.append(_generate_route_combination(start_walking_route, public_transport_route, end_walking_route))
     return routes
 
 
@@ -98,6 +85,36 @@ def _get_best_route_combination(route_combinations: List[dict]) -> dict:
             temp_smallest_route_costs = total_cost
             temp_best_route_combination = route_combination
     return temp_best_route_combination
+
+
+def _optimize_route_combination(route_combination: dict, start: tuple, destination: tuple) -> dict:
+    """ retrieves accurate coordinates for the public transport stops and thus new walking routes will be generated """
+    logger.debug("optimize route")
+
+    public_transport_connection = route_combination['public_transport_connection']
+    optimized_public_transport_connection = \
+        public_transport_route_finder.optimize_public_transport_connection(public_transport_connection)
+
+    public_transport_route_start = tuple(optimized_public_transport_connection['path'][0]['start_position'])
+    start_walking_route = walking_route_finder.get_walking_route(start, public_transport_route_start)
+
+    public_transport_route_destination = tuple(optimized_public_transport_connection['path'][-1]['exit_position'])
+    end_walking_route = walking_route_finder.get_walking_route(public_transport_route_destination, destination)
+
+    return _generate_route_combination(start_walking_route, public_transport_connection, end_walking_route)
+
+
+def _generate_route_combination(start_walking_route: dict,
+                                public_transport_connection: dict,
+                                end_walking_route: dict) -> dict:
+    accumulated_duration = \
+        start_walking_route['duration'] + public_transport_connection['duration'] + end_walking_route['duration']
+    return {
+            'start_walking_route': start_walking_route,
+            'public_transport_connection': public_transport_connection,
+            'end_walking_route': end_walking_route,
+            'accumulated_duration': accumulated_duration
+            }
 
 
 def _convert_walking_route_to_overall_response(walking_route: dict) -> dict:
@@ -163,6 +180,9 @@ def _parse_departure(departure: str) -> str:
 
 if __name__ == "__main__":
     import time
+    start_time = time.time()
+    print(find_route('8.55546, 47.41071', 'Zürich, Hardbrücke', '14:42', False))
+    print(time.time() - start_time)
     start_time = time.time()
     print(find_route('8.55546, 47.41071', 'Zürich, Hardbrücke', '14:42', True))
     print(time.time() - start_time)
