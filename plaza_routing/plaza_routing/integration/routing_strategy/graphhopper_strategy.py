@@ -3,14 +3,13 @@ import os
 from bravado.client import SwaggerClient
 
 from plaza_routing.integration.routing_strategy.routingstrategy import RoutingStrategy
-
-GRAPHHOPPER_SWAGGER_FILE = 'graphhopper_swagger.json'
+from plaza_routing import config
 
 
 class GraphHopperRoutingStrategy(RoutingStrategy):
 
     def __init__(self):
-        swagger_file = os.path.join(os.path.dirname(__file__), GRAPHHOPPER_SWAGGER_FILE)
+        swagger_file = os.path.join(os.path.dirname(__file__), config.graphhopper['swagger_file'])
         self._client = SwaggerClient.from_url(f'file://{swagger_file}')
 
     def route(self, start, destination):
