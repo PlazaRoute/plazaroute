@@ -15,6 +15,7 @@ setup(
     url='https://github.com/PlazaRoute/PlazaRoute',
     license="AGPLv3",
     packages=find_packages(exclude=('tests', 'docs')),
+    install_requires=['osmium', 'Shapely', 'geojson', 'networkx', 'Rtree', 'jsonschema', 'ruamel.yaml'],
     entry_points={
         'console_scripts': [
             'plaza_preprocessing=plaza_preprocessing.__main__:plaza_preprocessing'
