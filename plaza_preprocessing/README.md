@@ -25,6 +25,7 @@ positional arguments:
 
 optional arguments:
   -h, --help         show this help message and exit
-  --config filename  specify a config file
+  --config filename  specify a config file location. A default config will be
+                     created if the path does not exist
   -v                 verbose log output
 ```

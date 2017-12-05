@@ -53,7 +53,8 @@ def parse_args(args):
     parser.add_argument('source', help='input OSM file to process')
     parser.add_argument('destination', help='destination OSM file')
     parser.add_argument('--config', default='plaza_preprocessing_config.yml', metavar="filename",
-                        help='specify a config file')
+                        help='specify a config file location. A default config will be created'
+                             ' if the path does not exist')
     parser.add_argument('-v', action='store_true', help='verbose log output')
 
     if len(args) == 0:

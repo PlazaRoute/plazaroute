@@ -1,0 +1,23 @@
+
+tag-filter:
+  plaza: # what counts as a plaza
+    includes: # one or more tags must match
+#     tag-keys: # tag keys only
+#       - 
+      tag-key-values: # tags with specific values
+        - highway: pedestrian
+    excludes: # no tags should match
+#     tag-keys:
+#       - <key>
+      tag-key-values:
+        - area: no
+  barrier: # what OSM "way" constitutes a barrier
+    includes:
+      tag-key-values:
+        - barrier: wall
+
+graph-strategy: visibility # one of visibility, spiderweb
+spiderweb-grid-size: 2 # grid size in meters, if spiderweb is used
+obstacle-buffer: 2 # minimal distance from any obstacles in meters
+
+shortest-path-algorithm: astar # one of astar, dijkstra
