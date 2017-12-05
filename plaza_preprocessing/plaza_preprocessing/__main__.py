@@ -6,6 +6,7 @@ from plaza_preprocessing.merger import merger
 from plaza_preprocessing.optimizer import optimizer, shortest_paths
 from plaza_preprocessing.optimizer.graphprocessor.visibilitygraph import VisibilityGraphProcessor
 from plaza_preprocessing.optimizer.graphprocessor.spiderwebgraph import SpiderWebGraphProcessor
+from plaza_preprocessing import configuration
 
 logger = logging.getLogger('plaza_preprocessing')
 
@@ -42,4 +43,5 @@ if __name__ == "__main__":
 
     # TODO: make configurable
     setup_logging(verbose=True)
+    configuration.load_config('config.yml')
     preprocess_osm(sys.argv[1], sys.argv[2])
