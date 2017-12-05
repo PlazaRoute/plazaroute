@@ -4,6 +4,7 @@ import sys
 from plaza_preprocessing.importer import importer
 from plaza_preprocessing.merger import merger
 from plaza_preprocessing.optimizer import optimizer, shortest_paths
+from plaza_preprocessing.optimizer.graphprocessor.graphprocessor import GraphProcessor
 from plaza_preprocessing.optimizer.graphprocessor.visibilitygraph import VisibilityGraphProcessor
 from plaza_preprocessing.optimizer.graphprocessor.spiderwebgraph import SpiderWebGraphProcessor
 from plaza_preprocessing import configuration
@@ -28,12 +29,35 @@ def setup_logging(verbose=False, quiet=False):
     logger.debug("Setting up logging complete")
 
 
-def preprocess_osm(osm_filename, out_file):
-    # TODO: Make configurable
-    shortest_path_strategy = shortest_paths.compute_astar_shortest_paths
-    osm_holder = importer.import_osm(osm_filename)
-    processed_plazas = optimizer.preprocess_plazas(osm_holder, VisibilityGraphProcessor(), shortest_path_strategy)
+def preprocess_osm(osm_filename: str, out_file: str, config: dict):
+    shortest_path_strategy = _get_shortest_path_strategy(config)
+    process_strategy = _get_process_strategy(config)
+    logger.info(f"Using {config['graph-strategy']} graph with {config['shortest-path-algorithm']} algorithm")
+    osm_holder = importer.import_osm(osm_filename, config['tag-filter'])
+
+    processed_plazas = optimizer.preprocess_plazas(osm_holder, process_strategy, shortest_path_strategy, config)
     merger.merge_plaza_graphs(processed_plazas, osm_filename, out_file)
+
+
+def _get_process_strategy(config: dict) -> GraphProcessor:
+    strategy_config = config['graph-strategy']
+    if strategy_config == 'visibility':
+        return VisibilityGraphProcessor()
+    elif strategy_config == 'spiderweb':
+        spacing = config['spiderweb-grid-size']
+        return SpiderWebGraphProcessor(spacing_m=spacing)
+    else:
+        raise ValueError("invalid value for process strategy")
+
+
+def _get_shortest_path_strategy(config: dict):
+    strategy_config = config['shortest-path-algorithm']
+    if strategy_config == 'astar':
+        return shortest_paths.compute_astar_shortest_paths
+    elif strategy_config == 'dijkstra':
+        return shortest_paths.compute_dijkstra_shortest_paths
+    else:
+        raise ValueError("invalid value for shortest path algorithm")
 
 
 if __name__ == "__main__":
@@ -43,5 +67,5 @@ if __name__ == "__main__":
 
     # TODO: make configurable
     setup_logging(verbose=True)
-    configuration.load_config('config.yml')
-    preprocess_osm(sys.argv[1], sys.argv[2])
+    config = configuration.load_config('config.yml')
+    preprocess_osm(sys.argv[1], sys.argv[2], config)

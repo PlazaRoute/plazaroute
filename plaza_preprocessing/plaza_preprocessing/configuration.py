@@ -78,6 +78,7 @@ SCHEMA = {
                     '$ref': '#/definitions/tag-listing'
                 }
             },
+            'required': ['includes'],
             'additionalProperties': False,
         },
         'tag-listing': {
@@ -99,7 +100,7 @@ SCHEMA = {
 }
 
 
-def load_config(config_path):
+def load_config(config_path: str) -> dict:
     """
     Loads the configuration and creates the default configuration if it does not yet exist.
     """
@@ -117,10 +118,36 @@ def load_config(config_path):
     return config
 
 
-def create_default_config(config_path):
+def create_default_config(config_path: str):
     """
-    Creates the a default configuration file.
+    Creates the default configuration file.
     """
-    logger.info('Creating default configuration')
+    logger.info("Creating default configuration at {config_path}")
     with open(config_path, 'w') as f:
         f.write(DEFAULT_CONFIG)
+
+
+def filter_tags(tags: dict, tag_filter: dict) -> bool:
+    """filter tags based on a tag filter"""
+
+    including = False
+    include = tag_filter['includes']
+    if 'tag-keys' in include:
+        including = any(key in tags for key in include['tag-keys'])
+    if not including:
+        if 'tag-key-values' in tag_filter['includes']:
+            including = any(tags.get(tag_key) == tag_value for tag in include['tag-key-values']
+                            for tag_key, tag_value in tag.items())
+    if not including:
+        return False
+
+    if 'excludes' in tag_filter:
+        if 'tag-keys' in tag_filter['excludes']:
+            if any(key in tags for key in tag_filter['excludes']['tag-keys']):
+                return False
+        if 'tag-key-values' in tag_filter['excludes']:
+            if any(tags.get(tag_key) == tag_value for tag in tag_filter['excludes']['tag-key-values']
+                   for tag_key, tag_value in tag.items()):
+                return False
+
+    return True

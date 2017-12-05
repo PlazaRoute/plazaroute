@@ -2,11 +2,11 @@ import testfilemanager
 from plaza_preprocessing.optimizer import optimizer
 
 
-def process_plaza(testfile, plaza_id, process_strategy, shortest_path_strategy):
-    holder = testfilemanager.import_testfile(testfile)
+def process_plaza(testfile, plaza_id, process_strategy, shortest_path_strategy, config):
+    holder = testfilemanager.import_testfile(testfile, config)
     plaza = get_plaza_by_id(holder.plazas, plaza_id)
 
-    processor = optimizer.PlazaPreprocessor(holder, process_strategy, shortest_path_strategy)
+    processor = optimizer.PlazaPreprocessor(holder, process_strategy, shortest_path_strategy, config['obstacle-buffer'])
     return processor._process_plaza(plaza)
 
 
