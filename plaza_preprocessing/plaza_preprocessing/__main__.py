@@ -1,6 +1,6 @@
 import logging
 import sys
-
+import argparse
 from plaza_preprocessing.importer import importer
 from plaza_preprocessing.merger import merger
 from plaza_preprocessing.optimizer import optimizer, shortest_paths
@@ -39,6 +39,22 @@ def preprocess_osm(osm_filename: str, out_file: str, config: dict):
     merger.merge_plaza_graphs(processed_plazas, osm_filename, out_file)
 
 
+def parse_args(args):
+    parser = argparse.ArgumentParser(description='Preprocess an OSM file for pedestrian routing over plazas.')
+    parser.add_argument('source', help='input OSM file to process')
+    parser.add_argument('destination', help='destination OSM file')
+    parser.add_argument('--config', default='plaza_preprocessing_config.yml', metavar="filename",
+                        help='specify a config file')
+    parser.add_argument('-v', action='store_true', help='verbose log output')
+
+    if len(args) == 0:
+        parser.print_help()
+        sys.exit(1)
+
+    result = parser.parse_args(args)
+    return result.source, result.destination, result.config, result.v
+
+
 def _get_process_strategy(config: dict) -> GraphProcessor:
     strategy_config = config['graph-strategy']
     if strategy_config == 'visibility':
@@ -61,11 +77,8 @@ def _get_shortest_path_strategy(config: dict):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print('usage: plaza_preprocessing <osm-source-file> <merged-file-dest>')
-        exit(1)
+    source, destination, config_file, verbose_log = parse_args(sys.argv[1:])
 
-    # TODO: make configurable
-    setup_logging(verbose=True)
-    config = configuration.load_config('config.yml')
-    preprocess_osm(sys.argv[1], sys.argv[2], config)
+    setup_logging(verbose=verbose_log)
+    config = configuration.load_config(config_file)
+    preprocess_osm(source, destination, config)

@@ -122,7 +122,7 @@ def create_default_config(config_path: str):
     """
     Creates the default configuration file.
     """
-    logger.info("Creating default configuration at {config_path}")
+    logger.info(f"Creating default configuration at {config_path}")
     with open(config_path, 'w') as f:
         f.write(DEFAULT_CONFIG)
 
