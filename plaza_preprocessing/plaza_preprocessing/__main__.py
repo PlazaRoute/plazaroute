@@ -12,6 +12,25 @@ from plaza_preprocessing import configuration
 logger = logging.getLogger('plaza_preprocessing')
 
 
+def plaza_preprocessing():
+    """entry point"""
+    source, destination, config_file, verbose_log = parse_args(sys.argv[1:])
+
+    setup_logging(verbose=verbose_log)
+    config = configuration.load_config(config_file)
+    preprocess_osm(source, destination, config)
+
+
+def preprocess_osm(osm_filename: str, out_file: str, config: dict):
+    shortest_path_strategy = _get_shortest_path_strategy(config)
+    process_strategy = _get_process_strategy(config)
+    logger.info(f"Using {config['graph-strategy']} graph with {config['shortest-path-algorithm']} algorithm")
+    osm_holder = importer.import_osm(osm_filename, config['tag-filter'])
+
+    processed_plazas = optimizer.preprocess_plazas(osm_holder, process_strategy, shortest_path_strategy, config)
+    merger.merge_plaza_graphs(processed_plazas, osm_filename, out_file)
+
+
 def setup_logging(verbose=False, quiet=False):
     logger.setLevel(logging.INFO)
     ch = logging.StreamHandler(sys.stdout)
@@ -27,16 +46,6 @@ def setup_logging(verbose=False, quiet=False):
     ch.setFormatter(formatter)
     logger.addHandler(ch)
     logger.debug("Setting up logging complete")
-
-
-def preprocess_osm(osm_filename: str, out_file: str, config: dict):
-    shortest_path_strategy = _get_shortest_path_strategy(config)
-    process_strategy = _get_process_strategy(config)
-    logger.info(f"Using {config['graph-strategy']} graph with {config['shortest-path-algorithm']} algorithm")
-    osm_holder = importer.import_osm(osm_filename, config['tag-filter'])
-
-    processed_plazas = optimizer.preprocess_plazas(osm_holder, process_strategy, shortest_path_strategy, config)
-    merger.merge_plaza_graphs(processed_plazas, osm_filename, out_file)
 
 
 def parse_args(args):
@@ -77,8 +86,4 @@ def _get_shortest_path_strategy(config: dict):
 
 
 if __name__ == "__main__":
-    source, destination, config_file, verbose_log = parse_args(sys.argv[1:])
-
-    setup_logging(verbose=verbose_log)
-    config = configuration.load_config(config_file)
-    preprocess_osm(source, destination, config)
+    plaza_preprocessing()
