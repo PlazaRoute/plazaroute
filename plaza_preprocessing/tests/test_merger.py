@@ -4,6 +4,7 @@ from shapely.geometry import LineString, Point
 import testfilemanager
 import utils
 from plaza_preprocessing.optimizer import shortest_paths
+from plaza_preprocessing import configuration
 import plaza_preprocessing.merger.merger as merger
 import plaza_preprocessing.merger.plazatransformer as plazatransformer
 from plaza_preprocessing.optimizer.graphprocessor.spiderwebgraph import SpiderWebGraphProcessor
@@ -26,6 +27,13 @@ def shortest_path_strategy(request):
         return shortest_paths.compute_astar_shortest_paths
 
 
+@pytest.fixture
+def config():
+    config_path = 'testconfig.yml'
+    yield configuration.load_config(config_path)
+    os.remove(config_path)
+
+
 def test_transform_plaza():
     plaza_transformer = plazatransformer.PlazaTransformer(0, 0)
     plaza = create_test_plaza()
@@ -36,8 +44,8 @@ def test_transform_plaza():
     assert len(plaza_transformer.entry_node_mappings[99]) == 1
 
 
-def test_transform_real_plaza(process_strategy, shortest_path_strategy):
-    plaza = utils.process_plaza('helvetiaplatz', 4533221, process_strategy, shortest_path_strategy)
+def test_transform_real_plaza(process_strategy, shortest_path_strategy, config):
+    plaza = utils.process_plaza('helvetiaplatz', 4533221, process_strategy, shortest_path_strategy, config)
     assert plaza
 
     plaza_transformer = plazatransformer.PlazaTransformer(0, 0)
@@ -61,9 +69,9 @@ def test_write_to_file():
         os.remove(way_file)
 
 
-def test_write_to_file_real_plaza(process_strategy, shortest_path_strategy):
+def test_write_to_file_real_plaza(process_strategy, shortest_path_strategy, config):
     plaza = utils.process_plaza(
-        'helvetiaplatz', 4533221, process_strategy, shortest_path_strategy)
+        'helvetiaplatz', 4533221, process_strategy, shortest_path_strategy, config)
     assert plaza
 
     node_file = 'test_nodes.osm'
@@ -77,9 +85,9 @@ def test_write_to_file_real_plaza(process_strategy, shortest_path_strategy):
         os.remove(way_file)
 
 
-def test_merge_plaza_graphs(process_strategy, shortest_path_strategy):
+def test_merge_plaza_graphs(process_strategy, shortest_path_strategy, config):
     plaza = utils.process_plaza(
-        'helvetiaplatz', 4533221, process_strategy, shortest_path_strategy)
+        'helvetiaplatz', 4533221, process_strategy, shortest_path_strategy, config)
     assert plaza
 
     merged_filename = 'testfile-merged.osm'
@@ -93,9 +101,9 @@ def test_merge_plaza_graphs(process_strategy, shortest_path_strategy):
         os.remove(merged_filename)
 
 
-def test_merge_simple_plaza(process_strategy, shortest_path_strategy):
+def test_merge_simple_plaza(process_strategy, shortest_path_strategy, config):
     plaza = utils.process_plaza(
-        'helvetiaplatz', 39429064, process_strategy, shortest_path_strategy)
+        'helvetiaplatz', 39429064, process_strategy, shortest_path_strategy, config)
     assert plaza
 
     merged_filename = 'testfile-merged.osm'

@@ -3,19 +3,21 @@ import osmium
 from osmium._osmium import InvalidLocationError
 import shapely.wkb as wkblib
 from plaza_preprocessing.importer import osmholder
+from plaza_preprocessing import configuration
 
 logger = logging.getLogger('plaza_preprocessing.importer')
 WKBFAB = osmium.geom.WKBFactory()
 
 
-def import_osm(filename):
+def import_osm(filename, tag_filters):
     """ imports a OSM / PBF file and returns a holder with all plazas, buildings,
     lines and points with shapely geometries """
     logger.info(f'importing {filename}')
-    handler = _PlazaHandler()
-    # index_type = 'dense_file_array' # uses over 25GB of space for Switzerland
+    handler = _PlazaHandler(tag_filters)
+
     index_type = 'sparse_mem_array'
     handler.apply_file(filename, locations=True, idx=index_type)
+
     logger.debug(f'found {len(handler.plazas)} plazas')
     logger.debug(f'found {len(handler.buildings)} buildings')
     logger.debug(f'found {len(handler.lines)} lines')
@@ -27,8 +29,9 @@ def import_osm(filename):
 
 
 class _PlazaHandler(osmium.SimpleHandler):
-    def __init__(self):
+    def __init__(self, tag_filters):
         super().__init__()
+        self.tag_filters = tag_filters
         self.plazas = []
         self.buildings = []
         self.points = []
@@ -83,8 +86,7 @@ class _PlazaHandler(osmium.SimpleHandler):
             way.tags.get("railway") == "tram"
 
     def _is_plaza(self, area):
-        return area.tags.get("highway") == "pedestrian" and \
-            area.tags.get("area") != "no"
+        return configuration.filter_tags(area.tags, self.tag_filters['plaza'])
 
     def _is_relevant_building(self, area):
         return "building" in area.tags \

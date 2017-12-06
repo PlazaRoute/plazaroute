@@ -1,13 +1,12 @@
 import requests
 from plaza_routing.integration.util import search_ch_parser
-
-SEARCH_CH_API_URL = 'https://timetable.search.ch/api/route.json'
+from plaza_routing import config
 
 
 def get_connection(start: str, destination: str, time: str) -> dict:
     """ retrieves the connection for a given start, destination and time of departure"""
     payload = {'from': start, 'to': destination, 'time': time, 'num': 1}
-    req = requests.get(SEARCH_CH_API_URL, params=payload)
+    req = requests.get(config.search_ch['search_ch_api'], params=payload)
     connections = search_ch_parser.parse_connections(req.text)
     first_connection = connections['connections'][0]
     return first_connection
