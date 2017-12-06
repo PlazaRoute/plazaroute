@@ -10,7 +10,6 @@ logger = logging.getLogger('plaza_routing')
 
 
 def configure_app(flask_app):
-    flask_app.config['SERVER_NAME'] = config.app['server_url']
     flask_app.config['SWAGGER_UI_DOC_EXPANSION'] = config.app['restplus']['swagger_ui_doc_expansion']
     flask_app.config['RESTPLUS_VALIDATE'] = config.app['restplus']['validate']
     flask_app.config['RESTPLUS_MASK_SWAGGER'] = config.app['restplus']['mask_swagger']
@@ -48,4 +47,5 @@ app = Flask(__name__)
 initialize(app)
 
 if __name__ == "__main__":
+    app.config['SERVER_NAME'] = config.app['server_url']
     app.run(debug=config.app['debug'])
