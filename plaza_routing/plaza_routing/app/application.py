@@ -39,12 +39,13 @@ def setup_logging(log_level):
     logger.debug("Setting up logging complete")
 
 
-def main():
-    app = Flask(__name__)
+def initialize(app):
     initialize_app(app)
     setup_logging(config.app['log_level'])
-    app.run(debug=config.app['debug'])
 
+
+app = Flask(__name__)
+initialize(app)
 
 if __name__ == "__main__":
-    main()
+    app.run(debug=config.app['debug'])
