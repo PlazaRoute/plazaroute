@@ -1,30 +1,20 @@
 import sys
 import logging
 from flask import Flask, Blueprint
+
+from plaza_routing import config
 from plaza_routing.api.restplus import api
 from plaza_routing.api.endpoints.route import ns as route_namespace
-
-# TODO move settings to config
-# Flask settings
-FLASK_SERVER_NAME = 'localhost:5000'
-FLASK_DEBUG = True  # Do not use debug mode in production
-
-# Flask-Restplus settings
-RESTPLUS_SWAGGER_UI_DOC_EXPANSION = 'list'
-RESTPLUS_VALIDATE = True
-RESTPLUS_MASK_SWAGGER = False
-RESTPLUS_ERROR_404_HELP = False
-
 
 logger = logging.getLogger('plaza_routing')
 
 
 def configure_app(flask_app):
-    flask_app.config['SERVER_NAME'] = FLASK_SERVER_NAME
-    flask_app.config['SWAGGER_UI_DOC_EXPANSION'] = RESTPLUS_SWAGGER_UI_DOC_EXPANSION
-    flask_app.config['RESTPLUS_VALIDATE'] = RESTPLUS_VALIDATE
-    flask_app.config['RESTPLUS_MASK_SWAGGER'] = RESTPLUS_MASK_SWAGGER
-    flask_app.config['ERROR_404_HELP'] = RESTPLUS_ERROR_404_HELP
+    flask_app.config['SERVER_NAME'] = config.app['server_url']
+    flask_app.config['SWAGGER_UI_DOC_EXPANSION'] = config.app['restplus']['swagger_ui_doc_expansion']
+    flask_app.config['RESTPLUS_VALIDATE'] = config.app['restplus']['validate']
+    flask_app.config['RESTPLUS_MASK_SWAGGER'] = config.app['restplus']['mask_swagger']
+    flask_app.config['ERROR_404_HELP'] = config.app['restplus']['error_404_help']
 
 
 def initialize_app(flask_app):
@@ -36,17 +26,13 @@ def initialize_app(flask_app):
     flask_app.register_blueprint(api_blueprint)
 
 
-def setup_logging(verbose=False, quiet=False):
-    logger.setLevel(logging.INFO)
+def setup_logging(log_level):
+    logger.setLevel(log_level)
     console_handler = logging.StreamHandler(sys.stdout)
-    formatter = logging.Formatter(
-            '[%(levelname)-7s] - %(message)s')
-    if verbose and not quiet:
-        logger.setLevel(logging.DEBUG)
-        formatter = logging.Formatter(
-            '%(asctime)s - %(name)s - [%(levelname)-7s] - %(message)s')
-    if quiet:
-        logger.setLevel(logging.WARNING)
+    formatter = logging.Formatter('[%(levelname)-7s] - %(message)s')
+
+    if log_level == logging.DEBUG:
+        formatter = logging.Formatter('%(asctime)s - %(name)s - [%(levelname)-7s] - %(message)s')
 
     console_handler.setFormatter(formatter)
     logger.addHandler(console_handler)
@@ -56,8 +42,8 @@ def setup_logging(verbose=False, quiet=False):
 def main():
     app = Flask(__name__)
     initialize_app(app)
-    setup_logging(verbose=True)
-    app.run(debug=FLASK_DEBUG)
+    setup_logging(config.app['log_level'])
+    app.run(debug=config.app['debug'])
 
 
 if __name__ == "__main__":

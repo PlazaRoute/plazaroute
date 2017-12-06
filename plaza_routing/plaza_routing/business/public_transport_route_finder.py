@@ -13,39 +13,31 @@ def get_public_transport_stops(start: tuple) -> dict:
     return overpass_service.get_public_transport_stops(start)
 
 
-def get_public_transport_route(start_uic_ref: str, destination: tuple, departure: str,
-                               precise_public_transport_stops: bool) -> dict:
+def get_public_transport_route(start_uic_ref: str, destination: tuple, departure: str) -> dict:
     connection = search_ch_service.get_connection(start_uic_ref, _tuple_to_str(destination), departure)
-    return _get_path_for_public_transport_connection(connection, precise_public_transport_stops)
+    return _generate_public_transport_connection(connection)
 
 
-def get_start_position(public_transport_route: dict, precise_public_transport_stops: bool) -> tuple:
-    first_leg = public_transport_route['path'][0]
-    return _get_start_exit_stop_position(first_leg, precise_public_transport_stops)[0]
+def optimize_public_transport_connection(public_transport_connection: dict) -> dict:
+    """ retrieves accurate coordinates for the public transport stops in each leg """
+    for leg in public_transport_connection['path']:
+        fallback_start_position = tuple(leg['start_position'])
+        fallback_exit_position = tuple(leg['exit_position'])
+
+        lookup_position = fallback_start_position
+        start_position, exit_position = overpass_service.get_connection_coordinates(lookup_position,
+                                                                                    leg['start_stop_uicref'],
+                                                                                    leg['exit_stop_uicref'],
+                                                                                    leg['line'],
+                                                                                    fallback_start_position,
+                                                                                    fallback_exit_position)
+        leg['start_position'] = [*start_position]
+        leg['exit_position'] = [*exit_position]
+    return public_transport_connection
 
 
-def get_destination_position(public_transport_route: dict, precise_public_transport_stops: bool) -> tuple:
-    last_leg = public_transport_route['path'][-1]
-    return _get_start_exit_stop_position(last_leg, precise_public_transport_stops)[1]
-
-
-def _get_start_exit_stop_position(leg: dict, precise_public_transport_stops: bool) -> tuple:
-    fallback_start_position = tuple(leg['start_position'])
-    fallback_exit_position = tuple(leg['exit_position'])
-
-    if precise_public_transport_stops:
-        return overpass_service.get_start_exit_stop_position(fallback_start_position,
-                                                             leg['start_stop_uicref'],
-                                                             leg['exit_stop_uicref'],
-                                                             leg['line'],
-                                                             fallback_start_position,
-                                                             fallback_exit_position)
-
-    return fallback_start_position, fallback_exit_position
-
-
-def _get_path_for_public_transport_connection(connection: dict, precise_public_transport_stops: bool) -> dict:
-    """ retrieves the start position for each leg in the provided connection and produces an routable response """
+def _generate_public_transport_connection(connection: dict) -> dict:
+    """ produces an routable public transport connection """
     legs = connection['legs']
     result = {
         'type': 'public_transport',
@@ -54,30 +46,13 @@ def _get_path_for_public_transport_connection(connection: dict, precise_public_t
         'number_of_legs': 0
     }
 
-    relevant_legs_counter = 0
     for leg in legs:
-        line = leg['line']
-        start_uic_ref = leg['stopid']
-        exit_uic_ref = leg['exit']['stopid']
-
-        fallback_start_position = coordinate_transformer.transform_ch_to_wgs(leg['x'], leg['y'])
-        fallback_exit_position = coordinate_transformer.transform_ch_to_wgs(leg['exit']['x'], leg['exit']['y'])
-
-        if precise_public_transport_stops:
-            lookup_position = fallback_start_position
-            start_position, exit_position = overpass_service.get_start_exit_stop_position(lookup_position,
-                                                                                          start_uic_ref, exit_uic_ref,
-                                                                                          line,
-                                                                                          fallback_start_position,
-                                                                                          fallback_exit_position)
-        else:
-            start_position = fallback_start_position
-            exit_position = fallback_exit_position
+        start_position = coordinate_transformer.transform_ch_to_wgs(leg['x'], leg['y'])
+        exit_position = coordinate_transformer.transform_ch_to_wgs(leg['exit']['x'], leg['exit']['y'])
 
         result['path'].append(_generate_path(leg, start_position, exit_position))
-        relevant_legs_counter += 1
 
-    result['number_of_legs'] = relevant_legs_counter
+    result['number_of_legs'] = len(result['path'])
     return result
 
 
