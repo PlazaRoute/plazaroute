@@ -6,14 +6,14 @@ from plaza_routing.business.util import coordinate_transformer
 from plaza_routing.integration import overpass_service
 from plaza_routing.integration import search_ch_service
 
-logger = logging.getLogger('plaza_routing.public_transport_route_finder')
+logger = logging.getLogger('plaza_routing.public_transport_connection_finder')
 
 
 def get_public_transport_stops(start: tuple) -> dict:
     return overpass_service.get_public_transport_stops(start)
 
 
-def get_public_transport_route(start_uic_ref: str, destination: tuple, departure: str) -> dict:
+def get_public_transport_connection(start_uic_ref: str, destination: tuple, departure: str) -> dict:
     connection = search_ch_service.get_connection(start_uic_ref, _tuple_to_str(destination), departure)
     return _generate_public_transport_connection(connection)
 
