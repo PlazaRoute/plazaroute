@@ -1,4 +1,4 @@
-# Run PlazaRoute with Docker
+# Run plaza_routing with Docker
 
 The docker-compose file provides a full deploy environment with [plaza_routing](https://github.com/PlazaRoute/PlazaRoute/tree/master/plaza_routing), [Graphhopper](https://github.com/graphhopper/graphhopper) and Nginx as a reverse Proxy.
 

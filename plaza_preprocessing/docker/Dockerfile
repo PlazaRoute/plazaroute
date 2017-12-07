@@ -15,8 +15,7 @@ RUN python3 get-pip.py
 RUN pip3 install --upgrade wheel setuptools virtualenv
 
 # install plaza_preprocessing
-# CHANGE BEFORE MERGING 
-RUN git clone -b PZ-123-docker-deployment https://github.com/PlazaRoute/PlazaRoute.git plazaroute
+RUN git clone https://github.com/PlazaRoute/PlazaRoute.git plazaroute
 WORKDIR plazaroute
 
 RUN pip install plaza_preprocessing/

@@ -1,7 +1,6 @@
 FROM python:3.6.3
 
-#CHANGE BEFORE MERGING
-RUN git clone -b PZ-123-docker-deployment https://github.com/PlazaRoute/PlazaRoute.git /plazaroute
+RUN git clone https://github.com/PlazaRoute/PlazaRoute.git /plazaroute
 WORKDIR /plazaroute
 
 RUN pip install -r plaza_routing/requirements.txt
