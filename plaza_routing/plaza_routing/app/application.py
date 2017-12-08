@@ -10,7 +10,6 @@ logger = logging.getLogger('plaza_routing')
 
 
 def configure_app(flask_app):
-    flask_app.config['SERVER_NAME'] = config.app['server_url']
     flask_app.config['SWAGGER_UI_DOC_EXPANSION'] = config.app['restplus']['swagger_ui_doc_expansion']
     flask_app.config['RESTPLUS_VALIDATE'] = config.app['restplus']['validate']
     flask_app.config['RESTPLUS_MASK_SWAGGER'] = config.app['restplus']['mask_swagger']
@@ -39,12 +38,14 @@ def setup_logging(log_level):
     logger.debug("Setting up logging complete")
 
 
-def main():
-    app = Flask(__name__)
+def initialize(app):
     initialize_app(app)
     setup_logging(config.app['log_level'])
-    app.run(debug=config.app['debug'])
 
+
+app = Flask(__name__)
+initialize(app)
 
 if __name__ == "__main__":
-    main()
+    app.config['SERVER_NAME'] = config.app['server_url']
+    app.run(debug=config.app['debug'])

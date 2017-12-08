@@ -3,8 +3,8 @@
 import logging
 
 app = dict(
-    server_url="localhost:5000",
-    debug=False,  # do not use debug mode in production
+    server_url="localhost:5000",  # only used when deployed locally (without uWSGI)
+    debug=True,  # only used when deployed locally (without uWSGI)
     log_level=logging.DEBUG,
     restplus=dict(
         swagger_ui_doc_expansion="list",
@@ -19,12 +19,12 @@ plaza_route_finder = dict(
 )
 
 geocoding = dict(
-    geocoding_api="http://nominatim.openstreetmap.org/search",
+    geocoding_api="https://nominatim.openstreetmap.org/search",
     viewbox="5.9559,45.818,10.4921,47.8084",  # Viewbox to geocode, default Switzerland
 )
 
 overpass = dict(
-    overpass_api="http://overpass.osm.ch/api/interpreter",
+    overpass_api="https://overpass.osm.ch/api/interpreter",
     public_transport_search_radius=1000  # max distance from start point where public transport stops will be searched
 )
 

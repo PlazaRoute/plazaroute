@@ -14,5 +14,6 @@ setup(
     author_email='robin@robinsuter.ch',
     url='https://github.com/PlazaRoute/PlazaRoute',
     license="AGPLv3",
-    packages=find_packages(exclude=('tests', 'docs'))
+    packages=find_packages(exclude=('tests', 'docs')),
+    package_data={'': ['integration/routing_strategy/graphhopper_swagger.json']}
 )
