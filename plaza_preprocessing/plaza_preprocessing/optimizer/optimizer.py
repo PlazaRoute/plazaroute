@@ -6,6 +6,8 @@ from plaza_preprocessing.optimizer import utils
 from plaza_preprocessing.optimizer import shortest_paths
 from plaza_preprocessing.optimizer.graphprocessor.graphprocessor import GraphProcessor
 from plaza_preprocessing.importer.osmholder import OSMHolder
+from plaza_preprocessing import configuration
+from shapely.geometry import CAP_STYLE
 
 logger = logging.getLogger('plaza_preprocessing.optimizer')
 
@@ -14,7 +16,7 @@ def preprocess_plazas(osm_holder: OSMHolder, process_strategy: GraphProcessor, s
     """ preprocess all plazas from osm_importer """
     logger.info(f"Start processing {len(osm_holder.plazas)} plazas")
     plaza_processor = PlazaPreprocessor(
-        osm_holder, process_strategy, shortest_path_strategy, config['obstacle-buffer'])
+        osm_holder, process_strategy, shortest_path_strategy, config)
     processed_plazas = plaza_processor.process_plazas()
 
     logger.info(f"Finished processing {len(processed_plazas)} plazas (rest were discarded)")
@@ -24,19 +26,16 @@ def preprocess_plazas(osm_holder: OSMHolder, process_strategy: GraphProcessor, s
 class PlazaPreprocessor:
 
     def __init__(self, osm_holder: OSMHolder, graph_processor: GraphProcessor,
-                 shortest_path_strategy, obstacle_buffer: int):
+                 shortest_path_strategy, config):
         self.plazas = osm_holder.plazas
         self.lines = osm_holder.lines
         self.buildings = osm_holder.buildings
         self.points = osm_holder.points
         self.graph_processor = graph_processor
         self.shortest_path_strategy = shortest_path_strategy
-        self.obstacle_buffer = obstacle_buffer
+        self.config = config
 
-        line_geometries = [line['geometry'] for line in self.lines]
-        self.line_index = self._create_spatial_index(line_geometries)
-        self.building_index = self._create_spatial_index(self.buildings)
-        self.point_index = self._create_spatial_index(self.points)
+        self._create_spatial_indices()
 
     def process_plazas(self):
         """ process all plazas in the osm holder"""
@@ -48,6 +47,14 @@ class PlazaPreprocessor:
                 processed_plazas.append(processed_plaza)
 
         return processed_plazas
+
+    def _create_spatial_indices(self):
+        """ create spatial indices for lines, buildings and points"""
+        logger.info("Creating spatial index for geometries")
+        line_geometries = [line['geometry'] for line in self.lines]
+        self.line_index = self._create_spatial_index(line_geometries)
+        self.building_index = self._create_spatial_index(self.buildings)
+        self.point_index = self._create_spatial_index(self.points)
 
     def _process_plaza(self, plaza):
         """ process a single plaza """
@@ -62,7 +69,8 @@ class PlazaPreprocessor:
 
         entry_lines = self._map_entry_lines(intersecting_lines, entry_points)
 
-        plaza_geom_without_obstacles = self._calc_obstacle_geometry(plaza, buffer_m=self.obstacle_buffer)
+        plaza_geom_without_obstacles = self._calc_obstacle_geometry(
+            plaza, intersecting_lines, buffer_m=self.config['obstacle-buffer'])
 
         if not plaza_geom_without_obstacles:
             logger.debug(f"Discarding Plaza {plaza['osm_id']}: completely obstructed by obstacles")
@@ -87,7 +95,8 @@ class PlazaPreprocessor:
         graph_edges = self.graph_processor.create_graph_edges(plaza_geom_without_obstacles, entry_points)
         graph = shortest_paths.create_graph(graph_edges)
         shortest_path_lines = self.shortest_path_strategy(graph, entry_points)
-        optimized_lines = self.graph_processor.optimize_lines(plaza_geom, shortest_path_lines, self.obstacle_buffer)
+        optimized_lines = self.graph_processor.optimize_lines(
+            plaza_geom, shortest_path_lines, self.config['obstacle-buffer'])
         return optimized_lines
 
     def _calc_entry_points(self, plaza_geometry, intersecting_lines):
@@ -132,7 +141,7 @@ class PlazaPreprocessor:
 
         return intersecting_lines
 
-    def _calc_obstacle_geometry(self, plaza, buffer_m):
+    def _calc_obstacle_geometry(self, plaza, intersecting_lines, buffer_m):
         """ cuts out holes for obstacles on the plaza geometry """
         intersecting_buildings = self._find_intersecting_buildings(plaza['geometry'])
 
@@ -144,9 +153,13 @@ class PlazaPreprocessor:
         point_obstacles = list(
             map(lambda p: self._create_point_obstacle(p, buffer_m), points_on_plaza))
 
+        barrier_obstacles = self._create_barrier_obstacles(intersecting_lines, self.config['obstacle-buffer'] / 2)
+
         geometry_without_obstacles = geometry_without_buildings
         for point_obstacle in point_obstacles:
             geometry_without_obstacles = geometry_without_obstacles.difference(point_obstacle)
+        for barrier_obstacle in barrier_obstacles:
+            geometry_without_obstacles = geometry_without_obstacles.difference(barrier_obstacle)
 
         if isinstance(geometry_without_obstacles, MultiPolygon):
             logger.debug(
@@ -197,3 +210,12 @@ class PlazaPreprocessor:
         max_x = point.x + buffer_deg
         max_y = point.y + buffer_deg
         return box(min_x, min_y, max_x, max_y)
+
+    def _create_barrier_obstacles(self, intersecting_lines, buffer_m):
+        """ returns geometries for line obstacles, e.g. barriers"""
+        tag_filter = self.config['tag-filter']['barrier']
+        buffer_distance = utils.meters_to_degrees(buffer_m)
+        barrier_obstacles = filter(lambda line: configuration.filter_tags(line['tags'], tag_filter), intersecting_lines)
+        buffered_obstacles = map(
+            lambda l: l['geometry'].buffer(buffer_distance, cap_style=CAP_STYLE.flat), barrier_obstacles)
+        return buffered_obstacles

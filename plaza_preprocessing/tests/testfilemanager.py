@@ -14,7 +14,8 @@ TEST_PLAZAS = {
     'europaallee': 'europaallee.osm',
     'kreuzplatz': 'kreuzplatz.osm',
     'bahnhofstrasse': 'bahnhofstrasse.osm',
-    'zuerich_hb': 'zuerich_hauptbahnhof.osm'
+    'zuerich_hb': 'zuerich_hauptbahnhof.osm',
+    'fischmarktplatz': 'fischmarktplatz.osm'
 }
 
 

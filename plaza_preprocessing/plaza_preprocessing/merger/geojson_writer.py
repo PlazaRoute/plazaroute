@@ -1,5 +1,7 @@
 import geojson
 
+# TODO: remove!
+
 
 def write_geojson(geometries, filename):
     """ write geojson from a list of shapely geometries """
