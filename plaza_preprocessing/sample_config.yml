@@ -1,4 +1,3 @@
-
 tag-filter:
   plaza: # what counts as a plaza
     includes: # one or more tags must match
@@ -15,6 +14,18 @@ tag-filter:
     includes:
       tag-key-values:
         - barrier: wall
+        - barrier: fence
+        - barrier: hedge
+        - barrier: retaining_wall
+  point_obstacle:
+    includes:
+      tag-keys:
+        - amenity
+      tag-key-values:
+        - barrier: block
+    excludes:
+      tag-keys:
+        - indoor
 
 graph-strategy: visibility # one of visibility, spiderweb
 spiderweb-grid-size: 2 # grid size in meters, if spiderweb is used

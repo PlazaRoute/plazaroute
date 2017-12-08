@@ -79,10 +79,9 @@ class _PlazaHandler(osmium.SimpleHandler):
             self.buildings.append(building_geom)
 
     def _is_relevant_node(self, node):
-        return "amenity" in node.tags and \
-            "indoor" not in node.tags and \
-            node.tags.get("level", "0") == "0" and \
-            node.tags.get("layer", "0") == "0"
+        return node.tags.get("level", "0") == "0" and \
+            node.tags.get("layer", "0") == "0" and \
+            configuration.filter_tags(node.tags, self.tag_filters['point_obstacle'])
 
     def _is_relevant_way(self, way):
         return not way.is_closed() and \

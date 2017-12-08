@@ -22,6 +22,18 @@ tag-filter:
     includes:
       tag-key-values:
         - barrier: wall
+        - barrier: fence
+        - barrier: hedge
+        - barrier: retaining_wall
+  point_obstacle:
+    includes:
+      tag-keys:
+        - amenity
+      tag-key-values:
+        - barrier: block
+    excludes:
+      tag-keys:
+        - indoor
 
 graph-strategy: visibility # one of visibility, spiderweb
 spiderweb-grid-size: 2 # grid size in meters, if spiderweb is used
@@ -42,6 +54,10 @@ SCHEMA = {
                    '$ref': '#/definitions/tag-filter'
                },
                'barrier': {
+                   'type': 'object',
+                   '$ref': '#/definitions/tag-filter'
+               },
+               'point_obstacle': {
                    'type': 'object',
                    '$ref': '#/definitions/tag-filter'
                }
