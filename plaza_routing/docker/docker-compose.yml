@@ -20,7 +20,7 @@ services:
       - ./gh-data:/gh-data
     environment:
       JETTY_PORT: 8989
-      JAVA_OPTS: "-server -Xconcurrentio -Xmx1g -Xms1g -XX:+UseG1GC -XX:MetaspaceSize=100M"
+      JAVA_OPTS: "-server -Xconcurrentio -Xmx2g -Xms2g -XX:+UseG1GC -XX:MetaspaceSize=100M"
     entrypoint:
       - ./graphhopper.sh
       - web
