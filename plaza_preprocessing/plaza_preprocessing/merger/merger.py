@@ -29,7 +29,7 @@ class WayExtractor(SimpleHandler):
             }
 
 
-def merge_plaza_graphs(plazas, osm_file, merged_file):
+def merge_plaza_graphs(plazas, osm_file, merged_file, footway_tags):
     """
     merge graph edges of plazas back into the original OSM file
     """
@@ -41,7 +41,7 @@ def merge_plaza_graphs(plazas, osm_file, merged_file):
         modified_ways_file = path.join(tempdir, 'modified_ways.pbf')
 
         entry_node_mappings = plazatransformer.transform_plazas(
-            plazas, plaza_node_file, plaza_way_file)
+            plazas, plaza_node_file, plaza_way_file, footway_tags)
 
         plaza_ways = _extract_plaza_ways(entry_node_mappings, osm_file)
         _insert_entry_nodes(plaza_ways, entry_node_mappings)
