@@ -27,6 +27,9 @@ tag-filter:
       tag-keys:
         - indoor
 
+footway-tags: # tags that will be used for the newly generated ways
+  - highway: footway
+
 graph-strategy: visibility # one of visibility, spiderweb
 spiderweb-grid-size: 2 # grid size in meters, if spiderweb is used
 obstacle-buffer: 2 # minimal distance from any obstacles in meters
