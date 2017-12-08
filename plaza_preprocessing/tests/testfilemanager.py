@@ -22,6 +22,6 @@ def get_testfile_name(name):
     return os.path.join(TESTFILEPATH, TEST_PLAZAS[name])
 
 
-def import_testfile(name):
+def import_testfile(name, config):
     filename = get_testfile_name(name)
-    return importer.import_osm(filename)
+    return importer.import_osm(filename, config['tag-filter'])

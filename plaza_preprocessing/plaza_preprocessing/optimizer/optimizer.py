@@ -9,14 +9,12 @@ from plaza_preprocessing.importer.osmholder import OSMHolder
 
 logger = logging.getLogger('plaza_preprocessing.optimizer')
 
-# TODO: Make configurable
-OBSTACLE_BUFFER = 2  # buffer in meters to circumvent obstacles
 
-
-def preprocess_plazas(osm_holder: OSMHolder, process_strategy: GraphProcessor, shortest_path_strategy):
+def preprocess_plazas(osm_holder: OSMHolder, process_strategy: GraphProcessor, shortest_path_strategy, config: dict):
     """ preprocess all plazas from osm_importer """
     logger.info(f"Start processing {len(osm_holder.plazas)} plazas")
-    plaza_processor = PlazaPreprocessor(osm_holder, process_strategy, shortest_path_strategy)
+    plaza_processor = PlazaPreprocessor(
+        osm_holder, process_strategy, shortest_path_strategy, config['obstacle-buffer'])
     processed_plazas = plaza_processor.process_plazas()
 
     logger.info(f"Finished processing {len(processed_plazas)} plazas (rest were discarded)")
@@ -25,13 +23,15 @@ def preprocess_plazas(osm_holder: OSMHolder, process_strategy: GraphProcessor, s
 
 class PlazaPreprocessor:
 
-    def __init__(self, osm_holder: OSMHolder, graph_processor: GraphProcessor, shortest_path_strategy):
+    def __init__(self, osm_holder: OSMHolder, graph_processor: GraphProcessor,
+                 shortest_path_strategy, obstacle_buffer: int):
         self.plazas = osm_holder.plazas
         self.lines = osm_holder.lines
         self.buildings = osm_holder.buildings
         self.points = osm_holder.points
         self.graph_processor = graph_processor
         self.shortest_path_strategy = shortest_path_strategy
+        self.obstacle_buffer = obstacle_buffer
 
         line_geometries = [line['geometry'] for line in self.lines]
         self.line_index = self._create_spatial_index(line_geometries)
@@ -62,7 +62,7 @@ class PlazaPreprocessor:
 
         entry_lines = self._map_entry_lines(intersecting_lines, entry_points)
 
-        plaza_geom_without_obstacles = self._calc_obstacle_geometry(plaza, buffer_m=OBSTACLE_BUFFER)
+        plaza_geom_without_obstacles = self._calc_obstacle_geometry(plaza, buffer_m=self.obstacle_buffer)
 
         if not plaza_geom_without_obstacles:
             logger.debug(f"Discarding Plaza {plaza['osm_id']}: completely obstructed by obstacles")
@@ -87,7 +87,7 @@ class PlazaPreprocessor:
         graph_edges = self.graph_processor.create_graph_edges(plaza_geom_without_obstacles, entry_points)
         graph = shortest_paths.create_graph(graph_edges)
         shortest_path_lines = self.shortest_path_strategy(graph, entry_points)
-        optimized_lines = self.graph_processor.optimize_lines(plaza_geom, shortest_path_lines, OBSTACLE_BUFFER)
+        optimized_lines = self.graph_processor.optimize_lines(plaza_geom, shortest_path_lines, self.obstacle_buffer)
         return optimized_lines
 
     def _calc_entry_points(self, plaza_geometry, intersecting_lines):

@@ -2,19 +2,18 @@ from typing import Tuple
 import logging
 import overpy
 import math
+from plaza_routing import config
 
-OVERPASS_API_URL = 'http://overpass.osm.ch/api/interpreter'
-BOUNDING_BOX_BUFFER_METERS = 1000
 INITIAL_STOP_BOUNDING_BOX_BUFFER_METERS = 100
 
-API = overpy.Overpass(url=OVERPASS_API_URL)
+API = overpy.Overpass(url=config.overpass['overpass_api'])
 
 logger = logging.getLogger('plaza_routing.overpass_service')
 
 
 def get_public_transport_stops(start_position: tuple) -> dict:
     """ retrieves all public transport stops for a specific location in a given range """
-    bbox = _parse_bounding_box(*start_position)
+    bbox = _parse_bounding_box(*start_position, config.overpass['public_transport_search_radius'])
     query_str = f"""
         [bbox:{bbox}];
         node["public_transport"="stop_position"];node["highway"="bus_stop"];
@@ -271,7 +270,7 @@ def _get_public_transport_stop_node(lines: list) -> tuple:
                (float(exit_node.lon), float(exit_node.lat))
 
 
-def _parse_bounding_box(longitude: float, latitude: float, buffer_meters=BOUNDING_BOX_BUFFER_METERS) -> str:
+def _parse_bounding_box(longitude: float, latitude: float, buffer_meters) -> str:
     """ calculates the bounding box for a specific location and a given buffer """
     buffer_degrees = _meters_to_degrees(buffer_meters)
 

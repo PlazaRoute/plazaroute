@@ -3,3 +3,5 @@ Shapely==1.6.2
 geojson==2.3.0
 networkx==2.0
 Rtree==0.8.3
+jsonschema==2.6.0
+ruamel.yaml==0.15.35

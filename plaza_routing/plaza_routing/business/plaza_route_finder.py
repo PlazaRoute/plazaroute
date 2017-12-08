@@ -3,6 +3,8 @@ from typing import List
 from datetime import datetime, timedelta
 import logging
 
+from plaza_routing import config
+
 from plaza_routing.business import walking_route_finder
 from plaza_routing.business import public_transport_connection_finder
 from plaza_routing.business.util import route_cost_matrix
@@ -10,7 +12,8 @@ from plaza_routing.business.util import validator
 
 from plaza_routing.integration import geocoding_service
 
-MAX_WALKING_DURATION = 60 * 5
+
+MAX_WALKING_DURATION = config.plaza_route_finder['max_walking_duration']
 PUBLIC_TRANSPORT_CONNECTION_DURATION_FORMAT = '%Y-%m-%d %H:%M:%S'
 DEPARTURE_FORMAT = '%H:%M'
 
