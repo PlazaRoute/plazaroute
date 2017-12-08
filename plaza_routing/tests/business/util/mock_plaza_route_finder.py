@@ -1,7 +1,7 @@
 from tests.util import utils
 
 import plaza_routing.business.walking_route_finder as walking_route_finder
-import plaza_routing.business.public_transport_route_finder as public_transport_route_finder
+import plaza_routing.business.public_transport_connection_finder as public_transport_connection_finder
 
 import plaza_routing.integration.geocoding_service as geocoding_service
 
@@ -12,12 +12,12 @@ def mock_test_find_route(monkeypatch):
     monkeypatch.setattr(walking_route_finder, 'get_walking_route',
                         lambda start, destination:
                         _mock_test_find_route_get_walking_route(start, destination))
-    monkeypatch.setattr(public_transport_route_finder, 'get_public_transport_stops',
+    monkeypatch.setattr(public_transport_connection_finder, 'get_public_transport_stops',
                         lambda start:
                         _mock_test_find_route_get_public_transport_stops(start))
-    monkeypatch.setattr(public_transport_route_finder, 'get_public_transport_route',
+    monkeypatch.setattr(public_transport_connection_finder, 'get_public_transport_connection',
                         lambda start, destination, departure:
-                        _mock_test_find_route_get_public_transport_route(start))
+                        _mock_test_find_route_get_public_transport_connection(start))
 
 
 def mock_test_find_route_only_walking(monkeypatch):
@@ -92,7 +92,7 @@ def _mock_test_find_route_get_public_transport_stops(start):
     assert False
 
 
-def _mock_test_find_route_get_public_transport_route(public_transport_stop):
+def _mock_test_find_route_get_public_transport_connection(public_transport_stop):
     file_name = ''
 
     if public_transport_stop == '8591273':  # Zürich, Messe/Hallenstadion
@@ -108,7 +108,7 @@ def _mock_test_find_route_get_public_transport_route(public_transport_stop):
     elif public_transport_stop == '8591172':  # Zürich, Hagenholz
         file_name = 'hagenholz_hardbruecke.json'
 
-    return utils.get_json_file(file_name, 'public_transport_route')
+    return utils.get_json_file(file_name, 'public_transport_connection')
 
 
 def mock_test_find_route_walking_faster(monkeypatch):
@@ -117,8 +117,8 @@ def mock_test_find_route_walking_faster(monkeypatch):
     monkeypatch.setattr(walking_route_finder, 'get_walking_route',
                         lambda start, destination:
                         utils.get_json_file('8_54556659082_47_3659258552_to_kreuzplatz.json', 'walking_route'))
-    monkeypatch.setattr(public_transport_route_finder, 'get_public_transport_stops',
+    monkeypatch.setattr(public_transport_connection_finder, 'get_public_transport_stops',
                         lambda start: {'8503003': (8.5483858, 47.3665643)})
-    monkeypatch.setattr(public_transport_route_finder, 'get_public_transport_route',
+    monkeypatch.setattr(public_transport_connection_finder, 'get_public_transport_connection',
                         lambda start, destination, departure:
-                        utils.get_json_file('bellevue_kreuzplatz.json', 'public_transport_route'))
+                        utils.get_json_file('bellevue_kreuzplatz.json', 'public_transport_connection'))
