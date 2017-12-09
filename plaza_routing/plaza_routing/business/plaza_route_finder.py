@@ -11,6 +11,7 @@ from plaza_routing.business.util import route_cost_matrix
 from plaza_routing.business.util import validator
 
 from plaza_routing.integration import geocoding_service
+from plaza_routing.integration.util.exception_util import ValidationError
 
 
 MAX_WALKING_DURATION = config.plaza_route_finder['max_walking_duration']
@@ -170,7 +171,7 @@ def _parse_location(location: str) -> tuple:
     elif validator.is_valid_coordinate(location):
         return literal_eval(location)
     else:
-        raise ValueError(f'invalid coordinate or location {location}')
+        raise ValidationError(f'invalid coordinate or location {location}')
 
 
 def _parse_departure(departure: str) -> str:

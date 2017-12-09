@@ -2,7 +2,9 @@ from typing import Tuple
 import logging
 import overpy
 import math
+
 from plaza_routing import config
+from plaza_routing.integration.util.exception_util import ValidationError, ServiceError
 
 INITIAL_STOP_BOUNDING_BOX_BUFFER_METERS = 100
 
@@ -22,7 +24,7 @@ def get_public_transport_stops(start_position: tuple) -> dict:
         out center;
         """
 
-    public_transport_stops = API.query(query_str)
+    public_transport_stops = _query(query_str)
 
     filtered_public_transport_stops_nodes = filter(
         lambda node: 'uic_ref' in node.tags, public_transport_stops.nodes)
@@ -37,7 +39,7 @@ def get_public_transport_stops(start_position: tuple) -> dict:
     public_transport_refs = {**public_transport_stop_nodes, **public_transport_stop_rels}
 
     if len(public_transport_refs) == 0:
-        raise ValueError('no public transport stops found for the given location and range')
+        raise ValidationError(f'no public transport stops found for the given location {start_position} and range')
 
     return public_transport_refs
 
@@ -105,7 +107,7 @@ def _get_public_transport_lines(start_position: tuple, start_uic_ref: str, exit_
         out;
         """
 
-    result = API.query(query_str)
+    result = _query(query_str)
     if not result.nodes or not result.relations:
         raise ValueError(f"No start and exit nodes or relations could be retrieved for {start_uic_ref}, "
                          f"fallback to more complex retrieval")
@@ -149,7 +151,7 @@ def _get_start_stops_and_lines(start_position: tuple, start_uic_ref: str, line: 
             out;
             """
 
-    result = API.query(query_str)
+    result = _query(query_str)
     if not result.nodes or not result.relations:
         raise ValueError(f"No start nodes or relations could be retrieved for {start_uic_ref}, "
                          f"fallback to more complex retrieval")
@@ -181,7 +183,7 @@ def _get_exit_stops(start_position: tuple, start_uic_ref: str, exit_uic_ref: str
                 out;
                 """
 
-    result = API.query(query_str)
+    result = _query(query_str)
     if not result.nodes:
         raise ValueError(f"No exit nodes could be retrieved for {exit_uic_ref}, fallback to more complex retrieval")
     return result.nodes
@@ -291,3 +293,13 @@ def _meters_to_degrees(meters: int) -> float:
     # meters * 360 / (2 * PI * 6400000)
     # multiply by (1/cos(lat) for longitude)
     return meters * 1 / 111701
+
+
+def _query(query: str) -> overpy.Result:
+    """ handles the communication with overpass and provides error handling """
+    try:
+        return API.query(query)
+    except overpy.exception.OverPyException as exception:
+        msg = f'overpass is not running correctly: {exception}'
+        logger.error(msg)
+        raise ServiceError(msg) from None
