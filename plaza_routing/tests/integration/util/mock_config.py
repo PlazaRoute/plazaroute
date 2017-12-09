@@ -15,7 +15,7 @@ def mock_geocoding_wrong_url(monkeypatch):
                                             "https://overpass.osm.ch/api/interpreter"))
 
 
-def _mock_value_in_dict(old_dict, key, new_value):
+def _mock_value_in_dict(old_dict: dict, key: str, new_value) -> dict:
     dict_copy = dict(old_dict)
     dict_copy[key] = new_value
     return dict_copy

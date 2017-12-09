@@ -61,7 +61,7 @@ def get_connection_coordinates(lookup_position: tuple, start_uic_ref: str, exit_
     """
     try:
         return _retrieve_start_exit_stop_position(lookup_position, start_uic_ref, exit_uic_ref, line)
-    except ValueError:
+    except (ValueError, ServiceError):
         return fallback_start_position, fallback_exit_position
 
 
@@ -299,7 +299,7 @@ def _query(query: str) -> overpy.Result:
     """ handles the communication with overpass and provides error handling """
     try:
         return API.query(query)
-    except overpy.exception.OverPyException as exception:
+    except BaseException as exception:
         msg = f'overpass is not running correctly: {exception}'
         logger.error(msg)
         raise ServiceError(msg) from None
