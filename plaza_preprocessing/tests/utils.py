@@ -6,7 +6,7 @@ def process_plaza(testfile, plaza_id, process_strategy, shortest_path_strategy, 
     holder = testfilemanager.import_testfile(testfile, config)
     plaza = get_plaza_by_id(holder.plazas, plaza_id)
 
-    processor = optimizer.PlazaPreprocessor(holder, process_strategy, shortest_path_strategy, config['obstacle-buffer'])
+    processor = optimizer.PlazaPreprocessor(holder, process_strategy, shortest_path_strategy, config)
     return processor._process_plaza(plaza)
 
 

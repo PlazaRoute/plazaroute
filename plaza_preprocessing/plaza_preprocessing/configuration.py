@@ -22,6 +22,21 @@ tag-filter:
     includes:
       tag-key-values:
         - barrier: wall
+        - barrier: fence
+        - barrier: hedge
+        - barrier: retaining_wall
+  point_obstacle:
+    includes:
+      tag-keys:
+        - amenity
+      tag-key-values:
+        - barrier: block
+    excludes:
+      tag-keys:
+        - indoor
+
+footway-tags: # tags that will be used for the newly generated ways
+  - highway: footway
 
 graph-strategy: visibility # one of visibility, spiderweb
 spiderweb-grid-size: 2 # grid size in meters, if spiderweb is used
@@ -44,10 +59,21 @@ SCHEMA = {
                'barrier': {
                    'type': 'object',
                    '$ref': '#/definitions/tag-filter'
+               },
+               'point_obstacle': {
+                   'type': 'object',
+                   '$ref': '#/definitions/tag-filter'
                }
            },
            'additionalProperties': False,
-           'required': ['plaza', 'barrier']
+           'required': ['plaza', 'barrier', 'point_obstacle']
+       },
+       'footway-tags': {
+            'type': 'array',
+            'items': {
+                'type': 'object',
+                'additionalProperties': {'type': 'string'}
+            }
        },
        'graph-strategy': {
            'type': 'string',
@@ -65,7 +91,8 @@ SCHEMA = {
        }
     },
     'additionalProperties': False,
-    'required': ['tag-filter', 'graph-strategy', 'spiderweb-grid-size', 'obstacle-buffer', 'shortest-path-algorithm'],
+    'required': ['tag-filter', 'footway-tags', 'graph-strategy', 'spiderweb-grid-size',
+                 'obstacle-buffer', 'shortest-path-algorithm'],
     'definitions': {
         'tag-filter': {
             'properties': {
