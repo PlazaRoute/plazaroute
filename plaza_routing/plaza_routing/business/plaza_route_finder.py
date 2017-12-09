@@ -60,10 +60,19 @@ def _get_route_combinations(start: tuple, destination: tuple, departure: str) ->
 
         public_transport_departure = _calc_public_transport_departure(departure, start, public_transport_stop_position)
 
-        public_transport_connection = \
-            public_transport_connection_finder.get_public_transport_connection(public_transport_stop_uic_ref,
-                                                                               destination,
-                                                                               public_transport_departure)
+        try:
+            public_transport_connection = \
+                public_transport_connection_finder.get_public_transport_connection(public_transport_stop_uic_ref,
+                                                                                   destination,
+                                                                                   public_transport_departure)
+        except ValidationError:
+            """ 
+            Happens if the configured lookup radius is too high and the destination is used as a start public 
+            transport stop. So both the start and destination value will be the same.
+            We'are able to skip the connection and try the next one.
+            """
+            continue
+
         if not public_transport_connection['path']:
             continue  # skip empty paths, this happens if the path only consists of walking legs
 
