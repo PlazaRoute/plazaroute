@@ -24,11 +24,11 @@ WalkingRouteResponse = api.model('WalkingRouteResponse', {
 })
 
 PublicTransportPathResponse = api.model('PublicTransportPathResponse', {
-    'name': fields.String(required=True, example='Zürich Oerlikon'),
+    'start': fields.String(required=True, example='Zürich Oerlikon'),
+    'destination': fields.String(required=True, example='Zürich Hardbrück'),
     'line_type': fields.String(required=True, example='strain'),
     'line': fields.String(required=True, example='S6'),
     'track': fields.String(example='7'),
-    'destination': fields.String(required=True, example='Zürich Hardbrück'),
     'terminal': fields.String(required=True, example='Zürich Stadelhofen'),
     'departure': fields.DateTime(required=True, example='2017-11-18 14:51:00'),
     'arrival': fields.DateTime(required=True, example='2017-11-18 14:54:00'),

@@ -2,11 +2,11 @@
   "type": "public_transport",
   "path": [
     {
-      "name": "Zürich, Leutschenbach",
+      "start": "Zürich, Leutschenbach",
+      "destination": "Zürich Oerlikon, Bahnhof Ost",
       "line_type": "tram",
       "line": "10",
       "track": "",
-      "destination": "Zürich Oerlikon, Bahnhof Ost",
       "terminal": "Zürich, Bahnhofplatz/HB",
       "departure": "2017-11-18 14:45:00",
       "arrival": "2017-11-18 14:46:00",
@@ -23,11 +23,11 @@
       "stopovers": []
     },
     {
-      "name": "Zürich Oerlikon",
+      "start": "Zürich Oerlikon",
+      "destination": "Zürich Hardbrücke",
       "line_type": "strain",
       "line": "S6",
       "track": "7",
-      "destination": "Zürich Hardbrücke",
       "terminal": "Zürich Stadelhofen",
       "departure": "2017-11-18 14:51:00",
       "arrival": "2017-11-18 14:54:00",
