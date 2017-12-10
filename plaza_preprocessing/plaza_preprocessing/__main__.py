@@ -1,6 +1,7 @@
 import logging
 import sys
 import argparse
+from os import path
 from plaza_preprocessing.importer import importer
 from plaza_preprocessing.merger import merger
 from plaza_preprocessing.optimizer import optimizer, shortest_paths
@@ -50,7 +51,7 @@ def setup_logging(verbose=False, quiet=False):
 
 def parse_args(args):
     parser = argparse.ArgumentParser(description='Preprocess an OSM file for pedestrian routing over plazas.')
-    parser.add_argument('source', help='input OSM file to process')
+    parser.add_argument('source', help='input OSM file to process', type=_existing_file)
     parser.add_argument('destination', help='destination OSM file')
     parser.add_argument('--config', default='plaza_preprocessing_config.yml', metavar="filename",
                         help='specify a config file location. A default config will be created'
@@ -63,6 +64,13 @@ def parse_args(args):
 
     result = parser.parse_args(args)
     return result.source, result.destination, result.config, result.v
+
+
+def _existing_file(value):
+    """used for argparse to check if the input file exists"""
+    if not path.exists(value):
+        raise argparse.ArgumentTypeError(f"input file {value} does not exists")
+    return value
 
 
 def _get_process_strategy(config: dict) -> GraphProcessor:
