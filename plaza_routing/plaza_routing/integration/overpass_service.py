@@ -198,17 +198,23 @@ def _merge_nodes_with_corresponding_relation(nodes: list, relations: list, start
     lines = []
     for relation in relations:
         start_node = None
+        start_node_modify_counter = 0
         exit_node = None
         for node in nodes:
             for member in relation.members:
                 if node.id == member.ref:
                     if node.tags.get('uic_ref') == start_uic_ref:
                         start_node = node
+                        start_node_modify_counter += 1
                     else:
                         exit_node = node
 
         if start_node is None or exit_node is None:
             continue
+        if start_node_modify_counter > 1:
+            raise ValueError(f"Start node with uic_ref {start_uic_ref} was set {start_node_modify_counter} times, "
+                             f"thus one relation is used to map both direction of travels, "
+                             f"fallback to more complex retrieval")
         lines.append({'rel': relation, 'start': start_node, 'exit': exit_node})
     if not lines:
         raise ValueError(f"Could not merge start and exit node to a relation based on the uic_ref {start_uic_ref}, "

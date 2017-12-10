@@ -284,3 +284,74 @@ def test_get_start_exit_stop_position_multiple_relations_for_line_one_option():
                                                     fallback_exit_position)
     assert (8.5345459, 47.3634506) == start_position
     assert (8.5302541, 47.3645340) == exit_position
+
+
+def test_get_start_exit_stop_position_one_line_both_directions():
+    """
+    Tests a line that has only one mapped relation for both directions of travel.
+    Volketswil, Zimikon to Volketswil, In der Höh
+
+    Returns the fallback coordinates, because the first try fails because just one relation exists
+    and the second try fails because the public transport stops doesn't belong to a relation with the same uic_ref.
+    """
+    current_location = (8.67316, 47.38566)
+    fallback_start_position = (1, 1)
+    fallback_exit_position = (1, 1)
+    start_stop_uicref = '8589106'
+    exit_stop_uicref = '8576139'
+    bus_number = '725'
+    start_position, exit_position = \
+        overpass_service.get_connection_coordinates(current_location,
+                                                    start_stop_uicref, exit_stop_uicref,
+                                                    bus_number,
+                                                    fallback_start_position,
+                                                    fallback_exit_position)
+    assert fallback_start_position == start_position
+    assert fallback_exit_position == exit_position
+
+
+def test_get_start_exit_stop_position_one_line_both_directions_other_direction():
+    """
+    Tests a line that has only one mapped relation for both directions of travel.
+    Volketswil, In der Höh to Volketswil, Zimikon
+
+    Returns the fallback coordinates, because the first try fails because just one relation exists
+    and the second try fails because the public transport stops doesn't belong to a relation with the same uic_ref.
+    """
+    current_location = (8.66828, 47.38491)
+    fallback_start_position = (1, 1)
+    fallback_exit_position = (1, 1)
+    start_stop_uicref = '8576139'
+    exit_stop_uicref = '8589106'
+    bus_number = '725'
+    start_position, exit_position = \
+        overpass_service.get_connection_coordinates(current_location,
+                                                    start_stop_uicref, exit_stop_uicref,
+                                                    bus_number,
+                                                    fallback_start_position,
+                                                    fallback_exit_position)
+    assert fallback_start_position == start_position
+    assert fallback_exit_position == exit_position
+
+
+def test_get_start_exit_stop_position_one_line_both_directions_no_exit_uic_ref():
+    """
+    Tests a line that has only one mapped relation for both directions of travel.
+    Volketswil, Zimikon to Schwerzenbach ZH, Bahnhof
+
+    Returns the fallback coordinates because the exit stop position doesn't have an uic_ref.
+    """
+    current_location = (8.67316, 47.38566)
+    fallback_start_position = (1, 1)
+    fallback_exit_position = (1, 1)
+    start_stop_uicref = '8589106'
+    exit_stop_uicref = '8576127'
+    bus_number = '725'
+    start_position, exit_position = \
+        overpass_service.get_connection_coordinates(current_location,
+                                                    start_stop_uicref, exit_stop_uicref,
+                                                    bus_number,
+                                                    fallback_start_position,
+                                                    fallback_exit_position)
+    assert fallback_start_position == start_position
+    assert fallback_exit_position == exit_position
