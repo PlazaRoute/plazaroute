@@ -57,6 +57,8 @@ def get_connection_coordinates(lookup_position: tuple, start_uic_ref: str, exit_
 
     Returns the fallback_start_position and fallback_exit_position if all retrieval options from Overpass fail.
     """
+    logger.debug(f'Retrieving start and exit stop position for start_uic_ref {start_uic_ref}, '
+                 f'exit_uic_ref {exit_uic_ref} and line {line}')
     try:
         return _retrieve_start_exit_stop_position(lookup_position, start_uic_ref, exit_uic_ref, line)
     except ValueError:
@@ -70,10 +72,12 @@ def _retrieve_start_exit_stop_position(lookup_position: tuple, start_uic_ref: st
     Recovery Block pattern is used to deal with inconsistent OSM data.
     """
     try:
+        logger.debug("First try retrieving start and exit stop position")
         lines = _get_public_transport_lines(lookup_position, start_uic_ref, exit_uic_ref, line)
     except ValueError as fallback_1:
         logger.debug(fallback_1)
         try:
+            logger.debug("Second try retrieving start and exit stop position")
             lines = _get_public_transport_lines_fallback(lookup_position, start_uic_ref, exit_uic_ref, line)
         except ValueError as fallback_2:
             logger.debug(fallback_2)
@@ -151,8 +155,7 @@ def _get_start_stops_and_lines(start_position: tuple, start_uic_ref: str, line: 
 
     result = API.query(query_str)
     if not result.nodes or not result.relations:
-        raise ValueError(f"No start nodes or relations could be retrieved for {start_uic_ref}, "
-                         f"fallback to more complex retrieval")
+        raise ValueError(f"No start nodes or relations could be retrieved for {start_uic_ref}")
     return result.nodes, result.relations
 
 
@@ -183,7 +186,7 @@ def _get_exit_stops(start_position: tuple, start_uic_ref: str, exit_uic_ref: str
 
     result = API.query(query_str)
     if not result.nodes:
-        raise ValueError(f"No exit nodes could be retrieved for {exit_uic_ref}, fallback to more complex retrieval")
+        raise ValueError(f"No exit nodes could be retrieved for {exit_uic_ref}")
     return result.nodes
 
 
@@ -195,21 +198,27 @@ def _merge_nodes_with_corresponding_relation(nodes: list, relations: list, start
     lines = []
     for relation in relations:
         start_node = None
+        start_node_modify_counter = 0
         exit_node = None
         for node in nodes:
             for member in relation.members:
                 if node.id == member.ref:
                     if node.tags.get('uic_ref') == start_uic_ref:
                         start_node = node
+                        start_node_modify_counter += 1
                     else:
                         exit_node = node
 
         if start_node is None or exit_node is None:
             continue
+        if start_node_modify_counter > 1:
+            raise ValueError(f"Start node with uic_ref {start_uic_ref} was set {start_node_modify_counter} times, "
+                             f"thus one relation is used to map both direction of travels, "
+                             f"fallback to more complex retrieval")
         lines.append({'rel': relation, 'start': start_node, 'exit': exit_node})
     if not lines:
-        raise ValueError("Could not merge start and exit node to a relation based on the uic_ref, "
-                         "fallback to more complex retrieval")
+        raise ValueError(f"Could not merge start and exit node to a relation based on the uic_ref {start_uic_ref}, "
+                         f"fallback to more complex retrieval")
     return lines
 
 
@@ -233,8 +242,8 @@ def _merge_nodes_with_corresponding_relation_fallback(start_nodes: list, exit_no
         lines.append({'rel': relation, 'start': start_node, 'exit': exit_node})
     if not lines:
         fallback_message = "Could not merge start and exit node to a relation based on the provided relation," \
-                           "start nodes and exit nodes, return fallback coordinate"
-        logger.warning(fallback_message)
+                           "start nodes and exit nodes, return fallback coordinates"
+        logger.debug(fallback_message)
         raise ValueError(fallback_message)
     return lines
 
