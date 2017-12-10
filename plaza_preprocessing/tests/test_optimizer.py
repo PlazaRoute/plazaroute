@@ -64,7 +64,7 @@ def test_optimized_lines_inside_plaza(process_strategy, shortest_path_strategy, 
     plaza_geometry = plaza['geometry']
 
     processor = optimizer.PlazaPreprocessor(
-        holder, process_strategy, shortest_path_strategy, config['obstacle-buffer'])
+        holder, process_strategy, shortest_path_strategy, config)
     result_plaza = processor._process_plaza(plaza)
 
     assert result_plaza
@@ -82,6 +82,12 @@ def test_almost_obstructed_plaza(process_strategy, shortest_path_strategy, confi
     """ this plaza is almost completely obstructed, but a tiny area remains"""
     result_plaza = utils.process_plaza('zuerich_hb', 6619147, process_strategy, shortest_path_strategy, config)
     assert not result_plaza  # plaza should be discarded
+
+
+def test_barriers(process_strategy, shortest_path_strategy, config):
+    """ test that a line obstacle (a barrier) is cut out"""
+    result_plaza = utils.process_plaza('fischmarktplatz', 26261827, process_strategy, shortest_path_strategy, config)
+    assert result_plaza['geometry'].area == 3.838230778253772e-07
 
 
 def test_entry_points(process_strategy, shortest_path_strategy, config):

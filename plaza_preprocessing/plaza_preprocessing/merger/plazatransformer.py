@@ -6,7 +6,7 @@ from osmium.osm.mutable import Way, Node
 OSM_ID_START = (-1) * 10**9
 
 
-def transform_plazas(plazas, node_file, way_file):
+def transform_plazas(plazas, node_file, way_file, footway_tags):
     """ transforms plazas to OSM and write them to a file """
     node_writer = SimpleWriter(node_file)
     way_writer = SimpleWriter(way_file)
@@ -21,7 +21,7 @@ def transform_plazas(plazas, node_file, way_file):
             if "entry_points" not in plaza:
                 raise ValueError(f"No entry points in {plaza['osm_id']}")
 
-            transformer = PlazaTransformer(osm_id_nodes, osm_id_ways)
+            transformer = PlazaTransformer(osm_id_nodes, osm_id_ways, footway_tags)
             transformer.transform_plaza(plaza)
 
             # merge entry node mappings
@@ -45,7 +45,7 @@ class PlazaTransformer:
     Transforms plaza graph edges to an OSM Format
     """
 
-    def __init__(self, start_id_nodes, start_id_ways):
+    def __init__(self, start_id_nodes, start_id_ways, footway_tags):
         self.osm_id_nodes = start_id_nodes
         self.osm_id_ways = start_id_ways
         # use coordinates as keys and osmium objects as values
@@ -53,6 +53,7 @@ class PlazaTransformer:
         self.ways = []
         # maps entry ways of plazas to entry node ids
         self.entry_node_mappings = {}
+        self.footway_tags = [(key, value) for tag in footway_tags for key, value in tag.items()]
 
     def transform_plaza(self, plaza):
         """ takes a plaza with edge geometries and constructs nodes and ways """
@@ -75,8 +76,7 @@ class PlazaTransformer:
             node_refs.append(self._get_node_id(coords))
         way_id = self._get_new_way_osm_id()
         way = Way(nodes=node_refs)
-        # TODO: configurable tags
-        way.tags = [('highway', 'footway')]
+        way.tags = self.footway_tags
         way.id = way_id
         way.version = 1
         way.timestamp = self._create_osm_timestamp()

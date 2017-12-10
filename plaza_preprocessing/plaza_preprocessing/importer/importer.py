@@ -49,7 +49,11 @@ class _PlazaHandler(osmium.SimpleHandler):
             try:
                 line_wkb = WKBFAB.create_linestring(way)
                 line_geometry = wkblib.loads(line_wkb, hex=True)
-                self.lines.append({'id': way.id, 'geometry': line_geometry})
+                self.lines.append({
+                    'id': way.id,
+                    'geometry': line_geometry,
+                    'tags': {t.k: t.v for t in way.tags}
+                })
             except InvalidLocationError:
                 logger.debug(f'Encountered invalid location in way {way.id}')
                 self.invalid_count += 1
@@ -88,15 +92,15 @@ class _PlazaHandler(osmium.SimpleHandler):
             return None
 
     def _is_relevant_node(self, node):
-        return "amenity" in node.tags and \
-            "indoor" not in node.tags and \
-            node.tags.get("level", "0") == "0" and \
-            node.tags.get("layer", "0") == "0"
+        return node.tags.get("level", "0") == "0" and \
+            node.tags.get("layer", "0") == "0" and \
+            configuration.filter_tags(node.tags, self.tag_filters['point_obstacle'])
 
     def _is_relevant_way(self, way):
         return not way.is_closed() and \
             "highway" in way.tags or \
-            way.tags.get("railway") == "tram"
+            way.tags.get("railway") == "tram" or \
+            configuration.filter_tags(way.tags, self.tag_filters['barrier'])
 
     def _is_plaza(self, area):
         return configuration.filter_tags(area.tags, self.tag_filters['plaza'])

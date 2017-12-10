@@ -14,6 +14,22 @@ $ pip install plaza_preprocessing/
 
 ## Usage
 
+### Download an OSM file
+
+plaza_preprocessing takes an existing OSM file as an input. Data for Switzerland can be found on https://planet.osm.ch.
+
+#### Updating OSM file
+
+In order to keep the OSM data up to date without redownloading it every time, you can use [pyosmium-up-to-date](http://docs.osmcode.org/pyosmium/latest/tools_uptodate.html) provided by pyosmium. Example to bring [switzerland-padded.osm.pbf](https://planet.osm.ch) up to date:
+
+```
+pyosmium-up-to-date -v --server https://planet.osm.ch/replication/hour/ switzerland-padded.osm.pbf
+```
+
+You can also do this with Docker without having to install pyosmium. See the [the Docker readme](docker/) for reference.
+
+## Preprocessing
+
 ```
 usage: plaza_preprocessing [-h] [--config filename] [-v] source destination
 
@@ -28,4 +44,10 @@ optional arguments:
   --config filename  specify a config file location. A default config will be
                      created if the path does not exist
   -v                 verbose log output
+```
+
+Example:
+
+```
+plaza_preprocessing switzerland-padded.osm.pbf switzerland-processed.osm.pbf
 ```

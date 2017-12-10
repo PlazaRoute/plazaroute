@@ -29,7 +29,7 @@ def preprocess_osm(osm_filename: str, out_file: str, config: dict):
     osm_holder = importer.import_osm(osm_filename, config['tag-filter'])
 
     processed_plazas = optimizer.preprocess_plazas(osm_holder, process_strategy, shortest_path_strategy, config)
-    merger.merge_plaza_graphs(processed_plazas, osm_filename, out_file)
+    merger.merge_plaza_graphs(processed_plazas, osm_filename, out_file, config['footway-tags'])
 
 
 def setup_logging(verbose=False, quiet=False):
