@@ -21,7 +21,7 @@ def get_public_transport_connection(start_uic_ref: str, destination: tuple, depa
 def optimize_public_transport_connection(public_transport_connection: dict) -> dict:
     """ retrieves accurate coordinates for the public transport stops in each leg """
     for leg in public_transport_connection['path']:
-        logger.debug(f'optimize public transport connection leg: {leg["name"]} to {leg["destination"]}')
+        logger.debug(f'optimize public transport connection leg: {leg["start"]} to {leg["destination"]}')
         fallback_start_position = tuple(leg['start_position'])
         fallback_exit_position = tuple(leg['exit_position'])
 
@@ -59,11 +59,11 @@ def _generate_public_transport_connection(connection: dict) -> dict:
 
 def _generate_path(leg: dict, start_position: tuple, exit_position: tuple) -> dict:
     return {
-            'name': leg['name'],
+            'start': leg['name'],
+            'destination': leg['exit']['name'],
             'line_type': leg['type'],
             'line': leg['line'],
             'track': leg['track'],
-            'destination': leg['exit']['name'],
             'terminal': leg['terminal'],
             'departure': leg['departure'],
             'arrival': leg['exit']['arrival'],

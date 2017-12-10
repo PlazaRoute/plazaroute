@@ -2,11 +2,11 @@
   "type": "public_transport",
   "path": [
     {
-      "name": "Zürich, Messe/Hallenstadion",
+      "start": "Zürich, Messe/Hallenstadion",
+      "destination": "Zürich Oerlikon, Bahnhof",
       "line_type": "bus",
       "line": "61",
       "track": "",
-      "destination": "Zürich Oerlikon, Bahnhof",
       "terminal": "Zürich, Mühlacker",
       "departure": "2017-11-18 14:44:00",
       "arrival": "2017-11-18 14:47:00",
@@ -26,11 +26,11 @@
       ]
     },
     {
-      "name": "Zürich Oerlikon",
+      "start": "Zürich Oerlikon",
+      "destination": "Zürich Hardbrücke",
       "line_type": "strain",
       "line": "S6",
       "track": "7",
-      "destination": "Zürich Hardbrücke",
       "terminal": "Zürich Stadelhofen",
       "departure": "2017-11-18 14:51:00",
       "arrival": "2017-11-18 14:54:00",

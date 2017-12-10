@@ -2,11 +2,11 @@
   "type": "public_transport",
   "path": [
     {
-      "name": "Zürich, Riedbach",
+      "start": "Zürich, Riedbach",
+      "destination": "Zürich Oerlikon, Bahnhof",
       "line_type": "bus",
       "line": "781",
       "track": "",
-      "destination": "Zürich Oerlikon, Bahnhof",
       "terminal": "Zürich Oerlikon, Bahnhof",
       "departure": "2017-11-18 14:52:00",
       "arrival": "2017-11-18 14:57:00",
@@ -27,11 +27,11 @@
       ]
     },
     {
-      "name": "Zürich Oerlikon",
+      "start": "Zürich Oerlikon",
+      "destination": "Zürich Hardbrücke",
       "line_type": "strain",
       "line": "S7",
       "track": "7",
-      "destination": "Zürich Hardbrücke",
       "terminal": "Zürich Stadelhofen",
       "departure": "2017-11-18 15:03:00",
       "arrival": "2017-11-18 15:06:00",
