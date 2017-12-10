@@ -59,20 +59,33 @@ class _PlazaHandler(osmium.SimpleHandler):
 
     def area(self, area):
         if self._is_plaza(area):
-            multipolygon_wkb = WKBFAB.create_multipolygon(area)
-            multipolygon_geom = wkblib.loads(multipolygon_wkb, hex=True)
-
-            for polygon in multipolygon_geom.geoms:
-                plaza = {
-                    'osm_id': area.orig_id(),
-                    'geometry': polygon
-                }
-                self.plazas.append(plaza)
+            multipolygon_geom = self._create_multipolygon(area)
+            if multipolygon_geom:
+                for polygon in multipolygon_geom.geoms:
+                    plaza = {
+                        'osm_id': area.orig_id(),
+                        'geometry': polygon
+                    }
+                    self.plazas.append(plaza)
 
         elif self._is_relevant_building(area):
+            geometry = self._create_multipolygon(area)
+            if geometry:
+                self.buildings.append(geometry)
+
+    def _create_multipolygon(self, area):
+        try:
             building_wkb = WKBFAB.create_multipolygon(area)
-            building_geom = wkblib.loads(building_wkb, hex=True)
-            self.buildings.append(building_geom)
+            return wkblib.loads(building_wkb, hex=True)
+
+        except InvalidLocationError:
+            logger.debug(f'Encountered invalid location in area {area.id}')
+            self.invalid_count += 1
+            return None
+        except RuntimeError as ex:
+            logger.debug(f'Error importing way {area.id}: {ex}')
+            self.invalid_count += 1
+            return None
 
     def _is_relevant_node(self, node):
         return "amenity" in node.tags and \
