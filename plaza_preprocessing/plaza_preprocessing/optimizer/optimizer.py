@@ -69,7 +69,8 @@ class PlazaPreprocessor:
             return None
 
         entry_points = self._calc_entry_points(
-            plaza_geom_without_obstacles, intersecting_lines, lookup_buffer_m=self.config['entry-point-lookup-buffer'])
+            plaza_geom_without_obstacles, intersecting_lines,
+            lookup_buffer_m=self.config['entry-point-lookup-buffer'])
 
         if len(entry_points) < 2:
             logger.debug(f"Discarding Plaza {plaza['osm_id']} - it has fewer than 2 entry points")

@@ -12,9 +12,9 @@ from plaza_preprocessing.optimizer.graphprocessor.visibilitygraph import Visibil
 @pytest.fixture(params=['visibility', 'spiderweb'])
 def process_strategy(request):
     if request.param == 'visibility':
-        return VisibilityGraphProcessor(visibility_delta_m=0.05)
+        return VisibilityGraphProcessor(visibility_delta_m=0.1)
     elif request.param == 'spiderweb':
-        return SpiderWebGraphProcessor(spacing_m=5, visibility_delta_m=0.05)
+        return SpiderWebGraphProcessor(spacing_m=5, visibility_delta_m=0.1)
 
 
 @pytest.fixture(params=['astar', 'dijkstra'])
