@@ -107,11 +107,10 @@ def test_entry_lines(process_strategy, shortest_path_strategy, config):
 
 
 def test_bahnhofstrasse(process_strategy, shortest_path_strategy, config):
+    """ one entry point is a couple mm outside the plaza, but should still be considered for the graph edges"""
     result_plaza = utils.process_plaza('bahnhofstrasse', 27405455, process_strategy, shortest_path_strategy, config)
-    # TODO: one entry point is inaccurate
     assert result_plaza
-    with pytest.raises(AssertionError):
-        assert all(e.touches(result_plaza['geometry']) for e in result_plaza['entry_points'])
+    assert len(result_plaza['graph_edges']) == 276
 
 
 def test_entry_points_with_cutout_polygon(process_strategy, shortest_path_strategy, config):
