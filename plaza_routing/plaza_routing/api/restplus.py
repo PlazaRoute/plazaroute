@@ -11,11 +11,13 @@ logger = logging.getLogger('plaza_routing')
 
 @api.errorhandler(ValidationError)
 def validation_error_handler(e):
+    """When the user passed an invalid parameter the API"""
     return {'message': str(e)}, 400
 
 
 @api.errorhandler(ServiceError)
 def service_error_handler():
+    """When a third party system is temporarily unavailable"""
     return {'message': 'third party system is temporarily unavailable'}, 503
 
 
