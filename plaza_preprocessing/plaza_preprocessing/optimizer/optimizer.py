@@ -61,21 +61,21 @@ class PlazaPreprocessor:
 
         intersecting_lines = self._find_intersecting_lines(plaza['geometry'])
 
-        entry_points = self._calc_entry_points(
-            plaza['geometry'], intersecting_lines, lookup_buffer_m=self.config['entry-point-lookup-buffer'])
-
-        if len(entry_points) < 2:
-            logger.debug(f"Discarding Plaza {plaza['osm_id']} - it has fewer than 2 entry points")
-            return None
-
-        entry_lines = self._map_entry_lines(intersecting_lines, entry_points)
-
         plaza_geom_without_obstacles = self._calc_obstacle_geometry(
             plaza, intersecting_lines, buffer_m=self.config['obstacle-buffer'])
 
         if not plaza_geom_without_obstacles:
             logger.debug(f"Discarding Plaza {plaza['osm_id']}: completely obstructed by obstacles")
             return None
+
+        entry_points = self._calc_entry_points(
+            plaza_geom_without_obstacles, intersecting_lines, lookup_buffer_m=self.config['entry-point-lookup-buffer'])
+
+        if len(entry_points) < 2:
+            logger.debug(f"Discarding Plaza {plaza['osm_id']} - it has fewer than 2 entry points")
+            return None
+
+        entry_lines = self._map_entry_lines(intersecting_lines, entry_points)
 
         graph_edges = self._get_graph_edges(entry_points, plaza['geometry'], plaza_geom_without_obstacles)
 

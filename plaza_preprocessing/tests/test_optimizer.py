@@ -53,7 +53,7 @@ def test_multiple_plazas(process_strategy, shortest_path_strategy, config):
     processed_plazas = optimizer.preprocess_plazas(
         holder, process_strategy, shortest_path_strategy, config)
 
-    assert len(processed_plazas) == 6
+    assert len(processed_plazas) == 7
     all_edges = [edge.coords for plaza in processed_plazas for edge in plaza["graph_edges"]]
     assert len(set(all_edges)) == len(all_edges)  # check for duplicates
 
@@ -110,12 +110,10 @@ def test_bahnhofstrasse(process_strategy, shortest_path_strategy, config):
     """ one entry point is a couple mm outside the plaza, but should still be considered for the graph edges"""
     result_plaza = utils.process_plaza('bahnhofstrasse', 27405455, process_strategy, shortest_path_strategy, config)
     assert result_plaza
-    assert len(result_plaza['graph_edges']) == 276
+    assert len(result_plaza['graph_edges']) == 253
 
 
 def test_entry_points_with_cutout_polygon(process_strategy, shortest_path_strategy, config):
     result_plaza = utils.process_plaza('zuerich_hb', 6605179, process_strategy, shortest_path_strategy, config)
     assert result_plaza
-    # TODO: entry points should still be valid after the geometry has been cutout
-    with pytest.raises(AssertionError):
-        assert all(e.touches(result_plaza['geometry']) for e in result_plaza['entry_points'])
+    assert len(result_plaza['entry_points']) == 9
