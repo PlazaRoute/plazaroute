@@ -43,6 +43,8 @@ spiderweb-grid-size: 2 # grid size in meters, if spiderweb is used
 obstacle-buffer: 2 # minimal distance from any obstacles in meters
 
 shortest-path-algorithm: astar # one of astar, dijkstra
+
+entry-point-lookup-buffer: 0.05 # tolerance in meters, will be used to detect slightly offset entry points
 """
 
 SCHEMA = {
@@ -80,19 +82,22 @@ SCHEMA = {
            'enum': ['visibility', 'spiderweb']
        },
        'spiderweb-grid-size': {
-           'type': 'integer'
+           'type': 'number'
        },
        'obstacle-buffer': {
-           'type': 'integer'
+           'type': 'number'
        },
        'shortest-path-algorithm': {
            'type': 'string',
            'enum': ['astar', 'dijkstra']
+       },
+       'entry-point-lookup-buffer': {
+           'type': 'number',
        }
     },
     'additionalProperties': False,
     'required': ['tag-filter', 'footway-tags', 'graph-strategy', 'spiderweb-grid-size',
-                 'obstacle-buffer', 'shortest-path-algorithm'],
+                 'obstacle-buffer', 'shortest-path-algorithm', 'entry-point-lookup-buffer'],
     'definitions': {
         'tag-filter': {
             'properties': {

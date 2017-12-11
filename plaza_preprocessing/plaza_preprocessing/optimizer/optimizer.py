@@ -61,7 +61,8 @@ class PlazaPreprocessor:
 
         intersecting_lines = self._find_intersecting_lines(plaza['geometry'])
 
-        entry_points = self._calc_entry_points(plaza['geometry'], intersecting_lines, lookup_buffer_m=0.05)
+        entry_points = self._calc_entry_points(
+            plaza['geometry'], intersecting_lines, lookup_buffer_m=self.config['entry-point-lookup-buffer'])
 
         if len(entry_points) < 2:
             logger.debug(f"Discarding Plaza {plaza['osm_id']} - it has fewer than 2 entry points")
