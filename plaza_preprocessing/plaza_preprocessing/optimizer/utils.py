@@ -5,14 +5,6 @@ from shapely.geometry import Point, MultiPoint, LineString, MultiLineString, Geo
 logger = logging.getLogger('plaza_preprocessing.optimizer')
 
 
-def point_in_bounding_box(point, min_x, min_y, max_x, max_y):
-    if point.x < min_x or point.x > max_x:
-        return False
-    if point.y < min_y or point.y > max_y:
-        return False
-    return True
-
-
 def unpack_geometry_coordinates(geometry):
     """ return a set with every point in LineString and Point geometries """
     geom_type = type(geometry)
@@ -49,9 +41,13 @@ def find_nearest_geometry(obj, geometries):
     return min(geometries, key=lambda g: g.distance(obj))
 
 
-def line_visible(plaza_geometry, line):
-    """ check if the line is "visible", i.e. unobstructed through the plaza """
-    return line.equals(plaza_geometry.intersection(line))
+def line_visible(plaza_geometry, line, delta_m):
+    """ check if the line is "visible", i.e. unobstructed through the plaza"""
+    intersection_line = plaza_geometry.intersection(line)
+
+    # a line is visible if the intersection has the same length as the line itself, within a given delta
+    delta = meters_to_degrees(delta_m)
+    return abs(line.length - intersection_line.length) <= delta
 
 
 def timing(f):

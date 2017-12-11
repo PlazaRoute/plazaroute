@@ -76,10 +76,10 @@ def _existing_file(value):
 def _get_process_strategy(config: dict) -> GraphProcessor:
     strategy_config = config['graph-strategy']
     if strategy_config == 'visibility':
-        return VisibilityGraphProcessor()
+        return VisibilityGraphProcessor(visibility_delta_m=0.05)
     elif strategy_config == 'spiderweb':
         spacing = config['spiderweb-grid-size']
-        return SpiderWebGraphProcessor(spacing_m=spacing)
+        return SpiderWebGraphProcessor(spacing_m=spacing, visibility_delta_m=0.05)
     else:
         raise ValueError("invalid value for process strategy")
 

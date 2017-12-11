@@ -12,9 +12,9 @@ from plaza_preprocessing.optimizer.graphprocessor.visibilitygraph import Visibil
 @pytest.fixture(params=['visibility', 'spiderweb'])
 def process_strategy(request):
     if request.param == 'visibility':
-        return VisibilityGraphProcessor()
+        return VisibilityGraphProcessor(visibility_delta_m=0.05)
     elif request.param == 'spiderweb':
-        return SpiderWebGraphProcessor(spacing_m=5)
+        return SpiderWebGraphProcessor(spacing_m=5, visibility_delta_m=0.05)
 
 
 @pytest.fixture(params=['astar', 'dijkstra'])
@@ -44,7 +44,7 @@ def test_complicated_plaza(process_strategy, shortest_path_strategy, config):
     result_plaza = utils.process_plaza('bahnhofplatz_bern', 5117701, process_strategy, shortest_path_strategy, config)
     assert result_plaza
     assert len(result_plaza['graph_edges']) > 20
-    assert len(result_plaza['entry_points']) == 17
+    assert len(result_plaza['entry_points']) == 49
     assert len(result_plaza['entry_lines']) == 22
 
 
@@ -69,7 +69,8 @@ def test_optimized_lines_inside_plaza(process_strategy, shortest_path_strategy, 
 
     assert result_plaza
     # all optimized lines should be inside the plaza geometry
-    assert all(line.equals(plaza_geometry.intersection(line)) for line in result_plaza['graph_edges'])
+    assert all(
+        abs(plaza_geometry.intersection(line).length - line.length) <= 0.05 for line in result_plaza['graph_edges'])
 
 
 def test_obstructed_plaza(process_strategy, shortest_path_strategy, config):
@@ -91,12 +92,10 @@ def test_barriers(process_strategy, shortest_path_strategy, config):
 
 
 def test_entry_points(process_strategy, shortest_path_strategy, config):
-    """ Entry points on Kreuzplatz seem to be wrong """
+    """ Entry points on Kreuzplatz don't work with geometry.touches()"""
     result_plaza = utils.process_plaza('kreuzplatz', 5541230, process_strategy, shortest_path_strategy, config)
-    with pytest.raises(AssertionError):
-        assert result_plaza
-        assert len(result_plaza['entry_points']) == 16
-        # TODO: is 0 instead of 16
+    assert result_plaza
+    assert len(result_plaza['entry_points']) == 16
 
 
 def test_entry_lines(process_strategy, shortest_path_strategy, config):
