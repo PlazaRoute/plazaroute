@@ -1,28 +1,38 @@
 tag-filter:
   plaza: # what counts as a plaza
-    includes: # one or more tags must match
+    includes:
 #     tag-keys: # tag keys only
 #       - 
       tag-key-values: # tags with specific values
-        - highway: pedestrian
+        - or:
+          - highway: pedestrian
+        - or:
+          - highway: footway
+          - area: yes
     excludes: # no tags should match
 #     tag-keys:
 #       - <key>
       tag-key-values:
-        - area: no
+        - or:
+          - area: no
   barrier: # what OSM "way" constitutes a barrier
     includes:
       tag-key-values:
-        - barrier: wall
-        - barrier: fence
-        - barrier: hedge
-        - barrier: retaining_wall
+        - or:
+          - barrier: wall
+        - or:
+          - barrier: fence
+        - or:
+          - barrier: hedge
+        - or:
+          - barrier: retaining_wall
   point_obstacle:
     includes:
       tag-keys:
         - amenity
       tag-key-values:
-        - barrier: block
+        - or:
+          - barrier: block
     excludes:
       tag-keys:
         - indoor
@@ -35,3 +45,5 @@ spiderweb-grid-size: 2 # grid size in meters, if spiderweb is used
 obstacle-buffer: 2 # minimal distance from any obstacles in meters
 
 shortest-path-algorithm: astar # one of astar, dijkstra
+
+entry-point-lookup-buffer: 0.05 # tolerance in meters, will be used to detect slightly offset entry points

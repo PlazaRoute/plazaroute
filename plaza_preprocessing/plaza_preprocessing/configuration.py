@@ -8,29 +8,39 @@ logger = logging.getLogger('plaza_preprocessing.config')
 DEFAULT_CONFIG = """
 tag-filter:
   plaza: # what counts as a plaza
-    includes: # one or more tags must match
+    includes:
 #     tag-keys: # tag keys only
 #       - 
       tag-key-values: # tags with specific values
-        - highway: pedestrian
+        - or:
+          - highway: pedestrian
+        - or:
+          - highway: footway
+          - area: yes
     excludes: # no tags should match
 #     tag-keys:
 #       - <key>
       tag-key-values:
-        - area: no
+        - or:
+          - area: no
   barrier: # what OSM "way" constitutes a barrier
     includes:
       tag-key-values:
-        - barrier: wall
-        - barrier: fence
-        - barrier: hedge
-        - barrier: retaining_wall
+        - or:
+          - barrier: wall
+        - or:
+          - barrier: fence
+        - or:
+          - barrier: hedge
+        - or:
+          - barrier: retaining_wall
   point_obstacle:
     includes:
       tag-keys:
         - amenity
       tag-key-values:
-        - barrier: block
+        - or:
+          - barrier: block
     excludes:
       tag-keys:
         - indoor
@@ -123,7 +133,16 @@ SCHEMA = {
                     'type': 'array',
                     'items': {
                         'type': 'object',
-                        'additionalProperties': {'type': 'string'}
+                        'properties': {
+                            'or': {
+                                'type': 'array',
+                                'items': {
+                                    'type': 'object',
+                                    'additionalProperties': {'type': 'string'}
+                                }
+                            }
+                        }
+
                     }
                 }
             }
@@ -163,23 +182,31 @@ def filter_tags(tags: dict, tag_filter: dict) -> bool:
     """filter tags based on a tag filter"""
 
     including = False
-    include = tag_filter['includes']
-    if 'tag-keys' in include:
-        including = any(key in tags for key in include['tag-keys'])
+    includes = tag_filter['includes']
+    if 'tag-keys' in includes:
+        including = any(key in tags for key in includes['tag-keys'])
     if not including:
-        if 'tag-key-values' in tag_filter['includes']:
-            including = any(tags.get(tag_key) == tag_value for tag in include['tag-key-values']
-                            for tag_key, tag_value in tag.items())
+        if 'tag-key-values' in includes:
+            including = _or_filter_matches(includes['tag-key-values'], tags)
     if not including:
         return False
 
     if 'excludes' in tag_filter:
-        if 'tag-keys' in tag_filter['excludes']:
-            if any(key in tags for key in tag_filter['excludes']['tag-keys']):
+        excludes = tag_filter['excludes']
+        if 'tag-keys' in excludes:
+            if any(key in tags for key in excludes['tag-keys']):
                 return False
-        if 'tag-key-values' in tag_filter['excludes']:
-            if any(tags.get(tag_key) == tag_value for tag in tag_filter['excludes']['tag-key-values']
-                   for tag_key, tag_value in tag.items()):
+        if 'tag-key-values' in excludes:
+            if _or_filter_matches(excludes['tag-key-values'], tags):
                 return False
 
     return True
+
+
+def _or_filter_matches(or_filter, tags):
+    return any(  # or
+        all(  # and
+            all(tags.get(tag_key) == tag_value for tag_key, tag_value in and_filter.items())
+            for and_filter in or_filter['or'])
+        for or_filter in or_filter
+    )
