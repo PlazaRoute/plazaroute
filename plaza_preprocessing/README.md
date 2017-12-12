@@ -2,6 +2,11 @@
 
 This is the plaza preprocessing package for [plazaroute](https://github.com/PlazaRoute/plazaroute), responsible for preparing OSM files for optimized pedestrian routing with support for routing through plazas.
 
+## Requirements
+
+* Python 3.6
+* [Boost Python](http://www.boost.org/doc/libs/1_65_1/libs/python/doc/html/index.html)
+
 ## Install
 
 See [the Docker readme](docker/) for quickly getting up and running without an installation.
