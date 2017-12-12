@@ -29,8 +29,8 @@ sudo docker run -v /tmp/osm:/osm plazaroute/plaza_preprocessing pyosmium-up-to-d
 There is a `Dockerfile` in this directory which you can use to build your own image
 
 ```
-$ git clone https://github.com/PlazaRoute/PlazaRoute.git
-$ cd PlazaRoute/plaza_preprocessing/docker
+$ git clone https://github.com/PlazaRoute/plazaroute.git
+$ cd plazaroute/plaza_preprocessing/docker
 $ sudo docker build -t plazaroute/plaza_preprocessing .
 ```
 

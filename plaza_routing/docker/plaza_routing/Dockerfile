@@ -1,6 +1,6 @@
 FROM python:3.6.3
 
-RUN git clone https://github.com/PlazaRoute/PlazaRoute.git /plazaroute
+RUN git clone https://github.com/PlazaRoute/plazaroute.git /plazaroute
 WORKDIR /plazaroute
 
 RUN pip install -r plaza_routing/requirements.txt
