@@ -13,7 +13,7 @@ setup(
     author='Jonas Matter, Robin Suter',
     author_email='robin@robinsuter.ch',
     url='https://github.com/PlazaRoute/plazaroute',
-    license="AGPLv3",
+    license="MIT License",
     packages=find_packages(exclude=('tests', 'docs')),
     install_requires=['osmium', 'Shapely', 'geojson', 'networkx', 'Rtree', 'jsonschema', 'ruamel.yaml'],
     entry_points={
