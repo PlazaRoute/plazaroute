@@ -13,7 +13,7 @@ setup(
     author='Jonas Matter, Robin Suter',
     author_email='robin@robinsuter.ch',
     url='https://github.com/PlazaRoute/PlazaRoute',
-    license="AGPLv3",
+    license="MIT License",
     packages=find_packages(exclude=('tests', 'docs')),
     package_data={'': ['integration/routing_strategy/graphhopper_swagger.json']}
 )
