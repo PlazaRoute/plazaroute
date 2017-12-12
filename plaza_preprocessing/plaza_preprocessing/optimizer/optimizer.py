@@ -7,7 +7,7 @@ from plaza_preprocessing.optimizer import shortest_paths
 from plaza_preprocessing.optimizer.graphprocessor.graphprocessor import GraphProcessor
 from plaza_preprocessing.importer.osmholder import OSMHolder
 from plaza_preprocessing import configuration
-from shapely.geometry import CAP_STYLE
+from shapely.geometry import CAP_STYLE, JOIN_STYLE
 
 logger = logging.getLogger('plaza_preprocessing.optimizer')
 
@@ -61,20 +61,22 @@ class PlazaPreprocessor:
 
         intersecting_lines = self._find_intersecting_lines(plaza['geometry'])
 
-        entry_points = self._calc_entry_points(plaza['geometry'], intersecting_lines)
-
-        if len(entry_points) < 2:
-            logger.debug(f"Discarding Plaza {plaza['osm_id']} - it has fewer than 2 entry points")
-            return None
-
-        entry_lines = self._map_entry_lines(intersecting_lines, entry_points)
-
         plaza_geom_without_obstacles = self._calc_obstacle_geometry(
             plaza, intersecting_lines, buffer_m=self.config['obstacle-buffer'])
 
         if not plaza_geom_without_obstacles:
             logger.debug(f"Discarding Plaza {plaza['osm_id']}: completely obstructed by obstacles")
             return None
+
+        entry_points = self._calc_entry_points(
+            plaza_geom_without_obstacles, intersecting_lines,
+            lookup_buffer_m=self.config['entry-point-lookup-buffer'])
+
+        if len(entry_points) < 2:
+            logger.debug(f"Discarding Plaza {plaza['osm_id']} - it has fewer than 2 entry points")
+            return None
+
+        entry_lines = self._map_entry_lines(intersecting_lines, entry_points)
 
         graph_edges = self._get_graph_edges(entry_points, plaza['geometry'], plaza_geom_without_obstacles)
 
@@ -93,13 +95,14 @@ class PlazaPreprocessor:
                          plaza_geom_without_obstacles: Polygon) -> List[LineString]:
         """ create graph with shortest paths between entry points """
         graph_edges = self.graph_processor.create_graph_edges(plaza_geom_without_obstacles, entry_points)
+
         graph = shortest_paths.create_graph(graph_edges)
         shortest_path_lines = self.shortest_path_strategy(graph, entry_points)
         optimized_lines = self.graph_processor.optimize_lines(
             plaza_geom, shortest_path_lines, self.config['obstacle-buffer'])
         return optimized_lines
 
-    def _calc_entry_points(self, plaza_geometry, intersecting_lines):
+    def _calc_entry_points(self, plaza_geometry, intersecting_lines, lookup_buffer_m):
         """
         calculate points where lines intersect with the outer ring of the plaza
         """
@@ -112,8 +115,14 @@ class PlazaPreprocessor:
 
         intersection_points = list(map(Point, intersection_coords))
 
+        # define a buffer around the outer ring and check if the points are inside this buffer
+        buffer_distance = utils.meters_to_degrees(lookup_buffer_m)
+
+        plaza_outer_buffer = plaza_geometry.exterior.buffer(
+            buffer_distance, cap_style=CAP_STYLE.flat, join_style=JOIN_STYLE.mitre)
+
         entry_points = [
-            p for p in intersection_points if plaza_geometry.touches(p)]
+            p for p in intersection_points if plaza_outer_buffer.contains(p)]
 
         return entry_points
 

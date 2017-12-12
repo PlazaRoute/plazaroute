@@ -7,8 +7,9 @@ from plaza_preprocessing.optimizer.graphprocessor.graphprocessor import GraphPro
 
 class SpiderWebGraphProcessor(GraphProcessor):
     """ Process a plaza with a spider web graph """
-    def __init__(self, spacing_m):
+    def __init__(self, spacing_m, visibility_delta_m):
         self.spacing_m = spacing_m
+        self.visibility_delta_m = visibility_delta_m
 
     def create_graph_edges(self, plaza_geometry: Polygon, entry_points: List[Point]) -> List[LineString]:
         """ create a spiderwebgraph and connect edges to entry points """
@@ -32,7 +33,7 @@ class SpiderWebGraphProcessor(GraphProcessor):
     def _get_simplified_visible_line(self, plaza_geometry: Polygon, line: LineString, tolerance):
         """ returns the simplified line if it's inside the plaza, the original line otherwise"""
         simplified_line = line.simplify(tolerance, preserve_topology=False)
-        return simplified_line if utils.line_visible(plaza_geometry, simplified_line) else line
+        return simplified_line if utils.line_visible(plaza_geometry, simplified_line, self.visibility_delta_m) else line
 
     def _calc_spiderwebgraph(self, plaza_geometry):
         """ calculate spider web graph edges"""
@@ -71,7 +72,7 @@ class SpiderWebGraphProcessor(GraphProcessor):
                         graph_edges.append(v_line)
 
                 # diagonal line
-                if row < rows and column < columns:  # TODO correct constraint?
+                if row < rows and column < columns:
                     d1_line = self._get_spiderweb_intersection_line(plaza_geometry, top_left, bottom_right)
                     if d1_line:
                         graph_edges.append(d1_line)
@@ -83,7 +84,7 @@ class SpiderWebGraphProcessor(GraphProcessor):
     def _get_spiderweb_intersection_line(self, plaza_geometry, start, end):
         """ returns a line that is completely inside the plaza, if possible """
         line = LineString([start, end])
-        if not utils.line_visible(plaza_geometry, line):
+        if not utils.line_visible(plaza_geometry, line, self.visibility_delta_m):
             return None
         return line
 

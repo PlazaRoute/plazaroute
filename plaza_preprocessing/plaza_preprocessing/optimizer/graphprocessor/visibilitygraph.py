@@ -7,6 +7,9 @@ from plaza_preprocessing.optimizer.graphprocessor.graphprocessor import GraphPro
 class VisibilityGraphProcessor(GraphProcessor):
     """ process a plaza using a visibility graph """
 
+    def __init__(self, visibility_delta_m):
+        self.visibility_delta_m = visibility_delta_m
+
     def create_graph_edges(self, plaza_geometry, entry_points):
         """ create a visibility graph with all plaza and entry points """
         if not plaza_geometry:
@@ -24,6 +27,6 @@ class VisibilityGraphProcessor(GraphProcessor):
             for end_id, end_coords in indexed_coords.items():
                 if start_id > end_id:
                     line = LineString([start_coords, end_coords])
-                    if utils.line_visible(plaza_geometry, line):
+                    if utils.line_visible(plaza_geometry, line, self.visibility_delta_m):
                         graph_edges.append(line)
         return graph_edges

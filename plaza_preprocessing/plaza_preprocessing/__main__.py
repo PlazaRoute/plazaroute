@@ -75,11 +75,12 @@ def _existing_file(value):
 
 def _get_process_strategy(config: dict) -> GraphProcessor:
     strategy_config = config['graph-strategy']
+    lookup_buffer = config['entry-point-lookup-buffer'] * 2  # max tolerance should be twice the entry point buffer
     if strategy_config == 'visibility':
-        return VisibilityGraphProcessor()
+        return VisibilityGraphProcessor(visibility_delta_m=lookup_buffer)
     elif strategy_config == 'spiderweb':
         spacing = config['spiderweb-grid-size']
-        return SpiderWebGraphProcessor(spacing_m=spacing)
+        return SpiderWebGraphProcessor(spacing_m=spacing, visibility_delta_m=lookup_buffer)
     else:
         raise ValueError("invalid value for process strategy")
 
