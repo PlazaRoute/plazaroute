@@ -15,7 +15,7 @@ RUN python3 get-pip.py
 RUN pip3 install --upgrade wheel setuptools virtualenv
 
 # install plaza_preprocessing
-RUN git clone https://github.com/PlazaRoute/PlazaRoute.git plazaroute
+RUN git clone https://github.com/PlazaRoute/plazaroute.git plazaroute
 WORKDIR plazaroute
 
 RUN pip install plaza_preprocessing/

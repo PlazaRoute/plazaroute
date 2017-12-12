@@ -51,7 +51,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'PlazaRoute'
+project = 'plazaroute'
 copyright = '2017, Jonas Matter, Robin Suter'
 author = 'Jonas Matter, Robin Suter'
 
