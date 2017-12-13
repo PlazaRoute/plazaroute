@@ -14,7 +14,7 @@ setup(
     author_email='robin@robinsuter.ch',
     url='https://github.com/PlazaRoute/PlazaRoute',
     license="AGPLv3",
-    packages=find_packages(exclude=('tests', 'docs')),
+    packages=find_packages(exclude=('tests', 'docs', 'scheduled')),
     install_requires=['osmium', 'Shapely', 'geojson', 'networkx', 'Rtree', 'jsonschema', 'ruamel.yaml'],
     entry_points={
         'console_scripts': [
