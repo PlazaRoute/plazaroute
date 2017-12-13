@@ -35,3 +35,10 @@ def test_parse_connection_with_disruptions():
     parsed_response = search_ch_parser.parse_connections(search_ch_response)
     # two walking legs and the last one will be skipped
     assert parsed_response['connections'][0]['number_of_legs'] == 3
+
+
+def test_parse_connection_with_no_timetables():
+    with pytest.raises(RuntimeError):
+        search_ch_response = utils.get_file('search_ch_response_no_timetable_information.json', 'search_ch')
+        search_ch_parser.parse_connections(search_ch_response)
+

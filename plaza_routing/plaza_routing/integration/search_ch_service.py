@@ -24,6 +24,8 @@ def get_connection(start: str, destination: str, time: str, date='today') -> dic
 def _parse_exception(exception: Exception, req):
     if req and "Start- und Zielort müssen sich unterscheiden" in req.text:
         raise ValidationError('start and destination should differ') from None
+    if isinstance(exception, RuntimeError):
+        raise exception
     msg = f'search.ch is not running correctly: {exception}'
     logger.error(msg)
     raise ServiceError(msg) from None
