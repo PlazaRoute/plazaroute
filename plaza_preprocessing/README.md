@@ -1,14 +1,14 @@
 # Plaza Preprocessing
 
-This is the plaza preprocessing package for [PlazaRoute](https://github.com/PlazaRoute/PlazaRoute), responsible for preparing OSM files for optimized pedestrian routing with support for routing through plazas.
+This is the plaza preprocessing package for [plazaroute](https://github.com/PlazaRoute/plazaroute), responsible for preparing OSM files for optimized pedestrian routing with support for routing through plazas.
 
 ## Install
 
 See [the Docker readme](docker/) for quickly getting up and running without an installation.
 
 ```
-$ git clone https://github.com/PlazaRoute/PlazaRoute.git
-$ cd PlazaRoute
+$ git clone https://github.com/PlazaRoute/plazaroute.git
+$ cd plazaroute
 $ pip install plaza_preprocessing/
 ```
 
