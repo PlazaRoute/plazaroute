@@ -47,8 +47,8 @@ PublicTransportConnectionResponse = api.model('PublicTransportConnectionResponse
 
 RoutingResponse = api.model('RoutingResponse', {
     'start_walking_route': fields.Nested(WalkingRouteResponse, required=True),
-    'public_transport_connection': fields.Nested(PublicTransportConnectionResponse, required=True, default=[]),
-    'end_walking_route': fields.Nested(WalkingRouteResponse, required=True, default=[]),
+    'public_transport_connection': fields.Nested(PublicTransportConnectionResponse, required=True),
+    'end_walking_route': fields.Nested(WalkingRouteResponse, required=True),
     'accumulated_duration': fields.Float(required=True)
 })
 
