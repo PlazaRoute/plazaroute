@@ -72,6 +72,12 @@ def _get_route_combinations(start: tuple, destination: tuple, departure: str) ->
             We'are able to skip the connection and try the next one.
             """
             continue
+        except RuntimeError:
+            """
+            Happens if no connection was found for the given parameters.
+            We'are able to skip the connection and try the next one.
+            """
+            continue
 
         if not public_transport_connection['path']:
             continue  # skip empty paths, this happens if the path only consists of walking legs
