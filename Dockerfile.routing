@@ -1,0 +1,27 @@
+FROM python:3.6
+
+# python logging in containers
+ENV PYTHONUNBUFFERED=non-empty-string
+ENV PYTHONIOENCODING=utf-8
+ENV PYTHONHASHSEED=random
+
+COPY plaza_routing/requirements.txt /tmp/requirements.txt
+RUN pip install -r /tmp/requirements.txt
+
+WORKDIR /plazaroute
+
+COPY plaza_routing /plazaroute/plaza_routing
+
+# set the graphhopper host name to "graphhopper"
+RUN sed -i "s/localhost/graphhopper/g" plaza_routing/plaza_routing/integration/routing_strategy/graphhopper_swagger.json
+
+RUN pip install plaza_routing/
+RUN pip install uwsgi
+
+RUN useradd -d /plazaroute -s /bin/bash plazarouting
+
+USER plazarouting
+
+EXPOSE 8080
+
+CMD ["uwsgi", "--socket", "0.0.0.0:8080", "--manage-script-name", "--mount", "/=plaza_routing.app.application:app"]

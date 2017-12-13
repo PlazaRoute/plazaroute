@@ -1,0 +1,45 @@
+version: '3.3'
+services:
+  pbf_updater_and_plaza_preprocessor:
+    image: geometalab/plazaroute-prerpocessor
+    build:
+      context: .
+      dockerfile: Dockerfile.preprocessor
+    volumes:
+      - pbf:/pbf/
+    environment:
+      - PBF_DOWNLOAD_URL=https://planet.osm.ch/switzerland-padded.osm.pbf
+      - UPDATE_SERVER_URL=https://planet.osm.ch/replication/hour/
+      - PBF_PATH=/pbf/switzerland-padded.osm.pbf
+      - PBF_PROCESSED_PATH=/pbf/switzerland-processed.osm.pbf
+      # every week, 60*24*7
+#      - RUN_EVERY_X_MINUTES=10080
+      - RUN_EVERY_X_MINUTES=2
+  plaza_routing:
+    image: geometalab/plazaroute-routing
+    build:
+      context: .
+      dockerfile: Dockerfile.routing
+  graphhopper:
+    image: geometalab/plazaroute-graphhopper
+    build:
+      context: .
+      dockerfile: Dockerfile.graphhopper
+    environment:
+      JETTY_PORT: 8989
+      JAVA_OPTS: "-server -Xconcurrentio -Xmx2g -Xms2g -XX:+UseG1GC -XX:MetaspaceSize=100M"
+    volumes:
+      - pbf:/pbf/
+    entrypoint:
+      - ./graphhopper.sh
+      - web
+      - /pbf/switzerland-processed.osm.pbf
+  nginx:
+    image: geometalab/plazaroute-nginx-proxy
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx-proxy
+    ports:
+      - 5000:80
+volumes:
+  pbf:

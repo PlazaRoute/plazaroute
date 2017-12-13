@@ -1,0 +1,83 @@
+version: '3.3'
+services:
+  pbf_updater_and_plaza_preprocessor:
+    image: geometalab/plazaroute-prerpocessor
+    volumes:
+      - pbf:/pbf/
+    environment:
+      - PBF_DOWNLOAD_URL=https://planet.osm.ch/switzerland-padded.osm.pbf
+      - UPDATE_SERVER_URL=https://planet.osm.ch/replication/hour/
+      - PBF_PATH=/pbf/switzerland-padded.osm.pbf
+      - PBF_PROCESSED_PATH=/pbf/switzerland-processed.osm.pbf
+      # every week, 60*24*7
+      - RUN_EVERY_X_MINUTES=10080
+    networks:
+      - default
+    deploy:
+      replicas: 1
+      restart_policy:
+        max_attempts: 3
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10M"
+        max-file: 10
+  plaza_routing:
+    image: geometalab/plazaroute-routing
+    networks:
+      - default
+    deploy:
+      replicas: 1
+      restart_policy:
+        max_attempts: 3
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10M"
+        max-file: 10
+  graphhopper:
+    image: geometalab/plazaroute-graphhopper
+    environment:
+      JETTY_PORT: 8989
+      JAVA_OPTS: "-server -Xconcurrentio -Xmx2g -Xms2g -XX:+UseG1GC -XX:MetaspaceSize=100M"
+    volumes:
+      - pbf:/pbf/
+    entrypoint:
+      - ./graphhopper.sh
+      - web
+      - /pbf/switzerland-processed.osm.pbf
+    networks:
+      - default
+    deploy:
+      replicas: 1
+      restart_policy:
+        max_attempts: 3
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10M"
+        max-file: 10
+  nginx:
+    image: geometalab/plazaroute-nginx-proxy
+    environment:
+      - VIRTUAL_HOST=<>
+      - LETSENCRYPT_HOST=<>
+      - LETSENCRYPT_EMAIL=<>
+    networks:
+      - proxy-tier
+      - default
+    deploy:
+      replicas: 1
+      restart_policy:
+        max_attempts: 3
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10M"
+        max-file: 10
+volumes:
+  pbf:
+networks:
+  proxy-tier:
+    external:
+      name: nginx-proxy
