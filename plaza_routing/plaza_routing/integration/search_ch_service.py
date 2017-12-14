@@ -10,19 +10,24 @@ logger = logging.getLogger('plaza_routing.search_ch_service')
 
 def get_connection(start: str, destination: str, time: str, date='today') -> dict:
     """ retrieves the connection for a given start, destination and time of departure"""
-    req = None
+    response = None
     try:
         payload = {'from': start, 'to': destination, 'time': time, 'date': date, 'num': 1}
-        req = requests.get(config.search_ch['search_ch_api'], params=payload)
-        connections = search_ch_parser.parse_connections(req.text)
+        response = _query(payload)
+        connections = search_ch_parser.parse_connections(response)
         first_connection = connections['connections'][0]
         return first_connection
     except Exception as exception:
-        _parse_exception(exception, req)
+        _parse_exception(exception, response)
 
 
-def _parse_exception(exception: Exception, req):
-    if req and "Start- und Zielort müssen sich unterscheiden" in req.text:
+def _query(payload: dict) -> str:
+    req = requests.get(config.search_ch['search_ch_api'], params=payload)
+    return req.text
+
+
+def _parse_exception(exception: Exception, response: str):
+    if response and "Start- und Zielort müssen sich unterscheiden" in response:
         raise ValidationError('start and destination should differ') from None
     if isinstance(exception, RuntimeError):
         raise exception
