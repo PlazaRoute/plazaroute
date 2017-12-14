@@ -1,0 +1,136 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API",
+  "osm3s": {
+    "timestamp_osm_base": "40829",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "elements": [
+
+{
+  "type": "node",
+  "id": 304691770,
+  "lat": 47.3882833,
+  "lon": 8.6761857,
+  "tags": {
+    "bus": "yes",
+    "ele": "462",
+    "highway": "bus_stop",
+    "name": "Hegnau",
+    "operator": "VBG",
+    "public_transport": "platform",
+    "uic_name": "Volketswil, Hegnau",
+    "uic_ref": "8503156"
+  }
+},
+{
+  "type": "node",
+  "id": 304691779,
+  "lat": 47.3885244,
+  "lon": 8.6763104,
+  "tags": {
+    "bus": "yes",
+    "ele": "462",
+    "highway": "bus_stop",
+    "name": "Hegnau",
+    "operator": "VBG",
+    "public_transport": "platform",
+    "uic_name": "Volketswil, Hegnau",
+    "uic_ref": "8503156"
+  }
+},
+{
+  "type": "node",
+  "id": 304692210,
+  "lat": 47.3853802,
+  "lon": 8.6726220,
+  "tags": {
+    "bus": "yes",
+    "ele": "460",
+    "highway": "bus_stop",
+    "name": "Zimikon",
+    "operator": "VBG",
+    "public_transport": "platform",
+    "uic_name": "Volketswil, Zimikon",
+    "uic_ref": "8589106"
+  }
+},
+{
+  "type": "node",
+  "id": 304692222,
+  "lat": 47.3850302,
+  "lon": 8.6721840,
+  "tags": {
+    "bus": "yes",
+    "ele": "460",
+    "highway": "bus_stop",
+    "name": "Zimikon",
+    "operator": "VBG",
+    "public_transport": "platform",
+    "uic_name": "Volketswil, Zimikon",
+    "uic_ref": "8589106"
+  }
+},
+{
+  "type": "node",
+  "id": 304692256,
+  "lat": 47.3850780,
+  "lon": 8.6693169,
+  "tags": {
+    "bus": "yes",
+    "ele": "460",
+    "highway": "bus_stop",
+    "name": "In der Höh",
+    "nat_name": "Volketswil, In der Höh",
+    "operator": "VBG",
+    "public_transport": "platform",
+    "uic_name": "Volketswil, In der Höh",
+    "uic_ref": "8576139"
+  }
+},
+{
+  "type": "node",
+  "id": 318138829,
+  "lat": 47.3811714,
+  "lon": 8.6730460,
+  "tags": {
+    "ele": "460",
+    "highway": "bus_stop",
+    "name": "Hofwisen",
+    "operator": "VBG",
+    "uic_name": "Volketswil, Hofwisen",
+    "uic_ref": "8588096"
+  }
+},
+{
+  "type": "node",
+  "id": 318138929,
+  "lat": 47.3810815,
+  "lon": 8.6729401,
+  "tags": {
+    "ele": "460",
+    "highway": "bus_stop",
+    "name": "Hofwisen",
+    "operator": "VBG",
+    "uic_name": "Volketswil, Hofwisen",
+    "uic_ref": "8588096"
+  }
+},
+{
+  "type": "node",
+  "id": 880339077,
+  "lat": 47.3894071,
+  "lon": 8.6750212,
+  "tags": {
+    "ele": "458",
+    "highway": "bus_stop",
+    "name": "Chappeli",
+    "nat_name": "Volketswil, Chappeli",
+    "operator": "VBG",
+    "uic_name": "Volketswil, Chappeli",
+    "uic_ref": "8590851"
+  }
+}
+
+  ]
+}

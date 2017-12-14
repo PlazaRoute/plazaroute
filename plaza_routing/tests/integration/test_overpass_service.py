@@ -6,39 +6,45 @@ from plaza_routing.integration import overpass_service
 from plaza_routing.integration.util.exception_util import ServiceError
 
 
-def test_get_public_transport_stops():
+def test_get_public_transport_stops(monkeypatch):
     expected_response = {'8503003': (8.548905, 47.3667641),
                          '8503059': (8.5476516, 47.366096),
                          '8576193': (8.5452709, 47.3668796),
                          '8576195': (8.5475966, 47.3654462),
                          '8576196': (8.5497919, 47.3631108),
-                         '8591105': (8.5410387, 47.36671),
+                         '8591105': (8.5410364, 47.36671),
                          '8591183': (8.543454, 47.3697527),
                          '8591239': (8.5488279, 47.3704886)}
 
     sechselaeutenplatz = (8.5458, 47.3661)
+
+    mock.mock_get_public_transport_stops_query(monkeypatch, sechselaeutenplatz)
     stops = overpass_service.get_public_transport_stops(sechselaeutenplatz)
     assert expected_response == stops
 
 
-def test_get_public_transport_stops_empty_result():
+def test_get_public_transport_stops_empty_result(monkeypatch):
     obersee = (8.8249, 47.2100)
+    mock.mock_get_public_transport_stops_query(monkeypatch, obersee)
+
     with pytest.raises(ValueError):
         overpass_service.get_public_transport_stops(obersee)
 
 
-def test_get_public_transport_stops_highway_bus_stops():
+def test_get_public_transport_stops_highway_bus_stops(monkeypatch):
     expected_response = {'8503156': (8.6763104, 47.3885244),
                          '8576139': (8.6693169, 47.385078),
                          '8588096': (8.6729401, 47.3810815),
                          '8590851': (8.6750212, 47.3894071),
                          '8589106': (8.672184, 47.3850302)}
     zimikon = (8.67263, 47.38516)
+
+    mock.mock_get_public_transport_stops_query(monkeypatch, zimikon)
     stops = overpass_service.get_public_transport_stops(zimikon)
     assert expected_response == stops
 
 
-def test_get_public_transport_stops_nodes_without_uic_ref():
+def test_get_public_transport_stops_nodes_without_uic_ref(monkeypatch):
     """" nodes without uic_refs should be discarded, they are ususally part of a relation"""
     expected_response = {'8503006': (8.5443229, 47.411993),
                          '8580449': (8.5451866, 47.4112813),
@@ -51,11 +57,13 @@ def test_get_public_transport_stops_nodes_without_uic_ref():
                          '8591382': (8.5465421, 47.4098956)}
 
     oerlikon_sternen = (8.54679, 47.41025)
+
+    mock.mock_get_public_transport_stops_query(monkeypatch, oerlikon_sternen)
     stops = overpass_service.get_public_transport_stops(oerlikon_sternen)
     assert stops == expected_response
 
 
-def test_get_connection_coordinates():
+def test_get_connection_coordinates(monkeypatch):
     """
     To get from Zürich, Messe/Hallenstadion to Zürich, Sternen Oerlikon you have to take
     the bus with the number 94 that travels from Zentrum Glatt to Zürich, Bahnhof Oerlikon
@@ -70,6 +78,8 @@ def test_get_connection_coordinates():
     start_stop_uicref = '8591273'
     exit_stop_uicref = '8591382'
     bus_number = '94'
+
+    mock.mock_get_connection_coordinates_query(monkeypatch, current_location, exit_stop_uicref)
     start_position, exit_position = \
         overpass_service.get_connection_coordinates(current_location,
                                                     start_stop_uicref, exit_stop_uicref,
@@ -80,7 +90,7 @@ def test_get_connection_coordinates():
     assert (8.5467743, 47.4102250) == exit_position
 
 
-def test_get_connection_coordinates_other_direction():
+def test_get_connection_coordinates_other_direction(monkeypatch):
     """
     Same as test_get_connection_coordinates() but in the other
     direction of travel (from Zürich, Messe/Hallenstadion to Zürich, Hallenbad Oerlikon).
@@ -96,6 +106,8 @@ def test_get_connection_coordinates_other_direction():
     start_stop_uicref = '8591273'
     exit_stop_uicref = '8591175'
     bus_number = '94'
+
+    mock.mock_get_connection_coordinates_query(monkeypatch, current_location, exit_stop_uicref)
     start_position, exit_position = \
         overpass_service.get_connection_coordinates(current_location,
                                                     start_stop_uicref, exit_stop_uicref,
@@ -106,7 +118,7 @@ def test_get_connection_coordinates_other_direction():
     assert (8.5562254, 47.4107647) == exit_position
 
 
-def test_get_connection_coordinates_end_terminal():
+def test_get_connection_coordinates_end_terminal(monkeypatch):
     """
     Terminals have usually the nature that both direction of travel
     are served from the same stop.
@@ -120,6 +132,8 @@ def test_get_connection_coordinates_end_terminal():
     start_stop_uicref = '8591382'
     exit_stop_uicref = '8580449'
     bus_number = '94'
+
+    mock.mock_get_connection_coordinates_query(monkeypatch, current_location, exit_stop_uicref)
     start_position, exit_position = \
         overpass_service.get_connection_coordinates(current_location,
                                                     start_stop_uicref, exit_stop_uicref,
@@ -130,7 +144,7 @@ def test_get_connection_coordinates_end_terminal():
     assert (8.5447442, 47.4114541) == exit_position
 
 
-def test_get_connection_coordinates_start_terminal():
+def test_get_connection_coordinates_start_terminal(monkeypatch):
     """
     Same as test_get_connection_coordinates_end_terminal
     but with a terminal (Zürich, Bahnhof Oerlikon) as an start stop position.
@@ -144,6 +158,8 @@ def test_get_connection_coordinates_start_terminal():
     start_stop_uicref = '8580449'
     exit_stop_uicref = '8591382'
     bus_number = '94'
+
+    mock.mock_get_connection_coordinates_query(monkeypatch, current_location, exit_stop_uicref)
     start_position, exit_position = \
         overpass_service.get_connection_coordinates(current_location,
                                                     start_stop_uicref, exit_stop_uicref,
@@ -154,30 +170,32 @@ def test_get_connection_coordinates_start_terminal():
     assert (8.5468917, 47.4102351) == exit_position
 
 
-def test_get_connection_coordinates_fallback():
+def test_get_connection_coordinates_fallback(monkeypatch):
     """
-    Start and exit stop position for the line 161 to get from Zürich, Rote Fabrik to Zürich, Seerose.
+    Start and exit stop position for the line 161 to get from Rüschlikon, Bodengasse to Rüschlikon, Schlossstrasse.
 
     Both stops do not provide an uic_ref so the fallback method will be used
     to determine the start and exit public transport stop position.
     """
-    current_location = (8.53608, 47.34252)
+    current_location = (8.55283, 47.31044)
     fallback_start_position = (1, 1)
     fallback_exit_position = (1, 1)
-    start_stop_uicref = '8587347'
-    exit_stop_uicref = '8591357'
-    bus_number = '161'
+    start_stop_uicref = '8590773'
+    exit_stop_uicref = '8590783'
+    bus_number = '165'
+
+    mock.mock_get_connection_coordinates_query(monkeypatch, current_location, exit_stop_uicref)
     start_position, exit_position = \
         overpass_service.get_connection_coordinates(current_location,
                                                     start_stop_uicref, exit_stop_uicref,
                                                     bus_number,
                                                     fallback_start_position,
                                                     fallback_exit_position)
-    assert (8.5363033, 47.3424100) == start_position
-    assert (8.5383420, 47.3385681) == exit_position
+    assert (8.5531976, 47.3098602) == start_position
+    assert (8.5539173, 47.3138841) == exit_position
 
 
-def test_get_connection_coordinates_corrupt_relation():
+def test_get_connection_coordinates_corrupt_relation(monkeypatch):
     """
     Start and exit stop position for the line S6 to get from Zürich, Bahnhof Oerlikon to Zürich, Hardbrücke.
     The stop in Zürich, Bahnhof Oerlikon does not provide an uic_ref for the line S6.
@@ -195,6 +213,8 @@ def test_get_connection_coordinates_corrupt_relation():
     start_stop_uicref = '8503006'
     exit_stop_uicref = '8503020'
     train_number = 'S6'
+
+    mock.mock_get_connection_coordinates_query(monkeypatch, current_location, exit_stop_uicref)
     start_position, exit_position = \
         overpass_service.get_connection_coordinates(current_location,
                                                     start_stop_uicref, exit_stop_uicref,
@@ -205,7 +225,7 @@ def test_get_connection_coordinates_corrupt_relation():
     assert fallback_exit_position == exit_position
 
 
-def test_get_connection_coordinates_relation_without_uic_ref():
+def test_get_connection_coordinates_relation_without_uic_ref(monkeypatch):
     """
     Start node has an uic_ref, the exit node however does not hold one. The first retrieval method fill fail
     because of this. For the exit node it is not possible to retrieve relations based on the exit_uic_ref because there
@@ -218,6 +238,8 @@ def test_get_connection_coordinates_relation_without_uic_ref():
     start_stop_uicref = '8576139'
     exit_stop_uicref = '8576127'
     bus_number = '720'
+
+    mock.mock_get_connection_coordinates_query(monkeypatch, current_location, exit_stop_uicref)
     start_position, exit_position = \
         overpass_service.get_connection_coordinates(current_location,
                                                     start_stop_uicref, exit_stop_uicref,
@@ -228,7 +250,7 @@ def test_get_connection_coordinates_relation_without_uic_ref():
     assert fallback_exit_position == exit_position
 
 
-def test_get_connection_coordinates_empty_result():
+def test_get_connection_coordinates_empty_result(monkeypatch):
     """ an empty result set is returned by the Overpass queries based on provided parameters """
     current_location = (8.53531, 47.36343)
     fallback_start_position = (1, 1)
@@ -236,6 +258,8 @@ def test_get_connection_coordinates_empty_result():
     start_stop_uicref = '8591317'
     exit_stop_uicref = '8591058'
     tram_number = '23'
+
+    mock.mock_get_connection_coordinates_query(monkeypatch, current_location, exit_stop_uicref)
     start_position, exit_position = \
         overpass_service.get_connection_coordinates(current_location,
                                                     start_stop_uicref, exit_stop_uicref,
@@ -246,7 +270,7 @@ def test_get_connection_coordinates_empty_result():
     assert fallback_exit_position == exit_position
 
 
-def test_get_connection_coordinates_multiple_relations_for_line():
+def test_get_connection_coordinates_multiple_relations_for_line(monkeypatch):
     """
     Tram 5 has multiple lines with different terminals that serve the stop Zürich, Rentenanstalt
     to Zürich, Bahnhof Enge. All lines are a possible option and all start from the same stop.
@@ -257,6 +281,8 @@ def test_get_connection_coordinates_multiple_relations_for_line():
     start_stop_uicref = '8591317'
     exit_stop_uicref = '8591058'
     tram_number = '5'
+
+    mock.mock_get_connection_coordinates_query(monkeypatch, current_location, exit_stop_uicref)
     start_position, exit_position = \
         overpass_service.get_connection_coordinates(current_location,
                                                     start_stop_uicref, exit_stop_uicref,
@@ -267,7 +293,7 @@ def test_get_connection_coordinates_multiple_relations_for_line():
     assert (8.5314535, 47.3640971) == exit_position
 
 
-def test_get_connection_coordinates_multiple_relations_for_line_one_option():
+def test_get_connection_coordinates_multiple_relations_for_line_one_option(monkeypatch):
     """
     Tram 5 has multiple lines with different terminals that serve the stop Zürich, Rentenanstalt
     to Zürich, Bahnhof Enge. But to get from Zürich, Rentenanstalt to Bahnhof Enge/Bederstrasse
@@ -279,6 +305,8 @@ def test_get_connection_coordinates_multiple_relations_for_line_one_option():
     start_stop_uicref = '8591317'
     exit_stop_uicref = '8591059'
     tram_number = '5'
+
+    mock.mock_get_connection_coordinates_query(monkeypatch, current_location, exit_stop_uicref)
     start_position, exit_position = \
         overpass_service.get_connection_coordinates(current_location,
                                                     start_stop_uicref, exit_stop_uicref,
@@ -287,6 +315,80 @@ def test_get_connection_coordinates_multiple_relations_for_line_one_option():
                                                     fallback_exit_position)
     assert (8.5345459, 47.3634506) == start_position
     assert (8.5302541, 47.3645340) == exit_position
+
+
+def test_get_connection_coordinates_one_line_both_directions(monkeypatch):
+    """
+    Tests a line that has only one mapped relation for both directions of travel.
+    Volketswil, Zimikon to Volketswil, In der Höh
+    Returns the fallback coordinates, because the first try fails because just one relation exists
+    and the second try fails because the public transport stops doesn't belong to a relation with the same uic_ref.
+    """
+    current_location = (8.67316, 47.38566)
+    fallback_start_position = (1, 1)
+    fallback_exit_position = (1, 1)
+    start_stop_uicref = '8589106'
+    exit_stop_uicref = '8576139'
+    bus_number = '725'
+
+    mock.mock_get_connection_coordinates_query(monkeypatch, current_location, exit_stop_uicref)
+    start_position, exit_position = \
+        overpass_service.get_connection_coordinates(current_location,
+                                                    start_stop_uicref, exit_stop_uicref,
+                                                    bus_number,
+                                                    fallback_start_position,
+                                                    fallback_exit_position)
+    assert fallback_start_position == start_position
+    assert fallback_exit_position == exit_position
+
+
+def test_get_connection_coordinates_one_line_both_directions_other_direction(monkeypatch):
+    """
+    Tests a line that has only one mapped relation for both directions of travel.
+    Volketswil, In der Höh to Volketswil, Zimikon
+    Returns the fallback coordinates, because the first try fails because just one relation exists
+    and the second try fails because the public transport stops doesn't belong to a relation with the same uic_ref.
+    """
+    current_location = (8.66828, 47.38491)
+    fallback_start_position = (1, 1)
+    fallback_exit_position = (1, 1)
+    start_stop_uicref = '8576139'
+    exit_stop_uicref = '8589106'
+    bus_number = '725'
+
+    mock.mock_get_connection_coordinates_query(monkeypatch, current_location, exit_stop_uicref)
+    start_position, exit_position = \
+        overpass_service.get_connection_coordinates(current_location,
+                                                    start_stop_uicref, exit_stop_uicref,
+                                                    bus_number,
+                                                    fallback_start_position,
+                                                    fallback_exit_position)
+    assert fallback_start_position == start_position
+    assert fallback_exit_position == exit_position
+
+
+def test_get_connection_coordinates_one_line_both_directions_no_exit_uic_ref(monkeypatch):
+    """
+    Tests a line that has only one mapped relation for both directions of travel.
+    Volketswil, Zimikon to Schwerzenbach ZH, Bahnhof
+    Returns the fallback coordinates because the exit stop position doesn't have an uic_ref.
+    """
+    current_location = (8.67316, 47.38566)
+    fallback_start_position = (1, 1)
+    fallback_exit_position = (1, 1)
+    start_stop_uicref = '8589106'
+    exit_stop_uicref = '8576127'
+    bus_number = '725'
+
+    mock.mock_get_connection_coordinates_query(monkeypatch, current_location, exit_stop_uicref)
+    start_position, exit_position = \
+        overpass_service.get_connection_coordinates(current_location,
+                                                    start_stop_uicref, exit_stop_uicref,
+                                                    bus_number,
+                                                    fallback_start_position,
+                                                    fallback_exit_position)
+    assert fallback_start_position == start_position
+    assert fallback_exit_position == exit_position
 
 
 def test_get_public_transport_stops_unavailable_service(monkeypatch):
@@ -335,74 +437,6 @@ def test_get_connection_coordinates_breaking_changes(monkeypatch):
     start_stop_uicref = '8591273'
     exit_stop_uicref = '8591382'
     bus_number = '94'
-    start_position, exit_position = \
-        overpass_service.get_connection_coordinates(current_location,
-                                                    start_stop_uicref, exit_stop_uicref,
-                                                    bus_number,
-                                                    fallback_start_position,
-                                                    fallback_exit_position)
-    assert fallback_start_position == start_position
-    assert fallback_exit_position == exit_position
-
-
-def test_get_connection_coordinates_one_line_both_directions():
-    """
-    Tests a line that has only one mapped relation for both directions of travel.
-    Volketswil, Zimikon to Volketswil, In der Höh
-    Returns the fallback coordinates, because the first try fails because just one relation exists
-    and the second try fails because the public transport stops doesn't belong to a relation with the same uic_ref.
-    """
-    current_location = (8.67316, 47.38566)
-    fallback_start_position = (1, 1)
-    fallback_exit_position = (1, 1)
-    start_stop_uicref = '8589106'
-    exit_stop_uicref = '8576139'
-    bus_number = '725'
-    start_position, exit_position = \
-        overpass_service.get_connection_coordinates(current_location,
-                                                    start_stop_uicref, exit_stop_uicref,
-                                                    bus_number,
-                                                    fallback_start_position,
-                                                    fallback_exit_position)
-    assert fallback_start_position == start_position
-    assert fallback_exit_position == exit_position
-
-
-def test_get_connection_coordinates_one_line_both_directions_other_direction():
-    """
-    Tests a line that has only one mapped relation for both directions of travel.
-    Volketswil, In der Höh to Volketswil, Zimikon
-    Returns the fallback coordinates, because the first try fails because just one relation exists
-    and the second try fails because the public transport stops doesn't belong to a relation with the same uic_ref.
-    """
-    current_location = (8.66828, 47.38491)
-    fallback_start_position = (1, 1)
-    fallback_exit_position = (1, 1)
-    start_stop_uicref = '8576139'
-    exit_stop_uicref = '8589106'
-    bus_number = '725'
-    start_position, exit_position = \
-        overpass_service.get_connection_coordinates(current_location,
-                                                    start_stop_uicref, exit_stop_uicref,
-                                                    bus_number,
-                                                    fallback_start_position,
-                                                    fallback_exit_position)
-    assert fallback_start_position == start_position
-    assert fallback_exit_position == exit_position
-
-
-def test_get_connection_coordinates_one_line_both_directions_no_exit_uic_ref():
-    """
-    Tests a line that has only one mapped relation for both directions of travel.
-    Volketswil, Zimikon to Schwerzenbach ZH, Bahnhof
-    Returns the fallback coordinates because the exit stop position doesn't have an uic_ref.
-    """
-    current_location = (8.67316, 47.38566)
-    fallback_start_position = (1, 1)
-    fallback_exit_position = (1, 1)
-    start_stop_uicref = '8589106'
-    exit_stop_uicref = '8576127'
-    bus_number = '725'
     start_position, exit_position = \
         overpass_service.get_connection_coordinates(current_location,
                                                     start_stop_uicref, exit_stop_uicref,

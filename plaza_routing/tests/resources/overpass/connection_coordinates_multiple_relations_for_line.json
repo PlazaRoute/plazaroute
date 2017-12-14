@@ -1,0 +1,1476 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API",
+  "osm3s": {
+    "timestamp_osm_base": "40835",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "elements": [
+
+{
+  "type": "relation",
+  "id": 9032,
+  "members": [
+    {
+      "type": "node",
+      "ref": 309492432,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 496934562,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 4885807587,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 496934561,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 4885807576,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 496934559,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2281803452,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 218973803,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2281784331,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 501215213,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2281784334,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 2281278390,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 218926436,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2281278316,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 218926434,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2281314292,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 218931368,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2295061883,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 503589440,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2295223402,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 160044282,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2298045151,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 220712952,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2308599396,
+      "role": "stop_exit_only"
+    },
+    {
+      "type": "node",
+      "ref": 2308599361,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 221874279,
+      "role": "platform"
+    },
+    {
+      "type": "way",
+      "ref": 208821533,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 218971865,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 218926424,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 218926425,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 218931372,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 220382695,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 220382698,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 220382699,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 220382697,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 297869681,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 220396260,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 220427531,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 220427534,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 220427532,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 220712950,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 221874277,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 221874272,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 221874278,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 221874281,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 496934556,
+      "role": ""
+    }
+  ],
+  "tags": {
+    "colour": "#70492C",
+    "from": "Zoo",
+    "name": "Tram 5: Zoo —> Bahnhof Enge",
+    "network": "ZVV",
+    "note": "nur Sonntags 11:30-18:30",
+    "operator": "VBZ",
+    "public_transport:version": "2",
+    "ref": "5",
+    "route": "tram",
+    "to": "Bahnhof Enge",
+    "type": "route",
+    "wheelchair": "no"
+  }
+},
+{
+  "type": "relation",
+  "id": 2807014,
+  "members": [
+    {
+      "type": "node",
+      "ref": 2308599361,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 221874279,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2298045162,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 220712953,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 321340262,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 160044281,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 27462593,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 503589437,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2281314317,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 218931364,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2281278312,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 218926435,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2281278404,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 218926437,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 4922411081,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 2281784337,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 497896469,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2281803475,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 218973804,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 4885807571,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 496934558,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 4885807586,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 496934560,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 309492432,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 496934562,
+      "role": "platform"
+    },
+    {
+      "type": "way",
+      "ref": 221874274,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 220427533,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 220427536,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 220427539,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 27576469,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 4257845,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 297869680,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 24377559,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 218931354,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 218926428,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 218926429,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 12619838,
+      "role": ""
+    }
+  ],
+  "tags": {
+    "colour": "#70492C",
+    "from": "Bahnhof Enge",
+    "name": "Tram 5: Bahnhof Enge —> Zoo",
+    "network": "ZVV",
+    "note": "nur Sonntags 11:30-18:30",
+    "operator": "VBZ",
+    "public_transport:version": "2",
+    "ref": "5",
+    "route": "tram",
+    "to": "Zoo",
+    "type": "route",
+    "wheelchair": "no"
+  }
+},
+{
+  "type": "relation",
+  "id": 2807015,
+  "members": [
+    {
+      "type": "node",
+      "ref": 2281784331,
+      "role": "stop_entry_only"
+    },
+    {
+      "type": "way",
+      "ref": 501215213,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2281784334,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 2281278390,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 218926436,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2281278316,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 218926434,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2281314292,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 218931368,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2295061883,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 503589440,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2295223402,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 160044282,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2298045151,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 220712952,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2308599405,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 221874279,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 4885628624,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 524415673,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2456957772,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 169817979,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 4885628632,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 237832438,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 4885628638,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 496914396,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 4885628641,
+      "role": "stop_exit_only"
+    },
+    {
+      "type": "way",
+      "ref": 496914399,
+      "role": "platform"
+    },
+    {
+      "type": "way",
+      "ref": 218971866,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 218971865,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 218926424,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 218926425,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 218931372,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 220382695,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 220382698,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 220382699,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 220382697,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 297869681,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 220396260,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 220427531,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 220427534,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 220427532,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 220712950,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 221874275,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 372982390,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 221874269,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 374433857,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 220726218,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 220726219,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 220728359,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 237832434,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 237832442,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 237832436,
+      "role": ""
+    }
+  ],
+  "tags": {
+    "colour": "#70492C",
+    "from": "Kirche Fluntern",
+    "name": "Tram 5: Kirche Fluntern —> Laubegg",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport:version": "2",
+    "ref": "5",
+    "route": "tram",
+    "to": "Laubegg",
+    "type": "route",
+    "wheelchair": "no"
+  }
+},
+{
+  "type": "relation",
+  "id": 2807016,
+  "members": [
+    {
+      "type": "node",
+      "ref": 2456957657,
+      "role": "stop_entry_only"
+    },
+    {
+      "type": "way",
+      "ref": 237837287,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2456957631,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 496914397,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2456957719,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 237832440,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 4885628628,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 169817978,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 4885628625,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 524415672,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2308599361,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 221874279,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2298045162,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 220712953,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 321340262,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 160044281,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 27462593,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 503589437,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2281314317,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 218931364,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2281278312,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 218926435,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2281278404,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 218926437,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 4922411081,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 115170281,
+      "role": "stop_exit_only"
+    },
+    {
+      "type": "way",
+      "ref": 501215209,
+      "role": "platform_exit_only"
+    },
+    {
+      "type": "way",
+      "ref": 496914398,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 23920650,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 237832437,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 237837288,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 237832441,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 237832435,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 237832439,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 220728360,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 220726216,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 220727184,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 221874273,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 220712951,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 496934556,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 221874274,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 220427533,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 220427536,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 220427539,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 27576469,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 4257845,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 297869680,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 24377559,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 218931354,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 218926428,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 218926429,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 12620174,
+      "role": ""
+    }
+  ],
+  "tags": {
+    "colour": "#70492C",
+    "from": "Laubegg",
+    "name": "Tram 5: Laubegg —> Kirche Fluntern",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport:version": "2",
+    "ref": "5",
+    "route": "tram",
+    "to": "Kirche Fluntern",
+    "type": "route",
+    "wheelchair": "no"
+  }
+},
+{
+  "type": "relation",
+  "id": 7295534,
+  "members": [
+    {
+      "type": "node",
+      "ref": 2281784331,
+      "role": "stop_entry_only"
+    },
+    {
+      "type": "way",
+      "ref": 501215213,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2281784334,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 2281278390,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 218926436,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2281278316,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 218926434,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2281314292,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 218931368,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2295061883,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 503589440,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2295223402,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 160044282,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2298045151,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 220712952,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2308599396,
+      "role": "stop_exit_only"
+    },
+    {
+      "type": "node",
+      "ref": 2308599361,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 221874279,
+      "role": "platform"
+    },
+    {
+      "type": "way",
+      "ref": 218971866,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 218971865,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 218926424,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 218926425,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 218931372,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 220382695,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 220382698,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 220382699,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 220382697,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 297869681,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 220396260,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 220427531,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 220427534,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 220427532,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 220712950,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 221874277,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 221874272,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 221874278,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 221874281,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 496934556,
+      "role": ""
+    }
+  ],
+  "tags": {
+    "colour": "#70492C",
+    "from": "Kirche Fluntern",
+    "name": "Tram 5: Kirche Fluntern —> Bahnhof Enge",
+    "network": "ZVV",
+    "note": "Spätdienst ab 20:30 Uhr und Sonntags vor 11:30 und nach 18:30",
+    "operator": "VBZ",
+    "public_transport:version": "2",
+    "ref": "5",
+    "route": "tram",
+    "to": "Bahnhof Enge",
+    "type": "route",
+    "wheelchair": "no"
+  }
+},
+{
+  "type": "relation",
+  "id": 7295535,
+  "members": [
+    {
+      "type": "node",
+      "ref": 2308599361,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 221874279,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2298045162,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 220712953,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 321340262,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 160044281,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 27462593,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 503589437,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2281314317,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 218931364,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2281278312,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 218926435,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2281278404,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 218926437,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 4922411081,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 115170281,
+      "role": "stop_exit_only"
+    },
+    {
+      "type": "way",
+      "ref": 501215209,
+      "role": "platform_exit_only"
+    },
+    {
+      "type": "way",
+      "ref": 221874274,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 220427533,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 220427536,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 220427539,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 27576469,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 4257845,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 297869680,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 24377559,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 218931354,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 218926428,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 218926429,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 12620174,
+      "role": ""
+    }
+  ],
+  "tags": {
+    "colour": "#70492C",
+    "from": "Bahnhof Enge",
+    "name": "Tram 5: Bahnhof Enge —> Kirche Fluntern",
+    "network": "ZVV",
+    "note": "Spätdienst ab 20:30 Uhr und Sonntags vor 11:30 und nach 18:30",
+    "operator": "VBZ",
+    "public_transport:version": "2",
+    "ref": "5",
+    "route": "tram",
+    "to": "Kirche Fluntern",
+    "type": "route",
+    "wheelchair": "no"
+  }
+},
+{
+  "type": "node",
+  "id": 2298045151,
+  "lat": 47.3634506,
+  "lon": 8.5345459,
+  "tags": {
+    "ele": "408",
+    "name": "Rentenanstalt",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport": "stop_position",
+    "railway": "tram_stop",
+    "ref": "2055",
+    "tram": "yes",
+    "uic_name": "Zürich, Rentenanstalt",
+    "uic_ref": "8591317"
+  }
+},
+{
+  "type": "node",
+  "id": 2298045162,
+  "lat": 47.3634877,
+  "lon": 8.5349014,
+  "tags": {
+    "ele": "408",
+    "name": "Rentenanstalt",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport": "stop_position",
+    "railway": "tram_stop",
+    "ref": "2055",
+    "tram": "yes",
+    "uic_name": "Zürich, Rentenanstalt",
+    "uic_ref": "8591317"
+  }
+},
+{
+  "type": "node",
+  "id": 2308599361,
+  "lat": 47.3640971,
+  "lon": 8.5314535,
+  "tags": {
+    "ele": "409",
+    "name": "Bahnhof Enge",
+    "nat_name": "Zürich, Bahnhof Enge",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport": "stop_position",
+    "railway": "tram_stop",
+    "ref": "3026",
+    "ref_name": "Zürich, Bahnhof Enge",
+    "tram": "yes",
+    "uic_name": "Zürich Enge, Bahnhof",
+    "uic_ref": "8591058"
+  }
+},
+{
+  "type": "node",
+  "id": 2308599405,
+  "lat": 47.3643805,
+  "lon": 8.5314319,
+  "tags": {
+    "ele": "409",
+    "name": "Bahnhof Enge",
+    "nat_name": "Zürich, Bahnhof Enge",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport": "stop_position",
+    "railway": "tram_stop",
+    "ref": "3026",
+    "ref_name": "Zürich, Bahnhof Enge",
+    "tram": "yes",
+    "uic_name": "Zürich Enge, Bahnhof",
+    "uic_ref": "8591058"
+  }
+}
+
+  ]
+}

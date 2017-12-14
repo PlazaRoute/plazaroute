@@ -1,0 +1,975 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API",
+  "osm3s": {
+    "timestamp_osm_base": "40834",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "elements": [
+
+{
+  "type": "relation",
+  "id": 73130,
+  "members": [
+    {
+      "type": "node",
+      "ref": 1544073985,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 324231424,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 596247112,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 156553421,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 1687847102,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 156553424,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 984784486,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 156553426,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 1687817131,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 156547147,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 596247108,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 156546196,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 5251832764,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 156546199,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 1687801569,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 156546201,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 372733869,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 156541863,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 1688112473,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 156581649,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 984784866,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 155986889,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 984784767,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 156581650,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 1688112475,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 156581654,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 1688112474,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 156581653,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 1651310816,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 156582031,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 984785042,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 156589594,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 334111477,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 156589586,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 324231423,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 156589578,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 984785104,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 156589591,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 892480327,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 156430566,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 892480316,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 156430563,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 892480294,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 156430569,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 984785091,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 156433966,
+      "role": "platform"
+    },
+    {
+      "type": "way",
+      "ref": 141054357,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 10419417,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 30748799,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 148349696,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 41459881,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 60447878,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 4399120,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 4398888,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 188708009,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 188708010,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 536882532,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 188708011,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 172222117,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 4727535,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 172213042,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 172213041,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 239547641,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 239253621,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 509202091,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 536885842,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 4727549,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 543499809,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 543499805,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 474765605,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 156263883,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 5074554,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 4727551,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 156041090,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 156027329,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 319031127,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 319031126,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 374554054,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 374554053,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 106485485,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 38689941,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 30301945,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 32027619,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 32027620,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 34309244,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 5053154,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 512912038,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 31050229,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 5053156,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 5053157,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 156593349,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 374397360,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 5053155,
+      "role": ""
+    }
+  ],
+  "tags": {
+    "from": "Zürich, Bürkliplatz",
+    "name": "Bus 165: Zürich, Bürkliplatz => Rüschlikon, Park im Grüene",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "ref": "165",
+    "route": "bus",
+    "to": "Rüschlikon, Park im Grüene",
+    "type": "route"
+  }
+},
+{
+  "type": "relation",
+  "id": 1908136,
+  "members": [
+    {
+      "type": "node",
+      "ref": 984785091,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 156433966,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 892480294,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 156430568,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 892480316,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 156430564,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 892480327,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 156430565,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 984785104,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 156589587,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 324231423,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 156589580,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 334111477,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 156589581,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 984785042,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 156589597,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 1651310816,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 156582030,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 1651310817,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 156581652,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 984785044,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 156581655,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 984784767,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 156581651,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 984784866,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 155986890,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 984784785,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 156581648,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 372733871,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 156541866,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 984784460,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 156546202,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 1687801557,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 156546200,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 984784242,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 156546198,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 984784639,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 156547149,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 1687847106,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 156553425,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 984784712,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 156553423,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 596247112,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 156553422,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 1544073985,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 324231424,
+      "role": "platform"
+    },
+    {
+      "type": "way",
+      "ref": 374554762,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 5053151,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 156593349,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 5053157,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 5053156,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 31050229,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 5053154,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 512912038,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 374397364,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 34309244,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 32027620,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 32027619,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 30301945,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 38689941,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 106485485,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 374554053,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 374554054,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 319031126,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 319031127,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 156027329,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 156041090,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 4727551,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 5074554,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 156263883,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 474765605,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 543499802,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 543499813,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 4727549,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 536885842,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 509202091,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 239253621,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 239547641,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 172213041,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 172213042,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 4727535,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 172222117,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 188708011,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 188708010,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 188708009,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 4398888,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 4399120,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 60447878,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 23385186,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 27361456,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 374529154,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 141046735,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 536882532,
+      "role": ""
+    }
+  ],
+  "tags": {
+    "from": "Rüschlikon, Park im Grüene",
+    "name": "Bus 165: Rüschlikon, Park im Grüene => Zürich, Bürkliplatz",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport:version": "2",
+    "ref": "165",
+    "route": "bus",
+    "to": "Zürich, Bürkliplatz",
+    "type": "route"
+  }
+}
+
+  ]
+}
