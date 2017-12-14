@@ -1,0 +1,957 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API",
+  "osm3s": {
+    "timestamp_osm_base": "40829",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "elements": [
+
+{
+  "type": "node",
+  "id": 27513203,
+  "lat": 47.4073416,
+  "lon": 8.5494478,
+  "tags": {
+    "bus": "yes",
+    "ele": "441",
+    "highway": "bus_stop",
+    "name": "Dorflinde",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport": "stop_position",
+    "ref": "694",
+    "uic_name": "Zürich, Dorflinde",
+    "uic_ref": "8591112"
+  }
+},
+{
+  "type": "node",
+  "id": 309675859,
+  "lat": 47.4134666,
+  "lon": 8.5462894,
+  "tags": {
+    "bus": "yes",
+    "ele": "438",
+    "highway": "bus_stop",
+    "name": "Bahnhof Oerlikon Ost",
+    "nat_name": "Zürich, Bahnhof Oerlikon Ost",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport": "stop_position",
+    "ref": "3447",
+    "ref_name": "Zürich, Bahnhof Oerlikon Ost",
+    "uic_name": "Zürich Oerlikon, Bahnhof Ost",
+    "uic_ref": "8591063"
+  }
+},
+{
+  "type": "node",
+  "id": 385182104,
+  "lat": 47.4116307,
+  "lon": 8.5455889,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Bahnhof Oerlikon",
+    "nat_name": "Zürich, Bahnhof Oerlikon",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport": "stop_position",
+    "ref": "3034",
+    "ref_name": "Zürich, Bahnhof Oerlikon",
+    "uic_name": "Zürich Oerlikon, Bahnhof",
+    "uic_ref": "8580449"
+  }
+},
+{
+  "type": "node",
+  "id": 385184514,
+  "lat": 47.4134453,
+  "lon": 8.5458310,
+  "tags": {
+    "bus": "yes",
+    "ele": "438",
+    "highway": "bus_stop",
+    "name": "Bahnhof Oerlikon Ost",
+    "nat_name": "Zürich, Bahnhof Oerlikon Ost",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport": "stop_position",
+    "ref": "3447",
+    "ref_name": "Zürich, Bahnhof Oerlikon Ost",
+    "uic_name": "Zürich Oerlikon, Bahnhof Ost",
+    "uic_ref": "8591063"
+  }
+},
+{
+  "type": "node",
+  "id": 538163640,
+  "lat": 47.4118581,
+  "lon": 8.5455249,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Bahnhof Oerlikon",
+    "nat_name": "Zürich, Bahnhof Oerlikon",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport": "stop_position",
+    "ref": "3034",
+    "ref_name": "Zürich, Bahnhof Oerlikon",
+    "uic_name": "Zürich Oerlikon, Bahnhof",
+    "uic_ref": "8580449"
+  }
+},
+{
+  "type": "node",
+  "id": 942821381,
+  "lat": 47.4074469,
+  "lon": 8.5489371,
+  "tags": {
+    "bus": "yes",
+    "ele": "441",
+    "highway": "bus_stop",
+    "name": "Dorflinde",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport": "stop_position",
+    "ref": "694",
+    "uic_name": "Zürich, Dorflinde",
+    "uic_ref": "8591112"
+  }
+},
+{
+  "type": "node",
+  "id": 1750252344,
+  "lat": 47.4107046,
+  "lon": 8.5459087,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Bahnhof Oerlikon",
+    "nat_name": "Zürich, Bahnhof Oerlikon",
+    "network": "ZVV",
+    "note": "Ersatzhaltestelle Bahnhof Oerlikon bei Teilsperrung der Ohmstrasse ab Hausnummer 22",
+    "operator": "VBZ",
+    "public_transport": "stop_position",
+    "ref": "3034",
+    "ref_name": "Zürich, Bahnhof Oerlikon",
+    "uic_name": "Zürich Oerlikon, Bahnhof",
+    "uic_ref": "8580449"
+  }
+},
+{
+  "type": "node",
+  "id": 1750302314,
+  "lat": 47.4095358,
+  "lon": 8.5463196,
+  "tags": {
+    "bus": "yes",
+    "ele": "443",
+    "highway": "bus_stop",
+    "name": "Sternen Oerlikon",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport": "stop_position",
+    "ref": "2572",
+    "uic_name": "Zürich, Sternen Oerlikon",
+    "uic_ref": "8591382",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 1750302317,
+  "lat": 47.4102121,
+  "lon": 8.5460669,
+  "tags": {
+    "bus": "yes",
+    "ele": "443",
+    "highway": "bus_stop",
+    "name": "Sternen Oerlikon",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport": "stop_position",
+    "ref": "2572",
+    "uic_name": "Zürich, Sternen Oerlikon",
+    "uic_ref": "8591382",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 2184891278,
+  "lat": 47.4114718,
+  "lon": 8.5447944,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Bahnhof Oerlikon",
+    "nat_name": "Zürich, Bahnhof Oerlikon",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport": "stop_position",
+    "ref": "3034",
+    "ref_name": "Zürich, Bahnhof Oerlikon",
+    "uic_name": "Zürich Oerlikon, Bahnhof",
+    "uic_ref": "8580449"
+  }
+},
+{
+  "type": "node",
+  "id": 3115234152,
+  "lat": 47.4114541,
+  "lon": 8.5447442,
+  "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Bahnhof Oerlikon",
+    "nat_name": "Zürich, Bahnhof Oerlikon",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport": "stop_position",
+    "ref": "3034",
+    "ref_name": "Zürich, Bahnhof Oerlikon",
+    "uic_name": "Zürich Oerlikon, Bahnhof",
+    "uic_ref": "8580449"
+  }
+},
+{
+  "type": "node",
+  "id": 3909350503,
+  "lat": 47.4102351,
+  "lon": 8.5468917,
+  "tags": {
+    "bus": "yes",
+    "ele": "443",
+    "highway": "bus_stop",
+    "name": "Sternen Oerlikon",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport": "stop_position",
+    "ref": "2572",
+    "uic_name": "Zürich, Sternen Oerlikon",
+    "uic_ref": "8591382"
+  }
+},
+{
+  "type": "node",
+  "id": 3909350504,
+  "lat": 47.4102250,
+  "lon": 8.5467743,
+  "tags": {
+    "bus": "yes",
+    "ele": "443",
+    "highway": "bus_stop",
+    "name": "Sternen Oerlikon",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport": "stop_position",
+    "ref": "2572",
+    "uic_name": "Zürich, Sternen Oerlikon",
+    "uic_ref": "8591382"
+  }
+},
+{
+  "type": "relation",
+  "id": 1461481,
+  "center": {
+    "lat": 47.4119930,
+    "lon": 8.5443229
+  },
+  "members": [
+    {
+      "type": "node",
+      "ref": 1189482494,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 102858493,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 102858478,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 102858480,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 102858479,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 102858473,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 102858476,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 102858495,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 87967138,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 1189447333,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1189447364,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 92297763,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1189447379,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 87967166,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 1189447358,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1189447375,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 2655864339,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 2655864340,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 233263264,
+      "role": "platform"
+    },
+    {
+      "type": "way",
+      "ref": 303827988,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 87967158,
+      "role": "platform"
+    }
+  ],
+  "tags": {
+    "ele": "442",
+    "name": "Zürich Oerlikon",
+    "operator": "SBB",
+    "public_transport": "stop_area",
+    "train": "yes",
+    "type": "public_transport",
+    "uic_name": "Zürich Oerlikon",
+    "uic_ref": "8503006",
+    "wikidata": "Q194887",
+    "wikipedia": "de:Bahnhof Zürich Oerlikon"
+  }
+},
+{
+  "type": "relation",
+  "id": 1635228,
+  "center": {
+    "lat": 47.4122603,
+    "lon": 8.5436738
+  },
+  "members": [
+    {
+      "type": "node",
+      "ref": 1742718572,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 4512555327,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1742718548,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 4512555326,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 467465685,
+      "role": ""
+    }
+  ],
+  "tags": {
+    "ele": "442",
+    "name": "Bahnhof Oerlikon Nord",
+    "nat_name": "Zürich, Bahnhof Oerlikon Nord",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport": "stop_area",
+    "ref": "6255",
+    "ref_name": "Zürich, Bahnhof Oerlikon Nord",
+    "type": "public_transport",
+    "uic_name": "Zürich Oerlikon, Bahnhof Nord",
+    "uic_ref": "8591062"
+  }
+},
+{
+  "type": "relation",
+  "id": 7345955,
+  "center": {
+    "lat": 47.4134202,
+    "lon": 8.5460144
+  },
+  "members": [
+    {
+      "type": "node",
+      "ref": 2282310552,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 497887656,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2282310578,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 219027982,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 385184514,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 4881603353,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 502124716,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 4881603354,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 219027980,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 309675859,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 494719542,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 494719544,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 494719546,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 239912292,
+      "role": ""
+    },
+    {
+      "type": "node",
+      "ref": 4927009112,
+      "role": ""
+    },
+    {
+      "type": "node",
+      "ref": 4927009076,
+      "role": ""
+    }
+  ],
+  "tags": {
+    "ele": "438",
+    "name": "Bahnhof Oerlikon Ost",
+    "nat_name": "Zürich, Bahnhof Oerlikon Ost",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport": "stop_area",
+    "ref": "3447",
+    "ref_name": "Zürich, Bahnhof Oerlikon Ost",
+    "type": "public_transport",
+    "uic_name": "Zürich Oerlikon, Bahnhof Ost",
+    "uic_ref": "8591063"
+  }
+},
+{
+  "type": "relation",
+  "id": 7568057,
+  "center": {
+    "lat": 47.4109665,
+    "lon": 8.5514849
+  },
+  "members": [
+    {
+      "type": "node",
+      "ref": 2282214863,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 184514901,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 316660598,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 184514902,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 316660703,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 92550907,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 701735028,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 4430011070,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5098324288,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 524686548,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 524686549,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 523771818,
+      "role": ""
+    }
+  ],
+  "tags": {
+    "ele": "431",
+    "name": "Messe/Hallenstadion",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport": "stop_area",
+    "ref": "3154",
+    "type": "public_transport",
+    "uic_name": "Zürich, Messe/Hallenstadion",
+    "uic_ref": "8591273"
+  }
+},
+{
+  "type": "relation",
+  "id": 7568058,
+  "center": {
+    "lat": 47.4112813,
+    "lon": 8.5451866
+  },
+  "members": [
+    {
+      "type": "node",
+      "ref": 4881603373,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 219014585,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2184891278,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 4881603356,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 428426350,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 3115234152,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 538163640,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 385182104,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1750252344,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 447987908,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 447987909,
+      "role": ""
+    }
+  ],
+  "tags": {
+    "name": "Bahnhof Oerlikon",
+    "nat_name": "Zürich, Bahnhof Oerlikon",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport": "stop_area",
+    "ref": "3034",
+    "ref_name": "Zürich, Bahnhof Oerlikon",
+    "type": "public_transport",
+    "uic_name": "Zürich Oerlikon, Bahnhof",
+    "uic_ref": "8580449"
+  }
+},
+{
+  "type": "relation",
+  "id": 7568059,
+  "center": {
+    "lat": 47.4098956,
+    "lon": 8.5465421
+  },
+  "members": [
+    {
+      "type": "node",
+      "ref": 2284103170,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 527800335,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2284103171,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 527800336,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2282214839,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 527800346,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2284103172,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 527800347,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 3909350504,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 3909350503,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1750302317,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 4893875313,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 1750302314,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 4893875314,
+      "role": "platform"
+    }
+  ],
+  "tags": {
+    "ele": "443",
+    "name": "Sternen Oerlikon",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport": "stop_area",
+    "ref": "2572",
+    "type": "public_transport",
+    "uic_name": "Zürich, Sternen Oerlikon",
+    "uic_ref": "8591382"
+  }
+},
+{
+  "type": "relation",
+  "id": 7605591,
+  "center": {
+    "lat": 47.4073923,
+    "lon": 8.5491924
+  },
+  "members": [
+    {
+      "type": "node",
+      "ref": 942821381,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 4893875316,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 27513203,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 4893875315,
+      "role": "platform"
+    },
+    {
+      "type": "way",
+      "ref": 523771775,
+      "role": ""
+    }
+  ],
+  "tags": {
+    "ele": "441",
+    "name": "Dorflinde",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport": "stop_area",
+    "ref": "694",
+    "type": "public_transport",
+    "uic_name": "Zürich, Dorflinde",
+    "uic_ref": "8591112"
+  }
+},
+{
+  "type": "relation",
+  "id": 7607773,
+  "center": {
+    "lat": 47.4062742,
+    "lon": 8.5483044
+  },
+  "members": [
+    {
+      "type": "node",
+      "ref": 2282178049,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 219012221,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 3363445556,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 527800332,
+      "role": "platform"
+    },
+    {
+      "type": "way",
+      "ref": 524686560,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 524686561,
+      "role": ""
+    }
+  ],
+  "tags": {
+    "ele": "453",
+    "name": "Salersteig",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport": "stop_area",
+    "ref": "2151",
+    "type": "public_transport",
+    "uic_name": "Zürich, Salersteig",
+    "uic_ref": "8591332"
+  }
+},
+{
+  "type": "relation",
+  "id": 7607778,
+  "center": {
+    "lat": 47.4145863,
+    "lon": 8.5513423
+  },
+  "members": [
+    {
+      "type": "node",
+      "ref": 4881603357,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 219027972,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 1587565392,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 496458240,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 309676199,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 5130512970,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 5130512971,
+      "role": "platform"
+    },
+    {
+      "type": "way",
+      "ref": 524686546,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 524686547,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 525490586,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 525490587,
+      "role": ""
+    }
+  ],
+  "tags": {
+    "name": "Leutschenbach",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport": "stop_area",
+    "ref": "1552",
+    "type": "public_transport",
+    "uic_name": "Zürich, Leutschenbach",
+    "uic_ref": "8591256"
+  }
+}
+
+  ]
+}

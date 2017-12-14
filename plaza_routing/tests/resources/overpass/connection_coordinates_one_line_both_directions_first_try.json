@@ -1,0 +1,518 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API",
+  "osm3s": {
+    "timestamp_osm_base": "40835",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "elements": [
+
+{
+  "type": "relation",
+  "id": 105097,
+  "members": [
+    {
+      "type": "node",
+      "ref": 696024967,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 269120295,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 269050387,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 269050386,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 269050391,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 329521192,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 329521201,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 329521206,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 329521217,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 329521225,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 197318306,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 2293312253,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 304692033,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 304691770,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 304691779,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 304692222,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 304692210,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 304692244,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 304692256,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 269050392,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 321606655,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 321735328,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 304692155,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 269050397,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 11552306,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 19854914,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 22664313,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 28413375,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 28541718,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 541407036,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 28541742,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 29400797,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 31685117,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 31724771,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 32589651,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 60106324,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 60106323,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 60106322,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 329296697,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 69534111,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 41459199,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 32593716,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 109232617,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 32593718,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 32593721,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 32593722,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 10272840,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 41586238,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 32589699,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 74855025,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 32589700,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 10298850,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 51259446,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 30967382,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 55410722,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 432690088,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 32589746,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 74479321,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 176722341,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 156188554,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 35108481,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 11131163,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 32594114,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 4847348,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 37937192,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 30967226,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 10997869,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 181246722,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 176722324,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 37937199,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 30967218,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 31293750,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 10997411,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 29219534,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 10699201,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 10699192,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 47422592,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 47422575,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 47423450,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 55920698,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 56680777,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 77768331,
+      "role": "forward"
+    },
+    {
+      "type": "way",
+      "ref": 32595275,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 108303853,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 397460747,
+      "role": ""
+    }
+  ],
+  "tags": {
+    "name": "Bus 725: Uster, Bahnhof - Schwerzenbach, Bahnhof",
+    "network": "ZVV",
+    "operator": "VBG",
+    "ref": "725",
+    "route": "bus",
+    "type": "route",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 304692210,
+  "lat": 47.3853802,
+  "lon": 8.6726220,
+  "tags": {
+    "bus": "yes",
+    "ele": "460",
+    "highway": "bus_stop",
+    "name": "Zimikon",
+    "operator": "VBG",
+    "public_transport": "platform",
+    "uic_name": "Volketswil, Zimikon",
+    "uic_ref": "8589106"
+  }
+},
+{
+  "type": "node",
+  "id": 304692222,
+  "lat": 47.3850302,
+  "lon": 8.6721840,
+  "tags": {
+    "bus": "yes",
+    "ele": "460",
+    "highway": "bus_stop",
+    "name": "Zimikon",
+    "operator": "VBG",
+    "public_transport": "platform",
+    "uic_name": "Volketswil, Zimikon",
+    "uic_ref": "8589106"
+  }
+},
+{
+  "type": "node",
+  "id": 304692244,
+  "lat": 47.3853810,
+  "lon": 8.6679560,
+  "tags": {
+    "bus": "yes",
+    "ele": "460",
+    "highway": "bus_stop",
+    "name": "In der Höh",
+    "nat_name": "Volketswil, In der Höh",
+    "operator": "VBG",
+    "public_transport": "platform",
+    "uic_name": "Volketswil, In der Höh",
+    "uic_ref": "8576139"
+  }
+},
+{
+  "type": "node",
+  "id": 304692256,
+  "lat": 47.3850780,
+  "lon": 8.6693169,
+  "tags": {
+    "bus": "yes",
+    "ele": "460",
+    "highway": "bus_stop",
+    "name": "In der Höh",
+    "nat_name": "Volketswil, In der Höh",
+    "operator": "VBG",
+    "public_transport": "platform",
+    "uic_name": "Volketswil, In der Höh",
+    "uic_ref": "8576139"
+  }
+}
+
+  ]
+}

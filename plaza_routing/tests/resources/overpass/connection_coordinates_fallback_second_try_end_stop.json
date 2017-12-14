@@ -1,0 +1,38 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API",
+  "osm3s": {
+    "timestamp_osm_base": "40834",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "elements": [
+
+{
+  "type": "node",
+  "id": 984785044,
+  "lat": 47.3138841,
+  "lon": 8.5539173,
+  "tags": {
+    "bus": "yes",
+    "ele": "422",
+    "highway": "bus_stop",
+    "name": "Rüschlikon, Schlossstrasse",
+    "public_transport": "stop_position"
+  }
+},
+{
+  "type": "node",
+  "id": 1688112475,
+  "lat": 47.3135710,
+  "lon": 8.5536837,
+  "tags": {
+    "bus": "yes",
+    "ele": "423",
+    "highway": "bus_stop",
+    "name": "Rüschlikon, Schlossstrasse",
+    "public_transport": "stop_position"
+  }
+}
+
+  ]
+}
