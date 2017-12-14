@@ -5,7 +5,7 @@ from plaza_routing import config
 from plaza_routing.integration.util.exception_util import ValidationError, ServiceError
 
 
-logger = logging.getLogger('plaza_routing.graphhopper_routing_strategy')
+logger = logging.getLogger('plaza_routing.geocoding_service')
 
 
 def geocode(address: str) -> tuple:
@@ -23,6 +23,7 @@ def geocode(address: str) -> tuple:
 
         return float(result[0]['lon']), float(result[0]['lat'])
     except ValidationError as exception:
+        logger.error(str(exception))
         raise exception
     except Exception as exception:
         msg = f'geocoding is not running correctly: {exception}'
