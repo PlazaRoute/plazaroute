@@ -13,11 +13,10 @@ def geocode(address: str) -> tuple:
                'countrycodes': 'ch',
                'viewbox': config.geocoding['viewbox'],
                'bounded': 1,
-               'limit': 1,  # TODO should we handle multiple coordinate options?
+               'limit': 1,
                'format': 'json'}
     try:
-        req = requests.get(config.geocoding['geocoding_api'], params=payload)
-        result = req.json()
+        result = _query(payload)
 
         if not result:
             raise ValidationError(f'no coordinates found for the given address {address}')
@@ -29,3 +28,8 @@ def geocode(address: str) -> tuple:
         msg = f'geocoding is not running correctly: {exception}'
         logger.error(msg)
         raise ServiceError(msg) from None
+
+
+def _query(payload: dict) -> dict:
+    req = requests.get(config.geocoding['geocoding_api'], params=payload)
+    return req.json()

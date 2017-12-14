@@ -1,6 +1,6 @@
 import pytest
 
-from tests.integration.util import mock_config as mock
+from tests.integration.util import mock_search_ch_service as mock
 
 from plaza_routing.integration import search_ch_service
 from plaza_routing.integration.util.exception_util import ValidationError, ServiceError
