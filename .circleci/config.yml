@@ -108,13 +108,6 @@ jobs:
 workflows:
   version: 2
   test_and_doc:
-    triggers:
-      - schedule:
-          cron: "30 13 * * *"
-          filters:
-            branches:
-              only:
-                - master
     jobs:
       - test
       - doc:
