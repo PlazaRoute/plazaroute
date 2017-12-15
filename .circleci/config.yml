@@ -32,16 +32,23 @@ jobs:
           paths:
             - ./venv
           key: plazaroute-deps-{{ checksum "plaza_routing/requirements.txt" }}{{ checksum "plaza_preprocessing/requirements.txt" }}{{ checksum "plaza_routing/requirements-dev.txt" }}{{ checksum "plaza_preprocessing/requirements-dev.txt" }}
-        
+
       # run tests!
       - run:
           name: run tests
           command: |
             . venv/bin/activate
+            mkdir -p test-reports/junit
             pip install --editable plaza_routing/
-            pytest plaza_routing
+            pytest plaza_routing --junitxml=test-reports/junit
             pip install --editable plaza_preprocessing/
-            pytest plaza_preprocessing
+            pytest plaza_preprocessing --junitxml=test-reports/junit
+
+      - store_test_results:
+          path: test-reports
+
+      - store_artifacts:
+          path: test-reports
 
   doc:
     docker:
