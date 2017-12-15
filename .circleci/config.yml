@@ -38,11 +38,11 @@ jobs:
           name: run tests
           command: |
             . venv/bin/activate
-            mkdir -p test-reports/junit
+            mkdir -p test-reports
             pip install --editable plaza_routing/
-            pytest plaza_routing --junitxml=test-reports/junit
+            pytest plaza_routing --junitxml=test-reports/plaza_routing.xml
             pip install --editable plaza_preprocessing/
-            pytest plaza_preprocessing --junitxml=test-reports/junit
+            pytest plaza_preprocessing --junitxml=test-reports/plaza_preprocessing.xml
 
       - store_test_results:
           path: test-reports
