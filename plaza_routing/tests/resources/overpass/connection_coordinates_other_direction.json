@@ -1,0 +1,660 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API",
+  "osm3s": {
+    "timestamp_osm_base": "40830",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "elements": [
+
+{
+  "type": "relation",
+  "id": 120705,
+  "members": [
+    {
+      "type": "node",
+      "ref": 3115234152,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 428426350,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 3909350503,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 4430011070,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1750252357,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 508341203,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 513635643,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 984784121,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 866474612,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 527568725,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 1139673947,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1139673967,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1492891407,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 577383962,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 28177732,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 87966082,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 10595838,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 8582378,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 187936889,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 8420625,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 28423923,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 28423922,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 37202061,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 28800623,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 536753075,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 536732594,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 8420636,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 33701776,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 536732593,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 516842461,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 11911201,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 48471785,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 10595561,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 48471786,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 33701446,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 516842465,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 30802483,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 386911118,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 10595557,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 386911116,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 538373548,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 10595546,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 386911117,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 89632314,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 386911120,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 29577400,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 231839172,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 372188452,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 4674615,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 372188453,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 4674620,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 46604359,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 46604459,
+      "role": ""
+    }
+  ],
+  "tags": {
+    "from": "Bahnhof Oerlikon",
+    "name": "Bus 94: Zürich, Bahnhof Oerlikon —> Zentrum Glatt",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport:version": "2",
+    "ref": "94",
+    "route": "bus",
+    "to": "Zentrum Glatt",
+    "type": "route",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "relation",
+  "id": 2180640,
+  "members": [
+    {
+      "type": "node",
+      "ref": 577383962,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1510199765,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1139673925,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 984784694,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 866474609,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 527568728,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 1750252351,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 513635157,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 508340726,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 1750252364,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 701735028,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 3909350504,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 3115234152,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 428426350,
+      "role": "platform"
+    },
+    {
+      "type": "way",
+      "ref": 498316703,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 82745435,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 374298604,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 374410154,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 374403516,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 26833706,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 374298603,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 4674619,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 40501329,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 372188453,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 386789049,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 348989827,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 349006032,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 386911119,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 10595552,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 538373548,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 386911116,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 10595557,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 386911118,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 30802483,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 516842464,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 527568717,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 516842460,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 33701776,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 536732593,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 8420636,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 28800623,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 536753075,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 536732594,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 37202061,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 28423922,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 28423923,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 8420625,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 187936889,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 8582378,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 318719065,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 46423858,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 33688393,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 208161493,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 163290738,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 498316704,
+      "role": ""
+    }
+  ],
+  "tags": {
+    "from": "Zentrum Glatt",
+    "name": "Bus 94: Zentrum Glatt —> Zürich, Bahnhof Oerlikon",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport:version": "2",
+    "ref": "94",
+    "route": "bus",
+    "to": "Bahnhof Oerlikon",
+    "type": "route",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 701735028,
+  "lat": 47.4106724,
+  "lon": 8.5520512,
+  "tags": {
+    "bus": "yes",
+    "ele": "431",
+    "highway": "bus_stop",
+    "name": "Messe/Hallenstadion",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport": "stop_position",
+    "ref": "3154",
+    "uic_name": "Zürich, Messe/Hallenstadion",
+    "uic_ref": "8591273"
+  }
+},
+{
+  "type": "node",
+  "id": 1750252357,
+  "lat": 47.4107647,
+  "lon": 8.5562254,
+  "tags": {
+    "bus": "yes",
+    "ele": "426",
+    "highway": "bus_stop",
+    "name": "Hallenbad Oerlikon",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport": "stop_position",
+    "ref": "3760",
+    "uic_name": "Zürich, Hallenbad Oerlikon",
+    "uic_ref": "8591175"
+  }
+},
+{
+  "type": "node",
+  "id": 1750252364,
+  "lat": 47.4107529,
+  "lon": 8.5554806,
+  "tags": {
+    "bus": "yes",
+    "ele": "426",
+    "highway": "bus_stop",
+    "name": "Hallenbad Oerlikon",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport": "stop_position",
+    "ref": "3760",
+    "uic_name": "Zürich, Hallenbad Oerlikon",
+    "uic_ref": "8591175"
+  }
+},
+{
+  "type": "node",
+  "id": 4430011070,
+  "lat": 47.4107102,
+  "lon": 8.5528703,
+  "tags": {
+    "bus": "yes",
+    "ele": "431",
+    "highway": "bus_stop",
+    "name": "Messe/Hallenstadion",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport": "stop_position",
+    "ref": "3154",
+    "uic_name": "Zürich, Messe/Hallenstadion",
+    "uic_ref": "8591273"
+  }
+}
+
+  ]
+}

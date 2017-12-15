@@ -1,0 +1,637 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API",
+  "osm3s": {
+    "timestamp_osm_base": "40829",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "elements": [
+
+{
+  "type": "node",
+  "id": 26795405,
+  "lat": 47.3654675,
+  "lon": 8.5475725,
+  "tags": {
+    "bus": "yes",
+    "ele": "415",
+    "highway": "bus_stop",
+    "name": "Opernhaus",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport": "stop_position",
+    "ref": "1845",
+    "uic_name": "Zürich, Opernhaus",
+    "uic_ref": "8576195",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "node",
+  "id": 383074942,
+  "lat": 47.3664730,
+  "lon": 8.5448259,
+  "tags": {
+    "bus": "yes",
+    "ele": "408",
+    "highway": "bus_stop",
+    "name": "Bellevue",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport": "stop_position",
+    "ref": "440",
+    "uic_name": "Zürich, Bellevue",
+    "uic_ref": "8576193",
+    "wheelchair": "limited"
+  }
+},
+{
+  "type": "node",
+  "id": 832297121,
+  "lat": 47.3667395,
+  "lon": 8.5459823,
+  "tags": {
+    "bus": "yes",
+    "ele": "408",
+    "highway": "bus_stop",
+    "name": "Bellevue",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport": "stop_position",
+    "ref": "440",
+    "uic_name": "Zürich, Bellevue",
+    "uic_ref": "8576193"
+  }
+},
+{
+  "type": "node",
+  "id": 1608392108,
+  "lat": 47.3704016,
+  "lon": 8.5486819,
+  "tags": {
+    "bus": "yes",
+    "ele": "423",
+    "highway": "bus_stop",
+    "name": "Kunsthaus",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport": "stop_position",
+    "ref": "1472",
+    "uic_name": "Zürich, Kunsthaus",
+    "uic_ref": "8591239"
+  }
+},
+{
+  "type": "node",
+  "id": 5263013840,
+  "lat": 47.3627512,
+  "lon": 8.5501030,
+  "tags": {
+    "bus": "yes",
+    "ele": "415",
+    "highway": "bus_stop",
+    "name": "Kreuzstrasse",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport": "stop_position",
+    "ref": "1456",
+    "uic_name": "Zürich, Kreuzstrasse",
+    "uic_ref": "8576196"
+  }
+},
+{
+  "type": "relation",
+  "id": 1535349,
+  "center": {
+    "lat": 47.3667641,
+    "lon": 8.5489050
+  },
+  "members": [
+    {
+      "type": "node",
+      "ref": 1239733410,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 10677874,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 32322653,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 1239644284,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 94579419,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 88801244,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 1239644239,
+      "role": "stop"
+    }
+  ],
+  "tags": {
+    "ele": "411",
+    "internet_access": "wlan",
+    "internet_access:fee": "no",
+    "internet_access:operator": "SBB",
+    "name": "Zürich Stadelhofen",
+    "network": "ZVV",
+    "operator": "SBB",
+    "public_transport": "stop_area",
+    "railway": "station",
+    "source": "Bundesamt für Verkehr (BAV), DIDOK 2009",
+    "train": "yes",
+    "type": "public_transport",
+    "uic_name": "Zürich Stadelhofen",
+    "uic_ref": "8503003",
+    "wikidata": "Q673228",
+    "wikipedia": "de:Bahnhof Zürich Stadelhofen"
+  }
+},
+{
+  "type": "relation",
+  "id": 7329847,
+  "center": {
+    "lat": 47.3660960,
+    "lon": 8.5476516
+  },
+  "members": [
+    {
+      "type": "node",
+      "ref": 2295131139,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 500187029,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 442522935,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 500187028,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 442522964,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 500187025,
+      "role": "platform"
+    },
+    {
+      "type": "way",
+      "ref": 500187026,
+      "role": "platform"
+    }
+  ],
+  "tags": {
+    "ele": "411",
+    "name": "Bahnhof Stadelhofen",
+    "nat_name": "Zürich, Bahnhof Stadelhofen",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport": "stop_area",
+    "ref": "3039",
+    "ref_name": "Zürich, Bahnhof Stadelhofen",
+    "type": "public_transport",
+    "uic_name": "Zürich Stadelhofen FB",
+    "uic_ref": "8503059"
+  }
+},
+{
+  "type": "relation",
+  "id": 7334620,
+  "center": {
+    "lat": 47.3654462,
+    "lon": 8.5475966
+  },
+  "members": [
+    {
+      "type": "node",
+      "ref": 4883794023,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 500735142,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2296903094,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 500735141,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 26795405,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 500735158,
+      "role": ""
+    }
+  ],
+  "tags": {
+    "ele": "415",
+    "name": "Opernhaus",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport": "stop_area",
+    "ref": "1845",
+    "type": "public_transport",
+    "uic_name": "Zürich, Opernhaus",
+    "uic_ref": "8576195"
+  }
+},
+{
+  "type": "relation",
+  "id": 7334621,
+  "center": {
+    "lat": 47.3631108,
+    "lon": 8.5497919
+  },
+  "members": [
+    {
+      "type": "node",
+      "ref": 2296910032,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 160080666,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2296903069,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 160080665,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 5263013840,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 503589448,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 503589449,
+      "role": ""
+    }
+  ],
+  "tags": {
+    "ele": "415",
+    "name": "Kreuzstrasse",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport": "stop_area",
+    "ref": "1456",
+    "type": "public_transport",
+    "uic_name": "Zürich, Kreuzstrasse",
+    "uic_ref": "8576196"
+  }
+},
+{
+  "type": "relation",
+  "id": 7334629,
+  "center": {
+    "lat": 47.3667100,
+    "lon": 8.5410364
+  },
+  "members": [
+    {
+      "type": "node",
+      "ref": 321340262,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 160044281,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2295223402,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 160044282,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 1544073985,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 324231424,
+      "role": "platform"
+    },
+    {
+      "type": "way",
+      "ref": 160044278,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 160044279,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 500735159,
+      "role": ""
+    }
+  ],
+  "tags": {
+    "ele": "408",
+    "name": "Bürkliplatz",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport": "stop_area",
+    "ref": "615",
+    "type": "public_transport",
+    "uic_name": "Zürich, Bürkliplatz",
+    "uic_ref": "8591105",
+    "wikipedia": "de:Bürkliplatz"
+  }
+},
+{
+  "type": "relation",
+  "id": 7360049,
+  "center": {
+    "lat": 47.3704886,
+    "lon": 8.5488279
+  },
+  "members": [
+    {
+      "type": "node",
+      "ref": 4878436674,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 218937800,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 4878436673,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 218937798,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2281314292,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 218931368,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2281314317,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 218931364,
+      "role": "platform"
+    }
+  ],
+  "tags": {
+    "ele": "423",
+    "name": "Kunsthaus",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport": "stop_area",
+    "ref": "1472",
+    "type": "public_transport",
+    "uic_name": "Zürich, Kunsthaus",
+    "uic_ref": "8591239"
+  }
+},
+{
+  "type": "relation",
+  "id": 7360056,
+  "center": {
+    "lat": 47.3697527,
+    "lon": 8.5434540
+  },
+  "members": [
+    {
+      "type": "node",
+      "ref": 2295038214,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 503589436,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2295038207,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 503589435,
+      "role": "platform"
+    }
+  ],
+  "tags": {
+    "ele": "409",
+    "name": "Helmhaus",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport": "stop_area",
+    "ref": "1157",
+    "type": "public_transport",
+    "uic_name": "Zürich, Helmhaus",
+    "uic_ref": "8591183"
+  }
+},
+{
+  "type": "relation",
+  "id": 7360057,
+  "center": {
+    "lat": 47.3668796,
+    "lon": 8.5452709
+  },
+  "members": [
+    {
+      "type": "node",
+      "ref": 2295088475,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 500735140,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 300383806,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 500735139,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2295061883,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 503589440,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 27462593,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 503589437,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 4883794024,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 503589439,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 2295088479,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 503589438,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 300386936,
+      "role": "stop"
+    },
+    {
+      "type": "way",
+      "ref": 496108586,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 383074942,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 4938694458,
+      "role": "platform"
+    },
+    {
+      "type": "node",
+      "ref": 832297121,
+      "role": "stop"
+    },
+    {
+      "type": "node",
+      "ref": 383074653,
+      "role": "platform"
+    },
+    {
+      "type": "relation",
+      "ref": 3082962,
+      "role": ""
+    },
+    {
+      "type": "relation",
+      "ref": 3082963,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 503589442,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 503589441,
+      "role": ""
+    },
+    {
+      "type": "way",
+      "ref": 503589443,
+      "role": ""
+    }
+  ],
+  "tags": {
+    "ele": "408",
+    "name": "Bellevue",
+    "network": "ZVV",
+    "operator": "VBZ",
+    "public_transport": "stop_area",
+    "ref": "440",
+    "type": "public_transport",
+    "uic_name": "Zürich, Bellevue",
+    "uic_ref": "8576193"
+  }
+}
+
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "messages": [
+    "Start- und Zielort müssen sich unterscheiden."
+  ],
+  "request": "route",
+  "eof": 1
+}

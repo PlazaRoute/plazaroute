@@ -1,22 +1,27 @@
 import pytest
 
-from tests.integration.util import mock_config as mock
+from tests.integration.util import mock_geocoding_service as mock
 
 from plaza_routing.integration import geocoding_service
 from plaza_routing.integration.util.exception_util import ValidationError, ServiceError
 
 
-def test_geocoding():
+def test_geocoding(monkeypatch):
+    mock.mock_geocode(monkeypatch)
     result = geocoding_service.geocode('Oberseestrasse 10, Rapperswil-Jona')
-    assert (8.816392, 47.2229673) == result
+    assert result is not None
+    assert isinstance(result, tuple)
+    assert all(result)
 
 
-def test_geocoding_no_coordinates_found():
+def test_geocoding_no_coordinates_found(monkeypatch):
+    mock.mock_geocode(monkeypatch)
     with pytest.raises(ValidationError):
         geocoding_service.geocode('Hansmusterweg 14, Zürich')
 
 
-def test_geocoding_outside_viewbox():
+def test_geocoding_outside_viewbox(monkeypatch):
+    mock.mock_geocode(monkeypatch)
     with pytest.raises(ValidationError):
         geocoding_service.geocode('Sir Matt Busby Way, Stretford, Manchester M16 0RA')
 

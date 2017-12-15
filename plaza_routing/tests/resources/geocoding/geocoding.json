@@ -1,0 +1,21 @@
+[
+  {
+    "place_id": "18430917",
+    "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://www.openstreetmap.org/copyright",
+    "osm_type": "node",
+    "osm_id": "1706090806",
+    "boundingbox": [
+      "47.2229173",
+      "47.2230173",
+      "8.816342",
+      "8.816442"
+    ],
+    "lat": "47.2229673",
+    "lon": "8.816392",
+    "display_name": "Mensa HSR Hochschule Rapperswil, 10, Oberseestrasse, Rapperswil-Jona, Wahlkreis See-Gaster, Sankt Gallen, 8640, Schweiz",
+    "class": "amenity",
+    "type": "restaurant",
+    "importance": 0.421,
+    "icon": "https://nominatim.openstreetmap.org/images/mapicons/food_restaurant.p.20.png"
+  }
+]
