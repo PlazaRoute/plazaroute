@@ -2,11 +2,8 @@
 
 [![Build Status](https://circleci.com/gh/PlazaRoute/plazaroute.png)](https://circleci.com/gh/PlazaRoute/plazaroute)
 
-<<<<<<< HEAD
 API Reference: <https://plazaroute.github.io/plazaroute/>
 
-=======
->>>>>>> master
 PlazaRoute is a Python Webservice to provide public transport and pedestrian routing. Its main purpose is to show pedestrian routing through open areas. To achieve that, an OSM file for a region is first processed with [plaza_preprocessing](https://github.com/PlazaRoute/plazaroute/tree/master/plaza_preprocessing) to add new ways for the router. The processed file can than be used with [plaza_routing](https://github.com/PlazaRoute/plazaroute/tree/master/plaza_routing) to provide an API.
 
 A QGIS plugin as a frontend is available here: <https://github.com/PlazaRoute/qgis>
