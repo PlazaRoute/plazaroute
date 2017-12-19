@@ -1,7 +1,7 @@
 version: '3.3'
 services:
   pbf_updater_and_plaza_preprocessor:
-    image: geometalab/plazaroute-prerpocessor
+    image: geometalab/plazaroute-preprocessor
     volumes:
       - pbf:/pbf/
     environment:

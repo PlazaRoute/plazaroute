@@ -1,9 +1,9 @@
 version: '3.3'
 services:
   pbf_updater_and_plaza_preprocessor:
-    image: geometalab/plazaroute-prerpocessor
+    image: geometalab/plazaroute-preprocessor
     build:
-      context: .
+      context: ..
       dockerfile: Dockerfile.preprocessor
     volumes:
       - pbf:/pbf/
@@ -13,17 +13,16 @@ services:
       - PBF_PATH=/pbf/switzerland-padded.osm.pbf
       - PBF_PROCESSED_PATH=/pbf/switzerland-processed.osm.pbf
       # every week, 60*24*7
-#      - RUN_EVERY_X_MINUTES=10080
-      - RUN_EVERY_X_MINUTES=2
+      - RUN_EVERY_X_MINUTES=10080
   plaza_routing:
     image: geometalab/plazaroute-routing
     build:
-      context: .
+      context: ..
       dockerfile: Dockerfile.routing
   graphhopper:
     image: geometalab/plazaroute-graphhopper
     build:
-      context: .
+      context: ..
       dockerfile: Dockerfile.graphhopper
     environment:
       JETTY_PORT: 8989
@@ -34,7 +33,7 @@ services:
   nginx:
     image: geometalab/plazaroute-nginx-proxy
     build:
-      context: .
+      context: ..
       dockerfile: Dockerfile.nginx-proxy
     ports:
       - 5000:80

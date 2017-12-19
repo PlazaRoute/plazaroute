@@ -1,0 +1,31 @@
+version: '3'
+services:
+  nginx:
+    image: nginx:1.13.7-alpine
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    ports:
+      - 6000:80
+    links:
+      - plaza_routing
+
+  plaza_routing:
+    build: 
+      context: ../../
+      dockerfile: Dockerfile.routing
+    links:
+      - graphhopper
+
+  graphhopper:
+    build:
+      context: ../../
+      dockerfile: Dockerfile.graphhopper
+    volumes:
+      - ./gh-data:/gh-data
+    environment:
+      JETTY_PORT: 8989
+      JAVA_OPTS: "-server -Xconcurrentio -Xmx2g -Xms2g -XX:+UseG1GC -XX:MetaspaceSize=100M"
+    entrypoint:
+      - ./graphhopper.sh
+      - web
+      - /gh-data/switzerland-visibility-graph.pbf
