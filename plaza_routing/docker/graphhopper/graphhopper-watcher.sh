@@ -3,10 +3,11 @@ set -e
 
 GH_PID=''
 LAST_RUN_FILE_NAME='last_run.txt'
+GH_DATA_PATH=${PBF_PATH%.*}-gh
 
 start_graphhopper() {
-    if [ -d ${PBF_PATH}-gh ]; then
-        rm -rf ${PBF_PATH}-gh;
+    if [ -d ${GH_DATA_PATH} ]; then
+        rm -rf ${GH_DATA_PATH};
     fi
     ./graphhopper.sh web ${PBF_PATH} &
     GH_PID=$!
@@ -20,9 +21,9 @@ kill_and_restart() {
     else
         echo "killing " ${GH_PID}
         sleep 10
-        kill -1 ${GH_PID}
-        if [ -d ${PBF_PATH}-gh ]; then
-            rm -rf ${PBF_PATH}-gh
+        kill -1 ${GH_PID} || true
+        if [ -d ${GH_DATA_PATH} ]; then
+            rm -rf ${GH_DATA_PATH}
         fi
         ./graphhopper.sh web ${PBF_PATH} &
         GH_PID=$!
