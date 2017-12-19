@@ -13,7 +13,7 @@ PBF_PATH = os.environ.get('PBF_PATH', '/pbf/switzerland-padded.osm.pbf')
 PBF_PROCESSED_PATH = os.environ.get('PBF_PROCESSED_PATH', '/pbf/switzerland-processed.osm.pbf')
 RUN_EVERY_X_MINUTES = int(os.environ.get('RUN_EVERY_X_MINUTES', 60 * 24 * 7))  # default: every week
 
-_LAST_RUN_FILE_PATH = '/pbf/last_run.txt'
+_LAST_RUN_FILE_PATH = os.environ.get('LAST_RUN_FILE_PATH', '/pbf/last_run.txt')
 
 def _run_command(command):
     with subprocess.Popen(

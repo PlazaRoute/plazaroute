@@ -2,6 +2,7 @@
 set -e
 
 GH_PID=''
+LAST_RUN_FILE_NAME='last_run.txt'
 
 start_graphhopper() {
     if [ -d ${PBF_PATH}-sh ]; then
@@ -38,7 +39,7 @@ echo "watching $WATCH_DIR"
 
 inotifywait -e modify,create -m ${WATCH_DIR} |
 while read -r directory events filename; do
-  if [ "$filename" = "$(basename ${PBF_PATH})" ]; then
+  if [ "${filename}" = "${LAST_RUN_FILE_NAME}" ]; then
     kill_and_restart
   fi
 done

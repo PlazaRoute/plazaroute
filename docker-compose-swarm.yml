@@ -40,12 +40,9 @@ services:
     environment:
       JETTY_PORT: 8989
       JAVA_OPTS: "-server -Xconcurrentio -Xmx2g -Xms2g -XX:+UseG1GC -XX:MetaspaceSize=100M"
+      PBF_PATH: /pbf/switzerland-processed.osm.pbf
     volumes:
       - pbf:/pbf/
-    entrypoint:
-      - ./graphhopper.sh
-      - web
-      - /pbf/switzerland-processed.osm.pbf
     networks:
       - default
     deploy:
