@@ -1,8 +1,15 @@
 FROM openjdk:8-jdk
 
+RUN apt-get update \
+  && apt-get install -y inotify-tools \
+  && rm -rf /var/lib/apt/lists/*
+
 RUN git clone https://github.com/graphhopper/graphhopper.git
 WORKDIR graphhopper
 
 COPY plaza_routing/docker/graphhopper/config.properties config.properties
 
 RUN ./graphhopper.sh buildweb
+
+COPY plaza_routing/docker/graphhopper/graphhopper-watcher.sh graphhopper-watcher.sh
+CMD ["./graphhopper-watcher.sh"]
