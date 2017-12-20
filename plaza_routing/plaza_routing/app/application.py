@@ -38,8 +38,8 @@ def setup_logging(log_level):
     logger.debug("Setting up logging complete")
 
 
-def initialize(app):
-    initialize_app(app)
+def initialize(flask_app):
+    initialize_app(flask_app)
     setup_logging(config.app['log_level'])
 
 
