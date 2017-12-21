@@ -1,5 +1,4 @@
-from typing import List
-from shapely.geometry import LineString, Polygon
+from shapely.geometry import LineString
 from plaza_preprocessing.optimizer import utils
 from plaza_preprocessing.optimizer.graphprocessor.graphprocessor import GraphProcessor
 

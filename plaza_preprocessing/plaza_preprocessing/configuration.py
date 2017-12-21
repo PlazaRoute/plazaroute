@@ -160,7 +160,6 @@ def load_config(config_path: str) -> dict:
     if not os.path.exists(config_path):
         create_default_config(config_path)
 
-    config = None
     with open(config_path, 'r') as f:
         config = ruamel.yaml.load(f, ruamel.yaml.RoundTripLoader)
 
