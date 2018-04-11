@@ -3,7 +3,7 @@ from osmium import SimpleWriter
 from osmium.osm.mutable import Way, Node
 
 
-OSM_ID_START = (-1) * 10**9
+OSM_ID_START = 10**10
 
 
 def transform_plazas(plazas, node_file, way_file, footway_tags):
