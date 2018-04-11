@@ -42,14 +42,14 @@ class _PlazaHandler(osmium.SimpleHandler):
 
     def node(self, node):
         if self._is_relevant_node(node):
-            _check_max_id(node.id)
+            self._check_max_id(node.id)
             point_wkb = WKBFAB.create_point(node)
             point_geometry = wkblib.loads(point_wkb, hex=True)
             self.points.append(point_geometry)
 
     def way(self, way):
         if self._is_relevant_way(way):
-            _check_max_id(way.id)
+            self._check_max_id(way.id)
             try:
                 line_wkb = WKBFAB.create_linestring(way)
                 line_geometry = wkblib.loads(line_wkb, hex=True)
@@ -67,7 +67,7 @@ class _PlazaHandler(osmium.SimpleHandler):
 
     def area(self, area):
         if self._is_plaza(area):
-            _check_max_id(area.id)
+            self._check_max_id(area.id)
             multipolygon_geom = self._create_multipolygon(area)
             if multipolygon_geom:
                 for polygon in multipolygon_geom.geoms:
