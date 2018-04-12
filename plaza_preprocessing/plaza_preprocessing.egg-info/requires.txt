@@ -1,0 +1,7 @@
+osmium
+Shapely
+geojson
+networkx
+Rtree
+jsonschema
+ruamel.yaml

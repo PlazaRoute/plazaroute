@@ -1,0 +1,399 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>plaza_routing.integration.overpass_service &#8212; plazaroute 0.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for plaza_routing.integration.overpass_service</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">Tuple</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">overpy</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="kn">from</span> <span class="nn">plaza_routing</span> <span class="k">import</span> <span class="n">config</span>
+<span class="kn">from</span> <span class="nn">plaza_routing.integration.util.exception_util</span> <span class="k">import</span> <span class="n">ValidationError</span><span class="p">,</span> <span class="n">ServiceError</span>
+
+<span class="n">INITIAL_STOP_BOUNDING_BOX_BUFFER_METERS</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="n">API</span> <span class="o">=</span> <span class="n">overpy</span><span class="o">.</span><span class="n">Overpass</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">overpass</span><span class="p">[</span><span class="s1">&#39;overpass_api&#39;</span><span class="p">])</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;plaza_routing.overpass_service&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="get_public_transport_stops"><a class="viewcode-back" href="../../../plaza_routing/plaza_routing.integration.html#plaza_routing.integration.overpass_service.get_public_transport_stops">[docs]</a><span class="k">def</span> <span class="nf">get_public_transport_stops</span><span class="p">(</span><span class="n">start_position</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; retrieves all public transport stops for a specific location in a given range &quot;&quot;&quot;</span>
+    <span class="n">bbox</span> <span class="o">=</span> <span class="n">_parse_bounding_box</span><span class="p">(</span><span class="o">*</span><span class="n">start_position</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">overpass</span><span class="p">[</span><span class="s1">&#39;public_transport_search_radius&#39;</span><span class="p">])</span>
+    <span class="n">query_str</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        [bbox:</span><span class="si">{bbox}</span><span class="s2">];</span>
+<span class="s2">        node[&quot;public_transport&quot;=&quot;stop_position&quot;];node[&quot;highway&quot;=&quot;bus_stop&quot;];</span>
+<span class="s2">        out body;</span>
+<span class="s2">        rel[&quot;type&quot;=&quot;public_transport&quot;];</span>
+<span class="s2">        out center;</span>
+<span class="s2">        &quot;&quot;&quot;</span>
+
+    <span class="n">public_transport_stops</span> <span class="o">=</span> <span class="n">_query</span><span class="p">(</span><span class="n">query_str</span><span class="p">)</span>
+
+    <span class="n">filtered_public_transport_stops_nodes</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span>
+        <span class="k">lambda</span> <span class="n">node</span><span class="p">:</span> <span class="s1">&#39;uic_ref&#39;</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">tags</span><span class="p">,</span> <span class="n">public_transport_stops</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
+    <span class="n">filtered_public_transport_stops_relations</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span>
+        <span class="k">lambda</span> <span class="n">rel</span><span class="p">:</span> <span class="s1">&#39;uic_ref&#39;</span> <span class="ow">in</span> <span class="n">rel</span><span class="o">.</span><span class="n">tags</span><span class="p">,</span> <span class="n">public_transport_stops</span><span class="o">.</span><span class="n">relations</span><span class="p">)</span>
+
+    <span class="n">public_transport_stop_nodes</span> <span class="o">=</span> <span class="p">{</span><span class="n">stop</span><span class="o">.</span><span class="n">tags</span><span class="p">[</span><span class="s1">&#39;uic_ref&#39;</span><span class="p">]:</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">stop</span><span class="o">.</span><span class="n">lon</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">stop</span><span class="o">.</span><span class="n">lat</span><span class="p">))</span>
+                                   <span class="k">for</span> <span class="n">stop</span> <span class="ow">in</span> <span class="n">filtered_public_transport_stops_nodes</span><span class="p">}</span>
+    <span class="n">public_transport_stop_rels</span> <span class="o">=</span> <span class="p">{</span><span class="n">stop</span><span class="o">.</span><span class="n">tags</span><span class="p">[</span><span class="s1">&#39;uic_ref&#39;</span><span class="p">]:</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">stop</span><span class="o">.</span><span class="n">center_lon</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">stop</span><span class="o">.</span><span class="n">center_lat</span><span class="p">))</span>
+                                  <span class="k">for</span> <span class="n">stop</span> <span class="ow">in</span> <span class="n">filtered_public_transport_stops_relations</span><span class="p">}</span>
+
+    <span class="n">public_transport_refs</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">public_transport_stop_nodes</span><span class="p">,</span> <span class="o">**</span><span class="n">public_transport_stop_rels</span><span class="p">}</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">public_transport_refs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;no public transport stops found for the given location </span><span class="si">{start_position}</span><span class="s1"> and range&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">public_transport_refs</span></div>
+
+
+<div class="viewcode-block" id="get_connection_coordinates"><a class="viewcode-back" href="../../../plaza_routing/plaza_routing.integration.html#plaza_routing.integration.overpass_service.get_connection_coordinates">[docs]</a><span class="k">def</span> <span class="nf">get_connection_coordinates</span><span class="p">(</span><span class="n">lookup_position</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">start_uic_ref</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">exit_uic_ref</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">line</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                               <span class="n">fallback_start_position</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">fallback_exit_position</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Retrieves the start public transport stop position (longitude, latitude)</span>
+<span class="sd">    for a specific uic_ref (start_uic_ref) and the corresponding exit node in the connection based on the exit_uic_ref.</span>
+<span class="sd">    Both will be returned as tuple.</span>
+
+<span class="sd">    OSM returns multiple public transport stops for a given uic_ref. We&#39;ll have to retrieve the right start and</span>
+<span class="sd">    exit node based on the ordering of the nodes (with ref start_uic_ref or exit_uic_ref)</span>
+<span class="sd">    in the relation (ex. bus lines) that serves the start stop.</span>
+<span class="sd">    If the node with ref exit_uic_ref comes after the node with ref start_uic_ref</span>
+<span class="sd">    in the relation, we&#39;ve got the public transport stop in the right direction of travel.</span>
+
+<span class="sd">    Returns the fallback_start_position and fallback_exit_position if all retrieval options from Overpass fail.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Retrieving start and exit stop position for start_uic_ref </span><span class="si">{start_uic_ref}</span><span class="s1">, &#39;</span>
+                 <span class="n">f</span><span class="s1">&#39;exit_uic_ref </span><span class="si">{exit_uic_ref}</span><span class="s1"> and line </span><span class="si">{line}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_retrieve_start_exit_stop_position</span><span class="p">(</span><span class="n">lookup_position</span><span class="p">,</span> <span class="n">start_uic_ref</span><span class="p">,</span> <span class="n">exit_uic_ref</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="n">ServiceError</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">fallback_start_position</span><span class="p">,</span> <span class="n">fallback_exit_position</span></div>
+
+
+<span class="k">def</span> <span class="nf">_retrieve_start_exit_stop_position</span><span class="p">(</span><span class="n">lookup_position</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">start_uic_ref</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">exit_uic_ref</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                                       <span class="n">line</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Retrieves the start and exit public transport stop position with Overpass.</span>
+<span class="sd">    Recovery Block pattern is used to deal with inconsistent OSM data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;First try retrieving start and exit stop position&quot;</span><span class="p">)</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">_get_public_transport_lines</span><span class="p">(</span><span class="n">lookup_position</span><span class="p">,</span> <span class="n">start_uic_ref</span><span class="p">,</span> <span class="n">exit_uic_ref</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">fallback_1</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">fallback_1</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Second try retrieving start and exit stop position&quot;</span><span class="p">)</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="n">_get_public_transport_lines_fallback</span><span class="p">(</span><span class="n">lookup_position</span><span class="p">,</span> <span class="n">start_uic_ref</span><span class="p">,</span> <span class="n">exit_uic_ref</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">fallback_2</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">fallback_2</span><span class="p">)</span>
+            <span class="n">fallback_message</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;Start and exit stop position cannot be retrieved with the current OSM data &quot;</span> \
+                               <span class="n">f</span><span class="s2">&quot;for the start_uic_ref </span><span class="si">{start_uic_ref}</span><span class="s2">, exit_uic_ref </span><span class="si">{exit_uic_ref}</span><span class="s2"> and line </span><span class="si">{line}</span><span class="s2">, &quot;</span> \
+                               <span class="n">f</span><span class="s2">&quot;returning fallback coordinates&quot;</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">fallback_message</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">fallback_message</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">_get_public_transport_stop_node</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_get_public_transport_lines</span><span class="p">(</span><span class="n">start_position</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">start_uic_ref</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">exit_uic_ref</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">line</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Retrieves all public transport lines (relations) that serve the public transport stop node</span>
+<span class="sd">    with ref start_uic_ref. We&#39;ll get more than one one for a specific uic_ref (for each</span>
+<span class="sd">    direction of travel). The nodes (with ref start_uic_ref or exit_uic_ref)</span>
+<span class="sd">    will be assigned to the relation (public transport lines) that have the node as a member.</span>
+<span class="sd">    The exit nodes are necessary to retrieve the line in the right direction of travel</span>
+<span class="sd">    in a later step.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">bbox</span> <span class="o">=</span> <span class="n">_parse_bounding_box</span><span class="p">(</span><span class="o">*</span><span class="n">start_position</span><span class="p">,</span> <span class="n">INITIAL_STOP_BOUNDING_BOX_BUFFER_METERS</span><span class="p">)</span>
+    <span class="n">query_str</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        node(r:&quot;stop&quot;)[&quot;uic_ref&quot;=</span><span class="si">{start_uic_ref}</span><span class="s2">](</span><span class="si">{bbox}</span><span class="s2">);</span>
+<span class="s2">        rel(</span><span class="si">{bbox}</span><span class="s2">)[&quot;type&quot;=&quot;route&quot;][&quot;ref&quot;=</span><span class="si">{line}</span><span class="s2">]-&gt;.lines;</span>
+<span class="s2">        (.lines;);</span>
+<span class="s2">        out;</span>
+<span class="s2">        node(r.lines:&quot;stop&quot;)[&quot;uic_ref&quot;~&quot;</span><span class="si">{start_uic_ref}</span><span class="s2">|</span><span class="si">{exit_uic_ref}</span><span class="s2">&quot;];</span>
+<span class="s2">        out;</span>
+<span class="s2">        &quot;&quot;&quot;</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">_query</span><span class="p">(</span><span class="n">query_str</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">result</span><span class="o">.</span><span class="n">nodes</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">result</span><span class="o">.</span><span class="n">relations</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;No start and exit nodes or relations could be retrieved for </span><span class="si">{start_uic_ref}</span><span class="s2">, &quot;</span>
+                         <span class="n">f</span><span class="s2">&quot;fallback to more complex retrieval&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_merge_nodes_with_corresponding_relation</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">nodes</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">relations</span><span class="p">,</span> <span class="n">start_uic_ref</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_get_public_transport_lines_fallback</span><span class="p">(</span><span class="n">start_position</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">start_uic_ref</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">exit_uic_ref</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                                         <span class="n">line</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Same motivation as in _get_public_transport_lines().</span>
+<span class="sd">    Some public transport stops are not mapped with an uic_ref, so we&#39;ll use the Recovery Block pattern to provide</span>
+<span class="sd">    an alternative possibility to retrieve the public transport lines.</span>
+
+<span class="sd">    To achieve that, we&#39;ll retrieve the start and exit nodes separately.</span>
+<span class="sd">    This results in two requests to Overpass and thus a longer response time.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">start_stops</span><span class="p">,</span> <span class="n">lines</span> <span class="o">=</span> <span class="n">_get_start_stops_and_lines</span><span class="p">(</span><span class="n">start_position</span><span class="p">,</span> <span class="n">start_uic_ref</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+    <span class="n">exit_stops</span> <span class="o">=</span> <span class="n">_get_exit_stops</span><span class="p">(</span><span class="n">start_position</span><span class="p">,</span> <span class="n">start_uic_ref</span><span class="p">,</span> <span class="n">exit_uic_ref</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_merge_nodes_with_corresponding_relation_fallback</span><span class="p">(</span><span class="n">start_stops</span><span class="p">,</span> <span class="n">exit_stops</span><span class="p">,</span> <span class="n">lines</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_get_start_stops_and_lines</span><span class="p">(</span><span class="n">start_position</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">start_uic_ref</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">line</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the start public transport stops and the corresponding line that serves the stop</span>
+<span class="sd">    based on the provided line and uic_ref.</span>
+
+<span class="sd">    Use this method if it is not possible to retrieve nodes with the uic_ref.</span>
+<span class="sd">    In that case the nodes and lines will retrieved based on the relation with the given uic_ref.</span>
+<span class="sd">    stop_area (relation) are also mostly mapped with the uic_ref.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">bbox</span> <span class="o">=</span> <span class="n">_parse_bounding_box</span><span class="p">(</span><span class="o">*</span><span class="n">start_position</span><span class="p">,</span> <span class="n">INITIAL_STOP_BOUNDING_BOX_BUFFER_METERS</span><span class="p">)</span>
+    <span class="n">query_str</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">            rel(</span><span class="si">{bbox}</span><span class="s2">)[&quot;uic_ref&quot;=</span><span class="si">{start_uic_ref}</span><span class="s2">];</span>
+<span class="s2">            node(r)[&quot;public_transport&quot;=&quot;stop_position&quot;]-&gt;.initialstops;</span>
+<span class="s2">            rel(bn.initialstops)[&quot;ref&quot;=</span><span class="si">{line}</span><span class="s2">]-&gt;.lines;</span>
+<span class="s2">            (.lines;);</span>
+<span class="s2">            out;</span>
+<span class="s2">            node(r.lines);</span>
+<span class="s2">            node.initialstops._-&gt;.startstops;</span>
+<span class="s2">            (.startstops;);</span>
+<span class="s2">            out;</span>
+<span class="s2">            &quot;&quot;&quot;</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">_query</span><span class="p">(</span><span class="n">query_str</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">result</span><span class="o">.</span><span class="n">nodes</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">result</span><span class="o">.</span><span class="n">relations</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;No start nodes or relations could be retrieved for </span><span class="si">{start_uic_ref}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">nodes</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">relations</span>
+
+
+<span class="k">def</span> <span class="nf">_get_exit_stops</span><span class="p">(</span><span class="n">start_position</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">start_uic_ref</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">exit_uic_ref</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">line</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the exit public transport stops based on the exit_uic_ref.</span>
+<span class="sd">    The relations for the line are loaded based on the line and the start_uic_ref.</span>
+<span class="sd">    start_uic_ref is needed because the bounding box includes only relations with the start_uic_ref.</span>
+<span class="sd">    For the loaded relations all public transport stop nodes are selected. Based on these nodes all</span>
+<span class="sd">    parent relations with the exit_uic_ref are retrieved. This could for our advantage include platform relations.</span>
+<span class="sd">    We are now able to select the public transport stops that are member of this relation.</span>
+
+<span class="sd">    Same reason to use as in _get_start_stops_and_lines().</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">bbox</span> <span class="o">=</span> <span class="n">_parse_bounding_box</span><span class="p">(</span><span class="o">*</span><span class="n">start_position</span><span class="p">,</span> <span class="n">INITIAL_STOP_BOUNDING_BOX_BUFFER_METERS</span><span class="p">)</span>
+    <span class="n">query_str</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">                rel(</span><span class="si">{bbox}</span><span class="s2">)[&quot;uic_ref&quot;=</span><span class="si">{start_uic_ref}</span><span class="s2">];</span>
+<span class="s2">                node(r)[&quot;public_transport&quot;=&quot;stop_position&quot;]-&gt;.initialstartstops;</span>
+<span class="s2">                rel(bn.initialstartstops)[&quot;ref&quot;=</span><span class="si">{line}</span><span class="s2">]-&gt;.lines;</span>
+<span class="s2">                node(r.lines:&quot;stop&quot;);</span>
+<span class="s2">                rel(bn)[&quot;uic_ref&quot;=</span><span class="si">{exit_uic_ref}</span><span class="s2">]-&gt;.stoprelations;</span>
+<span class="s2">                node(r.stoprelations)[&quot;public_transport&quot;=&quot;stop_position&quot;]-&gt;.initialstops;</span>
+<span class="s2">                node(r.lines)-&gt;.stops;</span>
+<span class="s2">                node.initialstops.stops-&gt;.exitstops;</span>
+<span class="s2">                (.exitstops;);</span>
+<span class="s2">                out;</span>
+<span class="s2">                &quot;&quot;&quot;</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">_query</span><span class="p">(</span><span class="n">query_str</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">result</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;No exit nodes could be retrieved for </span><span class="si">{exit_uic_ref}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">nodes</span>
+
+
+<span class="k">def</span> <span class="nf">_merge_nodes_with_corresponding_relation</span><span class="p">(</span><span class="n">nodes</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">relations</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">start_uic_ref</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Merges nodes to relations based on the members in the relation.</span>
+<span class="sd">    start_uic_ref is required to differ between start and exit nodes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">relation</span> <span class="ow">in</span> <span class="n">relations</span><span class="p">:</span>
+        <span class="n">start_node</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">start_node_modify_counter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">exit_node</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">relation</span><span class="o">.</span><span class="n">members</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">member</span><span class="o">.</span><span class="n">ref</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">tags</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;uic_ref&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">start_uic_ref</span><span class="p">:</span>
+                        <span class="n">start_node</span> <span class="o">=</span> <span class="n">node</span>
+                        <span class="n">start_node_modify_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">exit_node</span> <span class="o">=</span> <span class="n">node</span>
+
+        <span class="k">if</span> <span class="n">start_node</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">exit_node</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">start_node_modify_counter</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Start node with uic_ref </span><span class="si">{start_uic_ref}</span><span class="s2"> was set </span><span class="si">{start_node_modify_counter}</span><span class="s2"> times, &quot;</span>
+                             <span class="n">f</span><span class="s2">&quot;thus one relation is used to map both direction of travels, &quot;</span>
+                             <span class="n">f</span><span class="s2">&quot;fallback to more complex retrieval&quot;</span><span class="p">)</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;rel&#39;</span><span class="p">:</span> <span class="n">relation</span><span class="p">,</span> <span class="s1">&#39;start&#39;</span><span class="p">:</span> <span class="n">start_node</span><span class="p">,</span> <span class="s1">&#39;exit&#39;</span><span class="p">:</span> <span class="n">exit_node</span><span class="p">})</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">lines</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Could not merge start and exit node to a relation based on the uic_ref </span><span class="si">{start_uic_ref}</span><span class="s2">, &quot;</span>
+                         <span class="n">f</span><span class="s2">&quot;fallback to more complex retrieval&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">lines</span>
+
+
+<span class="k">def</span> <span class="nf">_merge_nodes_with_corresponding_relation_fallback</span><span class="p">(</span><span class="n">start_nodes</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">exit_nodes</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">relations</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; merges start nodes und exit nodes to relations based on the members in the relation &quot;&quot;&quot;</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">relation</span> <span class="ow">in</span> <span class="n">relations</span><span class="p">:</span>
+        <span class="n">start_node</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">exit_node</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">relation</span><span class="o">.</span><span class="n">members</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">temp_start_node</span> <span class="ow">in</span> <span class="n">start_nodes</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">temp_start_node</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">member</span><span class="o">.</span><span class="n">ref</span><span class="p">:</span>
+                    <span class="n">start_node</span> <span class="o">=</span> <span class="n">temp_start_node</span>
+                    <span class="k">break</span>
+            <span class="k">for</span> <span class="n">temp_exit_node</span> <span class="ow">in</span> <span class="n">exit_nodes</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">temp_exit_node</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">member</span><span class="o">.</span><span class="n">ref</span><span class="p">:</span>
+                    <span class="n">exit_node</span> <span class="o">=</span> <span class="n">temp_exit_node</span>
+                    <span class="k">break</span>
+        <span class="k">if</span> <span class="n">start_node</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">exit_node</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;rel&#39;</span><span class="p">:</span> <span class="n">relation</span><span class="p">,</span> <span class="s1">&#39;start&#39;</span><span class="p">:</span> <span class="n">start_node</span><span class="p">,</span> <span class="s1">&#39;exit&#39;</span><span class="p">:</span> <span class="n">exit_node</span><span class="p">})</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">lines</span><span class="p">:</span>
+        <span class="n">fallback_message</span> <span class="o">=</span> <span class="s2">&quot;Could not merge start and exit node to a relation based on the provided relation,&quot;</span> \
+                           <span class="s2">&quot;start nodes and exit nodes, return fallback coordinates&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">fallback_message</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">fallback_message</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">lines</span>
+
+
+<span class="k">def</span> <span class="nf">_get_public_transport_stop_node</span><span class="p">(</span><span class="n">lines</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    OSM returns multiple nodes for a given uic_ref. Based on a</span>
+<span class="sd">    start node and exit node, it&#39;s possible to retrieve the start and exit node that belong</span>
+<span class="sd">    to the public transport line in the right direction of travel based on the order</span>
+<span class="sd">    of the start and exit node in the relation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">start_node</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">start_node_modify_counter</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">exit_node</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">line</span><span class="p">[</span><span class="s1">&#39;rel&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">members</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">member</span><span class="o">.</span><span class="n">ref</span> <span class="o">==</span> <span class="n">line</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">start_node</span> <span class="ow">and</span> <span class="n">start_node</span> <span class="o">!=</span> <span class="n">line</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">]:</span>
+                    <span class="n">start_node_modify_counter</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">start_node</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">]</span>
+                <span class="n">exit_node</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="s1">&#39;exit&#39;</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="n">member</span><span class="o">.</span><span class="n">ref</span> <span class="o">==</span> <span class="n">line</span><span class="p">[</span><span class="s1">&#39;exit&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
+                <span class="k">break</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Should fail if the start node is modified multiple times or is not set at all.</span>
+<span class="sd">    Both cases result from the fact that the order of the nodes in the relation is not correct.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">start_node_modify_counter</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">start_node</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">exit_node</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Could not retrieve start and exit node because of an incorrect order in the relation&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">start_node</span><span class="o">.</span><span class="n">lon</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">start_node</span><span class="o">.</span><span class="n">lat</span><span class="p">)),</span> \
+               <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">exit_node</span><span class="o">.</span><span class="n">lon</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">exit_node</span><span class="o">.</span><span class="n">lat</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">_parse_bounding_box</span><span class="p">(</span><span class="n">longitude</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">latitude</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">buffer_meters</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; calculates the bounding box for a specific location and a given buffer &quot;&quot;&quot;</span>
+    <span class="n">buffer_degrees</span> <span class="o">=</span> <span class="n">_meters_to_degrees</span><span class="p">(</span><span class="n">buffer_meters</span><span class="p">)</span>
+
+    <span class="c1"># divide by 2 to add only half on each side</span>
+    <span class="n">buffer_latitude</span> <span class="o">=</span> <span class="n">buffer_degrees</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">buffer_longitude</span> <span class="o">=</span> <span class="n">buffer_degrees</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">longitude</span><span class="p">)))</span> <span class="o">/</span> <span class="mi">2</span>
+
+    <span class="n">south</span> <span class="o">=</span> <span class="n">latitude</span> <span class="o">-</span> <span class="n">buffer_latitude</span>
+    <span class="n">west</span> <span class="o">=</span> <span class="n">longitude</span> <span class="o">-</span> <span class="n">buffer_longitude</span>
+    <span class="n">north</span> <span class="o">=</span> <span class="n">latitude</span> <span class="o">+</span> <span class="n">buffer_latitude</span>
+    <span class="n">east</span> <span class="o">=</span> <span class="n">longitude</span> <span class="o">+</span> <span class="n">buffer_longitude</span>
+
+    <span class="k">return</span> <span class="n">f</span><span class="s1">&#39;</span><span class="si">{south}</span><span class="s1">,</span><span class="si">{west}</span><span class="s1">,</span><span class="si">{north}</span><span class="s1">,</span><span class="si">{east}</span><span class="s1">&#39;</span>
+
+
+<span class="k">def</span> <span class="nf">_meters_to_degrees</span><span class="p">(</span><span class="n">meters</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; convert meters to approximate degrees &quot;&quot;&quot;</span>
+    <span class="c1"># meters * 360 / (2 * PI * 6400000)</span>
+    <span class="c1"># multiply by (1/cos(lat) for longitude)</span>
+    <span class="k">return</span> <span class="n">meters</span> <span class="o">*</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">111701</span>
+
+
+<span class="k">def</span> <span class="nf">_query</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">overpy</span><span class="o">.</span><span class="n">Result</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; handles the communication with overpass and provides error handling &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">API</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">BaseException</span> <span class="k">as</span> <span class="n">exception</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">f</span><span class="s1">&#39;overpass is not running correctly: </span><span class="si">{exception}</span><span class="s1">&#39;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">ServiceError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">None</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jonas Matter, Robin Suter.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

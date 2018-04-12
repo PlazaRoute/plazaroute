@@ -1,0 +1,237 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>plaza_preprocessing.merger.merger &#8212; plazaroute 0.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for plaza_preprocessing.merger.merger</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">sys</span> <span class="k">import</span> <span class="n">maxsize</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="k">import</span> <span class="n">path</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">osmium</span> <span class="k">import</span> <span class="n">SimpleHandler</span><span class="p">,</span> <span class="n">SimpleWriter</span>
+<span class="kn">from</span> <span class="nn">osmium.osm.mutable</span> <span class="k">import</span> <span class="n">Way</span>
+<span class="kn">from</span> <span class="nn">shapely.geometry</span> <span class="k">import</span> <span class="n">Point</span><span class="p">,</span> <span class="n">LineString</span>
+<span class="kn">import</span> <span class="nn">plaza_preprocessing.merger.plazatransformer</span> <span class="k">as</span> <span class="nn">plazatransformer</span>
+<span class="kn">import</span> <span class="nn">plaza_preprocessing.merger.osmosishelper</span> <span class="k">as</span> <span class="nn">osmosishelper</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;plaza_preprocessing.merger&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="WayExtractor"><a class="viewcode-back" href="../../../plaza_preprocessing/plaza_preprocessing.merger.html#plaza_preprocessing.merger.merger.WayExtractor">[docs]</a><span class="k">class</span> <span class="nc">WayExtractor</span><span class="p">(</span><span class="n">SimpleHandler</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; collect outer ways of plazas &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry_node_mappings</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">entry_node_mappings</span> <span class="o">=</span> <span class="n">entry_node_mappings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ways</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="WayExtractor.way"><a class="viewcode-back" href="../../../plaza_preprocessing/plaza_preprocessing.merger.html#plaza_preprocessing.merger.merger.WayExtractor.way">[docs]</a>    <span class="k">def</span> <span class="nf">way</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">way</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; collect outer rings of plazas into a dictionary&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">way</span><span class="o">.</span><span class="n">id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">entry_node_mappings</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ways</span><span class="p">[</span><span class="n">way</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="n">way</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
+                <span class="s1">&#39;nodes&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="n">n</span><span class="o">.</span><span class="n">ref</span><span class="p">,</span> <span class="s1">&#39;coords&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span> <span class="n">n</span><span class="o">.</span><span class="n">lat</span><span class="p">)}</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">way</span><span class="o">.</span><span class="n">nodes</span><span class="p">],</span>
+                <span class="s1">&#39;tags&#39;</span><span class="p">:</span> <span class="p">{</span><span class="n">t</span><span class="o">.</span><span class="n">k</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">v</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">way</span><span class="o">.</span><span class="n">tags</span><span class="p">}</span>
+            <span class="p">}</span></div></div>
+
+
+<div class="viewcode-block" id="merge_plaza_graphs"><a class="viewcode-back" href="../../../plaza_preprocessing/plaza_preprocessing.merger.html#plaza_preprocessing.merger.merger.merge_plaza_graphs">[docs]</a><span class="k">def</span> <span class="nf">merge_plaza_graphs</span><span class="p">(</span><span class="n">plazas</span><span class="p">,</span> <span class="n">osm_file</span><span class="p">,</span> <span class="n">merged_file</span><span class="p">,</span> <span class="n">footway_tags</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    merge graph edges of plazas back into the original OSM file</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Merging {len(plazas)} processed plazas back into </span><span class="si">{osm_file}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">tempdir</span><span class="p">:</span>
+        <span class="n">plaza_way_file</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tempdir</span><span class="p">,</span> <span class="s1">&#39;plaza_ways.pbf&#39;</span><span class="p">)</span>
+        <span class="n">plaza_node_file</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tempdir</span><span class="p">,</span> <span class="s1">&#39;plaza_nodes.pbf&#39;</span><span class="p">)</span>
+        <span class="n">modified_ways_file</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tempdir</span><span class="p">,</span> <span class="s1">&#39;modified_ways.pbf&#39;</span><span class="p">)</span>
+
+        <span class="n">entry_node_mappings</span> <span class="o">=</span> <span class="n">plazatransformer</span><span class="o">.</span><span class="n">transform_plazas</span><span class="p">(</span>
+            <span class="n">plazas</span><span class="p">,</span> <span class="n">plaza_node_file</span><span class="p">,</span> <span class="n">plaza_way_file</span><span class="p">,</span> <span class="n">footway_tags</span><span class="p">)</span>
+
+        <span class="n">plaza_ways</span> <span class="o">=</span> <span class="n">_extract_plaza_ways</span><span class="p">(</span><span class="n">entry_node_mappings</span><span class="p">,</span> <span class="n">osm_file</span><span class="p">)</span>
+        <span class="n">_insert_entry_nodes</span><span class="p">(</span><span class="n">plaza_ways</span><span class="p">,</span> <span class="n">entry_node_mappings</span><span class="p">)</span>
+
+        <span class="n">_write_modified_ways</span><span class="p">(</span><span class="n">plaza_ways</span><span class="p">,</span> <span class="n">modified_ways_file</span><span class="p">)</span>
+
+        <span class="n">osmosishelper</span><span class="o">.</span><span class="n">merge_osm_files</span><span class="p">(</span>
+            <span class="n">merged_file</span><span class="p">,</span> <span class="n">osm_file</span><span class="p">,</span> <span class="n">plaza_way_file</span><span class="p">,</span> <span class="n">plaza_node_file</span><span class="p">,</span> <span class="n">modified_ways_file</span><span class="p">)</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Merged OSM file written to </span><span class="si">{merged_file}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_insert_entry_nodes</span><span class="p">(</span><span class="n">plaza_ways</span><span class="p">,</span> <span class="n">entry_node_mappings</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; insert entry node refs to the ways in the correct position &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">way_id</span><span class="p">,</span> <span class="n">entry_nodes</span> <span class="ow">in</span> <span class="n">entry_node_mappings</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">way_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">plaza_ways</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Way </span><span class="si">{way_id}</span><span class="s2"> was not found in original osm file&quot;</span><span class="p">)</span>
+        <span class="n">way_nodes</span> <span class="o">=</span> <span class="n">plaza_ways</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">way_id</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nodes&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Inserting {len(entry_nodes)} entry point references into way </span><span class="si">{way_id}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">entry_node</span> <span class="ow">in</span> <span class="n">entry_nodes</span><span class="p">:</span>
+            <span class="n">way_nodes</span> <span class="o">=</span> <span class="n">_insert_entry_node</span><span class="p">(</span><span class="n">entry_node</span><span class="p">,</span> <span class="n">way_nodes</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_write_modified_ways</span><span class="p">(</span><span class="n">plaza_ways</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    write the modified ways to an OSM file</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Writing modified ways to </span><span class="si">{filename}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">ways</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">way_id</span><span class="p">,</span> <span class="n">way</span> <span class="ow">in</span> <span class="n">plaza_ways</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">node_refs</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">way</span><span class="p">[</span><span class="s1">&#39;nodes&#39;</span><span class="p">]]</span>
+        <span class="n">osm_way</span> <span class="o">=</span> <span class="n">Way</span><span class="p">(</span><span class="n">nodes</span><span class="o">=</span><span class="n">node_refs</span><span class="p">)</span>
+        <span class="n">osm_way</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">way_id</span>
+        <span class="n">osm_way</span><span class="o">.</span><span class="n">tags</span> <span class="o">=</span> <span class="n">way</span><span class="p">[</span><span class="s1">&#39;tags&#39;</span><span class="p">]</span>
+        <span class="c1"># increase version number to overwrite original way</span>
+        <span class="n">osm_way</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="n">way</span><span class="p">[</span><span class="s1">&#39;version&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">osm_way</span><span class="o">.</span><span class="n">timestamp</span> <span class="o">=</span> <span class="n">_create_osm_timestamp</span><span class="p">()</span>
+        <span class="n">ways</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">osm_way</span><span class="p">)</span>
+
+    <span class="n">writer</span> <span class="o">=</span> <span class="n">SimpleWriter</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">way</span> <span class="ow">in</span> <span class="n">ways</span><span class="p">:</span>
+            <span class="n">writer</span><span class="o">.</span><span class="n">add_way</span><span class="p">(</span><span class="n">way</span><span class="p">)</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">_insert_entry_node</span><span class="p">(</span><span class="n">entry_node</span><span class="p">,</span> <span class="n">way_nodes</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; insert node reference in the correct position of way_nodes &quot;&quot;&quot;</span>
+    <span class="n">insert_position</span> <span class="o">=</span> <span class="n">_find_insert_position</span><span class="p">(</span><span class="n">entry_node</span><span class="p">,</span> <span class="n">way_nodes</span><span class="p">)</span>
+    <span class="n">way_nodes</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">insert_position</span><span class="p">,</span> <span class="n">entry_node</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">way_nodes</span>
+
+
+<span class="k">def</span> <span class="nf">_find_insert_position</span><span class="p">(</span><span class="n">entry_node</span><span class="p">,</span> <span class="n">way_nodes</span><span class="p">):</span>
+    <span class="n">entry_point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">entry_node</span><span class="p">[</span><span class="s1">&#39;coords&#39;</span><span class="p">])</span>
+    <span class="n">exact_match</span> <span class="o">=</span> <span class="n">_find_exact_insert_position</span><span class="p">(</span><span class="n">entry_point</span><span class="p">,</span> <span class="n">way_nodes</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">exact_match</span> <span class="k">if</span> <span class="n">exact_match</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">(</span>
+        <span class="n">_find_interpolated_insert_position</span><span class="p">(</span><span class="n">entry_point</span><span class="p">,</span> <span class="n">way_nodes</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">_find_exact_insert_position</span><span class="p">(</span><span class="n">entry_point</span><span class="p">,</span> <span class="n">way_nodes</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    try to find a point in the way_nodes that overlaps</span>
+<span class="sd">    the entry point exactly</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">way_nodes</span><span class="p">):</span>
+        <span class="n">way_point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="s1">&#39;coords&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">way_point</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="n">entry_point</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">i</span>
+    <span class="k">return</span> <span class="kc">None</span>
+
+
+<span class="k">def</span> <span class="nf">_find_interpolated_insert_position</span><span class="p">(</span><span class="n">entry_point</span><span class="p">,</span> <span class="n">way_nodes</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    draws a line between pairs of way points and returns the</span>
+<span class="sd">    index of the end node of the line to which the entry point is</span>
+<span class="sd">    closest to</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+        <span class="n">f</span><span class="s2">&quot;Entry point </span><span class="si">{entry_point.coords}</span><span class="s2"> is not on way node, finding interpolated position&quot;</span><span class="p">)</span>
+    <span class="n">min_node</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;pos&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="n">maxsize</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">way_nodes</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">start_node</span> <span class="o">=</span> <span class="n">way_nodes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">end_node</span> <span class="o">=</span> <span class="n">way_nodes</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">LineString</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">start_node</span><span class="p">[</span><span class="s1">&#39;coords&#39;</span><span class="p">],</span> <span class="n">end_node</span><span class="p">[</span><span class="s1">&#39;coords&#39;</span><span class="p">]])</span>
+        <span class="n">distance</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">distance</span><span class="p">(</span><span class="n">entry_point</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">distance</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">distance</span> <span class="o">&lt;</span> <span class="n">min_node</span><span class="p">[</span><span class="s1">&#39;distance&#39;</span><span class="p">]:</span>
+            <span class="n">min_node</span><span class="p">[</span><span class="s1">&#39;pos&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">min_node</span><span class="p">[</span><span class="s1">&#39;distance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">distance</span>
+    <span class="k">return</span> <span class="n">min_node</span><span class="p">[</span><span class="s1">&#39;pos&#39;</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">_extract_plaza_ways</span><span class="p">(</span><span class="n">entry_node_mappings</span><span class="p">,</span> <span class="n">osm_file</span><span class="p">):</span>
+    <span class="n">way_extractor</span> <span class="o">=</span> <span class="n">WayExtractor</span><span class="p">(</span><span class="n">entry_node_mappings</span><span class="p">)</span>
+    <span class="n">index_type</span> <span class="o">=</span> <span class="s1">&#39;sparse_mem_array&#39;</span>
+    <span class="n">way_extractor</span><span class="o">.</span><span class="n">apply_file</span><span class="p">(</span><span class="n">osm_file</span><span class="p">,</span> <span class="n">locations</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">idx</span><span class="o">=</span><span class="n">index_type</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">way_extractor</span><span class="o">.</span><span class="n">ways</span>
+
+
+<span class="k">def</span> <span class="nf">_create_osm_timestamp</span><span class="p">():</span>
+    <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">now</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%SZ&#39;</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jonas Matter, Robin Suter.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

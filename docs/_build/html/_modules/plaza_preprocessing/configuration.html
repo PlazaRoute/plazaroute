@@ -1,0 +1,296 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>plaza_preprocessing.configuration &#8212; plazaroute 0.1 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for plaza_preprocessing.configuration</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">ruamel.yaml</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">jsonschema</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;plaza_preprocessing.config&#39;</span><span class="p">)</span>
+
+<span class="n">DEFAULT_CONFIG</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">tag-filter:</span>
+<span class="s2">  plaza: # what counts as a plaza</span>
+<span class="s2">    includes:</span>
+<span class="s2">#     tag-keys: # tag keys only</span>
+<span class="s2">#       - </span>
+<span class="s2">      tag-key-values: # tags with specific values</span>
+<span class="s2">        - or:</span>
+<span class="s2">          - highway: pedestrian</span>
+<span class="s2">        - or:</span>
+<span class="s2">          - highway: footway</span>
+<span class="s2">          - area: yes</span>
+<span class="s2">    excludes: # no tags should match</span>
+<span class="s2">#     tag-keys:</span>
+<span class="s2">#       - &lt;key&gt;</span>
+<span class="s2">      tag-key-values:</span>
+<span class="s2">        - or:</span>
+<span class="s2">          - area: no</span>
+<span class="s2">  barrier: # what OSM &quot;way&quot; constitutes a barrier</span>
+<span class="s2">    includes:</span>
+<span class="s2">      tag-key-values:</span>
+<span class="s2">        - or:</span>
+<span class="s2">          - barrier: wall</span>
+<span class="s2">        - or:</span>
+<span class="s2">          - barrier: fence</span>
+<span class="s2">        - or:</span>
+<span class="s2">          - barrier: hedge</span>
+<span class="s2">        - or:</span>
+<span class="s2">          - barrier: retaining_wall</span>
+<span class="s2">  point_obstacle:</span>
+<span class="s2">    includes:</span>
+<span class="s2">      tag-keys:</span>
+<span class="s2">        - amenity</span>
+<span class="s2">      tag-key-values:</span>
+<span class="s2">        - or:</span>
+<span class="s2">          - barrier: block</span>
+<span class="s2">    excludes:</span>
+<span class="s2">      tag-keys:</span>
+<span class="s2">        - indoor</span>
+
+<span class="s2">footway-tags: # tags that will be used for the newly generated ways</span>
+<span class="s2">  - highway: footway</span>
+
+<span class="s2">graph-strategy: visibility # one of visibility, spiderweb</span>
+<span class="s2">spiderweb-grid-size: 2 # grid size in meters, if spiderweb is used</span>
+<span class="s2">obstacle-buffer: 2 # minimal distance from any obstacles in meters</span>
+
+<span class="s2">shortest-path-algorithm: astar # one of astar, dijkstra</span>
+
+<span class="s2">entry-point-lookup-buffer: 0.05 # tolerance in meters, will be used to detect slightly offset entry points</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">SCHEMA</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;plaza_preprocessing configuration Schema&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;object&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;properties&#39;</span><span class="p">:</span> <span class="p">{</span>
+       <span class="s1">&#39;tag-filter&#39;</span><span class="p">:</span> <span class="p">{</span>
+           <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;object&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;properties&#39;</span><span class="p">:</span>  <span class="p">{</span>
+               <span class="s1">&#39;plaza&#39;</span><span class="p">:</span> <span class="p">{</span>
+                   <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;object&#39;</span><span class="p">,</span>
+                   <span class="s1">&#39;$ref&#39;</span><span class="p">:</span> <span class="s1">&#39;#/definitions/tag-filter&#39;</span>
+               <span class="p">},</span>
+               <span class="s1">&#39;barrier&#39;</span><span class="p">:</span> <span class="p">{</span>
+                   <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;object&#39;</span><span class="p">,</span>
+                   <span class="s1">&#39;$ref&#39;</span><span class="p">:</span> <span class="s1">&#39;#/definitions/tag-filter&#39;</span>
+               <span class="p">},</span>
+               <span class="s1">&#39;point_obstacle&#39;</span><span class="p">:</span> <span class="p">{</span>
+                   <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;object&#39;</span><span class="p">,</span>
+                   <span class="s1">&#39;$ref&#39;</span><span class="p">:</span> <span class="s1">&#39;#/definitions/tag-filter&#39;</span>
+               <span class="p">}</span>
+           <span class="p">},</span>
+           <span class="s1">&#39;additionalProperties&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+           <span class="s1">&#39;required&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;plaza&#39;</span><span class="p">,</span> <span class="s1">&#39;barrier&#39;</span><span class="p">,</span> <span class="s1">&#39;point_obstacle&#39;</span><span class="p">]</span>
+       <span class="p">},</span>
+       <span class="s1">&#39;footway-tags&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;array&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;items&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;object&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;additionalProperties&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;string&#39;</span><span class="p">}</span>
+            <span class="p">}</span>
+       <span class="p">},</span>
+       <span class="s1">&#39;graph-strategy&#39;</span><span class="p">:</span> <span class="p">{</span>
+           <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;string&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;enum&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;visibility&#39;</span><span class="p">,</span> <span class="s1">&#39;spiderweb&#39;</span><span class="p">]</span>
+       <span class="p">},</span>
+       <span class="s1">&#39;spiderweb-grid-size&#39;</span><span class="p">:</span> <span class="p">{</span>
+           <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;number&#39;</span>
+       <span class="p">},</span>
+       <span class="s1">&#39;obstacle-buffer&#39;</span><span class="p">:</span> <span class="p">{</span>
+           <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;number&#39;</span>
+       <span class="p">},</span>
+       <span class="s1">&#39;shortest-path-algorithm&#39;</span><span class="p">:</span> <span class="p">{</span>
+           <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;string&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;enum&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;astar&#39;</span><span class="p">,</span> <span class="s1">&#39;dijkstra&#39;</span><span class="p">]</span>
+       <span class="p">},</span>
+       <span class="s1">&#39;entry-point-lookup-buffer&#39;</span><span class="p">:</span> <span class="p">{</span>
+           <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;number&#39;</span><span class="p">,</span>
+       <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;additionalProperties&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;required&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;tag-filter&#39;</span><span class="p">,</span> <span class="s1">&#39;footway-tags&#39;</span><span class="p">,</span> <span class="s1">&#39;graph-strategy&#39;</span><span class="p">,</span> <span class="s1">&#39;spiderweb-grid-size&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;obstacle-buffer&#39;</span><span class="p">,</span> <span class="s1">&#39;shortest-path-algorithm&#39;</span><span class="p">,</span> <span class="s1">&#39;entry-point-lookup-buffer&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;definitions&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;tag-filter&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;properties&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;includes&#39;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;object&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;$ref&#39;</span><span class="p">:</span> <span class="s1">&#39;#/definitions/tag-listing&#39;</span>
+                <span class="p">},</span>
+                <span class="s1">&#39;excludes&#39;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;object&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;$ref&#39;</span><span class="p">:</span> <span class="s1">&#39;#/definitions/tag-listing&#39;</span>
+                <span class="p">}</span>
+            <span class="p">},</span>
+            <span class="s1">&#39;required&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;includes&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;additionalProperties&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s1">&#39;tag-listing&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;properties&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;tag-keys&#39;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;array&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;items&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;string&#39;</span><span class="p">}</span>
+                <span class="p">},</span>
+                <span class="s1">&#39;tag-key-values&#39;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;array&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;items&#39;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;object&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;properties&#39;</span><span class="p">:</span> <span class="p">{</span>
+                            <span class="s1">&#39;or&#39;</span><span class="p">:</span> <span class="p">{</span>
+                                <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;array&#39;</span><span class="p">,</span>
+                                <span class="s1">&#39;items&#39;</span><span class="p">:</span> <span class="p">{</span>
+                                    <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;object&#39;</span><span class="p">,</span>
+                                    <span class="s1">&#39;additionalProperties&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;string&#39;</span><span class="p">}</span>
+                                <span class="p">}</span>
+                            <span class="p">}</span>
+                        <span class="p">}</span>
+
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="load_config"><a class="viewcode-back" href="../../plaza_preprocessing/plaza_preprocessing.html#plaza_preprocessing.configuration.load_config">[docs]</a><span class="k">def</span> <span class="nf">load_config</span><span class="p">(</span><span class="n">config_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Loads the configuration and creates the default configuration if it does not yet exist.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># create default config if it does not yet exist</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">config_path</span><span class="p">):</span>
+        <span class="n">create_default_config</span><span class="p">(</span><span class="n">config_path</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">ruamel</span><span class="o">.</span><span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">ruamel</span><span class="o">.</span><span class="n">yaml</span><span class="o">.</span><span class="n">RoundTripLoader</span><span class="p">)</span>
+
+    <span class="n">jsonschema</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">SCHEMA</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">config</span></div>
+
+
+<div class="viewcode-block" id="create_default_config"><a class="viewcode-back" href="../../plaza_preprocessing/plaza_preprocessing.html#plaza_preprocessing.configuration.create_default_config">[docs]</a><span class="k">def</span> <span class="nf">create_default_config</span><span class="p">(</span><span class="n">config_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates the default configuration file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Creating default configuration at </span><span class="si">{config_path}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">DEFAULT_CONFIG</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="filter_tags"><a class="viewcode-back" href="../../plaza_preprocessing/plaza_preprocessing.html#plaza_preprocessing.configuration.filter_tags">[docs]</a><span class="k">def</span> <span class="nf">filter_tags</span><span class="p">(</span><span class="n">tags</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">tag_filter</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;filter tags based on a tag filter&quot;&quot;&quot;</span>
+
+    <span class="n">including</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">includes</span> <span class="o">=</span> <span class="n">tag_filter</span><span class="p">[</span><span class="s1">&#39;includes&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="s1">&#39;tag-keys&#39;</span> <span class="ow">in</span> <span class="n">includes</span><span class="p">:</span>
+        <span class="n">including</span> <span class="o">=</span> <span class="nb">any</span><span class="p">(</span><span class="n">key</span> <span class="ow">in</span> <span class="n">tags</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">includes</span><span class="p">[</span><span class="s1">&#39;tag-keys&#39;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">including</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s1">&#39;tag-key-values&#39;</span> <span class="ow">in</span> <span class="n">includes</span><span class="p">:</span>
+            <span class="n">including</span> <span class="o">=</span> <span class="n">_or_filter_matches</span><span class="p">(</span><span class="n">includes</span><span class="p">[</span><span class="s1">&#39;tag-key-values&#39;</span><span class="p">],</span> <span class="n">tags</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">including</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="s1">&#39;excludes&#39;</span> <span class="ow">in</span> <span class="n">tag_filter</span><span class="p">:</span>
+        <span class="n">excludes</span> <span class="o">=</span> <span class="n">tag_filter</span><span class="p">[</span><span class="s1">&#39;excludes&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s1">&#39;tag-keys&#39;</span> <span class="ow">in</span> <span class="n">excludes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">key</span> <span class="ow">in</span> <span class="n">tags</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">excludes</span><span class="p">[</span><span class="s1">&#39;tag-keys&#39;</span><span class="p">]):</span>
+                <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="s1">&#39;tag-key-values&#39;</span> <span class="ow">in</span> <span class="n">excludes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">_or_filter_matches</span><span class="p">(</span><span class="n">excludes</span><span class="p">[</span><span class="s1">&#39;tag-key-values&#39;</span><span class="p">],</span> <span class="n">tags</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<span class="k">def</span> <span class="nf">_or_filter_matches</span><span class="p">(</span><span class="n">or_filter</span><span class="p">,</span> <span class="n">tags</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">any</span><span class="p">(</span>  <span class="c1"># or</span>
+        <span class="nb">all</span><span class="p">(</span>  <span class="c1"># and</span>
+            <span class="nb">all</span><span class="p">(</span><span class="n">tags</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">tag_key</span><span class="p">)</span> <span class="o">==</span> <span class="n">tag_value</span> <span class="k">for</span> <span class="n">tag_key</span><span class="p">,</span> <span class="n">tag_value</span> <span class="ow">in</span> <span class="n">and_filter</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+            <span class="k">for</span> <span class="n">and_filter</span> <span class="ow">in</span> <span class="n">or_filter</span><span class="p">[</span><span class="s1">&#39;or&#39;</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">or_filter</span> <span class="ow">in</span> <span class="n">or_filter</span>
+    <span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jonas Matter, Robin Suter.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

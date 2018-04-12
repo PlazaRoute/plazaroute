@@ -1,0 +1,3 @@
+[console_scripts]
+plaza_preprocessing = plaza_preprocessing.__main__:plaza_preprocessing
+

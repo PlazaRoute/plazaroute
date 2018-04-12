@@ -1,0 +1,192 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>plaza_preprocessing.optimizer.shortest_paths &#8212; plazaroute 0.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for plaza_preprocessing.optimizer.shortest_paths</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">from</span> <span class="nn">shapely.geometry</span> <span class="k">import</span> <span class="n">LineString</span><span class="p">,</span> <span class="n">Point</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Dict</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;plaza_preprocessing.optimizer&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="create_graph"><a class="viewcode-back" href="../../../plaza_preprocessing/plaza_preprocessing.optimizer.html#plaza_preprocessing.optimizer.shortest_paths.create_graph">[docs]</a><span class="k">def</span> <span class="nf">create_graph</span><span class="p">(</span><span class="n">graph_edges</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">LineString</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; create a networkx graph with a collection of edges&quot;&quot;&quot;</span>
+    <span class="n">graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
+    <span class="n">graph</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="n">_collect_nodes</span><span class="p">(</span><span class="n">graph_edges</span><span class="p">))</span>
+    <span class="n">graph</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">_collect_edges</span><span class="p">(</span><span class="n">graph_edges</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">graph</span></div>
+
+
+<div class="viewcode-block" id="compute_dijkstra_shortest_paths"><a class="viewcode-back" href="../../../plaza_preprocessing/plaza_preprocessing.optimizer.html#plaza_preprocessing.optimizer.shortest_paths.compute_dijkstra_shortest_paths">[docs]</a><span class="k">def</span> <span class="nf">compute_dijkstra_shortest_paths</span><span class="p">(</span><span class="n">graph</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">,</span> <span class="n">entry_points</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Point</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">LineString</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    compute a list of shortest paths as LineStrings between all pairs of entry points</span>
+<span class="sd">    using the dijkstra algorithm</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">entry_coords</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">point</span><span class="p">:</span> <span class="p">(</span><span class="n">point</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">point</span><span class="o">.</span><span class="n">y</span><span class="p">),</span> <span class="n">entry_points</span><span class="p">))</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+    <span class="n">paths</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">all_pairs_dijkstra_path</span><span class="p">(</span><span class="n">graph</span><span class="p">))</span>
+    <span class="n">shortest_lines</span> <span class="o">=</span> <span class="n">_extract_lines_between_entry_points</span><span class="p">(</span><span class="n">paths</span><span class="p">,</span> <span class="n">entry_coords</span><span class="p">)</span>
+    <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+    <span class="n">elapsed_time_ms</span> <span class="o">=</span> <span class="p">(</span><span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1000</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;computed dijkstra shortest paths in </span><span class="si">{elapsed_time_ms:.2f}</span><span class="s2"> milliseconds&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">shortest_lines</span></div>
+
+
+<div class="viewcode-block" id="compute_astar_shortest_paths"><a class="viewcode-back" href="../../../plaza_preprocessing/plaza_preprocessing.optimizer.html#plaza_preprocessing.optimizer.shortest_paths.compute_astar_shortest_paths">[docs]</a><span class="k">def</span> <span class="nf">compute_astar_shortest_paths</span><span class="p">(</span><span class="n">graph</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">,</span> <span class="n">entry_points</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Point</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">LineString</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    compute a list of shortest paths as LineStrings between all pairs of entry points</span>
+<span class="sd">    using the astar algorithm. Uses direct distance between entry points as a heuristic</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">entry_coords</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">point</span><span class="p">:</span> <span class="p">(</span><span class="n">point</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">point</span><span class="o">.</span><span class="n">y</span><span class="p">),</span> <span class="n">entry_points</span><span class="p">))</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">start_node</span> <span class="ow">in</span> <span class="n">entry_coords</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">end_node</span> <span class="ow">in</span> <span class="n">entry_coords</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">start_node</span> <span class="o">&lt;</span> <span class="n">end_node</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">path</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">astar_path</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">start_node</span><span class="p">,</span> <span class="n">end_node</span><span class="p">,</span> <span class="n">heuristic</span><span class="o">=</span><span class="n">_distance_between_nodes</span><span class="p">)</span>
+                <span class="k">except</span> <span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">NetworkXNoPath</span><span class="p">,</span> <span class="n">nx</span><span class="o">.</span><span class="n">NodeNotFound</span><span class="p">):</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;no path between </span><span class="si">{start_node}</span><span class="s2"> and </span><span class="si">{end_node}</span><span class="s2">, discarding path&quot;</span><span class="p">)</span>
+                    <span class="k">continue</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">LineString</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+    <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+    <span class="n">elapsed_time_ms</span> <span class="o">=</span> <span class="p">(</span><span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1000</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;computed shortest paths with astar in </span><span class="si">{elapsed_time_ms:.2f}</span><span class="s2"> milliseconds&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">lines</span></div>
+
+
+<span class="k">def</span> <span class="nf">_extract_lines_between_entry_points</span><span class="p">(</span><span class="n">shortest_paths</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">entry_coords</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">LineString</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot; create shortest lines between every pair of entry points&quot;&quot;&quot;</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">start_node</span> <span class="ow">in</span> <span class="n">entry_coords</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">start_node</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">shortest_paths</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;entry point </span><span class="si">{start_node}</span><span class="s2"> is not reachable on the graph, discarding paths&quot;</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="k">for</span> <span class="n">end_node</span> <span class="ow">in</span> <span class="n">entry_coords</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">start_node</span> <span class="o">&lt;</span> <span class="n">end_node</span><span class="p">:</span>
+                <span class="n">path_start</span> <span class="o">=</span> <span class="n">shortest_paths</span><span class="p">[</span><span class="n">start_node</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">end_node</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">path_start</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;entry point </span><span class="si">{end_node}</span><span class="s2"> is not reachable from </span><span class="si">{start_node}</span><span class="s2">, discarding path&quot;</span><span class="p">)</span>
+                    <span class="k">continue</span>
+                <span class="n">path</span> <span class="o">=</span> <span class="n">path_start</span><span class="p">[</span><span class="n">end_node</span><span class="p">]</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">LineString</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">lines</span>
+
+
+<span class="k">def</span> <span class="nf">_distance_between_nodes</span><span class="p">(</span><span class="n">node_1</span><span class="p">,</span> <span class="n">node_2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;calculate the euclidean distance of two points using pythagoras&quot;&quot;&quot;</span>
+    <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">node_1</span>
+    <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span> <span class="o">=</span> <span class="n">node_2</span>
+    <span class="k">return</span> <span class="p">((</span><span class="n">x1</span> <span class="o">-</span> <span class="n">x2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">y1</span> <span class="o">-</span> <span class="n">y2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
+
+
+<span class="k">def</span> <span class="nf">_collect_nodes</span><span class="p">(</span><span class="n">graph_edges</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">LineString</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Set</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+    <span class="sd">&quot;&quot;&quot;&quot; collect a set of nodes from all edges without duplicates &quot;&quot;&quot;</span>
+    <span class="n">nodes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="n">coordinates</span> <span class="o">=</span> <span class="p">(</span><span class="n">coords</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">graph_edges</span> <span class="k">for</span> <span class="n">coords</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">coords</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">node_coords</span> <span class="ow">in</span> <span class="n">coordinates</span><span class="p">:</span>
+        <span class="n">nodes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">node_coords</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">nodes</span>
+
+
+<span class="k">def</span> <span class="nf">_collect_edges</span><span class="p">(</span><span class="n">graph_edges</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">LineString</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]]:</span>
+    <span class="sd">&quot;&quot;&quot; collect edges with corresponding weights as the geometric distance between the points &quot;&quot;&quot;</span>
+    <span class="n">edges</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">graph_edges</span><span class="p">:</span>
+        <span class="n">weight</span> <span class="o">=</span> <span class="n">_calculate_weight_of_line</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">line</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">line</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">{</span><span class="s1">&#39;weight&#39;</span><span class="p">:</span> <span class="n">weight</span><span class="p">}))</span>
+    <span class="k">return</span> <span class="n">edges</span>
+
+
+<span class="k">def</span> <span class="nf">_calculate_weight_of_line</span><span class="p">(</span><span class="n">line</span><span class="p">:</span> <span class="n">LineString</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; calculate the weight of a line as the distance between the points &quot;&quot;&quot;</span>
+    <span class="n">weight</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">coords</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+        <span class="n">next_point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span>
+        <span class="n">weight</span> <span class="o">+=</span> <span class="n">point</span><span class="o">.</span><span class="n">distance</span><span class="p">(</span><span class="n">next_point</span><span class="p">)</span>
+        <span class="n">point</span> <span class="o">=</span> <span class="n">next_point</span>
+    <span class="k">return</span> <span class="n">weight</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jonas Matter, Robin Suter.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

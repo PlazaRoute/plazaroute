@@ -1,0 +1,136 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>plaza_routing.app.application &#8212; plazaroute 0.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for plaza_routing.app.application</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="k">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">Blueprint</span>
+
+<span class="kn">from</span> <span class="nn">plaza_routing</span> <span class="k">import</span> <span class="n">config</span>
+<span class="kn">from</span> <span class="nn">plaza_routing.api.restplus</span> <span class="k">import</span> <span class="n">api</span>
+<span class="kn">from</span> <span class="nn">plaza_routing.api.endpoints.route</span> <span class="k">import</span> <span class="n">ns</span> <span class="k">as</span> <span class="n">route_namespace</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;plaza_routing&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="configure_app"><a class="viewcode-back" href="../../../plaza_routing/plaza_routing.app.html#plaza_routing.app.application.configure_app">[docs]</a><span class="k">def</span> <span class="nf">configure_app</span><span class="p">(</span><span class="n">flask_app</span><span class="p">):</span>
+    <span class="n">flask_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;SWAGGER_UI_DOC_EXPANSION&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">app</span><span class="p">[</span><span class="s1">&#39;restplus&#39;</span><span class="p">][</span><span class="s1">&#39;swagger_ui_doc_expansion&#39;</span><span class="p">]</span>
+    <span class="n">flask_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;RESTPLUS_VALIDATE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">app</span><span class="p">[</span><span class="s1">&#39;restplus&#39;</span><span class="p">][</span><span class="s1">&#39;validate&#39;</span><span class="p">]</span>
+    <span class="n">flask_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;RESTPLUS_MASK_SWAGGER&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">app</span><span class="p">[</span><span class="s1">&#39;restplus&#39;</span><span class="p">][</span><span class="s1">&#39;mask_swagger&#39;</span><span class="p">]</span>
+    <span class="n">flask_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;ERROR_404_HELP&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">app</span><span class="p">[</span><span class="s1">&#39;restplus&#39;</span><span class="p">][</span><span class="s1">&#39;error_404_help&#39;</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="initialize_app"><a class="viewcode-back" href="../../../plaza_routing/plaza_routing.app.html#plaza_routing.app.application.initialize_app">[docs]</a><span class="k">def</span> <span class="nf">initialize_app</span><span class="p">(</span><span class="n">flask_app</span><span class="p">):</span>
+    <span class="n">configure_app</span><span class="p">(</span><span class="n">flask_app</span><span class="p">)</span>
+
+    <span class="n">api_blueprint</span> <span class="o">=</span> <span class="n">Blueprint</span><span class="p">(</span><span class="s1">&#39;api&#39;</span><span class="p">,</span> <span class="vm">__name__</span><span class="p">,</span> <span class="n">url_prefix</span><span class="o">=</span><span class="s1">&#39;/api&#39;</span><span class="p">)</span>
+    <span class="n">api</span><span class="o">.</span><span class="n">init_app</span><span class="p">(</span><span class="n">api_blueprint</span><span class="p">)</span>
+    <span class="n">api</span><span class="o">.</span><span class="n">add_namespace</span><span class="p">(</span><span class="n">route_namespace</span><span class="p">)</span>
+    <span class="n">flask_app</span><span class="o">.</span><span class="n">register_blueprint</span><span class="p">(</span><span class="n">api_blueprint</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="setup_logging"><a class="viewcode-back" href="../../../plaza_routing/plaza_routing.app.html#plaza_routing.app.application.setup_logging">[docs]</a><span class="k">def</span> <span class="nf">setup_logging</span><span class="p">(</span><span class="n">log_level</span><span class="p">):</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">log_level</span><span class="p">)</span>
+    <span class="n">console_handler</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+    <span class="n">formatter</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="s1">&#39;[</span><span class="si">%(levelname)-7s</span><span class="s1">] - </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">log_level</span> <span class="o">==</span> <span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">:</span>
+        <span class="n">formatter</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> - </span><span class="si">%(name)s</span><span class="s1"> - [</span><span class="si">%(levelname)-7s</span><span class="s1">] - </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="n">console_handler</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">console_handler</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Setting up logging complete&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="initialize"><a class="viewcode-back" href="../../../plaza_routing/plaza_routing.app.html#plaza_routing.app.application.initialize">[docs]</a><span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">flask_app</span><span class="p">):</span>
+    <span class="n">initialize_app</span><span class="p">(</span><span class="n">flask_app</span><span class="p">)</span>
+    <span class="n">setup_logging</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">app</span><span class="p">[</span><span class="s1">&#39;log_level&#39;</span><span class="p">])</span></div>
+
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">initialize</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;SERVER_NAME&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">app</span><span class="p">[</span><span class="s1">&#39;server_url&#39;</span><span class="p">]</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">app</span><span class="p">[</span><span class="s1">&#39;debug&#39;</span><span class="p">])</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jonas Matter, Robin Suter.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

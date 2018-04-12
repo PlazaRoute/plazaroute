@@ -1,0 +1,186 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>plaza_preprocessing.optimizer.graphprocessor.spiderwebgraph &#8212; plazaroute 0.1 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for plaza_preprocessing.optimizer.graphprocessor.spiderwebgraph</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">ceil</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">shapely.geometry</span> <span class="k">import</span> <span class="n">Point</span><span class="p">,</span> <span class="n">LineString</span><span class="p">,</span> <span class="n">Polygon</span>
+<span class="kn">from</span> <span class="nn">plaza_preprocessing.optimizer</span> <span class="k">import</span> <span class="n">utils</span>
+<span class="kn">from</span> <span class="nn">plaza_preprocessing.optimizer.graphprocessor.graphprocessor</span> <span class="k">import</span> <span class="n">GraphProcessor</span>
+
+
+<div class="viewcode-block" id="SpiderWebGraphProcessor"><a class="viewcode-back" href="../../../../plaza_preprocessing/plaza_preprocessing.optimizer.graphprocessor.html#plaza_preprocessing.optimizer.graphprocessor.spiderwebgraph.SpiderWebGraphProcessor">[docs]</a><span class="k">class</span> <span class="nc">SpiderWebGraphProcessor</span><span class="p">(</span><span class="n">GraphProcessor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Process a plaza with a spider web graph &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spacing_m</span><span class="p">,</span> <span class="n">visibility_delta_m</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spacing_m</span> <span class="o">=</span> <span class="n">spacing_m</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">visibility_delta_m</span> <span class="o">=</span> <span class="n">visibility_delta_m</span>
+
+<div class="viewcode-block" id="SpiderWebGraphProcessor.create_graph_edges"><a class="viewcode-back" href="../../../../plaza_preprocessing/plaza_preprocessing.optimizer.graphprocessor.html#plaza_preprocessing.optimizer.graphprocessor.spiderwebgraph.SpiderWebGraphProcessor.create_graph_edges">[docs]</a>    <span class="k">def</span> <span class="nf">create_graph_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plaza_geometry</span><span class="p">:</span> <span class="n">Polygon</span><span class="p">,</span> <span class="n">entry_points</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Point</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">LineString</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot; create a spiderwebgraph and connect edges to entry points &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">plaza_geometry</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Plaza geometry not defined for spiderwebgraph processor&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">entry_points</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No entry points defined for spiderwebgraph processor&quot;</span><span class="p">)</span>
+        <span class="n">graph_edges</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calc_spiderwebgraph</span><span class="p">(</span><span class="n">plaza_geometry</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">graph_edges</span><span class="p">:</span>  <span class="c1"># no graph edges could be constructed</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connect_entry_points_with_graph</span><span class="p">(</span><span class="n">entry_points</span><span class="p">,</span> <span class="n">graph_edges</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SpiderWebGraphProcessor.optimize_lines"><a class="viewcode-back" href="../../../../plaza_preprocessing/plaza_preprocessing.optimizer.graphprocessor.html#plaza_preprocessing.optimizer.graphprocessor.spiderwebgraph.SpiderWebGraphProcessor.optimize_lines">[docs]</a>    <span class="k">def</span> <span class="nf">optimize_lines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plaza_geometry</span><span class="p">:</span> <span class="n">Polygon</span><span class="p">,</span> <span class="n">lines</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">LineString</span><span class="p">],</span> <span class="n">tolerance_m</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">LineString</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        simplify lines to reduce amount of line points.</span>
+<span class="sd">        Optimizations that fall outside of the plaza will be discarded</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">tolerance</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">meters_to_degrees</span><span class="p">(</span><span class="n">tolerance_m</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">line</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_simplified_visible_line</span><span class="p">(</span><span class="n">plaza_geometry</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">tolerance</span><span class="p">),</span> <span class="n">lines</span><span class="p">))</span></div>
+
+    <span class="k">def</span> <span class="nf">_get_simplified_visible_line</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plaza_geometry</span><span class="p">:</span> <span class="n">Polygon</span><span class="p">,</span> <span class="n">line</span><span class="p">:</span> <span class="n">LineString</span><span class="p">,</span> <span class="n">tolerance</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; returns the simplified line if it&#39;s inside the plaza, the original line otherwise&quot;&quot;&quot;</span>
+        <span class="n">simplified_line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">simplify</span><span class="p">(</span><span class="n">tolerance</span><span class="p">,</span> <span class="n">preserve_topology</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">simplified_line</span> <span class="k">if</span> <span class="n">utils</span><span class="o">.</span><span class="n">line_visible</span><span class="p">(</span><span class="n">plaza_geometry</span><span class="p">,</span> <span class="n">simplified_line</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">visibility_delta_m</span><span class="p">)</span> <span class="k">else</span> <span class="n">line</span>
+
+    <span class="k">def</span> <span class="nf">_calc_spiderwebgraph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plaza_geometry</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; calculate spider web graph edges&quot;&quot;&quot;</span>
+        <span class="n">spacing</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">meters_to_degrees</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spacing_m</span><span class="p">)</span>
+        <span class="n">x_left</span><span class="p">,</span> <span class="n">y_bottom</span><span class="p">,</span> <span class="n">x_right</span><span class="p">,</span> <span class="n">y_top</span> <span class="o">=</span> <span class="n">plaza_geometry</span><span class="o">.</span><span class="n">bounds</span>
+
+        <span class="c1"># based on https://github.com/michaelminn/mmqgis</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">ceil</span><span class="p">((</span><span class="n">y_top</span> <span class="o">-</span> <span class="n">y_bottom</span><span class="p">)</span> <span class="o">/</span> <span class="n">spacing</span><span class="p">))</span>
+        <span class="n">columns</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">ceil</span><span class="p">((</span><span class="n">x_right</span> <span class="o">-</span> <span class="n">x_left</span><span class="p">)</span> <span class="o">/</span> <span class="n">spacing</span><span class="p">))</span>
+
+        <span class="n">graph_edges</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">columns</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">rows</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+
+                <span class="n">x_1</span> <span class="o">=</span> <span class="n">x_left</span> <span class="o">+</span> <span class="p">(</span><span class="n">column</span> <span class="o">*</span> <span class="n">spacing</span><span class="p">)</span>
+                <span class="n">x_2</span> <span class="o">=</span> <span class="n">x_left</span> <span class="o">+</span> <span class="p">((</span><span class="n">column</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">spacing</span><span class="p">)</span>
+                <span class="n">y_1</span> <span class="o">=</span> <span class="n">y_bottom</span> <span class="o">+</span> <span class="p">(</span><span class="n">row</span> <span class="o">*</span> <span class="n">spacing</span><span class="p">)</span>
+                <span class="n">y_2</span> <span class="o">=</span> <span class="n">y_bottom</span> <span class="o">+</span> <span class="p">((</span><span class="n">row</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">spacing</span><span class="p">)</span>
+
+                <span class="n">top_left</span> <span class="o">=</span> <span class="p">(</span><span class="n">x_1</span><span class="p">,</span> <span class="n">y_1</span><span class="p">)</span>
+                <span class="n">top_right</span> <span class="o">=</span> <span class="p">(</span><span class="n">x_2</span><span class="p">,</span> <span class="n">y_1</span><span class="p">)</span>
+                <span class="n">bottom_left</span> <span class="o">=</span> <span class="p">(</span><span class="n">x_1</span><span class="p">,</span> <span class="n">y_2</span><span class="p">)</span>
+                <span class="n">bottom_right</span> <span class="o">=</span> <span class="p">(</span><span class="n">x_2</span><span class="p">,</span> <span class="n">y_2</span><span class="p">)</span>
+
+                <span class="c1"># horizontal line</span>
+                <span class="k">if</span> <span class="n">column</span> <span class="o">&lt;</span> <span class="n">columns</span><span class="p">:</span>
+                    <span class="n">h_line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_spiderweb_intersection_line</span><span class="p">(</span><span class="n">plaza_geometry</span><span class="p">,</span> <span class="n">top_left</span><span class="p">,</span> <span class="n">top_right</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">h_line</span><span class="p">:</span>
+                        <span class="n">graph_edges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">h_line</span><span class="p">)</span>
+
+                <span class="c1"># vertical line</span>
+                <span class="k">if</span> <span class="n">row</span> <span class="o">&lt;</span> <span class="n">rows</span><span class="p">:</span>
+                    <span class="n">v_line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_spiderweb_intersection_line</span><span class="p">(</span><span class="n">plaza_geometry</span><span class="p">,</span> <span class="n">top_left</span><span class="p">,</span> <span class="n">bottom_left</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">v_line</span><span class="p">:</span>
+                        <span class="n">graph_edges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v_line</span><span class="p">)</span>
+
+                <span class="c1"># diagonal line</span>
+                <span class="k">if</span> <span class="n">row</span> <span class="o">&lt;</span> <span class="n">rows</span> <span class="ow">and</span> <span class="n">column</span> <span class="o">&lt;</span> <span class="n">columns</span><span class="p">:</span>
+                    <span class="n">d1_line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_spiderweb_intersection_line</span><span class="p">(</span><span class="n">plaza_geometry</span><span class="p">,</span> <span class="n">top_left</span><span class="p">,</span> <span class="n">bottom_right</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">d1_line</span><span class="p">:</span>
+                        <span class="n">graph_edges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d1_line</span><span class="p">)</span>
+                    <span class="n">d2_line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_spiderweb_intersection_line</span><span class="p">(</span><span class="n">plaza_geometry</span><span class="p">,</span> <span class="n">bottom_left</span><span class="p">,</span> <span class="n">top_right</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">d2_line</span><span class="p">:</span>
+                        <span class="n">graph_edges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d2_line</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">graph_edges</span>
+
+    <span class="k">def</span> <span class="nf">_get_spiderweb_intersection_line</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plaza_geometry</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; returns a line that is completely inside the plaza, if possible &quot;&quot;&quot;</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">LineString</span><span class="p">([</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">])</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">utils</span><span class="o">.</span><span class="n">line_visible</span><span class="p">(</span><span class="n">plaza_geometry</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">visibility_delta_m</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">line</span>
+
+    <span class="k">def</span> <span class="nf">_connect_entry_points_with_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entry_points</span><span class="p">,</span> <span class="n">graph_edges</span><span class="p">):</span>
+        <span class="n">connection_lines</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">entry_point</span> <span class="ow">in</span> <span class="n">entry_points</span><span class="p">:</span>
+            <span class="n">neighbor_line</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">find_nearest_geometry</span><span class="p">(</span><span class="n">entry_point</span><span class="p">,</span> <span class="n">graph_edges</span><span class="p">)</span>
+
+            <span class="n">target_point</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span>
+                <span class="n">neighbor_line</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="n">Point</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="o">.</span><span class="n">distance</span><span class="p">(</span><span class="n">entry_point</span><span class="p">))</span>
+            <span class="n">connection_line</span> <span class="o">=</span> <span class="p">(</span><span class="n">LineString</span><span class="p">([(</span><span class="n">entry_point</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">entry_point</span><span class="o">.</span><span class="n">y</span><span class="p">),</span> <span class="n">target_point</span><span class="p">]))</span>
+            <span class="n">connection_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">connection_line</span><span class="p">)</span>
+        <span class="n">graph_edges</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">connection_lines</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">graph_edges</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jonas Matter, Robin Suter.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

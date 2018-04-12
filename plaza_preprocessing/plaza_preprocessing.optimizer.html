@@ -1,0 +1,206 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>plaza_preprocessing.optimizer package &#8212; plazaroute 0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="plaza_preprocessing.optimizer.graphprocessor package" href="plaza_preprocessing.optimizer.graphprocessor.html" />
+    <link rel="prev" title="plaza_preprocessing.merger package" href="plaza_preprocessing.merger.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="plaza-preprocessing-optimizer-package">
+<h1>plaza_preprocessing.optimizer package<a class="headerlink" href="#plaza-preprocessing-optimizer-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="plaza_preprocessing.optimizer.graphprocessor.html">plaza_preprocessing.optimizer.graphprocessor package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="plaza_preprocessing.optimizer.graphprocessor.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plaza_preprocessing.optimizer.graphprocessor.html#module-plaza_preprocessing.optimizer.graphprocessor.graphprocessor">plaza_preprocessing.optimizer.graphprocessor.graphprocessor module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plaza_preprocessing.optimizer.graphprocessor.html#module-plaza_preprocessing.optimizer.graphprocessor.spiderwebgraph">plaza_preprocessing.optimizer.graphprocessor.spiderwebgraph module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plaza_preprocessing.optimizer.graphprocessor.html#module-plaza_preprocessing.optimizer.graphprocessor.visibilitygraph">plaza_preprocessing.optimizer.graphprocessor.visibilitygraph module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plaza_preprocessing.optimizer.graphprocessor.html#module-plaza_preprocessing.optimizer.graphprocessor">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="plaza-preprocessing-optimizer-optimizer-module">
+<h2>plaza_preprocessing.optimizer.optimizer module<a class="headerlink" href="#plaza-preprocessing-optimizer-optimizer-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-plaza_preprocessing.optimizer.shortest_paths">
+<span id="plaza-preprocessing-optimizer-shortest-paths-module"></span><h2>plaza_preprocessing.optimizer.shortest_paths module<a class="headerlink" href="#module-plaza_preprocessing.optimizer.shortest_paths" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="plaza_preprocessing.optimizer.shortest_paths.compute_astar_shortest_paths">
+<code class="descclassname">plaza_preprocessing.optimizer.shortest_paths.</code><code class="descname">compute_astar_shortest_paths</code><span class="sig-paren">(</span><em>graph</em>, <em>entry_points</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plaza_preprocessing/optimizer/shortest_paths.html#compute_astar_shortest_paths"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plaza_preprocessing.optimizer.shortest_paths.compute_astar_shortest_paths" title="Permalink to this definition">¶</a></dt>
+<dd><p>compute a list of shortest paths as LineStrings between all pairs of entry points
+using the astar algorithm. Uses direct distance between entry points as a heuristic</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">List</span></code></a>[<code class="xref py py-class docutils literal"><span class="pre">LineString</span></code>]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="plaza_preprocessing.optimizer.shortest_paths.compute_dijkstra_shortest_paths">
+<code class="descclassname">plaza_preprocessing.optimizer.shortest_paths.</code><code class="descname">compute_dijkstra_shortest_paths</code><span class="sig-paren">(</span><em>graph</em>, <em>entry_points</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plaza_preprocessing/optimizer/shortest_paths.html#compute_dijkstra_shortest_paths"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plaza_preprocessing.optimizer.shortest_paths.compute_dijkstra_shortest_paths" title="Permalink to this definition">¶</a></dt>
+<dd><p>compute a list of shortest paths as LineStrings between all pairs of entry points
+using the dijkstra algorithm</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">List</span></code></a>[<code class="xref py py-class docutils literal"><span class="pre">LineString</span></code>]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="plaza_preprocessing.optimizer.shortest_paths.create_graph">
+<code class="descclassname">plaza_preprocessing.optimizer.shortest_paths.</code><code class="descname">create_graph</code><span class="sig-paren">(</span><em>graph_edges</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plaza_preprocessing/optimizer/shortest_paths.html#create_graph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plaza_preprocessing.optimizer.shortest_paths.create_graph" title="Permalink to this definition">¶</a></dt>
+<dd><p>create a networkx graph with a collection of edges</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal"><span class="pre">Graph</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-plaza_preprocessing.optimizer.utils">
+<span id="plaza-preprocessing-optimizer-utils-module"></span><h2>plaza_preprocessing.optimizer.utils module<a class="headerlink" href="#module-plaza_preprocessing.optimizer.utils" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="plaza_preprocessing.optimizer.utils.find_nearest_geometry">
+<code class="descclassname">plaza_preprocessing.optimizer.utils.</code><code class="descname">find_nearest_geometry</code><span class="sig-paren">(</span><em>obj</em>, <em>geometries</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plaza_preprocessing/optimizer/utils.html#find_nearest_geometry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plaza_preprocessing.optimizer.utils.find_nearest_geometry" title="Permalink to this definition">¶</a></dt>
+<dd><p>return the geometry that is nearest to the object</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="plaza_preprocessing.optimizer.utils.get_polygon_coords">
+<code class="descclassname">plaza_preprocessing.optimizer.utils.</code><code class="descname">get_polygon_coords</code><span class="sig-paren">(</span><em>polygon</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plaza_preprocessing/optimizer/utils.html#get_polygon_coords"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plaza_preprocessing.optimizer.utils.get_polygon_coords" title="Permalink to this definition">¶</a></dt>
+<dd><p>return a list of coordinates of all points in a polygon</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="plaza_preprocessing.optimizer.utils.line_visible">
+<code class="descclassname">plaza_preprocessing.optimizer.utils.</code><code class="descname">line_visible</code><span class="sig-paren">(</span><em>plaza_geometry</em>, <em>line</em>, <em>delta_m</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plaza_preprocessing/optimizer/utils.html#line_visible"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plaza_preprocessing.optimizer.utils.line_visible" title="Permalink to this definition">¶</a></dt>
+<dd><p>check if the line is “visible”, i.e. unobstructed through the plaza</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="plaza_preprocessing.optimizer.utils.meters_to_degrees">
+<code class="descclassname">plaza_preprocessing.optimizer.utils.</code><code class="descname">meters_to_degrees</code><span class="sig-paren">(</span><em>meters</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plaza_preprocessing/optimizer/utils.html#meters_to_degrees"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plaza_preprocessing.optimizer.utils.meters_to_degrees" title="Permalink to this definition">¶</a></dt>
+<dd><p>convert meters to approximate degrees</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="plaza_preprocessing.optimizer.utils.timing">
+<code class="descclassname">plaza_preprocessing.optimizer.utils.</code><code class="descname">timing</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plaza_preprocessing/optimizer/utils.html#timing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plaza_preprocessing.optimizer.utils.timing" title="Permalink to this definition">¶</a></dt>
+<dd><p>decorator function to measure runtime of a function</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="plaza_preprocessing.optimizer.utils.unpack_geometry_coordinates">
+<code class="descclassname">plaza_preprocessing.optimizer.utils.</code><code class="descname">unpack_geometry_coordinates</code><span class="sig-paren">(</span><em>geometry</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plaza_preprocessing/optimizer/utils.html#unpack_geometry_coordinates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plaza_preprocessing.optimizer.utils.unpack_geometry_coordinates" title="Permalink to this definition">¶</a></dt>
+<dd><p>return a set with every point in LineString and Point geometries</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-plaza_preprocessing.optimizer">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-plaza_preprocessing.optimizer" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">plaza_preprocessing</a><ul>
+  <li><a href="plaza_preprocessing.html">plaza_preprocessing package</a><ul>
+      <li>Previous: <a href="plaza_preprocessing.merger.html" title="previous chapter">plaza_preprocessing.merger package</a></li>
+      <li>Next: <a href="plaza_preprocessing.optimizer.graphprocessor.html" title="next chapter">plaza_preprocessing.optimizer.graphprocessor package</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jonas Matter, Robin Suter.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/plaza_preprocessing/plaza_preprocessing.optimizer.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

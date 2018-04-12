@@ -1,0 +1,104 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>plaza_routing.business.util.route_cost_matrix &#8212; plazaroute 0.1 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for plaza_routing.business.util.route_cost_matrix</h1><div class="highlight"><pre>
+<span></span><span class="n">WEIGHTS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;walking_duration&#39;</span><span class="p">:</span>                  <span class="mi">2</span><span class="p">,</span>    <span class="c1"># seconds</span>
+    <span class="s1">&#39;public_transport_duration&#39;</span><span class="p">:</span>         <span class="mi">1</span><span class="p">,</span>    <span class="c1"># seconds</span>
+    <span class="s1">&#39;number_of_legs&#39;</span><span class="p">:</span>                    <span class="mi">7</span><span class="o">*</span><span class="mi">60</span>  <span class="c1"># number of legs in public transport route</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="calculate_costs"><a class="viewcode-back" href="../../../../plaza_routing/plaza_routing.business.util.html#plaza_routing.business.util.route_cost_matrix.calculate_costs">[docs]</a><span class="k">def</span> <span class="nf">calculate_costs</span><span class="p">(</span><span class="n">legs</span><span class="p">):</span>
+    <span class="n">total_cost</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">leg</span> <span class="ow">in</span> <span class="n">legs</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">leg</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;duration&#39;</span><span class="p">:</span>
+                <span class="n">weight</span> <span class="o">=</span> <span class="n">WEIGHTS</span><span class="p">[</span><span class="s1">&#39;walking_duration&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">leg</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;walking&#39;</span> \
+                    <span class="k">else</span> <span class="n">WEIGHTS</span><span class="p">[</span><span class="s1">&#39;public_transport_duration&#39;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">weight</span> <span class="o">=</span> <span class="n">WEIGHTS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">weight</span><span class="p">:</span>
+                <span class="n">total_cost</span> <span class="o">+=</span> <span class="n">value</span> <span class="o">*</span> <span class="n">weight</span>
+    <span class="k">return</span> <span class="n">total_cost</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jonas Matter, Robin Suter.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

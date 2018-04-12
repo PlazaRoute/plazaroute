@@ -1,0 +1,195 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>plaza_preprocessing.merger.plazatransformer &#8212; plazaroute 0.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for plaza_preprocessing.merger.plazatransformer</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">osmium</span> <span class="k">import</span> <span class="n">SimpleWriter</span>
+<span class="kn">from</span> <span class="nn">osmium.osm.mutable</span> <span class="k">import</span> <span class="n">Way</span><span class="p">,</span> <span class="n">Node</span>
+
+
+<span class="n">OSM_ID_START</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">10</span>
+
+
+<div class="viewcode-block" id="transform_plazas"><a class="viewcode-back" href="../../../plaza_preprocessing/plaza_preprocessing.merger.html#plaza_preprocessing.merger.plazatransformer.transform_plazas">[docs]</a><span class="k">def</span> <span class="nf">transform_plazas</span><span class="p">(</span><span class="n">plazas</span><span class="p">,</span> <span class="n">node_file</span><span class="p">,</span> <span class="n">way_file</span><span class="p">,</span> <span class="n">footway_tags</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; transforms plazas to OSM and write them to a file &quot;&quot;&quot;</span>
+    <span class="n">node_writer</span> <span class="o">=</span> <span class="n">SimpleWriter</span><span class="p">(</span><span class="n">node_file</span><span class="p">)</span>
+    <span class="n">way_writer</span> <span class="o">=</span> <span class="n">SimpleWriter</span><span class="p">(</span><span class="n">way_file</span><span class="p">)</span>
+
+    <span class="n">entry_node_mappings</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">osm_id_nodes</span> <span class="o">=</span> <span class="n">osm_id_ways</span> <span class="o">=</span> <span class="n">OSM_ID_START</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">plaza</span> <span class="ow">in</span> <span class="n">plazas</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;graph_edges&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">plaza</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;No graph edges in </span><span class="si">{plaza[&#39;osm_id&#39;]}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s2">&quot;entry_points&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">plaza</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;No entry points in </span><span class="si">{plaza[&#39;osm_id&#39;]}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="n">transformer</span> <span class="o">=</span> <span class="n">PlazaTransformer</span><span class="p">(</span><span class="n">osm_id_nodes</span><span class="p">,</span> <span class="n">osm_id_ways</span><span class="p">,</span> <span class="n">footway_tags</span><span class="p">)</span>
+            <span class="n">transformer</span><span class="o">.</span><span class="n">transform_plaza</span><span class="p">(</span><span class="n">plaza</span><span class="p">)</span>
+
+            <span class="c1"># merge entry node mappings</span>
+            <span class="n">entry_node_mappings</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">entry_node_mappings</span><span class="p">,</span> <span class="o">**</span><span class="n">transformer</span><span class="o">.</span><span class="n">entry_node_mappings</span><span class="p">}</span>
+
+            <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">transformer</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="n">node_writer</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">way</span> <span class="ow">in</span> <span class="n">transformer</span><span class="o">.</span><span class="n">ways</span><span class="p">:</span>
+                <span class="n">way_writer</span><span class="o">.</span><span class="n">add_way</span><span class="p">(</span><span class="n">way</span><span class="p">)</span>
+
+            <span class="n">osm_id_nodes</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">transformer</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
+            <span class="n">osm_id_ways</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">transformer</span><span class="o">.</span><span class="n">ways</span><span class="p">)</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">node_writer</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">way_writer</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">entry_node_mappings</span></div>
+
+
+<div class="viewcode-block" id="PlazaTransformer"><a class="viewcode-back" href="../../../plaza_preprocessing/plaza_preprocessing.merger.html#plaza_preprocessing.merger.plazatransformer.PlazaTransformer">[docs]</a><span class="k">class</span> <span class="nc">PlazaTransformer</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Transforms plaza graph edges to an OSM Format</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_id_nodes</span><span class="p">,</span> <span class="n">start_id_ways</span><span class="p">,</span> <span class="n">footway_tags</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">osm_id_nodes</span> <span class="o">=</span> <span class="n">start_id_nodes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">osm_id_ways</span> <span class="o">=</span> <span class="n">start_id_ways</span>
+        <span class="c1"># use coordinates as keys and osmium objects as values</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ways</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># maps entry ways of plazas to entry node ids</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">entry_node_mappings</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">footway_tags</span> <span class="o">=</span> <span class="p">[(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">footway_tags</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">tag</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+
+<div class="viewcode-block" id="PlazaTransformer.transform_plaza"><a class="viewcode-back" href="../../../plaza_preprocessing/plaza_preprocessing.merger.html#plaza_preprocessing.merger.plazatransformer.PlazaTransformer.transform_plaza">[docs]</a>    <span class="k">def</span> <span class="nf">transform_plaza</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plaza</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; takes a plaza with edge geometries and constructs nodes and ways &quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">plaza</span><span class="p">[</span><span class="s1">&#39;graph_edges&#39;</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_create_way</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">entry_line</span> <span class="ow">in</span> <span class="n">plaza</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;entry_lines&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">entry_node_mappings</span><span class="p">[</span><span class="n">entry_line</span><span class="p">[</span><span class="s1">&#39;way_id&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="p">{</span>
+                    <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_node_id</span><span class="p">((</span><span class="n">p</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">y</span><span class="p">)),</span>
+                    <span class="s1">&#39;coords&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+                <span class="p">}</span>
+                <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">entry_line</span><span class="p">[</span><span class="s1">&#39;entry_points&#39;</span><span class="p">]]</span></div>
+
+    <span class="k">def</span> <span class="nf">_create_way</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; create a way with corresponding nodes &quot;&quot;&quot;</span>
+        <span class="n">node_refs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">coords</span> <span class="ow">in</span> <span class="n">edge</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
+            <span class="n">node_refs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_node_id</span><span class="p">(</span><span class="n">coords</span><span class="p">))</span>
+        <span class="n">way_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_new_way_osm_id</span><span class="p">()</span>
+        <span class="n">way</span> <span class="o">=</span> <span class="n">Way</span><span class="p">(</span><span class="n">nodes</span><span class="o">=</span><span class="n">node_refs</span><span class="p">)</span>
+        <span class="n">way</span><span class="o">.</span><span class="n">tags</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">footway_tags</span>
+        <span class="n">way</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">way_id</span>
+        <span class="n">way</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">way</span><span class="o">.</span><span class="n">timestamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_osm_timestamp</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ways</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">way</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_node_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coords</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        get a node id for the coords, creates a new node if it doesn&#39;t exist yet</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">coords</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">coords</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">node_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_new_node_osm_id</span><span class="p">()</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="n">coords</span><span class="p">)</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">node_id</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">timestamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_osm_timestamp</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">coords</span><span class="p">]</span> <span class="o">=</span> <span class="n">node</span>
+            <span class="k">return</span> <span class="n">node_id</span>
+
+    <span class="k">def</span> <span class="nf">_get_new_node_osm_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">osm_id_nodes</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">osm_id_nodes</span>
+
+    <span class="k">def</span> <span class="nf">_get_new_way_osm_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">osm_id_ways</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">osm_id_ways</span>
+
+    <span class="k">def</span> <span class="nf">_create_osm_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">now</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%SZ&#39;</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jonas Matter, Robin Suter.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

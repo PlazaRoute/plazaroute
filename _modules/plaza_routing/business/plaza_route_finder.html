@@ -1,0 +1,295 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>plaza_routing.business.plaza_route_finder &#8212; plazaroute 0.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for plaza_routing.business.plaza_route_finder</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">ast</span> <span class="k">import</span> <span class="n">literal_eval</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="k">import</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="kn">from</span> <span class="nn">plaza_routing</span> <span class="k">import</span> <span class="n">config</span>
+
+<span class="kn">from</span> <span class="nn">plaza_routing.business</span> <span class="k">import</span> <span class="n">walking_route_finder</span>
+<span class="kn">from</span> <span class="nn">plaza_routing.business</span> <span class="k">import</span> <span class="n">public_transport_connection_finder</span>
+<span class="kn">from</span> <span class="nn">plaza_routing.business.util</span> <span class="k">import</span> <span class="n">route_cost_matrix</span>
+<span class="kn">from</span> <span class="nn">plaza_routing.business.util</span> <span class="k">import</span> <span class="n">validator</span>
+
+<span class="kn">from</span> <span class="nn">plaza_routing.integration</span> <span class="k">import</span> <span class="n">geocoding_service</span>
+<span class="kn">from</span> <span class="nn">plaza_routing.integration.util.exception_util</span> <span class="k">import</span> <span class="n">ValidationError</span>
+
+
+<span class="n">MAX_WALKING_DURATION</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">plaza_route_finder</span><span class="p">[</span><span class="s1">&#39;max_walking_duration&#39;</span><span class="p">]</span>
+<span class="n">PUBLIC_TRANSPORT_CONNECTION_DURATION_FORMAT</span> <span class="o">=</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S&#39;</span>
+<span class="n">DEPARTURE_FORMAT</span> <span class="o">=</span> <span class="s1">&#39;%H:%M&#39;</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;plaza_routing.plaza_route_finder&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="find_route"><a class="viewcode-back" href="../../../plaza_routing/plaza_routing.business.html#plaza_routing.business.plaza_route_finder.find_route">[docs]</a><span class="k">def</span> <span class="nf">find_route</span><span class="p">(</span><span class="n">start</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">destination</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">departure</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">precise_public_transport_stops</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;route from </span><span class="si">{start}</span><span class="s1"> to </span><span class="si">{destination}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="n">start</span> <span class="o">=</span> <span class="n">_parse_location</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+    <span class="n">destination</span> <span class="o">=</span> <span class="n">_parse_location</span><span class="p">(</span><span class="n">destination</span><span class="p">)</span>
+    <span class="n">departure</span> <span class="o">=</span> <span class="n">_parse_departure</span><span class="p">(</span><span class="n">departure</span><span class="p">)</span>
+
+    <span class="n">overall_walking_route</span> <span class="o">=</span> <span class="n">walking_route_finder</span><span class="o">.</span><span class="n">get_walking_route</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">destination</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">overall_walking_route</span><span class="p">[</span><span class="s1">&#39;duration&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">MAX_WALKING_DURATION</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Walking is faster than using public transport, return walking only route&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_convert_walking_route_to_overall_response</span><span class="p">(</span><span class="n">overall_walking_route</span><span class="p">)</span>
+
+    <span class="n">route_combinations</span> <span class="o">=</span> <span class="n">_get_route_combinations</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">departure</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">route_combinations</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;No public transport route was returned because the path consists only of walking legs&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_convert_walking_route_to_overall_response</span><span class="p">(</span><span class="n">overall_walking_route</span><span class="p">)</span>
+
+    <span class="n">best_route_combination</span> <span class="o">=</span> <span class="n">_get_best_route_combination</span><span class="p">(</span><span class="n">route_combinations</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">_is_walking_faster_than_route_combination</span><span class="p">(</span><span class="n">overall_walking_route</span><span class="p">,</span> <span class="n">best_route_combination</span><span class="p">,</span> <span class="n">departure</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_convert_walking_route_to_overall_response</span><span class="p">(</span><span class="n">overall_walking_route</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">precise_public_transport_stops</span><span class="p">:</span>
+        <span class="n">best_route_combination</span> <span class="o">=</span> <span class="n">_optimize_route_combination</span><span class="p">(</span><span class="n">best_route_combination</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">destination</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">best_route_combination</span></div>
+
+
+<span class="k">def</span> <span class="nf">_get_route_combinations</span><span class="p">(</span><span class="n">start</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">destination</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">departure</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot; retrieves all possible routes for a specific start and destination address &quot;&quot;&quot;</span>
+    <span class="n">public_transport_stops</span> <span class="o">=</span> <span class="n">public_transport_connection_finder</span><span class="o">.</span><span class="n">get_public_transport_stops</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+
+    <span class="n">routes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">public_transport_stop_uic_ref</span><span class="p">,</span> <span class="n">public_transport_stop_position</span> <span class="ow">in</span> <span class="n">public_transport_stops</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;retrieve route with start at public transport stop: </span><span class="si">{public_transport_stop_uic_ref}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="n">public_transport_departure</span> <span class="o">=</span> <span class="n">_calc_public_transport_departure</span><span class="p">(</span><span class="n">departure</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">public_transport_stop_position</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">public_transport_connection</span> <span class="o">=</span> \
+                <span class="n">public_transport_connection_finder</span><span class="o">.</span><span class="n">get_public_transport_connection</span><span class="p">(</span><span class="n">public_transport_stop_uic_ref</span><span class="p">,</span>
+                                                                                   <span class="n">destination</span><span class="p">,</span>
+                                                                                   <span class="n">public_transport_departure</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">ValidationError</span><span class="p">:</span>
+            <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">            Happens if the configured lookup radius is too high and the destination is used as a start public </span>
+<span class="sd">            transport stop. So both the start and destination value will be the same.</span>
+<span class="sd">            We&#39;are able to skip the connection and try the next one.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">continue</span>
+        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Happens if no connection was found for the given parameters.</span>
+<span class="sd">            We&#39;are able to skip the connection and try the next one.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">continue</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">public_transport_connection</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">]:</span>
+            <span class="k">continue</span>  <span class="c1"># skip empty paths, this happens if the path only consists of walking legs</span>
+
+        <span class="n">public_transport_connection_start</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">public_transport_connection</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;start_position&#39;</span><span class="p">])</span>
+        <span class="n">start_walking_route</span> <span class="o">=</span> <span class="n">walking_route_finder</span><span class="o">.</span><span class="n">get_walking_route</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">public_transport_connection_start</span><span class="p">)</span>
+
+        <span class="n">public_transport_connection_destination</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">public_transport_connection</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;exit_position&#39;</span><span class="p">])</span>
+        <span class="n">end_walking_route</span> <span class="o">=</span> <span class="n">walking_route_finder</span><span class="o">.</span><span class="n">get_walking_route</span><span class="p">(</span><span class="n">public_transport_connection_destination</span><span class="p">,</span> <span class="n">destination</span><span class="p">)</span>
+
+        <span class="n">routes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_generate_route_combination</span><span class="p">(</span><span class="n">start_walking_route</span><span class="p">,</span> <span class="n">public_transport_connection</span><span class="p">,</span> <span class="n">end_walking_route</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">routes</span>
+
+
+<span class="k">def</span> <span class="nf">_get_best_route_combination</span><span class="p">(</span><span class="n">route_combinations</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; retrieves the best route combination based on a cost matrix &quot;&quot;&quot;</span>
+    <span class="n">temp_smallest_route_costs</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">temp_best_route_combination</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">for</span> <span class="n">route_combination</span> <span class="ow">in</span> <span class="n">route_combinations</span><span class="p">:</span>
+        <span class="n">legs</span> <span class="o">=</span> <span class="p">(</span><span class="n">route_combination</span><span class="p">[</span><span class="s1">&#39;start_walking_route&#39;</span><span class="p">],</span>
+                <span class="n">route_combination</span><span class="p">[</span><span class="s1">&#39;public_transport_connection&#39;</span><span class="p">],</span>
+                <span class="n">route_combination</span><span class="p">[</span><span class="s1">&#39;end_walking_route&#39;</span><span class="p">])</span>
+        <span class="n">total_cost</span> <span class="o">=</span> <span class="n">route_cost_matrix</span><span class="o">.</span><span class="n">calculate_costs</span><span class="p">(</span><span class="n">legs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">total_cost</span> <span class="o">&lt;</span> <span class="n">temp_smallest_route_costs</span> <span class="ow">or</span> <span class="n">temp_smallest_route_costs</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">temp_smallest_route_costs</span> <span class="o">=</span> <span class="n">total_cost</span>
+            <span class="n">temp_best_route_combination</span> <span class="o">=</span> <span class="n">route_combination</span>
+    <span class="k">return</span> <span class="n">temp_best_route_combination</span>
+
+
+<span class="k">def</span> <span class="nf">_optimize_route_combination</span><span class="p">(</span><span class="n">route_combination</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">start</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">destination</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; retrieves accurate coordinates for the public transport stops and thus new walking routes will be generated &quot;&quot;&quot;</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;optimize route&quot;</span><span class="p">)</span>
+
+    <span class="n">public_transport_connection</span> <span class="o">=</span> <span class="n">route_combination</span><span class="p">[</span><span class="s1">&#39;public_transport_connection&#39;</span><span class="p">]</span>
+    <span class="n">optimized_public_transport_connection</span> <span class="o">=</span> \
+        <span class="n">public_transport_connection_finder</span><span class="o">.</span><span class="n">optimize_public_transport_connection</span><span class="p">(</span><span class="n">public_transport_connection</span><span class="p">)</span>
+
+    <span class="n">public_transport_connection_start</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">optimized_public_transport_connection</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;start_position&#39;</span><span class="p">])</span>
+    <span class="n">start_walking_route</span> <span class="o">=</span> <span class="n">walking_route_finder</span><span class="o">.</span><span class="n">get_walking_route</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">public_transport_connection_start</span><span class="p">)</span>
+
+    <span class="n">public_transport_connection_destination</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">optimized_public_transport_connection</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;exit_position&#39;</span><span class="p">])</span>
+    <span class="n">end_walking_route</span> <span class="o">=</span> <span class="n">walking_route_finder</span><span class="o">.</span><span class="n">get_walking_route</span><span class="p">(</span><span class="n">public_transport_connection_destination</span><span class="p">,</span> <span class="n">destination</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">_generate_route_combination</span><span class="p">(</span><span class="n">start_walking_route</span><span class="p">,</span> <span class="n">public_transport_connection</span><span class="p">,</span> <span class="n">end_walking_route</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_generate_route_combination</span><span class="p">(</span><span class="n">start_walking_route</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+                                <span class="n">public_transport_connection</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+                                <span class="n">end_walking_route</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="n">accumulated_duration</span> <span class="o">=</span> \
+        <span class="n">start_walking_route</span><span class="p">[</span><span class="s1">&#39;duration&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">public_transport_connection</span><span class="p">[</span><span class="s1">&#39;duration&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">end_walking_route</span><span class="p">[</span><span class="s1">&#39;duration&#39;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;start_walking_route&#39;</span><span class="p">:</span> <span class="n">start_walking_route</span><span class="p">,</span>
+        <span class="s1">&#39;public_transport_connection&#39;</span><span class="p">:</span> <span class="n">public_transport_connection</span><span class="p">,</span>
+        <span class="s1">&#39;end_walking_route&#39;</span><span class="p">:</span> <span class="n">end_walking_route</span><span class="p">,</span>
+        <span class="s1">&#39;accumulated_duration&#39;</span><span class="p">:</span> <span class="n">accumulated_duration</span>
+    <span class="p">}</span>
+
+
+<span class="k">def</span> <span class="nf">_convert_walking_route_to_overall_response</span><span class="p">(</span><span class="n">walking_route</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;start_walking_route&#39;</span><span class="p">:</span> <span class="n">walking_route</span><span class="p">,</span>
+        <span class="s1">&#39;public_transport_connection&#39;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="s1">&#39;end_walking_route&#39;</span><span class="p">:</span> <span class="p">{},</span>
+        <span class="s1">&#39;accumulated_duration&#39;</span><span class="p">:</span> <span class="n">walking_route</span><span class="p">[</span><span class="s1">&#39;duration&#39;</span><span class="p">]</span>
+    <span class="p">}</span>
+
+
+<span class="k">def</span> <span class="nf">_calc_public_transport_departure</span><span class="p">(</span><span class="n">departure</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">start</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">destination</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Adds the duration that it takes to get from start to destination to the provided departure time.</span>
+<span class="sd">    The destination should be a public transport stop to make sure that the pedestrian has enough time to catch</span>
+<span class="sd">    the public transport.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">walking_route</span> <span class="o">=</span> <span class="n">walking_route_finder</span><span class="o">.</span><span class="n">get_walking_route</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">destination</span><span class="p">)</span>
+
+    <span class="n">initial_departure</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">departure</span><span class="p">,</span> <span class="n">DEPARTURE_FORMAT</span><span class="p">)</span>
+    <span class="n">public_transport_departure</span> <span class="o">=</span> <span class="n">initial_departure</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">walking_route</span><span class="p">[</span><span class="s1">&#39;duration&#39;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="s1">&#39;{:%H:%M}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">public_transport_departure</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_calc_waiting_time</span><span class="p">(</span><span class="n">departure</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">public_transport_connection</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; calculates the waiting based on the initial departure and the first public transport connection &quot;&quot;&quot;</span>
+    <span class="n">public_transport_departure</span> <span class="o">=</span> <span class="n">public_transport_connection</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;departure&#39;</span><span class="p">]</span>
+    <span class="n">diff</span> <span class="o">=</span> \
+        <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">public_transport_departure</span><span class="p">,</span> <span class="n">PUBLIC_TRANSPORT_CONNECTION_DURATION_FORMAT</span><span class="p">)</span> <span class="o">-</span> \
+        <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">departure</span><span class="p">,</span> <span class="n">DEPARTURE_FORMAT</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">diff</span><span class="o">.</span><span class="n">seconds</span>
+
+
+<span class="k">def</span> <span class="nf">_is_walking_faster_than_route_combination</span><span class="p">(</span><span class="n">walking_route</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">route_combination</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">departure</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; check if walking is faster than waiting for and taking the public transport &quot;&quot;&quot;</span>
+    <span class="n">waiting_time</span> <span class="o">=</span> <span class="n">_calc_waiting_time</span><span class="p">(</span><span class="n">departure</span><span class="p">,</span> <span class="n">route_combination</span><span class="p">[</span><span class="s1">&#39;public_transport_connection&#39;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">route_combination</span> <span class="ow">or</span> <span class="n">walking_route</span><span class="p">[</span><span class="s1">&#39;duration&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">route_combination</span><span class="p">[</span><span class="s1">&#39;accumulated_duration&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">waiting_time</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;walking route (</span><span class="si">{walking_route[&#39;duration&#39;]:.1f}</span><span class="s2">) faster than &quot;</span>
+                    <span class="n">f</span><span class="s2">&quot;public transport and waiting time combined (</span><span class="si">{route_combination[&#39;accumulated_duration&#39;]:.1f}</span><span class="s2"> + &quot;</span>
+                    <span class="n">f</span><span class="s2">&quot;</span><span class="si">{waiting_time:.1f}</span><span class="s2">), returning walking route only&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span>
+
+
+<span class="k">def</span> <span class="nf">_parse_location</span><span class="p">(</span><span class="n">location</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; validates and returns the provided location (address or coordinate string) as a coordinate tuple &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">validator</span><span class="o">.</span><span class="n">is_address</span><span class="p">(</span><span class="n">location</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">geocoding_service</span><span class="o">.</span><span class="n">geocode</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">validator</span><span class="o">.</span><span class="n">is_valid_coordinate</span><span class="p">(</span><span class="n">location</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">literal_eval</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;invalid coordinate or location </span><span class="si">{location}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_parse_departure</span><span class="p">(</span><span class="n">departure</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    If the provided departure is missing or invalid, the current time will be returned.</span>
+<span class="sd">    Otherwise the passed departure will simply be returned.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">departure</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">validator</span><span class="o">.</span><span class="n">is_valid_departure</span><span class="p">(</span><span class="n">departure</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;{:%H:%M}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">departure</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">time</span>
+
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">find_route</span><span class="p">(</span><span class="s1">&#39;8.55546, 47.41071&#39;</span><span class="p">,</span> <span class="s1">&#39;Zürich, Hardbrücke&#39;</span><span class="p">,</span> <span class="s1">&#39;14:42&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">find_route</span><span class="p">(</span><span class="s1">&#39;8.55546, 47.41071&#39;</span><span class="p">,</span> <span class="s1">&#39;Zürich, Hardbrücke&#39;</span><span class="p">,</span> <span class="s1">&#39;14:42&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jonas Matter, Robin Suter.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

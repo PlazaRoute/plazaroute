@@ -1,0 +1,206 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>plaza_preprocessing.optimizer.graphprocessor package &#8212; plazaroute 0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="plaza_preprocessing.optimizer package" href="plaza_preprocessing.optimizer.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="plaza-preprocessing-optimizer-graphprocessor-package">
+<h1>plaza_preprocessing.optimizer.graphprocessor package<a class="headerlink" href="#plaza-preprocessing-optimizer-graphprocessor-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-plaza_preprocessing.optimizer.graphprocessor.graphprocessor">
+<span id="plaza-preprocessing-optimizer-graphprocessor-graphprocessor-module"></span><h2>plaza_preprocessing.optimizer.graphprocessor.graphprocessor module<a class="headerlink" href="#module-plaza_preprocessing.optimizer.graphprocessor.graphprocessor" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="plaza_preprocessing.optimizer.graphprocessor.graphprocessor.GraphProcessor">
+<em class="property">class </em><code class="descclassname">plaza_preprocessing.optimizer.graphprocessor.graphprocessor.</code><code class="descname">GraphProcessor</code><a class="reference internal" href="../_modules/plaza_preprocessing/optimizer/graphprocessor/graphprocessor.html#GraphProcessor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plaza_preprocessing.optimizer.graphprocessor.graphprocessor.GraphProcessor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="plaza_preprocessing.optimizer.graphprocessor.graphprocessor.GraphProcessor.create_graph_edges">
+<code class="descname">create_graph_edges</code><span class="sig-paren">(</span><em>plaza_geometry</em>, <em>entry_points</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plaza_preprocessing/optimizer/graphprocessor/graphprocessor.html#GraphProcessor.create_graph_edges"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plaza_preprocessing.optimizer.graphprocessor.graphprocessor.GraphProcessor.create_graph_edges" title="Permalink to this definition">¶</a></dt>
+<dd><p>create graph edges to connect all entry points</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">List</span></code></a>[<code class="xref py py-class docutils literal"><span class="pre">LineString</span></code>]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plaza_preprocessing.optimizer.graphprocessor.graphprocessor.GraphProcessor.optimize_lines">
+<code class="descname">optimize_lines</code><span class="sig-paren">(</span><em>plaza_geometry</em>, <em>lines</em>, <em>tolerance_m</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plaza_preprocessing/optimizer/graphprocessor/graphprocessor.html#GraphProcessor.optimize_lines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plaza_preprocessing.optimizer.graphprocessor.graphprocessor.GraphProcessor.optimize_lines" title="Permalink to this definition">¶</a></dt>
+<dd><p>optimize or simplify a list of shortest paths</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>plaza_geometry</strong> (<code class="xref py py-class docutils literal"><span class="pre">Polygon</span></code>) – The geometry which the optimized lines must be inside of</li>
+<li><strong>lines</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">List</span></code></a>[<code class="xref py py-class docutils literal"><span class="pre">LineString</span></code>]) – a list of lines to optimize</li>
+<li><strong>tolerance_m</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">float</span></code></a>) – new line will be inside this distance (in meters) from the original line.
+Should be the same as obstacle buffer.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">List</span></code></a>[<code class="xref py py-class docutils literal"><span class="pre">LineString</span></code>]</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">List of optimized LineStrings</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-plaza_preprocessing.optimizer.graphprocessor.spiderwebgraph">
+<span id="plaza-preprocessing-optimizer-graphprocessor-spiderwebgraph-module"></span><h2>plaza_preprocessing.optimizer.graphprocessor.spiderwebgraph module<a class="headerlink" href="#module-plaza_preprocessing.optimizer.graphprocessor.spiderwebgraph" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="plaza_preprocessing.optimizer.graphprocessor.spiderwebgraph.SpiderWebGraphProcessor">
+<em class="property">class </em><code class="descclassname">plaza_preprocessing.optimizer.graphprocessor.spiderwebgraph.</code><code class="descname">SpiderWebGraphProcessor</code><span class="sig-paren">(</span><em>spacing_m</em>, <em>visibility_delta_m</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plaza_preprocessing/optimizer/graphprocessor/spiderwebgraph.html#SpiderWebGraphProcessor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plaza_preprocessing.optimizer.graphprocessor.spiderwebgraph.SpiderWebGraphProcessor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#plaza_preprocessing.optimizer.graphprocessor.graphprocessor.GraphProcessor" title="plaza_preprocessing.optimizer.graphprocessor.graphprocessor.GraphProcessor"><code class="xref py py-class docutils literal"><span class="pre">plaza_preprocessing.optimizer.graphprocessor.graphprocessor.GraphProcessor</span></code></a></p>
+<p>Process a plaza with a spider web graph</p>
+<dl class="method">
+<dt id="plaza_preprocessing.optimizer.graphprocessor.spiderwebgraph.SpiderWebGraphProcessor.create_graph_edges">
+<code class="descname">create_graph_edges</code><span class="sig-paren">(</span><em>plaza_geometry</em>, <em>entry_points</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plaza_preprocessing/optimizer/graphprocessor/spiderwebgraph.html#SpiderWebGraphProcessor.create_graph_edges"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plaza_preprocessing.optimizer.graphprocessor.spiderwebgraph.SpiderWebGraphProcessor.create_graph_edges" title="Permalink to this definition">¶</a></dt>
+<dd><p>create a spiderwebgraph and connect edges to entry points</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">List</span></code></a>[<code class="xref py py-class docutils literal"><span class="pre">LineString</span></code>]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plaza_preprocessing.optimizer.graphprocessor.spiderwebgraph.SpiderWebGraphProcessor.optimize_lines">
+<code class="descname">optimize_lines</code><span class="sig-paren">(</span><em>plaza_geometry</em>, <em>lines</em>, <em>tolerance_m</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plaza_preprocessing/optimizer/graphprocessor/spiderwebgraph.html#SpiderWebGraphProcessor.optimize_lines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plaza_preprocessing.optimizer.graphprocessor.spiderwebgraph.SpiderWebGraphProcessor.optimize_lines" title="Permalink to this definition">¶</a></dt>
+<dd><p>simplify lines to reduce amount of line points.
+Optimizations that fall outside of the plaza will be discarded</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">List</span></code></a>[<code class="xref py py-class docutils literal"><span class="pre">LineString</span></code>]</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-plaza_preprocessing.optimizer.graphprocessor.visibilitygraph">
+<span id="plaza-preprocessing-optimizer-graphprocessor-visibilitygraph-module"></span><h2>plaza_preprocessing.optimizer.graphprocessor.visibilitygraph module<a class="headerlink" href="#module-plaza_preprocessing.optimizer.graphprocessor.visibilitygraph" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="plaza_preprocessing.optimizer.graphprocessor.visibilitygraph.VisibilityGraphProcessor">
+<em class="property">class </em><code class="descclassname">plaza_preprocessing.optimizer.graphprocessor.visibilitygraph.</code><code class="descname">VisibilityGraphProcessor</code><span class="sig-paren">(</span><em>visibility_delta_m</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plaza_preprocessing/optimizer/graphprocessor/visibilitygraph.html#VisibilityGraphProcessor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plaza_preprocessing.optimizer.graphprocessor.visibilitygraph.VisibilityGraphProcessor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#plaza_preprocessing.optimizer.graphprocessor.graphprocessor.GraphProcessor" title="plaza_preprocessing.optimizer.graphprocessor.graphprocessor.GraphProcessor"><code class="xref py py-class docutils literal"><span class="pre">plaza_preprocessing.optimizer.graphprocessor.graphprocessor.GraphProcessor</span></code></a></p>
+<p>process a plaza using a visibility graph</p>
+<dl class="method">
+<dt id="plaza_preprocessing.optimizer.graphprocessor.visibilitygraph.VisibilityGraphProcessor.create_graph_edges">
+<code class="descname">create_graph_edges</code><span class="sig-paren">(</span><em>plaza_geometry</em>, <em>entry_points</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plaza_preprocessing/optimizer/graphprocessor/visibilitygraph.html#VisibilityGraphProcessor.create_graph_edges"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plaza_preprocessing.optimizer.graphprocessor.visibilitygraph.VisibilityGraphProcessor.create_graph_edges" title="Permalink to this definition">¶</a></dt>
+<dd><p>create a visibility graph with all plaza and entry points</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-plaza_preprocessing.optimizer.graphprocessor">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-plaza_preprocessing.optimizer.graphprocessor" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">plaza_preprocessing</a><ul>
+  <li><a href="plaza_preprocessing.html">plaza_preprocessing package</a><ul>
+  <li><a href="plaza_preprocessing.optimizer.html">plaza_preprocessing.optimizer package</a><ul>
+      <li>Previous: <a href="plaza_preprocessing.optimizer.html" title="previous chapter">plaza_preprocessing.optimizer package</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jonas Matter, Robin Suter.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/plaza_preprocessing/plaza_preprocessing.optimizer.graphprocessor.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

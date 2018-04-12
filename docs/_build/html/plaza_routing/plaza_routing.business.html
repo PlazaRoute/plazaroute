@@ -1,0 +1,193 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>plaza_routing.business package &#8212; plazaroute 0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="plaza_routing.business.util package" href="plaza_routing.business.util.html" />
+    <link rel="prev" title="plaza_routing.app package" href="plaza_routing.app.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="plaza-routing-business-package">
+<h1>plaza_routing.business package<a class="headerlink" href="#plaza-routing-business-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="plaza_routing.business.util.html">plaza_routing.business.util package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="plaza_routing.business.util.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plaza_routing.business.util.html#module-plaza_routing.business.util.coordinate_transformer">plaza_routing.business.util.coordinate_transformer module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plaza_routing.business.util.html#module-plaza_routing.business.util.route_cost_matrix">plaza_routing.business.util.route_cost_matrix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plaza_routing.business.util.html#module-plaza_routing.business.util.validator">plaza_routing.business.util.validator module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plaza_routing.business.util.html#module-plaza_routing.business.util">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-plaza_routing.business.plaza_route_finder">
+<span id="plaza-routing-business-plaza-route-finder-module"></span><h2>plaza_routing.business.plaza_route_finder module<a class="headerlink" href="#module-plaza_routing.business.plaza_route_finder" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="plaza_routing.business.plaza_route_finder.find_route">
+<code class="descclassname">plaza_routing.business.plaza_route_finder.</code><code class="descname">find_route</code><span class="sig-paren">(</span><em>start</em>, <em>destination</em>, <em>departure</em>, <em>precise_public_transport_stops</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plaza_routing/business/plaza_route_finder.html#find_route"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plaza_routing.business.plaza_route_finder.find_route" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">dict</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-plaza_routing.business.public_transport_connection_finder">
+<span id="plaza-routing-business-public-transport-connection-finder-module"></span><h2>plaza_routing.business.public_transport_connection_finder module<a class="headerlink" href="#module-plaza_routing.business.public_transport_connection_finder" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="plaza_routing.business.public_transport_connection_finder.get_public_transport_connection">
+<code class="descclassname">plaza_routing.business.public_transport_connection_finder.</code><code class="descname">get_public_transport_connection</code><span class="sig-paren">(</span><em>start_uic_ref</em>, <em>destination</em>, <em>departure</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plaza_routing/business/public_transport_connection_finder.html#get_public_transport_connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plaza_routing.business.public_transport_connection_finder.get_public_transport_connection" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">dict</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="plaza_routing.business.public_transport_connection_finder.get_public_transport_stops">
+<code class="descclassname">plaza_routing.business.public_transport_connection_finder.</code><code class="descname">get_public_transport_stops</code><span class="sig-paren">(</span><em>start</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plaza_routing/business/public_transport_connection_finder.html#get_public_transport_stops"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plaza_routing.business.public_transport_connection_finder.get_public_transport_stops" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">dict</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="plaza_routing.business.public_transport_connection_finder.optimize_public_transport_connection">
+<code class="descclassname">plaza_routing.business.public_transport_connection_finder.</code><code class="descname">optimize_public_transport_connection</code><span class="sig-paren">(</span><em>public_transport_connection</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plaza_routing/business/public_transport_connection_finder.html#optimize_public_transport_connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plaza_routing.business.public_transport_connection_finder.optimize_public_transport_connection" title="Permalink to this definition">¶</a></dt>
+<dd><p>retrieves accurate coordinates for the public transport stops in each leg</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">dict</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-plaza_routing.business.walking_route_finder">
+<span id="plaza-routing-business-walking-route-finder-module"></span><h2>plaza_routing.business.walking_route_finder module<a class="headerlink" href="#module-plaza_routing.business.walking_route_finder" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="plaza_routing.business.walking_route_finder.get_walking_route">
+<code class="descclassname">plaza_routing.business.walking_route_finder.</code><code class="descname">get_walking_route</code><span class="sig-paren">(</span><em>start</em>, <em>destination</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plaza_routing/business/walking_route_finder.html#get_walking_route"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plaza_routing.business.walking_route_finder.get_walking_route" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns the walking route for a start and destination based on a routing strategy</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">dict</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-plaza_routing.business">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-plaza_routing.business" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">plaza_routing</a><ul>
+  <li><a href="plaza_routing.html">plaza_routing package</a><ul>
+      <li>Previous: <a href="plaza_routing.app.html" title="previous chapter">plaza_routing.app package</a></li>
+      <li>Next: <a href="plaza_routing.business.util.html" title="next chapter">plaza_routing.business.util package</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jonas Matter, Robin Suter.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/plaza_routing/plaza_routing.business.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

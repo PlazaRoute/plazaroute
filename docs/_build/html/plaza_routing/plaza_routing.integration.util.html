@@ -1,0 +1,192 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>plaza_routing.integration.util package &#8212; plazaroute 0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="plaza_preprocessing" href="../plaza_preprocessing/modules.html" />
+    <link rel="prev" title="plaza_routing.integration.routing_strategy package" href="plaza_routing.integration.routing_strategy.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="plaza-routing-integration-util-package">
+<h1>plaza_routing.integration.util package<a class="headerlink" href="#plaza-routing-integration-util-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-plaza_routing.integration.util.exception_util">
+<span id="plaza-routing-integration-util-exception-util-module"></span><h2>plaza_routing.integration.util.exception_util module<a class="headerlink" href="#module-plaza_routing.integration.util.exception_util" title="Permalink to this headline">¶</a></h2>
+<dl class="exception">
+<dt id="plaza_routing.integration.util.exception_util.ServiceError">
+<em class="property">exception </em><code class="descclassname">plaza_routing.integration.util.exception_util.</code><code class="descname">ServiceError</code><a class="reference internal" href="../_modules/plaza_routing/integration/util/exception_util.html#ServiceError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plaza_routing.integration.util.exception_util.ServiceError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">Exception</span></code></a></p>
+<p>Exception for service failures in the integration layer.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="plaza_routing.integration.util.exception_util.ValidationError">
+<em class="property">exception </em><code class="descclassname">plaza_routing.integration.util.exception_util.</code><code class="descname">ValidationError</code><a class="reference internal" href="../_modules/plaza_routing/integration/util/exception_util.html#ValidationError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plaza_routing.integration.util.exception_util.ValidationError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">ValueError</span></code></a></p>
+<p>Exception for validation errors.
+The provided exception msg will be exposed to the user.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-plaza_routing.integration.util.search_ch_parser">
+<span id="plaza-routing-integration-util-search-ch-parser-module"></span><h2>plaza_routing.integration.util.search_ch_parser module<a class="headerlink" href="#module-plaza_routing.integration.util.search_ch_parser" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="plaza_routing.integration.util.search_ch_parser.Connection">
+<em class="property">class </em><code class="descclassname">plaza_routing.integration.util.search_ch_parser.</code><code class="descname">Connection</code><span class="sig-paren">(</span><em>*arg</em>, <em>**kw</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plaza_routing/integration/util/search_ch_parser.html#Connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plaza_routing.integration.util.search_ch_parser.Connection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">colander.Schema</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="plaza_routing.integration.util.search_ch_parser.Connections">
+<em class="property">class </em><code class="descclassname">plaza_routing.integration.util.search_ch_parser.</code><code class="descname">Connections</code><span class="sig-paren">(</span><em>*args</em>, <em>**kw</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plaza_routing/integration/util/search_ch_parser.html#Connections"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plaza_routing.integration.util.search_ch_parser.Connections" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">colander.SequenceSchema</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="plaza_routing.integration.util.search_ch_parser.Exit">
+<em class="property">class </em><code class="descclassname">plaza_routing.integration.util.search_ch_parser.</code><code class="descname">Exit</code><span class="sig-paren">(</span><em>*arg</em>, <em>**kw</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plaza_routing/integration/util/search_ch_parser.html#Exit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plaza_routing.integration.util.search_ch_parser.Exit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">colander.Schema</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="plaza_routing.integration.util.search_ch_parser.Leg">
+<em class="property">class </em><code class="descclassname">plaza_routing.integration.util.search_ch_parser.</code><code class="descname">Leg</code><span class="sig-paren">(</span><em>*arg</em>, <em>**kw</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plaza_routing/integration/util/search_ch_parser.html#Leg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plaza_routing.integration.util.search_ch_parser.Leg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">colander.Schema</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="plaza_routing.integration.util.search_ch_parser.LegType">
+<em class="property">class </em><code class="descclassname">plaza_routing.integration.util.search_ch_parser.</code><code class="descname">LegType</code><a class="reference internal" href="../_modules/plaza_routing/integration/util/search_ch_parser.html#LegType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plaza_routing.integration.util.search_ch_parser.LegType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">colander.SchemaType</span></code></p>
+<p>Search.ch returns walking legs (type=walk) that will be skipped with colander.drop.
+The leg with a missing type is either the last leg or a an address with isaddress=True (if the destination that is
+passed to search.ch is an address). Both are of no use and will be skipped.</p>
+<dl class="method">
+<dt id="plaza_routing.integration.util.search_ch_parser.LegType.deserialize">
+<code class="descname">deserialize</code><span class="sig-paren">(</span><em>node</em>, <em>cstruct</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plaza_routing/integration/util/search_ch_parser.html#LegType.deserialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plaza_routing.integration.util.search_ch_parser.LegType.deserialize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plaza_routing.integration.util.search_ch_parser.LegType.serialize">
+<code class="descname">serialize</code><span class="sig-paren">(</span><em>node</em>, <em>appstruct</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plaza_routing/integration/util/search_ch_parser.html#LegType.serialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plaza_routing.integration.util.search_ch_parser.LegType.serialize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plaza_routing.integration.util.search_ch_parser.Legs">
+<em class="property">class </em><code class="descclassname">plaza_routing.integration.util.search_ch_parser.</code><code class="descname">Legs</code><span class="sig-paren">(</span><em>*args</em>, <em>**kw</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plaza_routing/integration/util/search_ch_parser.html#Legs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plaza_routing.integration.util.search_ch_parser.Legs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">colander.SequenceSchema</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="plaza_routing.integration.util.search_ch_parser.SearchChResponse">
+<em class="property">class </em><code class="descclassname">plaza_routing.integration.util.search_ch_parser.</code><code class="descname">SearchChResponse</code><span class="sig-paren">(</span><em>*arg</em>, <em>**kw</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plaza_routing/integration/util/search_ch_parser.html#SearchChResponse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plaza_routing.integration.util.search_ch_parser.SearchChResponse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">colander.Schema</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="plaza_routing.integration.util.search_ch_parser.Stopovers">
+<em class="property">class </em><code class="descclassname">plaza_routing.integration.util.search_ch_parser.</code><code class="descname">Stopovers</code><span class="sig-paren">(</span><em>*args</em>, <em>**kw</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plaza_routing/integration/util/search_ch_parser.html#Stopovers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plaza_routing.integration.util.search_ch_parser.Stopovers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">colander.SequenceSchema</span></code></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="plaza_routing.integration.util.search_ch_parser.parse_connections">
+<code class="descclassname">plaza_routing.integration.util.search_ch_parser.</code><code class="descname">parse_connections</code><span class="sig-paren">(</span><em>response</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/plaza_routing/integration/util/search_ch_parser.html#parse_connections"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plaza_routing.integration.util.search_ch_parser.parse_connections" title="Permalink to this definition">¶</a></dt>
+<dd><p>parses a search.ch response to a suitable data structure</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-plaza_routing.integration.util">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-plaza_routing.integration.util" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">plaza_routing</a><ul>
+  <li><a href="plaza_routing.html">plaza_routing package</a><ul>
+  <li><a href="plaza_routing.integration.html">plaza_routing.integration package</a><ul>
+      <li>Previous: <a href="plaza_routing.integration.routing_strategy.html" title="previous chapter">plaza_routing.integration.routing_strategy package</a></li>
+      <li>Next: <a href="../plaza_preprocessing/modules.html" title="next chapter">plaza_preprocessing</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jonas Matter, Robin Suter.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/plaza_routing/plaza_routing.integration.util.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

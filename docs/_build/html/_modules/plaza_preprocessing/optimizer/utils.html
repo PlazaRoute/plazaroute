@@ -1,0 +1,146 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>plaza_preprocessing.optimizer.utils &#8212; plazaroute 0.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for plaza_preprocessing.optimizer.utils</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">shapely.geometry</span> <span class="k">import</span> <span class="n">Point</span><span class="p">,</span> <span class="n">MultiPoint</span><span class="p">,</span> <span class="n">LineString</span><span class="p">,</span> <span class="n">MultiLineString</span><span class="p">,</span> <span class="n">GeometryCollection</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;plaza_preprocessing.optimizer&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="unpack_geometry_coordinates"><a class="viewcode-back" href="../../../plaza_preprocessing/plaza_preprocessing.optimizer.html#plaza_preprocessing.optimizer.utils.unpack_geometry_coordinates">[docs]</a><span class="k">def</span> <span class="nf">unpack_geometry_coordinates</span><span class="p">(</span><span class="n">geometry</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; return a set with every point in LineString and Point geometries &quot;&quot;&quot;</span>
+    <span class="n">geom_type</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">geometry</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">geom_type</span> <span class="o">==</span> <span class="n">GeometryCollection</span><span class="p">:</span>
+        <span class="n">coords</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">geom</span> <span class="ow">in</span> <span class="n">geometry</span><span class="p">:</span>
+            <span class="n">coords</span> <span class="o">=</span> <span class="n">coords</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">unpack_geometry_coordinates</span><span class="p">(</span><span class="n">geom</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">coords</span>
+    <span class="k">elif</span> <span class="n">geom_type</span> <span class="o">==</span> <span class="n">MultiLineString</span> <span class="ow">or</span> <span class="n">geom_type</span> <span class="o">==</span> <span class="n">MultiPoint</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">set</span><span class="p">()</span><span class="o">.</span><span class="n">union</span><span class="p">([</span><span class="n">c</span> <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">geometry</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">element</span><span class="o">.</span><span class="n">coords</span><span class="p">])</span>
+    <span class="k">elif</span> <span class="n">geom_type</span> <span class="o">==</span> <span class="n">LineString</span> <span class="ow">or</span> <span class="n">geom_type</span> <span class="o">==</span> <span class="n">Point</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="n">geometry</span><span class="o">.</span><span class="n">coords</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Unsupported Geometry type </span><span class="si">{geom_type}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="meters_to_degrees"><a class="viewcode-back" href="../../../plaza_preprocessing/plaza_preprocessing.optimizer.html#plaza_preprocessing.optimizer.utils.meters_to_degrees">[docs]</a><span class="k">def</span> <span class="nf">meters_to_degrees</span><span class="p">(</span><span class="n">meters</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; convert meters to approximate degrees &quot;&quot;&quot;</span>
+    <span class="c1">#  meters * 360 / (2 * PI * 6400000)</span>
+    <span class="c1"># multiply by (1/cos(lat) for longitude)</span>
+    <span class="k">return</span> <span class="n">meters</span> <span class="o">*</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">111701</span></div>
+
+
+<div class="viewcode-block" id="get_polygon_coords"><a class="viewcode-back" href="../../../plaza_preprocessing/plaza_preprocessing.optimizer.html#plaza_preprocessing.optimizer.utils.get_polygon_coords">[docs]</a><span class="k">def</span> <span class="nf">get_polygon_coords</span><span class="p">(</span><span class="n">polygon</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; return a list of coordinates of all points in a polygon &quot;&quot;&quot;</span>
+    <span class="n">coords</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">polygon</span><span class="o">.</span><span class="n">exterior</span><span class="o">.</span><span class="n">coords</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">ring</span> <span class="ow">in</span> <span class="n">polygon</span><span class="o">.</span><span class="n">interiors</span><span class="p">:</span>
+        <span class="n">coords</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">ring</span><span class="o">.</span><span class="n">coords</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">coords</span></div>
+
+
+<div class="viewcode-block" id="find_nearest_geometry"><a class="viewcode-back" href="../../../plaza_preprocessing/plaza_preprocessing.optimizer.html#plaza_preprocessing.optimizer.utils.find_nearest_geometry">[docs]</a><span class="k">def</span> <span class="nf">find_nearest_geometry</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">geometries</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; return the geometry that is nearest to the object &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">geometries</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">g</span><span class="p">:</span> <span class="n">g</span><span class="o">.</span><span class="n">distance</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="line_visible"><a class="viewcode-back" href="../../../plaza_preprocessing/plaza_preprocessing.optimizer.html#plaza_preprocessing.optimizer.utils.line_visible">[docs]</a><span class="k">def</span> <span class="nf">line_visible</span><span class="p">(</span><span class="n">plaza_geometry</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">delta_m</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; check if the line is &quot;visible&quot;, i.e. unobstructed through the plaza&quot;&quot;&quot;</span>
+    <span class="n">intersection_line</span> <span class="o">=</span> <span class="n">plaza_geometry</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+    <span class="c1"># a line is visible if the intersection has the same length as the line itself, within a given delta</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="n">meters_to_degrees</span><span class="p">(</span><span class="n">delta_m</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">length</span> <span class="o">-</span> <span class="n">intersection_line</span><span class="o">.</span><span class="n">length</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">delta</span></div>
+
+
+<div class="viewcode-block" id="timing"><a class="viewcode-back" href="../../../plaza_preprocessing/plaza_preprocessing.optimizer.html#plaza_preprocessing.optimizer.utils.timing">[docs]</a><span class="k">def</span> <span class="nf">timing</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; decorator function to measure runtime of a function &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">wrap</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="n">time1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+        <span class="n">time2</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> function took </span><span class="si">%0.3f</span><span class="s1"> ms&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="p">(</span><span class="n">time2</span><span class="o">-</span><span class="n">time1</span><span class="p">)</span><span class="o">*</span><span class="mf">1000.0</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">ret</span>
+    <span class="k">return</span> <span class="n">wrap</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jonas Matter, Robin Suter.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
